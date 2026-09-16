@@ -40,8 +40,10 @@ async function validateDependencies() {
   const role = getProcessRole();
 
   if (isProduction && role === "all") {
-    result.valid = false;
-    result.errors.push("PROCESS_ROLE=all (or legacy APP_ROLE=all) is not allowed in production. Use api, worker, or scheduler.");
+    result.checks.processRole = {
+      status: "WARN",
+      message: "Running PROCESS_ROLE=all in production. For large-scale traffic, consider separating api, worker, and scheduler services.",
+    };
   }
 
   const hasAppRole = Boolean(process.env.APP_ROLE && String(process.env.APP_ROLE).trim());
@@ -72,7 +74,7 @@ async function validateDependencies() {
     result.errors.push(`MongoDB validation failed: ${error.message}`);
   }
   
-  // Validate Redis connection (mandatory in production)
+  // Validate Redis connection
   try {
     if (isRedisEnabled()) {
       const client = getRedisClient();
@@ -80,21 +82,19 @@ async function validateDependencies() {
         result.checks.redis = { status: 'UP', message: 'Connected' };
       } else {
         result.checks.redis = { status: 'DOWN', message: 'Not ready' };
-        if (isProduction) {
+        if (isProduction && process.env.REDIS_REQUIRED === 'true') {
           result.valid = false;
           result.errors.push('Redis is required in production but not ready');
+        } else if (isProduction) {
+          result.checks.redis.message = 'Redis not ready; operating in fallback mode';
         }
       }
     } else {
-      result.checks.redis = { status: 'DISABLED', message: 'Redis is disabled' };
-      if (isProduction) {
-        result.valid = false;
-        result.errors.push('Redis is required in production mode');
-      }
+      result.checks.redis = { status: 'DISABLED', message: 'Redis is disabled (using database/in-memory fallbacks)' };
     }
   } catch (error) {
     result.checks.redis = { status: 'ERROR', message: error.message };
-    if (isProduction) {
+    if (isProduction && process.env.REDIS_REQUIRED === 'true') {
       result.valid = false;
       result.errors.push(`Redis validation failed: ${error.message}`);
     }

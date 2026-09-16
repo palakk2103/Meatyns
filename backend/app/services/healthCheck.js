@@ -173,7 +173,7 @@ async function getReadinessStatus() {
   setGauge("dependency_up", redisHealth.status === "UP" ? 1 : 0, { dependency: "redis" });
   
   const isProduction = process.env.NODE_ENV === 'production';
-  if (isProduction && redisHealth.status !== 'UP') {
+  if (isProduction && isRedisEnabled() && redisHealth.status !== 'UP') {
     ready = false;
   }
 
