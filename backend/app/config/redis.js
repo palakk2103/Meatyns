@@ -24,18 +24,18 @@ export function isRedisEnabled() {
   if (process.env.NODE_ENV === "test" && !(e === "true" || e === "1")) return false;
   if (d === "true" || d === "1") {
     if (isProduction) {
-      throw new Error(
-        "Redis cannot be disabled in production mode (NODE_ENV=production). " +
-        "Redis is required for distributed operations, queues, and caching."
+      console.warn(
+        "[Redis] ⚠️ Running in production with REDIS_DISABLED=true. " +
+        "Distributed queues and Redis caching are disabled. Using database/in-memory fallbacks."
       );
     }
     return false;
   }
   if (e === "false" || e === "0") {
     if (isProduction) {
-      throw new Error(
-        "Redis is required in production mode (NODE_ENV=production). " +
-        "Set REDIS_ENABLED=true or provide REDIS_URL/REDIS_HOST configuration."
+      console.warn(
+        "[Redis] ⚠️ Running in production with REDIS_ENABLED=false. " +
+        "Distributed queues and Redis caching are disabled. Using database/in-memory fallbacks."
       );
     }
     return false;
@@ -50,10 +50,11 @@ export function isRedisEnabled() {
       e === "1"
     );
     if (!hasConfig) {
-      throw new Error(
-        "Redis is required in production mode (NODE_ENV=production). " +
-        "Please set REDIS_URL or REDIS_HOST environment variable."
+      console.warn(
+        "[Redis] ⚠️ No REDIS_URL or REDIS_HOST provided in production. " +
+        "Operating in fallback mode without Redis."
       );
+      return false;
     }
   }
 
