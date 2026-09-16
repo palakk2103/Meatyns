@@ -1,0 +1,304 @@
+import React, { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { Search, ShoppingCart, Heart, User, Menu, MapPin, ChevronDown, Zap, CircleUserRound } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { useWishlist } from '../../context/WishlistContext';
+import { useCart } from '../../context/CartContext';
+import { useLocation as useAppLocation } from "../../context/LocationContext";
+import { useSettings } from '@core/context/SettingsContext';
+import LocationDrawer from '../shared/LocationDrawer';
+
+// Leaf outline emblem matching brand logo design
+const LeafLogo = ({ className = "w-8 h-8 text-white shrink-0" }) => (
+  <svg
+    viewBox="0 0 36 36"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className={className}
+  >
+    <path
+      d="M10 27C9 21 11.5 15.5 16 12C18 10.5 20.5 10 20.5 10C20.5 10 19.5 14.5 17 18C14.8 21 13 24 10 27Z"
+      stroke="currentColor"
+      strokeWidth="2.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M11 26C14 23 20 18 24 13C27.5 8.5 30 8 30 8C30 8 29.5 12.5 26 17.5C21.5 23.5 16 26.5 11 26Z"
+      stroke="currentColor"
+      strokeWidth="2.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M15 22C19 18 23.5 14.5 27.5 11"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+    />
+  </svg>
+);
+
+const Header = () => {
+    const { settings } = useSettings();
+    const { count: wishlistCount } = useWishlist();
+    const { cartCount } = useCart();
+    const location = useLocation();
+    const isCheckoutPage = location.pathname === '/checkout';
+    const [isLocationOpen, setIsLocationOpen] = useState(false);
+    const { currentLocation, refreshLocation, isFetchingLocation } = useAppLocation();
+
+    // Search placeholder animation
+    const [searchPlaceholder, setSearchPlaceholder] = useState('Search ');
+    const [typingState, setTypingState] = useState({
+        textIndex: 0,
+        charIndex: 0,
+        isDeleting: false,
+        isPaused: false
+    });
+
+    const staticText = "Search ";
+    const typingPhrases = ['"mutton"', '"chicken"', '"fish"', '"prawns"', '"goat meat"', '"beef"'];
+
+    React.useEffect(() => {
+        const { textIndex, charIndex, isDeleting, isPaused } = typingState;
+        const currentPhrase = typingPhrases[textIndex];
+
+        if (isPaused) {
+            const timeout = setTimeout(() => {
+                setTypingState(prev => ({ ...prev, isPaused: false, isDeleting: true }));
+            }, 2000); // Pause after full phrase
+            return () => clearTimeout(timeout);
+        }
+
+        const timeout = setTimeout(() => {
+            if (!isDeleting) {
+                // Typing
+                if (charIndex < currentPhrase.length) {
+                    setSearchPlaceholder(staticText + currentPhrase.substring(0, charIndex + 1));
+                    setTypingState(prev => ({ ...prev, charIndex: prev.charIndex + 1 }));
+                } else {
+                    // Finished typing
+                    setTypingState(prev => ({ ...prev, isPaused: true }));
+                }
+            } else {
+                // Deleting
+                if (charIndex > 0) {
+                    setSearchPlaceholder(staticText + currentPhrase.substring(0, charIndex - 1));
+                    setTypingState(prev => ({ ...prev, charIndex: prev.charIndex - 1 }));
+                } else {
+                    // Finished deleting
+                    setTypingState(prev => ({
+                        ...prev,
+                        isDeleting: false,
+                        textIndex: (prev.textIndex + 1) % typingPhrases.length
+                    }));
+                }
+            }
+        }, isDeleting ? 50 : 100);
+
+        return () => clearTimeout(timeout);
+    }, [typingState]);
+
+    return (
+        <>
+            {/* ──── Desktop Header Layout (md and above) - 100% UNTOUCHED ──── */}
+            <header className="hidden md:block absolute top-8 left-0 right-0 z-[200] px-4">
+                <div className="container mx-auto max-w-6xl">
+                    <div
+                        className="w-full px-4 lg:px-8 py-2.5 rounded-2xl shadow-xl flex items-center justify-between border border-white/10"
+                        style={{ background: 'linear-gradient(90deg, #4d0a1a 0%, #581022 50%, #4d0a1a 100%)' }}
+                    >
+                        {/* Left Section: Leaf Logo + Meatyns Brand */}
+                        <Link to="/" className="flex items-center gap-3 cursor-pointer group shrink-0 select-none no-underline">
+                            <div className="group-hover:scale-105 transition-transform duration-200">
+                                <LeafLogo className="w-8 h-8 lg:w-9 lg:h-9 text-white shrink-0 drop-shadow-sm" />
+                            </div>
+                            <div className="flex flex-col justify-center">
+                                <span className="text-[24px] lg:text-[27px] font-serif font-bold text-white tracking-tight leading-none drop-shadow-sm">
+                                    Meatyns
+                                </span>
+                                <span className="text-[10.5px] lg:text-[11px] font-normal text-white/80 tracking-wide mt-1 leading-none">
+                                    Fresh &bull; Fast &bull; Everyday
+                                </span>
+                            </div>
+                        </Link>
+
+                        {/* Center Section: Pill Search Bar */}
+                        {!isCheckoutPage && (
+                            <div className="flex-1 max-w-[420px] lg:max-w-[500px] xl:max-w-[560px] mx-4 lg:mx-8">
+                                <Link to="/search" className="w-full h-11 bg-white rounded-full px-4 flex items-center gap-3 cursor-pointer shadow-sm hover:shadow transition-shadow no-underline">
+                                    <Search size={18} className="text-[#520e1e] shrink-0 stroke-[2.2]" />
+                                    <span className="flex-1 text-slate-400 font-normal text-[13.5px] truncate">
+                                        Search for meat, fish, seafood, etc...
+                                    </span>
+                                </Link>
+                            </div>
+                        )}
+
+                        {/* Right Section: Delivery & Actions */}
+                        <div className="flex items-center gap-6 lg:gap-8 shrink-0">
+                            {/* Deliver to */}
+                            <button
+                                type="button"
+                                data-lenis-prevent
+                                data-lenis-prevent-touch
+                                onClick={() => {
+                                    refreshLocation?.();
+                                    setIsLocationOpen(true);
+                                }}
+                                className="flex items-center gap-2 text-left text-white bg-transparent border-0 p-0 cursor-pointer group hover:opacity-90 transition-opacity"
+                            >
+                                <MapPin size={20} className="text-white shrink-0 stroke-[1.8]" />
+                                <div className="flex flex-col leading-tight">
+                                    <span className="text-[11px] text-white/75 font-normal tracking-wide leading-tight">
+                                        Deliver to
+                                    </span>
+                                    <div className="flex items-center gap-1 text-[13px] lg:text-sm font-bold text-white leading-tight">
+                                        <span className="max-w-[110px] lg:max-w-[140px] truncate">
+                                            {currentLocation?.name || 'Indore'}
+                                        </span>
+                                        <ChevronDown size={13} className="text-white/80 shrink-0" />
+                                    </div>
+                                </div>
+                            </button>
+
+                            {/* Delivery in */}
+                            <div className="flex items-center gap-2 text-white">
+                                <Zap size={18} className="text-white fill-white shrink-0" />
+                                <div className="flex flex-col leading-tight">
+                                    <span className="text-[11px] text-white/75 font-normal tracking-wide leading-tight">
+                                        Delivery in
+                                    </span>
+                                    <span className="text-[13px] lg:text-sm font-bold text-white whitespace-nowrap leading-tight">
+                                        {currentLocation?.time || '15–30 mins'}
+                                    </span>
+                                </div>
+                            </div>
+
+                            {/* Profile Icon */}
+                            <Link
+                                to="/profile"
+                                aria-label="Profile"
+                                className="text-white hover:opacity-85 transition-opacity flex items-center justify-center p-1"
+                            >
+                                <CircleUserRound size={28} className="text-white stroke-[1.7]" />
+                            </Link>
+
+                            {/* Cart Icon with badge */}
+                            <Link
+                                to="/checkout"
+                                id="header-cart-icon"
+                                aria-label="Shopping Cart"
+                                className="relative text-white hover:opacity-85 transition-opacity flex items-center justify-center p-1"
+                            >
+                                <ShoppingCart size={24} className="text-white stroke-[2]" />
+                                <span className="absolute -top-1.5 -right-2.5 min-w-[18px] h-[18px] px-1 bg-[#e53935] text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-md leading-none">
+                                    {cartCount || 0}
+                                </span>
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            {/* ──── Mobile View Header (Strictly md:hidden) matching Meatyns Standard ──── */}
+            <header
+                className="md:hidden fixed top-0 left-0 right-0 z-[200] px-4 pt-2.5 pb-2 shadow-[0_4px_20px_rgba(0,0,0,0.15)] select-none"
+                style={{ background: 'linear-gradient(135deg, #4A0C1B 0%, #520e1e 50%, #681327 100%)' }}
+            >
+                {/* Subtle Contrast Overlay */}
+                <div className="absolute inset-0 bg-black/5 pointer-events-none" />
+
+                {/* Top Row: Delivery Address, Meatyns Brand, Cart */}
+                <div className="relative z-10 grid grid-cols-[1fr_auto_1fr] items-center gap-3 min-h-[36px]">
+                    {/* 1. Left: Delivery Address */}
+                    <button
+                        type="button"
+                        data-lenis-prevent
+                        data-lenis-prevent-touch
+                        onClick={() => {
+                            refreshLocation?.();
+                            setIsLocationOpen(true);
+                        }}
+                        className="flex items-center gap-1.5 text-left text-white bg-transparent border-0 p-0 cursor-pointer active:scale-95 transition-transform min-w-0 max-w-full"
+                    >
+                        <MapPin size={16} className="text-white shrink-0 stroke-[2.2]" />
+                        <div className="flex flex-col leading-tight min-w-0">
+                            <span className="text-[9.5px] font-semibold text-white/90 leading-tight">
+                                Delivery
+                            </span>
+                            <div className="flex items-center gap-0.5 min-w-0">
+                                <span className="text-[10px] font-bold text-white leading-tight truncate">
+                                    {isFetchingLocation
+                                        ? "Detecting..."
+                                        : (currentLocation?.name || "Indore")}
+                                </span>
+                                <ChevronDown size={11} className="text-white/80 shrink-0" />
+                            </div>
+                        </div>
+                    </button>
+
+                    {/* 2. Center: Meatyns Brand */}
+                    <Link
+                        to="/"
+                        className="flex items-center justify-center gap-1.5 cursor-pointer select-none active:scale-95 transition-transform shrink-0 no-underline"
+                    >
+                        <LeafLogo className="w-5 h-5 text-white shrink-0 drop-shadow-xs" />
+                        <div className="flex flex-col items-center justify-center">
+                            <span className="text-[17px] font-serif font-bold text-white tracking-tight leading-none drop-shadow-xs">
+                                Meatyns
+                            </span>
+                            <span className="text-[7.5px] font-normal text-white/80 tracking-wider leading-none mt-0.5 whitespace-nowrap">
+                                Fresh &bull; Fast &bull; Everyday
+                            </span>
+                        </div>
+                    </Link>
+
+                    {/* 3. Right: Cart Action */}
+                    <div className="flex items-center justify-end shrink-0 pr-1">
+                        <Link
+                            to="/checkout"
+                            aria-label="Cart"
+                            className="relative flex flex-col items-center justify-center text-white bg-transparent border-0 p-0 cursor-pointer active:scale-90 transition-transform select-none no-underline"
+                        >
+                            <div className="relative inline-flex items-center justify-center">
+                                <ShoppingCart size={19} className="text-white stroke-[2]" />
+                                <span className="absolute -top-1.5 -right-2 min-w-[15px] h-[15px] px-0.5 bg-[#e53935] text-white text-[9px] font-bold rounded-full flex items-center justify-center shadow-sm leading-none">
+                                    {cartCount || 0}
+                                </span>
+                            </div>
+                            <span className="text-[8.5px] font-medium text-white/90 leading-none mt-0.5">
+                                Cart
+                            </span>
+                        </Link>
+                    </div>
+                </div>
+
+                {/* Search Bar Row (Mobile) */}
+                {!isCheckoutPage && (
+                    <div className="relative z-10 mt-1.5 flex items-center">
+                        <Link
+                            to="/search"
+                            className="w-full h-[34px] bg-white rounded-full px-3 flex items-center gap-2 shadow-xs cursor-pointer active:scale-[0.99] transition-transform no-underline"
+                        >
+                            <Search size={15} className="text-slate-500 shrink-0 stroke-[2.2]" />
+                            <span className="flex-1 text-slate-400 font-normal text-[12.5px] truncate">
+                                {searchPlaceholder || 'Search for meat, fish, seafood, etc...'}
+                            </span>
+                        </Link>
+                    </div>
+                )}
+            </header>
+
+            {/* Location Selection Drawer */}
+            <LocationDrawer
+                isOpen={isLocationOpen}
+                onClose={() => setIsLocationOpen(false)}
+            />
+        </>
+    );
+};
+
+export default Header;
+

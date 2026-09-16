@@ -1,0 +1,555 @@
+import React, { useState, useEffect, useMemo, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import { useInViewAnimation } from "@/core/hooks/useInViewAnimation";
+import { Sparkles, Heart, Snowflake, ChevronLeft, ChevronRight } from "lucide-react";
+
+// MUI Icons (shared with admin & icon selector)
+import HomeIcon from "@mui/icons-material/Home";
+import DevicesIcon from "@mui/icons-material/Devices";
+import LocalGroceryStoreIcon from "@mui/icons-material/LocalGroceryStore";
+import KitchenIcon from "@mui/icons-material/Kitchen";
+import ChildCareIcon from "@mui/icons-material/ChildCare";
+import PetsIcon from "@mui/icons-material/Pets";
+import SportsSoccerIcon from "@mui/icons-material/SportsSoccer";
+import CardGiftcardIcon from "@mui/icons-material/CardGiftcard";
+import VerifiedIcon from "@mui/icons-material/Verified";
+
+import { motion, useScroll, useTransform } from "framer-motion";
+import { isMobileOrWebView } from "@/core/utils/deviceUtils";
+import { customerApi } from "../services/customerApi";
+import { toast } from "sonner";
+import ProductCard from "../components/shared/ProductCard";
+import MainLocationHeader from "../components/shared/MainLocationHeader";
+import DesktopSidebar from "../components/layout/DesktopSidebar";
+import DesktopHomeContent from "../components/home/DesktopHomeContent";
+import { useProductDetail } from "../context/ProductDetailContext";
+import { cn } from "@/lib/utils";
+import CardBanner from "@/assets/CardBanner.jpg";
+import SectionRenderer from "../components/experience/SectionRenderer";
+import ExperienceBannerCarousel from "../components/experience/ExperienceBannerCarousel";
+import { useLocation } from "../context/LocationContext";
+import { useSettings } from "@core/context/SettingsContext";
+import Lottie from "lottie-react";
+import { applyCloudinaryTransform } from "@/core/utils/imageUtils";
+import { getJSON, remove as removeStorage, STORAGE_KEYS } from "@core/utils/storage";
+
+import {
+  MARQUEE_MESSAGES,
+  ICON_COMPONENTS,
+} from "../constants/homeConstants";
+import PromoMarquee from "../components/home/PromoMarquee";
+import QuickCategoryRow from "../components/home/QuickCategoryRow";
+import LowestPriceSection from "../components/home/LowestPriceSection";
+import OfferSections from "../components/home/OfferSections";
+import HotDealsSection from "../components/home/HotDealsSection";
+import TopPicksSection from "../components/home/TopPicksSection";
+import TrendingCategoriesSection from "../components/home/TrendingCategoriesSection";
+import TrustFeaturesBanner from "../components/home/TrustFeaturesBanner";
+import MobileHeroBanner from "../components/home/MobileHeroBanner";
+import ExploreTopCategoriesSection from "../components/home/ExploreTopCategoriesSection";
+
+const DEFAULT_CATEGORY_THEME = {
+  gradient: "linear-gradient(to bottom, var(--primary), var(--brand-400))",
+  shadow: "shadow-brand-500/20",
+  accent: "text-[#1A1A1A]",
+};
+
+const CATEGORY_METADATA = {
+  All: {
+    icon: HomeIcon,
+    theme: DEFAULT_CATEGORY_THEME,
+    banner: {
+      title: "HOUSEFULL",
+      subtitle: "SALE",
+      floatingElements: "sparkles",
+    },
+  },
+  Grocery: {
+    icon: LocalGroceryStoreIcon,
+    theme: {
+      gradient: "linear-gradient(to bottom, #FF9F1C, #FFBF69)",
+      shadow: "shadow-orange-500/20",
+      accent: "text-orange-900",
+    },
+    banner: {
+      title: "SUPERSAVER",
+      subtitle: "FRESH & FAST",
+      floatingElements: "leaves",
+    },
+  },
+  Wedding: {
+    icon: CardGiftcardIcon,
+    theme: {
+      gradient: "linear-gradient(to bottom, #FF4D6D, #FF8FA3)",
+      shadow: "shadow-rose-500/20",
+      accent: "text-rose-900",
+    },
+    banner: { title: "WEDDING", subtitle: "BLISS", floatingElements: "hearts" },
+  },
+  "Home & Kitchen": {
+    icon: KitchenIcon,
+    theme: {
+      gradient: "linear-gradient(to bottom, #BC6C25, #DDA15E)",
+      shadow: "shadow-amber-500/20",
+      accent: "text-amber-900",
+    },
+    banner: { title: "HOME", subtitle: "KITCHEN", floatingElements: "smoke" },
+  },
+  Electronics: {
+    icon: DevicesIcon,
+    theme: {
+      gradient: "linear-gradient(to bottom, #7209B7, #B5179E)",
+      shadow: "shadow-purple-500/20",
+      accent: "text-purple-900",
+    },
+    banner: {
+      title: "TECH FEST",
+      subtitle: "GADGETS",
+      floatingElements: "tech",
+    },
+  },
+  Kids: {
+    icon: ChildCareIcon,
+    theme: {
+      gradient: "linear-gradient(to bottom, #4CC9F0, #A0E7E5)",
+      shadow: "shadow-brand-500/20",
+      accent: "text-brand-900",
+    },
+    banner: {
+      title: "LITTLE ONE",
+      subtitle: "CARE",
+      floatingElements: "bubbles",
+    },
+  },
+  "Pet Supplies": {
+    icon: PetsIcon,
+    theme: {
+      gradient: "linear-gradient(to bottom, #FB8500, #FFB703)",
+      shadow: "shadow-yellow-500/20",
+      accent: "text-yellow-900",
+    },
+    banner: { title: "PAWSOME", subtitle: "DEALS", floatingElements: "bones" },
+  },
+  Sports: {
+    icon: SportsSoccerIcon,
+    theme: {
+      gradient: "linear-gradient(to bottom, #4361EE, #4895EF)",
+      shadow: "shadow-brand-500/20",
+      accent: "text-brand-900",
+    },
+    banner: { title: "SPORTS", subtitle: "GEAR", floatingElements: "confetti" },
+  },
+};
+
+const ALL_CATEGORY = {
+  id: "all",
+  _id: "all",
+  name: "All",
+  icon: HomeIcon,
+  theme: DEFAULT_CATEGORY_THEME,
+  headerColor: "#741721",
+  headerFontColor: "#FFFFFF",
+  headerIconColor: "#FFFFFF",
+  banner: {
+    title: "PREMIUM MEAT",
+    subtitle: "FRESH & HYGIENIC",
+    floatingElements: "sparkles",
+    textColor: "text-white",
+  },
+};
+
+const EMPTY_HERO_CONFIG = {
+  banners: { items: [] },
+  categoryIds: [],
+};
+
+const homePageDataCache = new Map();
+const headerSectionsMemoryCache = {};
+const heroConfigMemoryCache = {};
+
+const getHomePageDataCacheKey = (location) => {
+  const lat = Number(location?.latitude);
+  const lng = Number(location?.longitude);
+  if (!Number.isFinite(lat) || !Number.isFinite(lng)) return "home:no-location";
+  return `home:${lat.toFixed(5)}:${lng.toFixed(5)}`;
+};
+
+const getCachedHomePageData = (location) =>
+  homePageDataCache.get(getHomePageDataCacheKey(location)) || null;
+
+const DB_HEADER_THEMES = {
+  "all": { bg: "#741721", text: "#FFFFFF", icon: "#FFFFFF" },
+  "dairy & breakfast": { bg: "#ea580c", text: "#111111", icon: "#111111" },
+  "vegetables & fruits": { bg: "#16a34a", text: "#111111", icon: "#111111" },
+  "cold drinks & juices": { bg: "#0284c7", text: "#111111", icon: "#111111" },
+  "snacks & munchies": { bg: "#7c3aed", text: "#ffffff", icon: "#ffffff" },
+  "snacks &munchies": { bg: "#7c3aed", text: "#ffffff", icon: "#ffffff" },
+  "breakfast & instant & frozen food": { bg: "#0d9488", text: "#111111", icon: "#111111" },
+  "sweet tooth": { bg: "#db2777", text: "#ffffff", icon: "#ffffff" },
+  "bakery & biscuits": { bg: "#ca8a04", text: "#111111", icon: "#111111" },
+  "tea, coffee & milk drinks": { bg: "#6d28d9", text: "#ffffff", icon: "#ffffff" },
+  "atta, rice & dal": { bg: "#b45309", text: "#ffffff", icon: "#ffffff" },
+  "tootu fruity": { bg: "#e11d48", text: "#ffffff", icon: "#ffffff" },
+  "fresh vegetables": { bg: "#16a34a", text: "#111111", icon: "#111111" },
+  "electronic": { bg: "#7c3aed", text: "#ffffff", icon: "#ffffff" },
+  "50% off": { bg: "#dc2626", text: "#ffffff", icon: "#ffffff" },
+  "school time": { bg: "#2563eb", text: "#ffffff", icon: "#ffffff" },
+  "kids": { bg: "#06b6d4", text: "#111111", icon: "#111111" },
+  "home": { bg: "#d97706", text: "#ffffff", icon: "#ffffff" },
+  "beauty": { bg: "#db2777", text: "#ffffff", icon: "#ffffff" },
+  "fashion": { bg: "#e11d48", text: "#ffffff", icon: "#ffffff" },
+  "grocery": { bg: "#741721", text: "#FFFFFF", icon: "#FFFFFF" }
+};
+
+const Home = () => {
+  const { scrollY } = useScroll();
+  const { isOpen: isProductDetailOpen } = useProductDetail();
+  const { currentLocation } = useLocation();
+  const { settings } = useSettings();
+  const navigate = useNavigate();
+  const quickCatsRef = useRef(null);
+  const cachedHomePageData = getCachedHomePageData(currentLocation);
+
+  const { ref: particleContainerRef, isVisible: particlesVisible } = useInViewAnimation();
+  const heroRef = useRef(null);
+  const [heroVisible, setHeroVisible] = useState(true);
+
+  useEffect(() => {
+    if (typeof IntersectionObserver === "undefined") {
+      setHeroVisible(true);
+      return;
+    }
+    const observer = new IntersectionObserver(([entry]) => setHeroVisible(entry.isIntersecting), { rootMargin: "0px" });
+    const el = heroRef.current;
+    if (el) observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  const [categories, setCategories] = useState(() => cachedHomePageData?.categories || [ALL_CATEGORY]);
+  const [activeCategory, setActiveCategory] = useState(() => cachedHomePageData?.activeCategory || ALL_CATEGORY);
+  const [products, setProducts] = useState(() => cachedHomePageData?.products || []);
+  const productsRef = useRef(cachedHomePageData?.products || []);
+  const [quickCategories, setQuickCategories] = useState(() => cachedHomePageData?.quickCategories || []);
+  const [isLoading, setIsLoading] = useState(() => !cachedHomePageData);
+  const [experienceSections, setExperienceSections] = useState(() => cachedHomePageData?.experienceSections || []);
+  const [headerSections, setHeaderSections] = useState([]);
+  const [heroConfig, setHeroConfig] = useState(() => cachedHomePageData?.heroConfig || heroConfigMemoryCache.__home__ || EMPTY_HERO_CONFIG);
+  const [mobileBannerIndex, setMobileBannerIndex] = useState(0);
+  const [isInstantBannerJump, setIsInstantBannerJump] = useState(false);
+  const [categoryMap, setCategoryMap] = useState(() => cachedHomePageData?.categoryMap || {});
+  const [subcategoryMap, setSubcategoryMap] = useState(() => cachedHomePageData?.subcategoryMap || {});
+  const [pendingReturn, setPendingReturn] = useState(null);
+  const [offerSections, setOfferSections] = useState(() => cachedHomePageData?.offerSections || []);
+  const [noServiceData, setNoServiceData] = useState(null);
+
+  useEffect(() => {
+    productsRef.current = products || [];
+  }, [products]);
+
+  useEffect(() => {
+    if (products.length === 0 && !isLoading) {
+      import("@/assets/lottie/animation.json").then((m) => setNoServiceData(m.default)).catch(() => {});
+    }
+  }, [products.length, isLoading]);
+
+  const applyHomePageData = (data, { cacheKey, persist = true } = {}) => {
+    if (!data) return;
+    setCategoryMap(data.categoryMap || {});
+    setSubcategoryMap(data.subcategoryMap || {});
+    setCategories(data.categories || [ALL_CATEGORY]);
+    setQuickCategories(data.quickCategories || []);
+    setProducts(data.products || []);
+    setExperienceSections(data.experienceSections || []);
+    setOfferSections(data.offerSections || []);
+    if (persist) {
+      homePageDataCache.set(cacheKey, data);
+      if (data.heroConfig) {
+        heroConfigMemoryCache[data.activeCategory?._id === "all" ? "__home__" : data.activeCategory?._id] = data.heroConfig;
+      }
+    }
+    setActiveCategory((prev) => {
+      const parsed = getJSON(STORAGE_KEYS.EXPERIENCE_RETURN, null, { storage: "session" });
+      if (parsed?.headerId) {
+        const match = (data.formattedHeaders || []).find((h) => h._id === parsed.headerId);
+        if (match) return match;
+      }
+      if (!prev || prev._id === "all") return data.activeCategory || data.categories?.[0] || ALL_CATEGORY;
+      return (data.categories || []).find((cat) => cat._id === prev._id) || data.activeCategory || prev;
+    });
+  };
+
+  const fetchData = async ({ forceRefresh = false } = {}) => {
+    const cacheKey = getHomePageDataCacheKey(currentLocation);
+    if (!forceRefresh) {
+      const cached = homePageDataCache.get(cacheKey);
+      if (cached) {
+        applyHomePageData(cached, { cacheKey, persist: false });
+        setIsLoading(false);
+        return;
+      }
+    }
+    setIsLoading(true);
+    try {
+      const hasValidLocation = Number.isFinite(currentLocation?.latitude) && Number.isFinite(currentLocation?.longitude);
+      const productParams = { limit: 20 };
+      if (hasValidLocation) {
+        productParams.lat = currentLocation.latitude;
+        productParams.lng = currentLocation.longitude;
+      }
+      const [catRes, prodRes, expRes, sectionsRes] = await Promise.all([
+        customerApi.getCategories(),
+        customerApi.getProducts(productParams),
+        customerApi.getExperienceSections({ pageType: "home" }).catch(() => null),
+        customerApi.getOfferSections(hasValidLocation ? { lat: currentLocation.latitude, lng: currentLocation.longitude } : {}).catch(() => ({ data: {} })),
+      ]);
+      const nextHomeData = {
+        categories: [ALL_CATEGORY],
+        activeCategory: ALL_CATEGORY,
+        products: [],
+        quickCategories: [],
+        experienceSections: [],
+        offerSections: [],
+        categoryMap: {},
+        subcategoryMap: {},
+        formattedHeaders: [],
+        heroConfig: heroConfigMemoryCache.__home__ || EMPTY_HERO_CONFIG,
+      };
+      if (catRes.data.success) {
+        const dbCats = catRes.data.results || catRes.data.result || [];
+        const catMap = {};
+        const subMap = {};
+         dbCats.forEach((c) => {
+           if (c.type === "category" || c.type === "header") catMap[c._id] = c;
+           else if (c.type === "subcategory") subMap[c._id] = c;
+         });
+         nextHomeData.categoryMap = catMap;
+        nextHomeData.subcategoryMap = subMap;
+        const formattedHeaders = dbCats.filter((cat) => cat.type === "header").map((cat) => {
+          const catName = cat.name;
+          const key = catName.trim().toLowerCase();
+          const theme = DB_HEADER_THEMES[key] || { bg: cat.headerColor || "#741721", text: cat.headerFontColor || "#FFFFFF", icon: cat.headerIconColor || "#FFFFFF" };
+          const meta = CATEGORY_METADATA[catName] || CATEGORY_METADATA[catName.toUpperCase()] || { icon: Sparkles, theme: DEFAULT_CATEGORY_THEME, banner: { title: catName.toUpperCase(), subtitle: "TOP PICKS", floatingElements: "sparkles" } };
+          const IconComp = (cat.iconId && ICON_COMPONENTS[cat.iconId]) || meta.icon || Sparkles;
+          return { ...cat, id: cat._id, headerColor: theme.bg, headerFontColor: theme.text, headerIconColor: theme.icon, icon: IconComp, theme: meta.theme, banner: { ...meta.banner, textColor: "text-white" } };
+        });
+        nextHomeData.formattedHeaders = formattedHeaders;
+        const allHeaderFromAdmin = formattedHeaders.find((h) => (h.slug?.toLowerCase() === "all") || (h.name?.toLowerCase() === "all"));
+        const mergedAllCategory = allHeaderFromAdmin ? { ...ALL_CATEGORY, headerColor: allHeaderFromAdmin.headerColor || ALL_CATEGORY.headerColor, headerFontColor: allHeaderFromAdmin.headerFontColor || ALL_CATEGORY.headerFontColor, headerIconColor: allHeaderFromAdmin.headerIconColor || ALL_CATEGORY.headerIconColor, icon: allHeaderFromAdmin.icon || ALL_CATEGORY.icon } : ALL_CATEGORY;
+        nextHomeData.categories = [mergedAllCategory, ...formattedHeaders.filter((h) => !((h.slug?.toLowerCase() === "all") || (h.name?.toLowerCase() === "all")))];
+        nextHomeData.activeCategory = mergedAllCategory;
+        nextHomeData.quickCategories = dbCats.filter((cat) => cat.type === "category").map((cat) => ({ id: cat._id, name: cat.name, parentId: cat.parentId?._id || cat.parentId, image: cat.image || "https://cdn-icons-png.flaticon.com/128/2321/2321831.png" }));
+      }
+      if (prodRes.data.success) {
+        const rawResult = prodRes.data.result;
+        const dbProds = Array.isArray(prodRes.data.results) ? prodRes.data.results : Array.isArray(rawResult?.items) ? rawResult.items : Array.isArray(rawResult) ? rawResult : [];
+        nextHomeData.products = dbProds.map((p) => ({ ...p, id: p._id, image: p.mainImage || p.image || "https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&q=80&w=400&h=400", price: p.salePrice || p.price, originalPrice: p.price, weight: p.weight || "", deliveryTime: "8-15 mins" }));
+      }
+      if (expRes?.data?.success) nextHomeData.experienceSections = Array.isArray(expRes.data.result || expRes.data.results) ? (expRes.data.result || expRes.data.results) : [];
+      const sectionsList = sectionsRes?.data?.results || sectionsRes?.data?.result || sectionsRes?.data;
+      nextHomeData.offerSections = Array.isArray(sectionsList) ? sectionsList : [];
+      applyHomePageData(nextHomeData, { cacheKey });
+    } catch (error) { console.error("Error:", error); } finally { setIsLoading(false); }
+  };
+
+  const hydrateSelectedSectionProducts = async (sections = []) => {
+    const selectedProductIds = Array.from(new Set(sections.flatMap((s) => s?.displayType === "products" ? (s?.config?.products?.productIds || []) : []).map((id) => String(id || "").trim()).filter(Boolean)));
+    if (!selectedProductIds.length) return;
+    const existingIds = new Set(productsRef.current.map((p) => String(p?._id || p?.id || "").trim()));
+    const missingIds = selectedProductIds.filter((id) => !existingIds.has(id));
+    if (!missingIds.length) return;
+    try {
+      const locationParams = Number.isFinite(currentLocation?.latitude) ? { lat: currentLocation.latitude, lng: currentLocation.longitude } : undefined;
+      const missingResults = await Promise.allSettled(missingIds.map((id) => customerApi.getProductById(id, locationParams)));
+      const fetchedMissing = missingResults.filter((r) => r.status === "fulfilled").flatMap((r) => { const p = r.value?.data?.result || r.value?.data?.results; return Array.isArray(p) ? p : (p ? [p] : []); }).map((p) => ({ ...p, id: p._id, image: p.mainImage || p.image || "https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&q=80&w=400&h=400", price: p.salePrice || p.price, originalPrice: p.price, weight: p.weight || "", deliveryTime: "8-15 mins" }));
+      if (fetchedMissing.length) setProducts((prev) => { const merged = [...prev]; const mergedIds = new Set(merged.map((p) => String(p?._id || p?.id || "").trim())); fetchedMissing.forEach((p) => { const key = String(p?._id || p?.id || "").trim(); if (!mergedIds.has(key)) { merged.push(p); mergedIds.add(key); } }); return merged; });
+    } catch (e) {}
+  };
+
+  useEffect(() => {
+    const shouldClear = sessionStorage.getItem("clear_home_cache") === "true";
+    if (shouldClear) {
+      homePageDataCache.clear();
+      sessionStorage.removeItem("clear_home_cache");
+      fetchData({ forceRefresh: true });
+    } else {
+      fetchData();
+    }
+  }, [currentLocation?.latitude, currentLocation?.longitude]);
+  const headerSectionsCache = useRef(headerSectionsMemoryCache);
+  const heroConfigCache = useRef(heroConfigMemoryCache);
+
+  useEffect(() => {
+    const fetchHeaderSections = async () => {
+      if (!activeCategory || activeCategory._id === "all") { setHeaderSections([]); return; }
+      const cacheKey = activeCategory._id;
+      if (headerSectionsCache.current[cacheKey]) { setHeaderSections(headerSectionsCache.current[cacheKey]); return; }
+      try {
+        const res = await customerApi.getExperienceSections({ pageType: "header", headerId: activeCategory._id });
+        if (res.data.success) { const sections = Array.isArray(res.data.result || res.data.results) ? (res.data.result || res.data.results) : []; headerSectionsCache.current[cacheKey] = sections; setHeaderSections(sections); await hydrateSelectedSectionProducts(sections); }
+        else setHeaderSections([]);
+      } catch (e) { setHeaderSections([]); }
+    };
+    fetchHeaderSections();
+  }, [activeCategory]);
+
+  useEffect(() => {
+    const fetchHeroConfig = async () => {
+      try {
+        const isHeader = activeCategory && activeCategory._id !== "all";
+        const cacheKey = isHeader ? activeCategory._id : "__home__";
+        if (heroConfigCache.current[cacheKey]) { setHeroConfig(heroConfigCache.current[cacheKey]); return; }
+        let payload = null;
+        if (isHeader) { const res = await customerApi.getHeroConfig({ pageType: "header", headerId: activeCategory._id }); if (res.data?.success && res.data?.result) payload = res.data.result; }
+        if (!payload || (payload.banners?.items?.length === 0 && !payload.categoryIds?.length)) { const homeRes = await customerApi.getHeroConfig({ pageType: "home" }); if (homeRes.data?.success && homeRes.data?.result) payload = homeRes.data.result; }
+        const resolved = payload && (payload.banners?.items?.length > 0 || payload.categoryIds?.length > 0) ? { banners: payload.banners || { items: [] }, categoryIds: payload.categoryIds || [] } : { banners: { items: [] }, categoryIds: [] };
+        heroConfigCache.current[cacheKey] = resolved;
+        if (cacheKey === "__home__") { const homeCacheKey = getHomePageDataCacheKey(currentLocation); const cachedHomeData = homePageDataCache.get(homeCacheKey); if (cachedHomeData) homePageDataCache.set(homeCacheKey, { ...cachedHomeData, heroConfig: resolved }); }
+        setHeroConfig(resolved);
+      } catch (e) { setHeroConfig(EMPTY_HERO_CONFIG); }
+    };
+    fetchHeroConfig();
+  }, [activeCategory, currentLocation?.latitude, currentLocation?.longitude]);
+
+  useEffect(() => {
+    const firstUrl = heroConfig?.banners?.items?.[0]?.imageUrl;
+    if (!firstUrl) return;
+    const link = document.createElement("link");
+    link.rel = "preload"; link.as = "image"; link.href = applyCloudinaryTransform(firstUrl, "f_auto,q_auto,c_fill,g_auto,w_824,h_380");
+    link.setAttribute("fetchpriority", "high"); document.head.appendChild(link);
+    return () => { if (link.parentNode) link.parentNode.removeChild(link); };
+  }, [heroConfig?.banners?.items?.[0]?.imageUrl]);
+
+  useEffect(() => {
+    const totalSlides = 3;
+    const intervalId = setInterval(() => { setMobileBannerIndex((prev) => prev >= totalSlides - 1 ? prev : prev + 1); }, 3500);
+    return () => clearInterval(intervalId);
+  }, []);
+
+  const handleBannerTransitionEnd = () => { if (mobileBannerIndex === 2) { setIsInstantBannerJump(true); setMobileBannerIndex(0); } };
+  useEffect(() => { if (!isInstantBannerJump) return; const id = requestAnimationFrame(() => setIsInstantBannerJump(false)); return () => cancelAnimationFrame(id); }, [isInstantBannerJump]);
+
+  const productsById = useMemo(() => { const map = {}; products.forEach((p) => { map[p._id || p.id] = p; }); return map; }, [products]);
+  const effectiveQuickCategories = useMemo(() => {
+    return categories
+      .filter((cat) => cat.id !== "all")
+      .map((cat) => ({
+        id: cat.id || cat._id,
+        name: cat.name,
+        image: cat.image || "https://cdn-icons-png.flaticon.com/128/2321/2321831.png",
+      }));
+  }, [categories]);
+
+  const effectiveLowestPriceProducts = useMemo(() => {
+    if (!activeCategory || activeCategory._id === "all") {
+      return products;
+    }
+    return products.filter((p) => {
+      const pHeaderId = p.headerId?._id || p.headerId;
+      return String(pHeaderId) === String(activeCategory._id);
+    });
+  }, [products, activeCategory]);
+
+  const sectionsForRenderer = useMemo(() => {
+    const rawSections = headerSections.length ? headerSections : experienceSections;
+    return rawSections.filter(
+      (s) =>
+        s.displayType !== "categories" &&
+        !s.title?.toLowerCase().includes("explore top categories")
+    );
+  }, [headerSections, experienceSections]);
+  const isMobile = useMemo(() => isMobileOrWebView(), []);
+  const opacity = useTransform(scrollY, (heroVisible && !isMobile) ? [0, 300] : [0, 0], [1, 0.6]);
+  const y = useTransform(scrollY, (heroVisible && !isMobile) ? [0, 300] : [0, 0], [0, 80]);
+  const scale = useTransform(scrollY, (heroVisible && !isMobile) ? [0, 300] : [0, 0], [1, 0.95]);
+  const pointerEvents = useTransform(scrollY, (heroVisible && !isMobile) ? [0, 100] : [0, 0], ["auto", "none"]);
+
+  useEffect(() => {
+    if (!pendingReturn?.sectionId) return;
+    const allSections = headerSections.length ? headerSections : experienceSections;
+    if (!allSections.length) return;
+    if (allSections.some((s) => s._id === pendingReturn.sectionId)) { const el = document.getElementById(`section-${pendingReturn.sectionId}`); if (el) { el.scrollIntoView({ behavior: "instant", block: "start" }); removeStorage(STORAGE_KEYS.EXPERIENCE_RETURN, { storage: "session" }); setPendingReturn(null); } }
+  }, [headerSections, experienceSections, pendingReturn]);
+
+  const renderFloatingElements = (type, isVisible = true) => {
+    if (isMobile) return null;
+    return null; // Particles were already simplified out earlier
+  };
+
+  return (
+    <div className={`min-h-screen pt-[113px] md:pt-[68px] pb-20 md:pb-10 ${products.length === 0 && !isLoading ? "bg-[#FFF9F4]" : "bg-[#FFF9F4]"}`}>
+      <div className={cn("contents", isProductDetailOpen && "hidden md:contents")}>
+        <MainLocationHeader categories={categories} activeCategory={activeCategory} onCategorySelect={setActiveCategory} />
+      </div>
+
+      <div className="flex w-full min-h-[calc(100vh-68px)]">
+        {/* Desktop Left Sidebar (hidden on mobile, visible on md+) */}
+        <DesktopSidebar
+          activeCategory={activeCategory}
+          onCategorySelect={setActiveCategory}
+          categories={categories}
+        />
+
+        {/* Main Content Pane */}
+        <div className="flex-1 min-w-0 md:pt-3">
+          {products.length === 0 && !isLoading ? (
+            <div className="flex flex-col items-center justify-center pt-24 pb-48">
+              <div className="w-64 h-64 md:w-96 md:h-96 mb-8">{noServiceData && <Lottie animationData={noServiceData} loop={true} />}</div>
+              <h3 className="text-3xl md:text-5xl font-black text-slate-800 text-center uppercase">Service <span className="text-primary">Unavailable</span></h3>
+              <p className="text-slate-500 font-bold max-w-md text-center px-10 text-sm md:text-lg opacity-80">Ah! We haven't reached your neighborhood yet.</p>
+              <button onClick={() => window.location.reload()} className="mt-12 px-10 py-4 bg-primary text-white font-black rounded-[24px] uppercase text-[13px] tracking-widest transition-all active:scale-95">Check Again</button>
+            </div>
+          ) : (
+            <>
+              {/* ──── Desktop Center & Right Content (md+) ──── */}
+              <div className="hidden md:block">
+                <DesktopHomeContent
+                  products={products}
+                  categories={categories}
+                  onCategorySelect={setActiveCategory}
+                />
+              </div>
+
+              {/* ──── Mobile Content (Strictly md:hidden) ──── */}
+              <div className="block md:hidden">
+                <motion.div ref={heroRef} className="will-change-transform" style={isMobile ? { opacity: 1 } : { opacity, y, scale, pointerEvents }}>
+                  <div className="relative w-full overflow-hidden">
+                    <MobileHeroBanner />
+                  </div>
+                </motion.div>
+
+                <PromoMarquee />
+
+                <QuickCategoryRow categories={categories} />
+
+                <div className="px-3 sm:px-4 pt-3 pb-6 flex flex-col gap-1">
+                  {/* 1. 🔥 Hot Deals */}
+                  <HotDealsSection products={effectiveLowestPriceProducts.length ? effectiveLowestPriceProducts : products} />
+
+                  {/* 2. ⭐ Top Picks for You */}
+                  <TopPicksSection products={effectiveLowestPriceProducts.length ? effectiveLowestPriceProducts : products} />
+
+                  {/* 3. 📈 Trending Now */}
+                  <TrendingCategoriesSection />
+
+                  {/* 4. 🗂️ Explore Top Categories */}
+                  <ExploreTopCategoriesSection categories={categories} />
+
+                  {/* 5. 🛡️ Trust Features Banner */}
+                  <TrustFeaturesBanner />
+                </div>
+
+                {sectionsForRenderer.length > 0 && (
+                  <div className="container mx-auto px-4 md:px-8 lg:px-[50px] py-6 md:py-16">
+                    <SectionRenderer sections={sectionsForRenderer} productsById={productsById} categoriesById={categoryMap} subcategoriesById={subcategoryMap} />
+                  </div>
+                )}
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Home;
