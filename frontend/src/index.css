@@ -4,6 +4,8 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
+  color-scheme: only light;
+
   /* Brand colors: overridden at runtime by SettingsContext from API (settings.primaryColor, settings.secondaryColor) */
   --primary: #0284c7; /* Default brand blue */
   --primary-color: #0284c7;
@@ -51,7 +53,14 @@
   --customer-mini-cart-color: #0284c7;
 }
 
+html {
+  color-scheme: only light;
+  background-color: #FAF5EE;
+}
+
 body {
+  color-scheme: only light;
+  background-color: #FAF5EE;
   margin: 0;
   font-family: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -149,6 +158,8 @@ body {
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+/* Dark mode tokens neutralized to preserve light yellow brand styling across all devices */
+/*
 .dark {
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
@@ -182,6 +193,7 @@ body {
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
 }
+*/
 
 @layer base {
   * {

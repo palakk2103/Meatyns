@@ -65,6 +65,31 @@ export default function SeoHead() {
         if (linkFavicon) {
             linkFavicon.href = faviconUrl || '/anitalogo.jpg';
         }
+
+        // Maintain theme-color for mobile status bar (defaults to Meatyns yellow)
+        const themeColor = settings.primaryColor || '#FDCE04';
+        let metaTheme = metaRefs.current.themeColor;
+        if (!metaTheme) {
+            metaTheme = document.querySelector('meta[name="theme-color"]');
+            if (!metaTheme) {
+                metaTheme = document.createElement('meta');
+                metaTheme.setAttribute('name', 'theme-color');
+                document.head.appendChild(metaTheme);
+            }
+            metaRefs.current.themeColor = metaTheme;
+        }
+        metaTheme.setAttribute('content', themeColor);
+
+        // Enforce color-scheme meta tag is strictly only light
+        let metaColorScheme = document.querySelector('meta[name="color-scheme"]');
+        if (!metaColorScheme) {
+            metaColorScheme = document.createElement('meta');
+            metaColorScheme.setAttribute('name', 'color-scheme');
+            metaColorScheme.setAttribute('content', 'only light');
+            document.head.appendChild(metaColorScheme);
+        } else {
+            metaColorScheme.setAttribute('content', 'only light');
+        }
     }, [settings]);
 
     return null;
