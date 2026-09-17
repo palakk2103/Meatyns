@@ -4,14 +4,15 @@ import { Home, LayoutGrid, ShoppingCart, ClipboardList, User } from 'lucide-reac
 import { useCart } from '../../context/CartContext';
 import { cn } from '@/lib/utils';
 
-/* ──── Header Burgundy palette ──── */
-const MEAT_PRIMARY = '#741721';
+/* ──── Meatyns Brand Palette ──── */
+const ACTIVE_COLOR = '#1A1A1A';
 const INACTIVE_COLOR = '#6B7280';
+const ACCENT_YELLOW = '#FDCE04';
 
 const navItems = [
     { label: 'Home', icon: Home, path: '/', isHome: true },
     { label: 'Categories', icon: LayoutGrid, path: '/categories' },
-    { label: 'Cart', icon: ShoppingCart, path: '/checkout', isCart: true },
+    { label: 'Cart', icon: ShoppingCart, path: '/cart', isCart: true },
     { label: 'Orders', icon: ClipboardList, path: '/orders' },
     { label: 'Account', icon: User, path: '/profile' },
 ];
@@ -50,8 +51,8 @@ const BottomNav = () => {
                                     size={21}
                                     strokeWidth={isActive ? 2.4 : 1.9}
                                     style={{
-                                        color: isActive ? MEAT_PRIMARY : INACTIVE_COLOR,
-                                        fill: (isActive && item.isHome) ? MEAT_PRIMARY : 'none',
+                                        color: isActive ? ACTIVE_COLOR : INACTIVE_COLOR,
+                                        fill: (isActive && item.isHome) ? ACTIVE_COLOR : 'none',
                                     }}
                                     className="transition-colors duration-200"
                                 />
@@ -59,7 +60,7 @@ const BottomNav = () => {
                                 {/* Red Cart Badge */}
                                 {item.isCart && cartCount > 0 && (
                                     <span
-                                        className="absolute -top-1.5 -right-2.5 min-w-[17px] h-[17px] px-1 bg-[#E53935] text-white text-[9.5px] font-black rounded-full flex items-center justify-center shadow-[0_2px_5px_rgba(229,57,53,0.5)] leading-none border border-white"
+                                        className="absolute -top-1.5 -right-2.5 min-w-[17px] h-[17px] px-1 bg-[#EF131F] text-white text-[9.5px] font-black rounded-full flex items-center justify-center shadow-[0_2px_5px_rgba(239,19,31,0.4)] leading-none border border-white"
                                     >
                                         {cartCount > 99 ? '99+' : cartCount}
                                     </span>
@@ -69,15 +70,17 @@ const BottomNav = () => {
                             {/* Label */}
                             <span
                                 className={cn(
-                                    'text-[10px] sm:text-[10.5px] mt-1 tracking-tight transition-colors duration-200',
-                                    isActive ? 'font-black' : 'font-semibold',
+                                    'text-[10px] sm:text-[10.5px] mt-0.5 tracking-tight transition-colors duration-200',
+                                    isActive ? 'font-black text-[#1A1A1A]' : 'font-semibold text-slate-500',
                                 )}
-                                style={{
-                                    color: isActive ? MEAT_PRIMARY : INACTIVE_COLOR,
-                                }}
                             >
                                 {item.label}
                             </span>
+
+                            {/* Golden Yellow Active Indicator Dot */}
+                            {isActive && (
+                                <span className="w-1.5 h-1.5 rounded-full bg-[#FDCE04] mt-0.5 shadow-2xs" />
+                            )}
                         </div>
                     </Link>
                 );

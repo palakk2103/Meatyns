@@ -42,27 +42,27 @@ const CheckoutCartSummary = React.memo(function CheckoutCartSummary({
             )}
             <button
               onClick={() => onMoveToWishlist(item)}
-              className="text-xs text-slate-500 underline hover:text-primary transition-colors">
+              className="text-xs text-slate-500 underline hover:text-[#1A1A1A] transition-colors">
               Move to wishlist
             </button>
           </div>
           <div className="flex flex-col items-end gap-2">
-            <div className="flex items-center gap-2 bg-primary rounded-lg px-2 py-1">
+            <div className="flex items-center gap-2 bg-[#FDCE04] text-[#1A1A1A] rounded-lg px-2 py-1 shadow-xs">
               <button
                 onClick={() =>
                   item.quantity > 1
                     ? onUpdateQuantity(item.id, -1, item.variantSku)
                     : onRemoveFromCart(item.id, item.variantSku)
                 }
-                className="text-white p-1 hover:bg-white/20 rounded transition-colors">
+                className="text-[#1A1A1A] p-1 hover:bg-black/10 rounded transition-colors">
                 <Minus size={14} strokeWidth={3} />
               </button>
-              <span className="text-white font-bold min-w-[20px] text-center">
+              <span className="text-[#1A1A1A] font-black min-w-[20px] text-center">
                 {item.quantity}
               </span>
               <button
                 onClick={() => onUpdateQuantity(item.id, 1, item.variantSku)}
-                className="text-white p-1 hover:bg-white/20 rounded transition-colors">
+                className="text-[#1A1A1A] p-1 hover:bg-black/10 rounded transition-colors">
                 <Plus size={14} strokeWidth={3} />
               </button>
             </div>

@@ -57,7 +57,7 @@ const ProductCard = React.memo(
       };
     }, [product]);
 
-    const productId = product.id || product._id;
+    const productId = String(product?.id || product?._id || "").trim();
     const variantKey = String(defaultVariant?.key || "").trim();
     const cartKey = `${productId}::${variantKey || ""}`;
 
@@ -66,13 +66,14 @@ const ProductCard = React.memo(
         cart.find(
           (item) =>
             `${item.id || item._id}::${String(item.variantSku || "").trim()}` ===
-            cartKey,
+            cartKey ||
+            (!variantKey && String(item.id || item._id) === productId),
         ),
-      [cart, cartKey],
+      [cart, cartKey, variantKey, productId],
     );
-    const quantity = cartItem ? cartItem.quantity : 0;
-    const isWishlisted = isInWishlist(product.id || product._id);
-    const isStoreClosed = product.isStoreOpen === false || product.sellerId?.isStoreOpen === false;
+    const quantity = cartItem ? (Number(cartItem.quantity) || 0) : 0;
+    const isWishlisted = isInWishlist(productId);
+    const isStoreClosed = product?.isStoreOpen === false || product?.sellerId?.isStoreOpen === false;
 
     const handleProductClick = React.useCallback(
       (e) => {
@@ -97,8 +98,8 @@ const ProductCard = React.memo(
         toggleWishlistGlobal(product);
         showToast(
           isWishlisted
-            ? `${product.name} removed from wishlist`
-            : `${product.name} added to wishlist`,
+            ? `${product?.name} removed from wishlist`
+            : `${product?.name} added to wishlist`,
           isWishlisted ? "info" : "success",
         );
       },
@@ -112,16 +113,18 @@ const ProductCard = React.memo(
         if (imageRef.current) {
           animateAddToCart(
             imageRef.current.getBoundingClientRect(),
-            product.image,
+            product?.image || product?.mainImage,
           );
         }
         addToCart({
           ...product,
+          id: productId,
+          _id: productId,
           variantSku: variantKey,
           variantName: defaultVariant?.name || "",
         });
       },
-      [animateAddToCart, product, addToCart, variantKey, defaultVariant?.name],
+      [animateAddToCart, product, addToCart, productId, variantKey, defaultVariant?.name],
     );
 
     const handleIncrement = React.useCallback(
@@ -138,8 +141,8 @@ const ProductCard = React.memo(
         e.preventDefault();
         e.stopPropagation();
 
-        if (quantity === 1) {
-          animateRemoveFromCart(product.image);
+        if (quantity <= 1) {
+          animateRemoveFromCart(product?.image || product?.mainImage);
           removeFromCart(productId, variantKey);
         } else {
           updateQuantity(productId, -1, variantKey);
@@ -148,11 +151,11 @@ const ProductCard = React.memo(
       [
         quantity,
         animateRemoveFromCart,
-        product.image,
         removeFromCart,
-        productId,
         updateQuantity,
+        productId,
         variantKey,
+        product?.image,
       ],
     );
 
@@ -176,7 +179,7 @@ const ProductCard = React.memo(
             />
             {/* Fresh Badge or Discount Badge */}
             {badge || product.discount || (product.originalPrice && product.originalPrice > product.price) ? (
-              <span className="absolute top-1 sm:top-1.5 md:top-2 left-1 sm:left-1.5 md:left-2 bg-[#520e1e] text-white text-[7.5px] sm:text-[8px] md:text-[9px] font-bold px-1.5 sm:px-2 py-0.5 rounded-full shadow-xs">
+              <span className="absolute top-1 sm:top-1.5 md:top-2 left-1 sm:left-1.5 md:left-2 bg-[#EF131F] text-white text-[7.5px] sm:text-[8px] md:text-[9px] font-bold px-1.5 sm:px-2 py-0.5 rounded-full shadow-xs">
                 {badge || product.discount || `${Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% OFF`}
               </span>
             ) : (
@@ -239,22 +242,22 @@ const ProductCard = React.memo(
                 </button>
               ) : quantity > 0 ? (
                 <div
-                  style={{ borderColor: "#520e1e" }}
-                  className="flex items-center bg-white border border-[#520e1e] rounded-lg md:rounded-xl p-0.5 justify-between h-7 sm:h-7.5 md:h-9"
+                  style={{ borderColor: "#FDCE04" }}
+                  className="flex items-center bg-white border border-[#FDCE04] rounded-lg md:rounded-xl p-0.5 justify-between h-7 sm:h-7.5 md:h-9"
                   onClick={(e) => e.stopPropagation()}
                 >
                   <button
                     onClick={handleDecrement}
-                    className="w-5.5 h-5.5 sm:w-6 sm:h-6 md:w-7 md:h-7 flex items-center justify-center text-[#520e1e] active:scale-90 transition-transform cursor-pointer border-0 bg-transparent"
+                    className="w-5.5 h-5.5 sm:w-6 sm:h-6 md:w-7 md:h-7 flex items-center justify-center text-[#1A1A1A] active:scale-90 transition-transform cursor-pointer border-0 bg-transparent font-bold"
                   >
                     <Minus size={11} strokeWidth={3} className="sm:w-3 sm:h-3 md:w-3.5 md:h-3.5" />
                   </button>
-                  <span className="font-bold text-[10.5px] sm:text-[11.5px] md:text-xs text-[#520e1e]">
+                  <span className="font-extrabold text-[10.5px] sm:text-[11.5px] md:text-xs text-[#1A1A1A]">
                     {quantity}
                   </span>
                   <button
                     onClick={handleIncrement}
-                    className="w-5.5 h-5.5 sm:w-6 sm:h-6 md:w-7 md:h-7 flex items-center justify-center text-[#520e1e] active:scale-90 transition-transform cursor-pointer border-0 bg-transparent"
+                    className="w-5.5 h-5.5 sm:w-6 sm:h-6 md:w-7 md:h-7 flex items-center justify-center text-[#1A1A1A] active:scale-90 transition-transform cursor-pointer border-0 bg-transparent font-bold"
                   >
                     <Plus size={11} strokeWidth={3} className="sm:w-3 sm:h-3 md:w-3.5 md:h-3.5" />
                   </button>
@@ -263,9 +266,9 @@ const ProductCard = React.memo(
                 <button
                   type="button"
                   onClick={handleAddToCart}
-                  className="w-full h-7 sm:h-7.5 md:h-9 py-1 md:py-2 px-2 md:px-3 rounded-lg md:rounded-xl bg-[#520e1e] hover:bg-[#681327] text-white text-[10px] sm:text-[11px] md:text-xs font-semibold flex items-center justify-center gap-1 md:gap-2 transition-colors cursor-pointer shadow-xs active:scale-98 border-0"
+                  className="w-full h-7 sm:h-7.5 md:h-9 py-1 md:py-2 px-2 md:px-3 rounded-lg md:rounded-xl bg-[#FDCE04] hover:bg-[#E5B800] text-[#1A1A1A] text-[10px] sm:text-[11px] md:text-xs font-bold flex items-center justify-center gap-1 md:gap-2 transition-colors cursor-pointer shadow-xs active:scale-98 border-0"
                 >
-                  <ShoppingCart size={11} strokeWidth={2.2} className="sm:w-3 sm:h-3 md:w-3.5 md:h-3.5" />
+                  <ShoppingCart size={11} strokeWidth={2.4} className="sm:w-3 sm:h-3 md:w-3.5 md:h-3.5 text-[#1A1A1A]" />
                   <span>Add to Cart</span>
                 </button>
               )}
@@ -370,13 +373,13 @@ const ProductCard = React.memo(
                 "border-2 rounded-full flex items-center justify-center",
                 compact ? "h-2.5 w-2.5" : "h-2.5 w-2.5 sm:h-3.5 sm:w-3.5",
               )}
-              style={{ borderColor: "#741721" }}>
+              style={{ borderColor: "#EF131F" }}>
               <div
                 className={cn(
                   "rounded-full",
                   compact ? "h-0.5 w-0.5" : "h-1 w-1",
                 )}
-                style={{ backgroundColor: "#741721" }}
+                style={{ backgroundColor: "#EF131F" }}
               />
             </div>
             {product.weight && (
@@ -402,7 +405,7 @@ const ProductCard = React.memo(
 
           {/* Delivery Time & Unit info */}
           <div className="flex items-center gap-1 text-gray-500 mt-0.5 mb-1 sm:gap-1.5 sm:mt-1 sm:mb-2">
-            <Clock size={compact ? 9 : 10} style={{ color: "#741721" }} />
+            <Clock size={compact ? 9 : 10} className="text-[#D97706]" />
             <span
               className={cn(
                 "font-semibold",
@@ -453,19 +456,19 @@ const ProductCard = React.memo(
                 </button>
               ) : quantity > 0 ? (
                 <div
-                  style={{ borderColor: "#741721" }}
+                  style={{ borderColor: "#FDCE04" }}
                   className={cn(
                     "flex items-center bg-white border-[1.5px] rounded-lg p-0.5 justify-between",
                     compact ? "min-w-[60px]" : "min-w-[68px] sm:min-w-[90px] md:min-w-[80px]",
                   )}>
                   <button
                     onClick={handleDecrement}
-                    style={{ color: "#741721" }}
+                    style={{ color: "#1A1A1A" }}
                     className="p-0.5 px-0.5 active:scale-90 transition-transform sm:p-1 sm:px-1">
                     <Minus size={compact ? 10 : 12} strokeWidth={3.5} />
                   </button>
                   <span
-                    style={{ color: "#741721" }}
+                    style={{ color: "#1A1A1A" }}
                     className={cn(
                       "font-black",
                       compact ? "text-[10px]" : "text-[11px] sm:text-[13px] md:text-xs",
@@ -474,7 +477,7 @@ const ProductCard = React.memo(
                   </span>
                   <button
                     onClick={handleIncrement}
-                    style={{ color: "#741721" }}
+                    style={{ color: "#1A1A1A" }}
                     className="p-0.5 px-0.5 active:scale-90 transition-transform sm:p-1 sm:px-1">
                     <Plus size={compact ? 10 : 12} strokeWidth={3.5} />
                   </button>
@@ -482,14 +485,14 @@ const ProductCard = React.memo(
               ) : (
                 <button
                   onClick={handleAddToCart}
-                  style={{ backgroundColor: "#741721", borderColor: "#741721" }}
+                  style={{ backgroundColor: "#FDCE04", borderColor: "#FDCE04" }}
                   className={cn(
-                    "text-white border-[1.5px] rounded-lg font-bold shadow-sm hover:opacity-90 transition-all tracking-wide leading-none active:scale-95 cursor-pointer flex items-center justify-center gap-1",
+                    "text-[#1A1A1A] border-[1.5px] rounded-lg font-bold shadow-xs hover:bg-[#E5B800] transition-all tracking-wide leading-none active:scale-95 cursor-pointer flex items-center justify-center gap-1",
                     compact
                       ? "px-2 py-1 text-[9.5px]"
                       : "px-3 py-1.5 text-[10.5px] sm:px-4 sm:py-2 sm:text-xs",
                   )}>
-                  <ShoppingCart size={11} strokeWidth={2.2} />
+                  <ShoppingCart size={11} strokeWidth={2.4} className="text-[#1A1A1A]" />
                   <span>Add to Cart</span>
                 </button>
               )}

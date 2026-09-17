@@ -63,12 +63,13 @@ const SlideToPay = ({
 
     return (
         <div
-            className="relative h-16 w-full rounded-full overflow-hidden select-none touch-none bg-linear-to-r from-primary via-primary to-primary shadow-[0_18px_45px_rgba(4,120,87,0.35)] border border-white/10"
+            className="relative h-16 w-full rounded-full overflow-hidden select-none touch-none shadow-md border border-black/10"
+            style={{ background: 'linear-gradient(90deg, #FECD04 0%, #FDCE04 50%, #F5C502 100%)' }}
             ref={(el) => el && setContainerWidth(el.offsetWidth)}
         >
             {/* Progress Fill */}
             <motion.div
-                className="absolute inset-y-0 left-0 bg-white/15"
+                className="absolute inset-y-0 left-0 bg-black/10"
                 style={{ width: fillWidth }}
             />
 
@@ -78,7 +79,7 @@ const SlideToPay = ({
                 style={{ opacity: shimmerOpacity }}
             >
                 <motion.div
-                    className="absolute inset-y-0 -inset-x-1 bg-linear-to-r from-transparent via-white/35 to-transparent skew-x-[-20deg]"
+                    className="absolute inset-y-0 -inset-x-1 bg-linear-to-r from-transparent via-white/40 to-transparent skew-x-[-20deg]"
                     initial={{ x: "-100%" }}
                     animate={{ x: "100%" }}
                     transition={{ duration: 1.6, repeat: Infinity, ease: "linear" }}
@@ -90,11 +91,11 @@ const SlideToPay = ({
                 className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none"
                 style={{ opacity: textOpacity }}
             >
-                <span className="text-white font-black text-sm md:text-[13px] tracking-[0.25em] uppercase flex items-center gap-2">
-                    {text} <span className="text-white/40">|</span> <span className="text-brand-50 font-extrabold">₹{amount}</span>
+                <span className="text-[#1A1A1A] font-black text-sm md:text-[13px] tracking-[0.25em] uppercase flex items-center gap-2">
+                    {text} <span className="text-black/30">|</span> <span className="text-[#1A1A1A] font-extrabold">₹{amount}</span>
                 </span>
 
-                <div className="absolute right-4 animate-pulse text-white/70">
+                <div className="absolute right-4 animate-pulse text-[#1A1A1A]/70">
                     <ChevronsRight size={20} />
                 </div>
             </motion.div>
@@ -104,7 +105,7 @@ const SlideToPay = ({
                 <motion.div
                     className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none"
                 >
-                    <span className="text-white font-black text-lg tracking-wide uppercase flex items-center gap-2">
+                    <span className="text-[#1A1A1A] font-black text-lg tracking-wide uppercase flex items-center gap-2">
                         Processing <span className="animate-pulse">...</span>
                     </span>
                 </motion.div>
@@ -112,7 +113,7 @@ const SlideToPay = ({
 
             {/* Draggable Circle */}
             <motion.div
-                className="absolute left-1 top-1 bottom-1 w-14 h-14 bg-white rounded-full flex items-center justify-center cursor-grab active:cursor-grabbing z-20 shadow-[0_6px_18px_rgba(15,118,110,0.35)] border border-brand-100"
+                className="absolute left-1 top-1 bottom-1 w-14 h-14 bg-black rounded-full flex items-center justify-center cursor-grab active:cursor-grabbing z-20 shadow-md"
                 drag={!isCompleted && !isLoading ? "x" : false}
                 dragConstraints={{ left: 0, right: maxDrag }}
                 dragElastic={0.05}
@@ -125,18 +126,18 @@ const SlideToPay = ({
             >
                 {isLoading || isCompleted ? (
                     <motion.div
-                        className="h-6 w-6 border-2 border-white border-t-transparent rounded-full animate-spin"
+                        className="h-6 w-6 border-2 border-[#FDCE04] border-t-transparent rounded-full animate-spin"
                     />
                 ) : (
                     <motion.div
                         className="relative w-full h-full flex items-center justify-center"
                         style={{ rotate }}
                     >
-                        <motion.div className="text-primary" style={{ opacity: arrowsOpacity }}>
+                        <motion.div className="text-[#FDCE04]" style={{ opacity: arrowsOpacity }}>
                             <ChevronRight size={28} strokeWidth={3} />
                         </motion.div>
                         <motion.div
-                            className="absolute inset-0 flex items-center justify-center text-primary"
+                            className="absolute inset-0 flex items-center justify-center text-[#FDCE04]"
                             style={{ opacity: checkOpacity }}
                         >
                             <Check size={24} strokeWidth={3} />

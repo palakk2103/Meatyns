@@ -9,6 +9,8 @@ import axiosInstance from '@core/api/axios';
  */
 export const adminAuthApi = {
     login: (data) => axiosInstance.post('/admin/login', data),
+    sendLoginOtp: (data) => axiosInstance.post('/admin/login-otp', data),
+    verifyLoginOtp: (data) => axiosInstance.post('/admin/verify-login-otp', data),
     signup: (data) => axiosInstance.post('/admin/signup', data),
     getProfile: () => axiosInstance.get('/admin/profile'),
     updateProfile: (data) => axiosInstance.put('/admin/profile', data),

@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 import { normalizePhoneNumber } from "../utils/phone.js";
 
 const addressSchema = new mongoose.Schema({
@@ -145,6 +146,20 @@ userSchema.pre("validate", function(next) {
     }
     next();
 });
+
+// Hash password before saving if modified
+userSchema.pre("save", async function (next) {
+    if (!this.isModified("password") || !this.password) return next();
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
+});
+
+// Compare password
+userSchema.methods.comparePassword = async function (enteredPassword) {
+    if (!this.password || !enteredPassword) return false;
+    return await bcrypt.compare(enteredPassword, this.password);
+};
 
 // Phase 4 P4-8 — reverse virtual to the canonical Wallet document.
 //

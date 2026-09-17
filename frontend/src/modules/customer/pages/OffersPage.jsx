@@ -102,10 +102,11 @@ const OffersPage = () => {
   }, []);
 
   const getQuantity = (product) => {
+    const pId = String(product?.id || product?._id || "");
     const item = (cart || []).find(
-      (c) => (c.id || c._id) === (product.id || product._id)
+      (c) => String(c.id || c._id) === pId
     );
-    return item ? item.quantity : 0;
+    return item ? Number(item.quantity) || 0 : 0;
   };
 
   const handleCardClick = (product) => {
@@ -127,25 +128,28 @@ const OffersPage = () => {
   const handleAddToCart = (e, product) => {
     e.preventDefault();
     e.stopPropagation();
-    addToCart(product);
+    addToCart({
+      ...product,
+      id: product.id || product._id,
+      _id: product.id || product._id,
+    });
     toast.success(`${product.name} added to cart!`);
   };
 
   const handleIncrement = (e, product) => {
     e.preventDefault();
     e.stopPropagation();
-    const qty = getQuantity(product);
-    updateQuantity(product.id || product._id, qty + 1);
+    updateQuantity(product.id || product._id, 1);
   };
 
   const handleDecrement = (e, product) => {
     e.preventDefault();
     e.stopPropagation();
     const qty = getQuantity(product);
-    if (qty === 1) {
+    if (qty <= 1) {
       removeFromCart(product.id || product._id);
     } else {
-      updateQuantity(product.id || product._id, qty - 1);
+      updateQuantity(product.id || product._id, -1);
     }
   };
 
@@ -186,18 +190,18 @@ const OffersPage = () => {
       <div className="mb-14">
         <div className="flex items-center justify-between mb-4 px-1">
           <div className="flex items-center gap-2 sm:gap-2.5">
-            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#6B111F]/10 flex items-center justify-center text-[#6B111F]">
-              <Flame size={20} className="fill-[#6B111F] sm:w-5 sm:h-5" />
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#EF131F]/10 flex items-center justify-center text-[#EF131F]">
+              <Flame size={20} className="fill-[#EF131F] sm:w-5 sm:h-5" />
             </div>
             <div>
-              <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-[#6B111F] tracking-tight">
+              <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-slate-900 tracking-tight">
                 Hot Deals Products
               </h2>
             </div>
           </div>
 
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-[#6B111F]/10 text-[#6B111F]">
-            <Sparkles size={13} /> {hotDeals.length} Deals Active
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-[#FFFBEB] text-[#1A1A1A] border border-[#FDE68A]">
+            <Sparkles size={13} className="text-[#B45309]" /> {hotDeals.length} Deals Active
           </span>
         </div>
 
@@ -211,7 +215,7 @@ const OffersPage = () => {
               <div
                 key={product.id || product._id}
                 onClick={() => handleCardClick(product)}
-                className="bg-white rounded-xl sm:rounded-2xl border border-slate-100 shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-300 overflow-hidden flex flex-col cursor-pointer group select-none"
+                className="bg-white rounded-xl sm:rounded-2xl border border-slate-100 shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-300 overflow-hidden flex flex-col cursor-pointer group select-none hover:border-[#FDCE04]"
               >
                 {/* Image Container with Badges */}
                 <div className="relative w-full aspect-[4/3] bg-slate-50 overflow-hidden">
@@ -223,7 +227,7 @@ const OffersPage = () => {
                   />
 
                   {/* Hot Deal Red Badge */}
-                  <span className="absolute top-1.5 left-1.5 sm:top-2.5 sm:left-2.5 bg-[#E52535] text-white text-[8.5px] sm:text-[11px] font-bold px-1.5 sm:px-2 py-0.5 rounded shadow-xs tracking-wide">
+                  <span className="absolute top-1.5 left-1.5 sm:top-2.5 sm:left-2.5 bg-[#EF131F] text-white text-[8.5px] sm:text-[11px] font-bold px-1.5 sm:px-2 py-0.5 rounded shadow-xs tracking-wide">
                     Hot Deal
                   </span>
 
@@ -237,7 +241,7 @@ const OffersPage = () => {
                       size={11}
                       className={`sm:w-[13px] sm:h-[13px] transition-colors ${
                         isWishlisted
-                          ? "fill-rose-500 text-rose-500"
+                          ? "fill-[#EF131F] text-[#EF131F]"
                           : "text-white"
                       }`}
                     />
@@ -247,7 +251,7 @@ const OffersPage = () => {
                 {/* Card Content */}
                 <div className="p-2 sm:p-3.5 flex flex-col justify-between flex-1 gap-1.5 sm:gap-2">
                   <div>
-                    <h3 className="font-bold text-slate-900 text-[11.5px] sm:text-[14px] leading-snug line-clamp-1 group-hover:text-[#6B111F] transition-colors">
+                    <h3 className="font-bold text-slate-900 text-[11.5px] sm:text-[14px] leading-snug line-clamp-1 group-hover:text-amber-800 transition-colors">
                       {product.name}
                     </h3>
                     <p className="text-[9.5px] sm:text-xs text-slate-400 font-medium mt-0.5">
@@ -265,7 +269,7 @@ const OffersPage = () => {
                     <span className="text-[13px] sm:text-base md:text-lg font-black text-slate-900">
                       ₹{product.price}
                     </span>
-                    <span className="ml-auto bg-[#DC2626] text-white text-[8px] sm:text-[10.5px] font-bold px-1 sm:px-1.5 py-0.5 rounded shadow-xs tracking-tight">
+                    <span className="ml-auto bg-[#EF131F] text-white text-[8px] sm:text-[10.5px] font-bold px-1 sm:px-1.5 py-0.5 rounded shadow-xs tracking-tight">
                       {product.discount || "25% OFF"}
                     </span>
                   </div>
@@ -274,22 +278,22 @@ const OffersPage = () => {
                   <div className="pt-0.5 sm:pt-1">
                     {quantity > 0 ? (
                       <div
-                        style={{ borderColor: "#6B111F" }}
-                        className="flex items-center bg-white border border-[#6B111F] rounded-lg sm:rounded-xl p-0.5 justify-between h-6.5 sm:h-8"
+                        style={{ borderColor: "#FDCE04" }}
+                        className="flex items-center bg-white border border-[#FDCE04] rounded-lg sm:rounded-xl p-0.5 justify-between h-6.5 sm:h-8"
                         onClick={(e) => e.stopPropagation()}
                       >
                         <button
                           onClick={(e) => handleDecrement(e, product)}
-                          className="w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-[#6B111F] active:scale-90 transition-transform cursor-pointer border-0 bg-transparent"
+                          className="w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-[#1A1A1A] active:scale-90 transition-transform cursor-pointer border-0 bg-transparent"
                         >
                           <Minus size={10} strokeWidth={3} />
                         </button>
-                        <span className="font-bold text-[11px] sm:text-xs text-[#6B111F] px-1">
+                        <span className="font-bold text-[11px] sm:text-xs text-[#1A1A1A] px-1">
                           {quantity}
                         </span>
                         <button
                           onClick={(e) => handleIncrement(e, product)}
-                          className="w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-[#6B111F] active:scale-90 transition-transform cursor-pointer border-0 bg-transparent"
+                          className="w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-[#1A1A1A] active:scale-90 transition-transform cursor-pointer border-0 bg-transparent"
                         >
                           <Plus size={10} strokeWidth={3} />
                         </button>
@@ -298,7 +302,7 @@ const OffersPage = () => {
                       <button
                         type="button"
                         onClick={(e) => handleAddToCart(e, product)}
-                        className="w-full h-6.5 sm:h-8 py-0.5 sm:py-1 px-2 sm:px-3 rounded-lg sm:rounded-xl bg-[#6B111F] hover:bg-[#8B1A2C] text-white text-[10px] sm:text-xs font-bold flex items-center justify-center gap-1 sm:gap-1.5 transition-colors cursor-pointer shadow-xs active:scale-98 border-0"
+                        className="w-full h-6.5 sm:h-8 py-0.5 sm:py-1 px-2 sm:px-3 rounded-lg sm:rounded-xl bg-[#FDCE04] hover:bg-[#E5B800] text-[#1A1A1A] text-[10px] sm:text-xs font-extrabold flex items-center justify-center gap-1 sm:gap-1.5 transition-colors cursor-pointer shadow-xs active:scale-98 border border-[#E5B800]"
                       >
                         <ShoppingCart size={11} strokeWidth={2.2} />
                         <span>Add to Cart</span>

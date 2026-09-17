@@ -16,6 +16,9 @@ import {
   X,
   Camera,
   XCircle,
+  Lock,
+  Eye,
+  EyeOff,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Lottie from "lottie-react";
@@ -44,7 +47,11 @@ const DeliveryAuth = () => {
   const [step, setStep] = useState("form"); // "form" | "otp"
 
   // Login state
+  const [loginMethod, setLoginMethod] = useState("password"); // "password" | "otp"
   const [loginPhone, setLoginPhone] = useState("");
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   // Signup state
   const [signupStep, setSignupStep] = useState(1);
@@ -135,16 +142,44 @@ const DeliveryAuth = () => {
     else { setAadharFile(null); setAadharVerified(null); }
   };
 
+  const handlePasswordLogin = async (e) => {
+    e?.preventDefault();
+    if (!loginEmail || !loginPassword) {
+      toast.error("Please enter both email and password");
+      return;
+    }
+    setLoading(true);
+    try {
+      const res = await deliveryApi.loginWithPassword({
+        email: loginEmail.trim().toLowerCase(),
+        password: loginPassword,
+      });
+      const { token, delivery } = res.data.result;
+      login({
+        ...delivery,
+        token,
+        role: "delivery",
+      });
+      toast.success("Welcome back, Partner!");
+      navigate("/delivery");
+    } catch (error) {
+      const msg = error.response?.data?.message || "Invalid email or password";
+      toast.error(msg);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleSendOtp = async () => {
     try {
       setLoading(true);
       if (mode === "login") {
-        if (!loginPhone || loginPhone.length < 10) {
-          toast.error("Please enter a valid 10-digit phone number");
+        if (!loginEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(loginEmail)) {
+          toast.error("Please enter a valid email address");
           return;
         }
-        const res = await deliveryApi.sendLoginOtp({ phone: loginPhone });
-        toast.success(res.data?.message || "OTP sent!");
+        const res = await deliveryApi.sendLoginOtp({ email: loginEmail.trim().toLowerCase() });
+        toast.success(res.data?.message || "OTP sent to your email!");
         if (res.data?.result?.mockOtp) {
           toast.info(`Mock OTP: ${res.data.result.mockOtp}`, { duration: 10000 });
         }
@@ -191,9 +226,11 @@ const DeliveryAuth = () => {
     if (otp.some((d) => d === "") || !agreed) return;
     setLoading(true);
     try {
-      const phone = mode === "login" ? loginPhone : signupPhone;
       const otpString = otp.join("");
-      const response = await deliveryApi.verifyOtp({ phone, otp: otpString });
+      const payload = mode === "login" 
+        ? { email: loginEmail.trim().toLowerCase(), otp: otpString }
+        : { phone: signupPhone, otp: otpString };
+      const response = await deliveryApi.verifyOtp(payload);
       const { token, delivery } = response.data.result;
 
       login({ ...delivery, token, role: "delivery" });
@@ -313,9 +350,9 @@ const DeliveryAuth = () => {
                 </h1>
                 <p className="text-gray-500 text-sm mt-1 max-w-[240px] mx-auto">
                   {step === "otp"
-                    ? `Enter the 4-digit code sent to +91 ${mode === "login" ? loginPhone : signupPhone}`
+                    ? `Enter the 4-digit code sent to ${mode === "login" ? loginEmail : `+91 ${signupPhone}`}`
                     : mode === "login"
-                      ? "Login with your registered phone number"
+                      ? "Login with your registered email address"
                       : `Step ${signupStep} of 4: ${signupStep === 1 ? "Personal Info" : signupStep === 2 ? "Vehicle Info" : signupStep === 3 ? "Bank Info" : "Documents"}`}
                 </p>
               </motion.div>
@@ -872,41 +909,122 @@ const DeliveryAuth = () => {
                   {/* ────────── LOGIN MODE ────────── */}
                   {mode === "login" && (
                     <div className="space-y-4">
-                      {/* Phone */}
-                      <div className="space-y-1.5">
-                        <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">
-                          Phone Number
-                        </label>
-                        <div className="relative">
-                          <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 w-4 h-4" />
-                          <span className="absolute left-10 top-1/2 -translate-y-1/2 text-gray-500 font-bold text-sm border-r border-gray-200 pr-2.5">
-                            +91
-                          </span>
-                          <input
-                            type="tel"
-                            value={loginPhone}
-                            onChange={(e) => {
-                              const val = e.target.value.replace(/\D/g, "").replace(/^[^6-9]+/, "").slice(0, 10);
-                              setLoginPhone(val);
-                            }}
-                            maxLength={10}
-                            className="w-full pl-24 pr-4 py-3.5 bg-gray-50 border border-gray-100 rounded-2xl text-sm font-bold text-gray-900 focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-400 transition-all placeholder:text-gray-300"
-                            placeholder="00000 00000"
-                          />
-                        </div>
+                      {/* Switch between Password and OTP */}
+                      <div className="flex bg-gray-100 rounded-xl p-1 gap-1">
+                        <button
+                          type="button"
+                          onClick={() => setLoginMethod("password")}
+                          className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${
+                            loginMethod === "password"
+                              ? "bg-white text-gray-900 shadow-sm"
+                              : "text-gray-500 hover:text-gray-700"
+                          }`}
+                        >
+                          Email & Password
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setLoginMethod("otp")}
+                          className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${
+                            loginMethod === "otp"
+                              ? "bg-white text-gray-900 shadow-sm"
+                              : "text-gray-500 hover:text-gray-700"
+                          }`}
+                        >
+                          Email OTP
+                        </button>
                       </div>
 
-                      <button
-                        onClick={handleSendOtp}
-                        disabled={loading}
-                        className="w-full py-4 bg-black  text-primary-foreground rounded-2xl text-sm font-black tracking-widest uppercase shadow-lg shadow-brand-200 hover:bg-brand-700 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-2 mt-2 disabled:opacity-60"
-                      >
-                        {loading ? (
-                          <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                        ) : (
-                          <>Login Now <ArrowRight className="w-4 h-4" /></>
-                        )}
-                      </button>
+                      {loginMethod === "password" ? (
+                        <form onSubmit={handlePasswordLogin} className="space-y-3.5">
+                          {/* Email */}
+                          <div className="space-y-1.5">
+                            <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">
+                              Email Address
+                            </label>
+                            <div className="relative">
+                              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 w-4 h-4" />
+                              <input
+                                required
+                                type="email"
+                                value={loginEmail}
+                                onChange={(e) => setLoginEmail(e.target.value)}
+                                className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-100 rounded-2xl text-sm font-bold text-gray-900 focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-400 transition-all placeholder:text-gray-300"
+                                placeholder="Enter your email"
+                              />
+                            </div>
+                          </div>
+
+                          {/* Password */}
+                          <div className="space-y-1.5">
+                            <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">
+                              Password
+                            </label>
+                            <div className="relative">
+                              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 w-4 h-4" />
+                              <input
+                                required
+                                type={showPassword ? "text" : "password"}
+                                value={loginPassword}
+                                onChange={(e) => setLoginPassword(e.target.value)}
+                                className="w-full pl-11 pr-11 py-3.5 bg-gray-50 border border-gray-100 rounded-2xl text-sm font-bold text-gray-900 focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-400 transition-all placeholder:text-gray-300"
+                                placeholder="Enter your password"
+                              />
+                              <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                              >
+                                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                              </button>
+                            </div>
+                          </div>
+
+                          <button
+                            type="submit"
+                            disabled={loading}
+                            className="w-full py-4 bg-black text-primary-foreground rounded-2xl text-sm font-black tracking-widest uppercase shadow-lg shadow-brand-200 hover:bg-brand-700 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-2 mt-2 disabled:opacity-60"
+                          >
+                            {loading ? (
+                              <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                            ) : (
+                              <>Login Now <ArrowRight className="w-4 h-4" /></>
+                            )}
+                          </button>
+                        </form>
+                      ) : (
+                        <div className="space-y-4">
+                          {/* Email for OTP */}
+                          <div className="space-y-1.5">
+                            <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">
+                              Email Address
+                            </label>
+                            <div className="relative">
+                              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 w-4 h-4" />
+                              <input
+                                required
+                                type="email"
+                                value={loginEmail}
+                                onChange={(e) => setLoginEmail(e.target.value)}
+                                className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-100 rounded-2xl text-sm font-bold text-gray-900 focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-400 transition-all placeholder:text-gray-300"
+                                placeholder="Enter your email address"
+                              />
+                            </div>
+                          </div>
+
+                          <button
+                            onClick={handleSendOtp}
+                            disabled={loading}
+                            className="w-full py-4 bg-black text-primary-foreground rounded-2xl text-sm font-black tracking-widest uppercase shadow-lg shadow-brand-200 hover:bg-brand-700 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-2 mt-2 disabled:opacity-60"
+                          >
+                            {loading ? (
+                              <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                            ) : (
+                              <>Send Mock OTP <ArrowRight className="w-4 h-4" /></>
+                            )}
+                          </button>
+                        </div>
+                      )}
 
                       {/* Legal Agreement Footer for Login */}
                       <p className="text-center text-xs text-gray-400 font-semibold pt-4">

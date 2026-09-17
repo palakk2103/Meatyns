@@ -41,7 +41,7 @@ const OrdersPage = () => {
         return (
             <div className="min-h-screen flex items-center justify-center bg-[#FAF6F0] font-outfit">
                 <div className="flex items-center gap-3 px-5 py-3.5 rounded-2xl bg-white shadow-sm border border-[#EBE3D5]">
-                    <Loader2 className="animate-spin text-[#741721]" size={22} />
+                    <Loader2 className="animate-spin text-[#FDCE04]" size={22} />
                     <span className="text-sm font-semibold text-[#1A1A1A]">Loading your orders…</span>
                 </div>
             </div>
@@ -50,20 +50,20 @@ const OrdersPage = () => {
 
     return (
         <div className="min-h-screen bg-[#FAF6F0] pb-24 font-outfit text-[#1A1A1A]">
-            {/* Top Burgundy App Header */}
+            {/* Top Golden Yellow App Header */}
             <header
                 className="sticky top-0 z-30 px-4 h-14 flex items-center gap-3.5 shadow-sm select-none"
-                style={{ background: "#741721" }}
+                style={{ background: "#FDCE04" }}
             >
                 <button
                     type="button"
                     onClick={() => navigate(-1)}
                     aria-label="Go back"
-                    className="w-8 h-8 flex items-center justify-center text-white active:scale-90 transition-transform rounded-full hover:bg-white/10 -ml-1"
+                    className="w-8 h-8 flex items-center justify-center text-[#1A1A1A] active:scale-90 transition-transform rounded-full hover:bg-black/5 -ml-1"
                 >
                     <ChevronLeft size={24} strokeWidth={2.4} />
                 </button>
-                <h1 className="text-[17px] sm:text-lg font-bold text-white tracking-wide">
+                <h1 className="text-[17px] sm:text-lg font-bold text-[#1A1A1A] tracking-wide">
                     My Orders
                 </h1>
             </header>
@@ -71,7 +71,7 @@ const OrdersPage = () => {
             <div className="max-w-2xl mx-auto px-3.5 sm:px-4 pt-3 pb-2">
                 {orders.length === 0 ? (
                     <div className="flex flex-col items-center justify-center py-20 px-4 text-center">
-                        <div className="w-20 h-20 rounded-full bg-[#FFF0EF] border border-[#F2B8BF] flex items-center justify-center text-[#741721] mb-4 shadow-inner">
+                        <div className="w-20 h-20 rounded-full bg-[#FEF08A] border border-[#FDE68A] flex items-center justify-center text-[#1A1A1A] mb-4 shadow-inner">
                             <Package size={38} strokeWidth={1.8} />
                         </div>
                         <h3 className="text-lg font-bold text-[#1A1A1A] mb-1.5">No orders yet</h3>
@@ -80,8 +80,7 @@ const OrdersPage = () => {
                         </p>
                         <Link
                             to="/"
-                            className="inline-flex items-center justify-center px-8 py-3 text-white font-bold text-xs sm:text-sm uppercase tracking-wider rounded-full shadow-md hover:opacity-95 active:scale-95 transition-all select-none"
-                            style={{ background: "#741721" }}
+                            className="inline-flex items-center justify-center px-8 py-3 bg-[#FDCE04] hover:bg-[#E5B800] text-[#1A1A1A] font-extrabold text-xs sm:text-sm uppercase tracking-wider rounded-full shadow-md active:scale-95 transition-all select-none border border-[#E5B800]"
                         >
                             Start Shopping
                         </Link>
@@ -94,26 +93,26 @@ const OrdersPage = () => {
                             const orderTotal = order.pricing?.total ?? order.total ?? 0;
                             const firstItem = order.items?.[0];
 
-                            // Status badge colors in harmony with the Burgundy theme
+                            // Status badge colors in harmony with the Golden Yellow theme
                             const isDelivered = legacy === 'delivered';
                             const isCancelled = legacy === 'cancelled';
                             const badgeBg = isDelivered
                                 ? 'bg-[#ECFDF5] text-[#047857] border-[#A7F3D0]'
                                 : isCancelled
                                 ? 'bg-[#FFF1F2] text-[#BE123C] border-[#FECDD3]'
-                                : 'bg-[#FFF5F6] text-[#741721] border-[#F2B8BF]';
+                                : 'bg-[#FFFBEB] text-[#1A1A1A] border-[#FDE68A]';
 
                             const checkIconColor = isDelivered
                                 ? 'text-[#047857]'
                                 : isCancelled
                                 ? 'text-[#BE123C]'
-                                : 'text-[#741721]';
+                                : 'text-[#1A1A1A]';
 
                             return (
                                 <Link
                                     to={`/orders/${order.orderId || order._id}`}
                                     key={order._id || order.orderId}
-                                    className="block bg-white rounded-2xl p-4 shadow-[0_4px_16px_rgba(116,23,33,0.04)] border border-[#EBE3D5] hover:border-[#CEB186] active:scale-[0.99] transition-all cursor-pointer"
+                                    className="block bg-white rounded-2xl p-4 shadow-[0_4px_16px_rgba(253,206,4,0.04)] border border-[#EBE3D5] hover:border-[#FDE68A] active:scale-[0.99] transition-all cursor-pointer"
                                 >
                                     <div className="flex justify-between items-start gap-3 mb-3">
                                         <div className="flex gap-3 flex-1 min-w-0">
@@ -171,7 +170,7 @@ const OrdersPage = () => {
                                         </div>
                                         <div className="flex items-center gap-1.5 shrink-0">
                                             <span className="text-[11.5px] font-medium text-[#8C7E72]">Total</span>
-                                            <span className="text-sm font-extrabold text-[#741721]">
+                                            <span className="text-sm font-extrabold text-[#1A1A1A]">
                                                 ₹{orderTotal}
                                             </span>
                                             <ChevronRight size={17} className="text-[#CEB186]" />

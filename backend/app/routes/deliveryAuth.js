@@ -3,6 +3,7 @@ import {
   signupDelivery,
   loginDelivery,
   verifyDeliveryOTP,
+  loginDeliveryWithPassword,
   getDeliveryProfile,
   updateDeliveryProfile,
 } from "../controller/deliveryAuthController.js";
@@ -30,6 +31,7 @@ router.post(
 );
 router.post("/send-login-otp", loginDelivery);
 router.post("/verify-otp", verifyDeliveryOTP);
+router.post("/login-password", loginDeliveryWithPassword);
 
 // Profile routes
 router.get("/profile", verifyToken, getDeliveryProfile);

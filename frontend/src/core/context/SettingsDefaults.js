@@ -1,7 +1,7 @@
 /** Default fallbacks when settings are not yet loaded or API fails */
 export const DEFAULT_SETTINGS = {
-  appName: "App",
-  supportEmail: "anitamegamart@gmail.com",
+  appName: "Meatyns",
+  supportEmail: "support@meatyns.com",
   supportPhone: "02269621920",
   currencySymbol: "\u20B9",
   currencyCode: "INR",
@@ -10,9 +10,9 @@ export const DEFAULT_SETTINGS = {
   faviconUrl: "",
   primaryColor: "#0284c7",
   secondaryColor: "#64748b",
-  companyName: "",
+  companyName: "Meatyns",
   taxId: "",
-  address: "Ramkrishna Nagar patna 800020",
+  address: "Indore, Madhya Pradesh, India",
   facebook: "",
   twitter: "",
   instagram: "",

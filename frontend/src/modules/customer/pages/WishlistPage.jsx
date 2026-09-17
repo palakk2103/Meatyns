@@ -51,7 +51,7 @@ const WishlistPage = () => {
   if (loading && !isFullDataFetched) {
     return (
       <div className="min-h-screen bg-[#FFF9F4] flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#520e1e]"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#FDCE04]"></div>
       </div>
     );
   }
@@ -60,42 +60,33 @@ const WishlistPage = () => {
     <div className="min-h-screen bg-[#FFF9F4] pb-24 font-outfit">
       {/* ──── Sticky Header matching Home and Search page background color ──── */}
       <div
-        className="sticky top-0 z-30 bg-[#520e1e] shadow-[0_4px_20px_rgba(0,0,0,0.15)] relative overflow-hidden"
+        className="sticky top-0 z-30 bg-[#FDCE04] shadow-[0_4px_20px_rgba(0,0,0,0.08)] relative overflow-hidden"
         style={{
           backgroundImage:
-            "linear-gradient(135deg, #4A0C1B 0%, #520e1e 50%, #681327 100%)",
+            "linear-gradient(180deg, #FECD04 0%, #FDCE04 55%, #F5C502 100%)",
         }}
       >
-        {/* Subtle dark overlay */}
-        <div className="absolute inset-0 bg-black/5 pointer-events-none" />
-
         {/* ──── Desktop Main Header Row (md+) matching Home & Search Page ──── */}
         <div className="hidden md:flex items-center justify-between relative z-20 w-full max-w-[1440px] mx-auto px-4 lg:px-8 py-2.5">
           {/* Left: Brand Logo */}
           <div
             onClick={() => navigate("/")}
-            className="flex items-center gap-3 cursor-pointer group shrink-0 select-none"
+            className="flex items-center cursor-pointer group shrink-0 select-none py-0.5"
           >
-            <div className="group-hover:scale-105 transition-transform duration-200">
-              <LeafLogo className="w-8 h-8 lg:w-9 lg:h-9 text-white shrink-0 drop-shadow-sm" />
-            </div>
-            <div className="flex flex-col justify-center">
-              <span className="text-[24px] lg:text-[27px] font-serif font-bold text-white tracking-tight leading-none drop-shadow-sm">
-                Meatyns
-              </span>
-              <span className="text-[10.5px] lg:text-[11px] font-normal text-white/80 tracking-wide mt-1 leading-none">
-                Fresh &bull; Fast &bull; Everyday
-              </span>
-            </div>
+            <img
+              src="/meatyns_logo_2x.png"
+              alt="Meatyns"
+              className="h-8 lg:h-9 w-auto object-contain group-hover:scale-[1.03] transition-transform duration-200"
+            />
           </div>
 
           {/* Center: Search Bar */}
           <div className="flex-1 max-w-[420px] lg:max-w-[500px] xl:max-w-[560px] mx-4 lg:mx-8">
             <div
               onClick={() => navigate("/search")}
-              className="w-full h-11 bg-white rounded-full px-4 flex items-center gap-3 cursor-pointer shadow-sm hover:shadow transition-shadow"
+              className="w-full h-11 bg-white rounded-full px-4 flex items-center gap-3 cursor-pointer shadow-sm hover:shadow transition-shadow border border-amber-200/60"
             >
-              <Search size={18} className="text-[#520e1e] shrink-0 stroke-[2.2]" />
+              <Search size={18} className="text-[#1A1A1A] shrink-0 stroke-[2.2]" />
               <input
                 type="text"
                 placeholder="Search for meat, fish, seafood, etc..."
@@ -114,32 +105,32 @@ const WishlistPage = () => {
                 refreshLocation?.();
                 setIsLocationOpen(true);
               }}
-              className="flex items-center gap-2 text-left text-white bg-transparent border-0 p-0 cursor-pointer group hover:opacity-90 transition-opacity"
+              className="flex items-center gap-2 text-left text-[#1A1A1A] bg-transparent border-0 p-0 cursor-pointer group hover:opacity-90 transition-opacity"
             >
-              <MapPin size={20} className="text-white shrink-0 stroke-[1.8]" />
+              <MapPin size={20} className="text-[#1A1A1A] shrink-0 stroke-[2]" />
               <div className="flex flex-col leading-tight">
-                <span className="text-[11px] text-white/75 font-normal tracking-wide leading-tight">
+                <span className="text-[11px] text-[#1A1A1A]/75 font-medium tracking-wide leading-tight">
                   Deliver to
                 </span>
-                <div className="flex items-center gap-1 text-[13px] lg:text-sm font-bold text-white leading-tight">
+                <div className="flex items-center gap-1 text-[13px] lg:text-sm font-bold text-[#1A1A1A] leading-tight">
                   <span className="max-w-[110px] lg:max-w-[140px] truncate">
                     {isFetchingLocation
                       ? "Detecting..."
                       : currentLocation?.name || "Indore"}
                   </span>
-                  <ChevronDown size={13} className="text-white/80 shrink-0" />
+                  <ChevronDown size={13} className="text-[#1A1A1A] shrink-0" />
                 </div>
               </div>
             </button>
 
             {/* Delivery in */}
-            <div className="flex items-center gap-2 text-white">
-              <Zap size={18} className="text-white fill-white shrink-0" />
+            <div className="flex items-center gap-2 text-[#1A1A1A]">
+              <Zap size={18} className="text-[#1A1A1A] fill-[#1A1A1A] shrink-0" />
               <div className="flex flex-col leading-tight">
-                <span className="text-[11px] text-white/75 font-normal tracking-wide leading-tight">
+                <span className="text-[11px] text-[#1A1A1A]/75 font-medium tracking-wide leading-tight">
                   Delivery in
                 </span>
-                <span className="text-[13px] lg:text-sm font-bold text-white whitespace-nowrap leading-tight">
+                <span className="text-[13px] lg:text-sm font-extrabold text-[#1A1A1A] whitespace-nowrap leading-tight">
                   {currentLocation?.time || "15–30 mins"}
                 </span>
               </div>
@@ -150,20 +141,20 @@ const WishlistPage = () => {
               type="button"
               onClick={() => navigate("/profile")}
               aria-label="Profile"
-              className="text-white hover:opacity-85 transition-opacity flex items-center justify-center p-1 bg-transparent border-0 cursor-pointer"
+              className="text-[#1A1A1A] hover:opacity-85 transition-opacity flex items-center justify-center p-1 bg-transparent border-0 cursor-pointer"
             >
-              <CircleUserRound size={28} className="text-white stroke-[1.7]" />
+              <CircleUserRound size={28} className="text-[#1A1A1A] stroke-[2]" />
             </button>
 
             {/* Cart */}
             <button
               type="button"
-              onClick={() => navigate("/checkout")}
+              onClick={() => navigate("/cart")}
               aria-label="Shopping Cart"
-              className="relative text-white hover:opacity-85 transition-opacity flex items-center justify-center p-1 bg-transparent border-0 cursor-pointer"
+              className="relative text-[#1A1A1A] hover:opacity-85 transition-opacity flex items-center justify-center p-1 bg-transparent border-0 cursor-pointer"
             >
-              <ShoppingCart size={24} className="text-white stroke-[2]" />
-              <span className="absolute -top-1.5 -right-2.5 min-w-[18px] h-[18px] px-1 bg-[#e53935] text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-md leading-none">
+              <ShoppingCart size={24} className="text-[#1A1A1A] stroke-[2.2]" />
+              <span className="absolute -top-1.5 -right-2.5 min-w-[18px] h-[18px] px-1 bg-[#EF131F] text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-md leading-none">
                 {cartCount || 0}
               </span>
             </button>
@@ -171,21 +162,21 @@ const WishlistPage = () => {
         </div>
 
         {/* ──── Wishlist Sub-Heading Bar (Desktop & Mobile) ──── */}
-        <div className="border-t border-white/10">
+        <div className="border-t border-black/10">
           <div className="max-w-[1440px] mx-auto px-4 lg:px-8 py-3 flex items-center justify-between gap-3 relative z-10">
             <div className="flex items-center gap-3">
               <button
                 onClick={() => navigate(-1)}
-                className="w-9 h-9 md:w-10 md:h-10 flex items-center justify-center bg-white/20 hover:bg-white/30 text-white rounded-full transition-all border border-white/10 backdrop-blur-md -ml-1 active:scale-95 cursor-pointer"
+                className="w-9 h-9 md:w-10 md:h-10 flex items-center justify-center bg-black/10 hover:bg-black/15 text-[#1A1A1A] rounded-full transition-all border border-black/10 backdrop-blur-md -ml-1 active:scale-95 cursor-pointer"
               >
-                <ChevronLeft size={22} className="text-white" />
+                <ChevronLeft size={22} className="text-[#1A1A1A]" />
               </button>
               <div>
-                <h1 className="text-lg md:text-xl font-bold text-white tracking-tight leading-tight flex items-center gap-2">
-                  <Heart size={20} className="text-white fill-white/30" />
+                <h1 className="text-lg md:text-xl font-bold text-[#1A1A1A] tracking-tight leading-tight flex items-center gap-2">
+                  <Heart size={20} className="text-[#EF131F] fill-[#EF131F]/30" />
                   My Wishlist
                 </h1>
-                <p className="text-[11px] md:text-xs text-white/80 font-normal leading-tight mt-0.5">
+                <p className="text-[11px] md:text-xs text-[#1A1A1A]/80 font-normal leading-tight mt-0.5">
                   {wishlist.length} {wishlist.length === 1 ? "item" : "items"} saved
                 </p>
               </div>
@@ -194,9 +185,9 @@ const WishlistPage = () => {
             {wishlist.length > 0 && (
               <button
                 onClick={clearWishlist}
-                className="flex items-center gap-1.5 text-white bg-white/20 hover:bg-white/30 border border-white/20 text-xs font-bold px-3.5 py-1.5 md:py-2 rounded-xl transition-all backdrop-blur-md active:scale-95 cursor-pointer"
+                className="flex items-center gap-1.5 text-[#1A1A1A] bg-black/10 hover:bg-black/15 border border-black/10 text-xs font-bold px-3.5 py-1.5 md:py-2 rounded-xl transition-all backdrop-blur-md active:scale-95 cursor-pointer"
               >
-                <Trash2 size={14} className="text-white" /> Clear All
+                <Trash2 size={14} className="text-[#1A1A1A]" /> Clear All
               </button>
             )}
           </div>
@@ -224,8 +215,8 @@ const WishlistPage = () => {
           </div>
         ) : (
           <div className="text-center py-16 bg-white rounded-2xl border border-slate-200/80 shadow-xs max-w-xl mx-auto mt-6">
-            <div className="h-16 w-16 bg-[#520e1e]/10 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Heart size={28} className="text-[#520e1e]" strokeWidth={2} />
+            <div className="h-16 w-16 bg-[#FFFBEB] border border-[#FDE68A] rounded-full flex items-center justify-center mx-auto mb-4">
+              <Heart size={28} className="text-[#EF131F]" strokeWidth={2} />
             </div>
             <h2 className="text-xl font-bold text-slate-800 mb-1">
               No items in wishlist
@@ -235,7 +226,7 @@ const WishlistPage = () => {
             </p>
             <Link
               to="/categories"
-              className="px-6 py-2.5 bg-[#520e1e] hover:bg-[#681327] text-white text-sm font-bold rounded-xl transition-all inline-block shadow-sm active:scale-95 no-underline"
+              className="px-6 py-2.5 bg-[#FDCE04] hover:bg-[#E5B800] text-[#1A1A1A] text-sm font-extrabold rounded-xl transition-all inline-block shadow-sm active:scale-95 no-underline border border-[#E5B800]"
             >
               Explore Products
             </Link>

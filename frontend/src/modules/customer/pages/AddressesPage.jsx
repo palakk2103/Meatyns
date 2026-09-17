@@ -406,7 +406,7 @@ const AddressesPage = () => {
                                     <p className="text-slate-500 text-xs mb-4">Add your delivery address to proceed</p>
                                     <button
                                         onClick={openAddModal}
-                                        className="px-5 py-2.5 rounded-xl bg-[#741721] text-white text-xs font-bold hover:bg-[#5e121a] transition-colors cursor-pointer"
+                                        className="px-5 py-2.5 rounded-xl bg-[#FDCE04] text-[#1A1A1A] text-xs font-bold hover:bg-[#E5B800] transition-colors cursor-pointer shadow-xs"
                                     >
                                         + Add New Address
                                     </button>
@@ -418,7 +418,7 @@ const AddressesPage = () => {
                                         const defaultAddr = addresses.find(a => a.isDefault) || addresses[0];
                                         if (!defaultAddr) return null;
                                         return (
-                                            <div className="bg-white rounded-2xl p-6 border-2 border-[#F0D5D8] shadow-xs relative">
+                                            <div className="bg-white rounded-2xl p-6 border-2 border-amber-200 shadow-xs relative">
                                                 <div className="flex items-center justify-between mb-2">
                                                     <span className="inline-block bg-[#15803D] text-white text-[11px] font-bold px-3 py-0.5 rounded-md">
                                                         Default
@@ -432,7 +432,7 @@ const AddressesPage = () => {
                                                 </div>
 
                                                 <div className="flex items-start gap-2.5 text-xs text-slate-600 leading-relaxed mb-6">
-                                                    <MapPin size={16} className="text-[#741721] shrink-0 mt-0.5" />
+                                                    <MapPin size={16} className="text-[#1A1A1A] shrink-0 mt-0.5" />
                                                     <span>{defaultAddr.address}, {[defaultAddr.city, defaultAddr.state, defaultAddr.pincode].filter(Boolean).join(', ')}</span>
                                                 </div>
 
@@ -467,7 +467,7 @@ const AddressesPage = () => {
                                                 </div>
                                                 <p className="text-xs font-semibold text-slate-700">{addr.name}</p>
                                                 <div className="flex items-start gap-2 text-xs text-slate-500 leading-relaxed">
-                                                    <MapPin size={14} className="text-[#741721] shrink-0 mt-0.5" />
+                                                    <MapPin size={14} className="text-[#1A1A1A] shrink-0 mt-0.5" />
                                                     <span>{addr.address}, {[addr.city, addr.state, addr.pincode].filter(Boolean).join(', ')}</span>
                                                 </div>
                                             </div>
@@ -484,7 +484,7 @@ const AddressesPage = () => {
                                                         toast.success(`Selected ${addr.type} as delivery address`);
                                                         navigate('/cart');
                                                     }}
-                                                    className="px-4 py-1.5 rounded-xl border border-[#741721] text-xs font-semibold text-[#741721] hover:bg-[#741721]/5 transition-colors cursor-pointer"
+                                                    className="px-4 py-1.5 rounded-xl bg-[#FDCE04] hover:bg-[#E5B800] text-[#1A1A1A] text-xs font-bold transition-colors cursor-pointer shadow-xs"
                                                 >
                                                     Select
                                                 </button>
@@ -495,16 +495,16 @@ const AddressesPage = () => {
                                     {/* + Add New Address Box */}
                                     <button
                                         onClick={openAddModal}
-                                        className="w-full py-3.5 rounded-2xl border border-dashed border-[#d9cdcd] bg-white hover:bg-rose-50/40 text-slate-700 hover:text-[#741721] font-semibold text-sm flex items-center justify-center gap-2 transition-colors cursor-pointer shadow-xs"
+                                        className="w-full py-3.5 rounded-2xl border border-dashed border-slate-300 bg-white hover:bg-[#FFFBEB] text-slate-700 hover:text-slate-900 font-semibold text-sm flex items-center justify-center gap-2 transition-colors cursor-pointer shadow-xs"
                                     >
-                                        <Plus size={16} className="text-[#741721]" />
+                                        <Plus size={16} className="text-[#1A1A1A]" />
                                         <span>Add New Address</span>
                                     </button>
 
-                                    {/* Maroon CTA: Continue to Cart -> */}
+                                    {/* Golden Yellow CTA: Continue to Cart -> */}
                                     <button
                                         onClick={() => navigate('/cart')}
-                                        className="w-full py-3.5 mt-2 rounded-xl bg-[#741721] hover:bg-[#5e121a] text-white font-bold text-sm flex items-center justify-center gap-2 transition-all active:scale-[0.99] shadow-md cursor-pointer"
+                                        className="w-full py-3.5 mt-2 rounded-xl bg-[#FDCE04] hover:bg-[#E5B800] text-[#1A1A1A] font-extrabold text-sm flex items-center justify-center gap-2 transition-all active:scale-[0.99] shadow-md cursor-pointer"
                                     >
                                         <span>Continue to Cart &rarr;</span>
                                     </button>

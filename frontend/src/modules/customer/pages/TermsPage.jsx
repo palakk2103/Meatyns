@@ -83,10 +83,10 @@ const TermsPage = () => {
                         <div className="border-t border-slate-100 mt-8 pt-6">
                             <h4 className="text-slate-800 font-bold text-base">Managed By</h4>
                             <div className="mt-3 text-slate-600 space-y-1.5 text-sm font-medium">
-                                <p><span className="text-slate-800 font-semibold">Client Name:</span> Anita Lohar</p>
+                                <p><span className="text-slate-800 font-semibold">Client Name:</span> {settings?.companyName || 'Meatyns'}</p>
                                 <p><span className="text-slate-800 font-semibold">Contact Number:</span> {settings?.supportPhone || '02269621920'}</p>
-                                <p><span className="text-slate-800 font-semibold">Address:</span> {settings?.address || 'Ramkrishna Nagar patna 800020'}</p>
-                                <p><span className="text-slate-800 font-semibold">Email:</span> {settings?.supportEmail || 'anitamegamart@gmail.com'}</p>
+                                <p><span className="text-slate-800 font-semibold">Address:</span> {settings?.address || 'Indore, Madhya Pradesh, India'}</p>
+                                <p><span className="text-slate-800 font-semibold">Email:</span> {settings?.supportEmail || 'support@meatyns.com'}</p>
                             </div>
                         </div>
                     </div>

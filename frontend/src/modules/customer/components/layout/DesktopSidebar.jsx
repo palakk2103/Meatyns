@@ -55,13 +55,13 @@ const SeafoodIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5 shrink-0">
     <path
       d="M18 6C15 5 11 6 8.5 9C6 12 6.5 16.5 9.5 19C12 21 16 21 18.5 18.5C20.5 16.5 20.5 13 18 10.5C16 8.5 12.5 9.5 11.5 12C11 14 12.5 15.5 14 15"
-      stroke="#9B2C2C"
+      stroke="currentColor"
       strokeWidth="1.8"
       strokeLinecap="round"
       strokeLinejoin="round"
     />
-    <path d="M18 6L21 4" stroke="#9B2C2C" strokeWidth="1.2" strokeLinecap="round" />
-    <path d="M19 8L22 7" stroke="#9B2C2C" strokeWidth="1.2" strokeLinecap="round" />
+    <path d="M18 6L21 4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+    <path d="M19 8L22 7" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
   </svg>
 );
 
@@ -69,13 +69,13 @@ const FreshCutsIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5 shrink-0">
     <path
       d="M6 18L17 7C17.5 6.5 18 5 17 4C16 3 14.5 3.5 14 4L3 15C2.5 15.5 2 17 3 18C4 19 5.5 18.5 6 18Z"
-      stroke="#9B2C2C"
+      stroke="currentColor"
       strokeWidth="1.6"
       strokeLinecap="round"
       strokeLinejoin="round"
     />
-    <line x1="8" y1="13" x2="11" y2="16" stroke="#9B2C2C" strokeWidth="1.6" strokeLinecap="round" />
-    <line x1="14" y1="7" x2="17" y2="10" stroke="#9B2C2C" strokeWidth="1.4" strokeLinecap="round" />
+    <line x1="8" y1="13" x2="11" y2="16" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+    <line x1="14" y1="7" x2="17" y2="10" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
   </svg>
 );
 
@@ -83,15 +83,15 @@ const ReadyToCookIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5 shrink-0">
     <path
       d="M4 11C4 16 7.5 19 12 19C16.5 19 20 16 20 11H4Z"
-      stroke="#9B2C2C"
+      stroke="currentColor"
       strokeWidth="1.6"
       strokeLinecap="round"
       strokeLinejoin="round"
     />
-    <path d="M2 11H22" stroke="#9B2C2C" strokeWidth="1.6" strokeLinecap="round" />
-    <path d="M8 5C8 6 9 7 9 8" stroke="#9B2C2C" strokeWidth="1.4" strokeLinecap="round" />
-    <path d="M12 4C12 5.5 13 6.5 13 8" stroke="#9B2C2C" strokeWidth="1.4" strokeLinecap="round" />
-    <path d="M16 5C16 6 17 7 17 8" stroke="#9B2C2C" strokeWidth="1.4" strokeLinecap="round" />
+    <path d="M2 11H22" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+    <path d="M8 5C8 6 9 7 9 8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+    <path d="M12 4C12 5.5 13 6.5 13 8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+    <path d="M16 5C16 6 17 7 17 8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
   </svg>
 );
 
@@ -99,12 +99,12 @@ const OffersIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5 shrink-0">
     <path
       d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"
-      stroke="#9B2C2C"
+      stroke="currentColor"
       strokeWidth="1.6"
       strokeLinecap="round"
       strokeLinejoin="round"
     />
-    <line x1="7" y1="7" x2="7.01" y2="7" stroke="#9B2C2C" strokeWidth="2.5" strokeLinecap="round" />
+    <line x1="7" y1="7" x2="7.01" y2="7" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
   </svg>
 );
 
@@ -112,13 +112,13 @@ const MyOrdersIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5 shrink-0">
     <path
       d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"
-      stroke="#9B2C2C"
+      stroke="currentColor"
       strokeWidth="1.6"
       strokeLinecap="round"
       strokeLinejoin="round"
     />
-    <polyline points="3.27 6.96 12 12.01 20.73 6.96" stroke="#9B2C2C" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-    <line x1="12" y1="22.08" x2="12" y2="12" stroke="#9B2C2C" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+    <polyline points="3.27 6.96 12 12.01 20.73 6.96" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+    <line x1="12" y1="22.08" x2="12" y2="12" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 
@@ -126,7 +126,7 @@ const WishlistIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5 shrink-0">
     <path
       d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
-      stroke="#9B2C2C"
+      stroke="currentColor"
       strokeWidth="1.6"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -138,14 +138,14 @@ const SupportIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5 shrink-0">
     <path
       d="M3 18v-6a9 9 0 0 1 18 0v6"
-      stroke="#9B2C2C"
+      stroke="currentColor"
       strokeWidth="1.6"
       strokeLinecap="round"
       strokeLinejoin="round"
     />
     <path
       d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"
-      stroke="#9B2C2C"
+      stroke="currentColor"
       strokeWidth="1.6"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -154,7 +154,7 @@ const SupportIcon = () => (
 );
 
 const DeliveryRiderIcon = () => (
-  <svg viewBox="0 0 48 36" fill="none" className="w-10 h-8 text-[#520e1e] shrink-0">
+  <svg viewBox="0 0 48 36" fill="none" className="w-10 h-8 text-[#1A1A1A] shrink-0">
     <circle cx="10" cy="27" r="5" stroke="currentColor" strokeWidth="2" />
     <circle cx="38" cy="27" r="5" stroke="currentColor" strokeWidth="2" />
     <circle cx="10" cy="27" r="1.5" fill="currentColor" />
@@ -260,13 +260,13 @@ const DesktopSidebar = ({ activeCategory, onCategorySelect, categories = [] }) =
           onClick={() => handleNavClick("home", "Home")}
           className={`w-full px-3.5 py-2.5 rounded-xl flex items-center gap-3.5 text-[14px] transition-colors text-left border-0 cursor-pointer ${
             isHomeActive
-              ? "bg-[#F6EBEB] text-[#520e1e] font-bold shadow-xs"
-              : "bg-transparent text-slate-700 hover:text-slate-900 hover:bg-[#F0E9DF]/60 font-medium"
+              ? "bg-[#FDCE04] text-[#1A1A1A] font-bold shadow-xs"
+              : "bg-transparent text-slate-700 hover:text-slate-900 hover:bg-[#FFFBEB] font-medium"
           }`}
         >
           <Home
             size={18}
-            className={`shrink-0 ${isHomeActive ? "fill-current text-[#520e1e]" : "text-slate-600"}`}
+            className={`shrink-0 ${isHomeActive ? "fill-current text-[#1A1A1A]" : "text-slate-600"}`}
           />
           <span>Home</span>
         </button>
@@ -285,8 +285,8 @@ const DesktopSidebar = ({ activeCategory, onCategorySelect, categories = [] }) =
               onClick={() => handleNavClick(item.id, item.label)}
               className={`w-full px-3.5 py-2.5 rounded-xl flex items-center gap-3.5 text-[14px] transition-colors text-left border-0 cursor-pointer ${
                 isActive
-                  ? "bg-[#F6EBEB] text-[#520e1e] font-bold shadow-xs"
-                  : "bg-transparent text-slate-700 hover:text-slate-900 hover:bg-[#F0E9DF]/60 font-medium"
+                  ? "bg-[#FDCE04] text-[#1A1A1A] font-bold shadow-xs"
+                  : "bg-transparent text-slate-700 hover:text-slate-900 hover:bg-[#FFFBEB] font-medium"
               }`}
             >
               <IconComp />
@@ -313,8 +313,8 @@ const DesktopSidebar = ({ activeCategory, onCategorySelect, categories = [] }) =
               onClick={() => handleNavClick(item.id, item.label)}
               className={`w-full px-3.5 py-2.5 rounded-xl flex items-center gap-3.5 text-[14px] transition-colors text-left border-0 cursor-pointer ${
                 isRouteActive
-                  ? "bg-[#F6EBEB] text-[#520e1e] font-bold shadow-xs"
-                  : "bg-transparent text-slate-700 hover:text-slate-900 hover:bg-[#F0E9DF]/60 font-medium"
+                  ? "bg-[#FDCE04] text-[#1A1A1A] font-bold shadow-xs"
+                  : "bg-transparent text-slate-700 hover:text-slate-900 hover:bg-[#FFFBEB] font-medium"
               }`}
             >
               <IconComp />
@@ -328,12 +328,12 @@ const DesktopSidebar = ({ activeCategory, onCategorySelect, categories = [] }) =
       <div className="pt-4 mt-auto">
         <div
           onClick={() => navigate("/checkout")}
-          className="p-3.5 rounded-2xl bg-[#F7EBEC]/90 border border-[#EDD5D7] text-center flex flex-col items-center justify-center cursor-pointer hover:bg-[#F7EBEC] hover:shadow-sm transition-all group"
+          className="p-3.5 rounded-2xl bg-[#FFFBEB] border border-[#FDE68A] text-center flex flex-col items-center justify-center cursor-pointer hover:bg-[#FEF9C3] hover:shadow-sm transition-all group"
         >
           <div className="group-hover:scale-105 transition-transform duration-200">
             <DeliveryRiderIcon />
           </div>
-          <span className="text-xs font-bold text-[#520e1e] tracking-tight mt-1">
+          <span className="text-xs font-bold text-slate-900 tracking-tight mt-1">
             Free Delivery
           </span>
           <span className="text-[10.5px] font-medium text-slate-500 mt-0.5">

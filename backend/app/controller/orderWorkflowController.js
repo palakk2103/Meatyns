@@ -303,7 +303,7 @@ export const requestReturnPickupOtp = async (req, res) => {
             const customerObj = await Customer.findById(customerId).lean();
             const phone = customerObj?.phone || order.address?.phone;
             if (phone) {
-              const appName = process.env.APP_NAME || 'Anita Mega Mart';
+              const appName = process.env.APP_NAME || 'Meatyns';
               await sendSmsIndiaHubOtp({
                 phone,
                 otp: result.otp,
@@ -456,7 +456,7 @@ export const requestReturnDropOtp = async (req, res) => {
           try {
             const sellerPhone = order.seller?.phone;
             if (sellerPhone) {
-              const appName = process.env.APP_NAME || 'Anita Mega Mart';
+              const appName = process.env.APP_NAME || 'Meatyns';
               await sendSmsIndiaHubOtp({
                 phone: sellerPhone,
                 otp: result.otp,

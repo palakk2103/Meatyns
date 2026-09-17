@@ -85,11 +85,12 @@ const DesktopCustomerAuth = ({
     setShowOtp,
     handleSendOtp,
     handleVerifyOtp,
+    handlePasswordLogin,
     isLoading,
     timer
 }) => {
     const [showPassword, setShowPassword] = useState(false);
-    const [passwordVal, setPasswordVal] = useState('');
+    const [passwordVal, setPasswordVal] = useState(formData.password || '');
 
     const onSubmitPrimary = (e) => {
         e.preventDefault();
@@ -98,6 +99,18 @@ const DesktopCustomerAuth = ({
             handleVerifyOtp(e);
             return;
         }
+
+        const inputVal = (formData.phoneOrEmail || formData.email || formData.phone || '').trim();
+        const pwd = (passwordVal || formData.password || '').trim();
+
+        // If logging in and password is provided OR input contains @:
+        if (isLogin && (pwd || inputVal.includes('@'))) {
+            if (handlePasswordLogin) {
+                handlePasswordLogin(e, { email: inputVal, password: pwd });
+                return;
+            }
+        }
+
         // Otherwise initiate OTP send
         handleSendOtp(e);
     };
@@ -231,7 +244,7 @@ const DesktopCustomerAuth = ({
                                     setIsLogin(false);
                                     setShowOtp(false);
                                 }}
-                                className="text-[#621320] hover:text-[#4A0D18] font-bold inline-flex items-center gap-1 hover:underline transition-all"
+                                className="text-amber-800 hover:text-amber-900 font-bold inline-flex items-center gap-1 hover:underline transition-all"
                             >
                                 Create an account <ArrowRight size={14} />
                             </button>
@@ -245,7 +258,7 @@ const DesktopCustomerAuth = ({
                                     setIsLogin(true);
                                     setShowOtp(false);
                                 }}
-                                className="text-[#621320] hover:text-[#4A0D18] font-bold inline-flex items-center gap-1 hover:underline transition-all"
+                                className="text-amber-800 hover:text-amber-900 font-bold inline-flex items-center gap-1 hover:underline transition-all"
                             >
                                 Log in <ArrowRight size={14} />
                             </button>
@@ -255,211 +268,239 @@ const DesktopCustomerAuth = ({
 
                 {/* Center Form Container */}
                 <div className="relative z-10 max-w-md w-full mx-auto my-auto py-6">
-                    {/* Heading and Underline */}
-                    <div>
-                        <h2 
-                            className="text-3xl lg:text-4xl font-serif font-bold text-[#2A1515] tracking-tight"
-                            style={{ fontFamily: "'Playfair Display', serif" }}
-                        >
-                            {isLogin ? 'Welcome Back' : 'Create Account'}
-                        </h2>
-                        {/* Golden/Mustard Accent Underline */}
-                        <div className="w-12 h-1 bg-[#C98A2C] rounded-full mt-2.5 mb-3" />
-                        <p className="text-stone-500 text-xs lg:text-sm">
-                            {isLogin
-                                ? 'Log in to continue your fresh journey with Meatyns.'
-                                : 'Join Meatyns for fresh cuts delivered right to your doorstep.'}
-                        </p>
-                    </div>
+                    <motion.div
+                        key={isLogin ? 'login-card' : 'signup-card'}
+                        initial={{ opacity: 0, y: 16 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.3 }}
+                    >
+                        {/* Heading */}
+                        <div className="space-y-1.5 mb-8">
+                            <h2 className="text-2xl lg:text-3xl font-bold text-stone-900 tracking-tight font-serif">
+                                {showOtp 
+                                    ? 'Enter Verification Code' 
+                                    : (isLogin ? 'Welcome Back!' : 'Create Your Account')}
+                            </h2>
+                            <p className="text-stone-500 text-sm">
+                                {showOtp
+                                    ? 'We have sent a one-time verification code to your email.'
+                                    : (isLogin 
+                                        ? 'Access your orders, wishlist, and fresh favorites.' 
+                                        : 'Sign up to order freshest meats delivered in 15–30 mins.')}
+                            </p>
+                        </div>
 
-                    <AnimatePresence mode="wait">
-                        {!showOtp ? (
-                            /* Credentials Form (Mobile / Password / OTP Trigger) */
-                            <motion.form 
-                                key="credentials-form"
-                                initial={{ opacity: 0, y: 15 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: -15 }}
-                                onSubmit={onSubmitPrimary}
-                                className="mt-8 space-y-5"
-                            >
-                                {/* Full Name Field (when Sign Up) */}
-                                {!isLogin && (
+
+                        <AnimatePresence mode="wait">
+                            {!showOtp ? (
+                                /* Credentials Form (Mobile / Password / OTP Trigger) */
+                                <motion.form 
+                                    key="credentials-form"
+                                    initial={{ opacity: 0, y: 15 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -15 }}
+                                    onSubmit={onSubmitPrimary}
+                                    className="mt-8 space-y-5"
+                                >
+                                    {/* Full Name Field (when Sign Up) */}
+                                    {!isLogin && (
+                                        <div className="space-y-1.5">
+                                            <label className="block text-xs font-semibold text-stone-700">
+                                                Full Name
+                                            </label>
+                                            <div className="relative">
+                                                <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400">
+                                                    <User size={18} />
+                                                </div>
+                                                <input
+                                                    required
+                                                    type="text"
+                                                    name="name"
+                                                    value={formData.name}
+                                                    placeholder="Enter your full name"
+                                                    onChange={(e) => setFormData({ ...formData, name: e.target.value.replace(/[^a-zA-Z\s]/g, '') })}
+                                                    className="w-full bg-[#FCFAF7] border border-stone-200 rounded-xl pl-10 pr-4 py-3 text-sm text-stone-800 placeholder-stone-400 focus:bg-white focus:border-[#FDCE04] focus:ring-1 focus:ring-[#FDCE04]/40 outline-none transition-all"
+                                                />
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* Email Address Input */}
                                     <div className="space-y-1.5">
                                         <label className="block text-xs font-semibold text-stone-700">
-                                            Full Name
+                                            Email Address
                                         </label>
                                         <div className="relative">
                                             <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400">
-                                                <User size={18} />
+                                                <Mail size={18} />
                                             </div>
                                             <input
                                                 required
-                                                type="text"
-                                                name="name"
-                                                value={formData.name}
-                                                placeholder="Enter your full name"
-                                                onChange={(e) => setFormData({ ...formData, name: e.target.value.replace(/[^a-zA-Z\s]/g, '') })}
-                                                className="w-full bg-[#FCFAF7] border border-stone-200 rounded-xl pl-10 pr-4 py-3 text-sm text-stone-800 placeholder-stone-400 focus:bg-white focus:border-[#621320] focus:ring-1 focus:ring-[#621320]/20 outline-none transition-all"
-                                            />
-                                        </div>
-                                    </div>
-                                )}
-
-                                {/* Email or Mobile Number Input */}
-                                <div className="space-y-1.5">
-                                    <label className="block text-xs font-semibold text-stone-700">
-                                        Email or Mobile Number
-                                    </label>
-                                    <div className="relative">
-                                        <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400">
-                                            <Mail size={18} />
-                                        </div>
-                                        <input
-                                            required
-                                            type="text"
-                                            name="phoneOrEmail"
-                                            value={formData.phone}
-                                            maxLength={10}
-                                            placeholder="Enter your email or mobile number"
-                                            onChange={(e) => {
-                                                const cleaned = e.target.value.replace(/\D/g, '').replace(/^[^6-9]+/, '');
-                                                setFormData({ ...formData, phone: cleaned });
-                                            }}
-                                            className="w-full bg-[#FCFAF7] border border-stone-200 rounded-xl pl-10 pr-4 py-3 text-sm text-stone-800 placeholder-stone-400 focus:bg-white focus:border-[#621320] focus:ring-1 focus:ring-[#621320]/20 outline-none transition-all"
-                                        />
-                                    </div>
-                                </div>
-
-                                {/* Password Input */}
-                                <div className="space-y-1.5">
-                                    <label className="block text-xs font-semibold text-stone-700">
-                                        Password
-                                    </label>
-                                    <div className="relative">
-                                        <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400">
-                                            <Lock size={18} />
-                                        </div>
-                                        <input
-                                            type={showPassword ? 'text' : 'password'}
-                                            value={passwordVal}
-                                            onChange={(e) => setPasswordVal(e.target.value)}
-                                            placeholder="Enter your password"
-                                            className="w-full bg-[#FCFAF7] border border-stone-200 rounded-xl pl-10 pr-10 py-3 text-sm text-stone-800 placeholder-stone-400 focus:bg-white focus:border-[#621320] focus:ring-1 focus:ring-[#621320]/20 outline-none transition-all"
-                                        />
-                                        <button
-                                            type="button"
-                                            onClick={() => setShowPassword(!showPassword)}
-                                            className="absolute right-3.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600 transition-colors"
-                                        >
-                                            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                                        </button>
-                                    </div>
-
-                                    {/* Forgot password link */}
-                                    <div className="flex justify-end pt-1">
-                                        <button
-                                            type="button"
-                                            onClick={handleSendOtp}
-                                            className="text-[11px] font-semibold text-[#621320] hover:underline"
-                                        >
-                                            Forgot password?
-                                        </button>
-                                    </div>
-                                </div>
-
-                                {/* Large Maroon CTA Button */}
-                                <button
-                                    type="submit"
-                                    disabled={isLoading}
-                                    className="w-full bg-[#5B1121] hover:bg-[#460C18] text-white py-3.5 rounded-xl text-sm font-semibold tracking-wide flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all active:scale-[0.99] disabled:opacity-60"
-                                >
-                                    <span>{isLoading ? 'Sending OTP...' : (isLogin ? 'Login' : 'Create Account')}</span>
-                                    <ArrowRight size={16} />
-                                </button>
-                            </motion.form>
-                        ) : (
-                            /* OTP Verification Step */
-                            <motion.div
-                                key="otp-form"
-                                initial={{ opacity: 0, x: 20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                exit={{ opacity: 0, x: -20 }}
-                                className="mt-8 space-y-6"
-                            >
-                                <div className="p-4 rounded-xl bg-amber-50/70 border border-amber-200/60 flex items-center justify-between">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-9 h-9 rounded-full bg-amber-100 flex items-center justify-center text-amber-700 shrink-0">
-                                            <KeyRound size={18} />
-                                        </div>
-                                        <div>
-                                            <p className="text-xs font-bold text-stone-800">Verification Code</p>
-                                            <p className="text-[11px] text-stone-500">Sent to +91 {formData.phone}</p>
-                                        </div>
-                                    </div>
-                                    <button
-                                        type="button"
-                                        onClick={() => setShowOtp(false)}
-                                        className="text-xs font-semibold text-[#621320] hover:underline"
-                                    >
-                                        Change
-                                    </button>
-                                </div>
-
-                                <form onSubmit={handleVerifyOtp} className="space-y-6">
-                                    <div className="flex justify-between gap-3 px-2">
-                                        {[...Array(4)].map((_, i) => (
-                                            <input
-                                                key={i}
-                                                type="tel"
-                                                maxLength={1}
-                                                className="w-14 h-16 bg-white border-2 border-stone-300 rounded-2xl text-center text-2xl font-black text-[#621320] outline-none shadow-sm focus:border-[#621320] focus:ring-2 focus:ring-[#621320]/20 transition-all"
-                                                onKeyDown={(e) => {
-                                                    if (e.key === 'Backspace' && !e.target.value && i > 0) {
-                                                        e.target.previousElementSibling?.focus();
-                                                    }
-                                                }}
+                                                type="email"
+                                                name="email"
+                                                value={formData.email || formData.phoneOrEmail || ''}
+                                                placeholder="Enter your email address"
                                                 onChange={(e) => {
                                                     const val = e.target.value;
-                                                    if (val && i < 3) e.target.nextElementSibling?.focus();
-                                                    const otpArr = formData.otp.split('');
-                                                    otpArr[i] = val;
-                                                    setFormData({ ...formData, otp: otpArr.join('') });
+                                                    setFormData({
+                                                        ...formData,
+                                                        email: val,
+                                                        phoneOrEmail: val,
+                                                    });
                                                 }}
+                                                className="w-full bg-[#FCFAF7] border border-stone-200 rounded-xl pl-10 pr-4 py-3 text-sm text-stone-800 placeholder-stone-400 focus:bg-white focus:border-[#FDCE04] focus:ring-1 focus:ring-[#FDCE04]/40 outline-none transition-all"
                                             />
-                                        ))}
+                                        </div>
                                     </div>
 
+                                    {/* Password Input */}
+                                    <div className="space-y-1.5">
+                                        <label className="block text-xs font-semibold text-stone-700">
+                                            Password
+                                        </label>
+                                        <div className="relative">
+                                            <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400">
+                                                <Lock size={18} />
+                                            </div>
+                                            <input
+                                                type={showPassword ? 'text' : 'password'}
+                                                value={passwordVal}
+                                                onChange={(e) => {
+                                                    setPasswordVal(e.target.value);
+                                                    setFormData({ ...formData, password: e.target.value });
+                                                }}
+                                                placeholder="Enter your password"
+                                                className="w-full bg-[#FCFAF7] border border-stone-200 rounded-xl pl-10 pr-10 py-3 text-sm text-stone-800 placeholder-stone-400 focus:bg-white focus:border-[#FDCE04] focus:ring-1 focus:ring-[#FDCE04]/40 outline-none transition-all"
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() => setShowPassword(!showPassword)}
+                                                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600 transition-colors"
+                                            >
+                                                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                                            </button>
+                                        </div>
+
+                                        {/* Forgot password link */}
+                                        <div className="flex justify-end pt-1">
+                                            <button
+                                                type="button"
+                                                onClick={() => setShowOtp(true)}
+                                                className="text-[11px] font-semibold text-amber-800 hover:underline"
+                                            >
+                                                Forgot password?
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    {/* Large Golden Yellow CTA Button */}
                                     <button
                                         type="submit"
                                         disabled={isLoading}
-                                        className="w-full bg-[#5B1121] hover:bg-[#460C18] text-white py-3.5 rounded-xl text-sm font-semibold tracking-wide flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all active:scale-[0.99] disabled:opacity-60"
+                                        className="w-full bg-[#FDCE04] hover:bg-[#E5B800] text-[#1A1A1A] py-3.5 rounded-xl text-sm font-extrabold tracking-wide flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all active:scale-[0.99] disabled:opacity-60 border border-[#E5B800]"
                                     >
-                                        <span>{isLoading ? 'Verifying...' : 'Verify & Login'}</span>
+                                        <span>{isLoading ? 'Processing...' : (isLogin ? 'Login' : 'Create Account')}</span>
                                         <ArrowRight size={16} />
                                     </button>
 
-                                    <div className="flex items-center justify-between text-xs pt-1 text-stone-500">
+                                    {isLogin && (
+                                        <div className="text-center pt-1">
+                                            <button
+                                                type="button"
+                                                onClick={handleSendOtp}
+                                                className="text-xs text-stone-500 hover:text-amber-800 font-medium transition-colors hover:underline"
+                                            >
+                                                Or sign in via Mock OTP
+                                            </button>
+                                        </div>
+                                    )}
+                                </motion.form>
+                            ) : (
+                                /* OTP Verification Step */
+                                <motion.div
+                                    key="otp-form"
+                                    initial={{ opacity: 0, x: 20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, x: -20 }}
+                                    className="mt-8 space-y-6"
+                                >
+                                    <div className="p-4 rounded-xl bg-amber-50/70 border border-amber-200/60 flex items-center justify-between">
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-9 h-9 rounded-full bg-amber-100 flex items-center justify-center text-amber-700 shrink-0">
+                                                <KeyRound size={18} />
+                                            </div>
+                                            <div>
+                                                <p className="text-xs font-bold text-stone-800">Verification Code</p>
+                                                <p className="text-[11px] text-stone-500">Sent to {formData.email || formData.phoneOrEmail}</p>
+                                            </div>
+                                        </div>
                                         <button
                                             type="button"
                                             onClick={() => setShowOtp(false)}
-                                            className="inline-flex items-center gap-1 hover:text-stone-800"
+                                            className="text-xs font-semibold text-amber-800 hover:underline"
                                         >
-                                            <ArrowLeft size={14} /> Back
-                                        </button>
-                                        <button
-                                            type="button"
-                                            disabled={timer > 0}
-                                            onClick={handleSendOtp}
-                                            className={`font-semibold ${timer > 0 ? 'text-stone-400' : 'text-[#621320] underline'}`}
-                                        >
-                                            {timer > 0 ? `Resend OTP in ${timer}s` : 'Resend OTP'}
+                                            Change
                                         </button>
                                     </div>
-                                </form>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
+
+                                    <form onSubmit={handleVerifyOtp} className="space-y-6">
+                                        <div className="flex justify-between gap-3 px-2">
+                                            {[...Array(4)].map((_, i) => (
+                                                <input
+                                                    key={i}
+                                                    type="tel"
+                                                    maxLength={1}
+                                                    className="w-14 h-16 bg-white border-2 border-stone-300 rounded-2xl text-center text-2xl font-black text-[#1A1A1A] outline-none shadow-sm focus:border-[#FDCE04] focus:ring-2 focus:ring-[#FDCE04]/40 transition-all"
+                                                    onKeyDown={(e) => {
+                                                        if (e.key === 'Backspace' && !e.target.value && i > 0) {
+                                                            e.target.previousElementSibling?.focus();
+                                                        }
+                                                    }}
+                                                    onChange={(e) => {
+                                                        const val = e.target.value;
+                                                        if (val && i < 3) e.target.nextElementSibling?.focus();
+                                                        const otpArr = (formData.otp || '').split('');
+                                                        otpArr[i] = val;
+                                                        setFormData({ ...formData, otp: otpArr.join('') });
+                                                    }}
+                                                />
+                                            ))}
+                                        </div>
+
+                                        <button
+                                            type="submit"
+                                            disabled={isLoading}
+                                            className="w-full bg-[#FDCE04] hover:bg-[#E5B800] text-[#1A1A1A] py-3.5 rounded-xl text-sm font-extrabold tracking-wide flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all active:scale-[0.99] disabled:opacity-60 border border-[#E5B800]"
+                                        >
+                                            <span>{isLoading ? 'Verifying...' : 'Verify & Login'}</span>
+                                            <ArrowRight size={16} />
+                                        </button>
+
+                                        <div className="flex items-center justify-between text-xs pt-1 text-stone-500">
+                                            <button
+                                                type="button"
+                                                onClick={() => setShowOtp(false)}
+                                                className="inline-flex items-center gap-1 hover:text-stone-800"
+                                            >
+                                                <ArrowLeft size={14} /> Back
+                                            </button>
+                                            <div>
+                                                Didn't receive code?{' '}
+                                                <button
+                                                    type="button"
+                                                    disabled={timer > 0}
+                                                    onClick={handleSendOtp}
+                                                    className={`font-semibold ${timer > 0 ? 'text-stone-400' : 'text-amber-800 underline'}`}
+                                                >
+                                                    {timer > 0 ? `Resend OTP in ${timer}s` : 'Resend OTP'}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </motion.div>
                 </div>
 
                 {/* Bottom Trust Guarantee Badge */}

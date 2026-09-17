@@ -24,8 +24,8 @@ const DesktopDeliveryInfoCard = () => {
 
                     {/* Fresh & Hygienic */}
                     <div className="flex items-start gap-3">
-                        <div className="w-8 h-8 rounded-full bg-rose-50 border border-rose-100 flex items-center justify-center text-[#741721] flex-shrink-0">
-                            <ShieldCheck size={16} className="text-[#741721]" />
+                        <div className="w-8 h-8 rounded-full bg-[#FDCE04]/20 border border-[#FDE68A] flex items-center justify-center text-[#1A1A1A] flex-shrink-0">
+                            <ShieldCheck size={16} className="text-[#1A1A1A]" />
                         </div>
                         <div>
                             <p className="text-xs font-bold text-slate-800">Fresh & Hygienic</p>
@@ -57,7 +57,7 @@ const DesktopDeliveryInfoCard = () => {
                 <div className="relative z-10 text-center">
                     <p className="font-serif italic text-xl md:text-2xl text-white font-bold drop-shadow-md leading-snug">
                         Fresh Choices<br />
-                        <span className="text-[#ffd3d8]">for a Healthy You</span>
+                        <span className="text-[#FDCE04]">for a Healthy You</span>
                     </p>
                 </div>
             </div>

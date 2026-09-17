@@ -30,6 +30,7 @@ import {
   X,
   Clipboard,
   Check,
+  CheckCircle,
   Contact2,
   Wallet,
   ArrowLeft,
@@ -796,7 +797,7 @@ const CheckoutPage = () => {
               key: key || import.meta.env.VITE_RAZORPAY_KEY_ID || "",
               amount: amount,
               currency: currency || "INR",
-              name: settings?.appName || "Anita Megamart",
+              name: settings?.appName || "Meatyns",
               description: `Order Payment for #${mainOrderId}`,
               order_id: rpOrderId,
               handler: async function (response) {
@@ -967,20 +968,30 @@ const CheckoutPage = () => {
       <div className="min-h-screen bg-white flex flex-col font-outfit">
         {/* Top Header Bar */}
         <header
-          className="sticky top-0 z-50 text-white px-4 h-14 flex items-center gap-3.5 shadow-sm select-none"
-          style={{ background: "#741721" }}
+          className="sticky top-0 z-50 text-[#1A1A1A] px-4 lg:px-8 h-14 lg:h-16 flex items-center justify-between shadow-sm select-none"
+          style={{ background: "linear-gradient(180deg, #FECD04 0%, #FDCE04 55%, #F5C502 100%)" }}
         >
-          <button
-            type="button"
-            onClick={() => navigate(-1)}
-            aria-label="Go back"
-            className="flex items-center justify-center w-8 h-8 rounded-full text-white active:scale-90 transition-transform"
-          >
-            <ArrowLeft size={22} strokeWidth={2.4} />
-          </button>
-          <h1 className="text-[17px] sm:text-lg font-bold text-white tracking-wide">
-            My Cart
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => navigate(-1)}
+              aria-label="Go back"
+              className="flex items-center justify-center w-8 h-8 rounded-full text-[#1A1A1A] active:scale-90 transition-transform"
+            >
+              <ArrowLeft size={22} strokeWidth={2.4} />
+            </button>
+            <Link to="/" className="flex items-center">
+              <img
+                src="/meatyns_logo_2x.png"
+                alt="Meatyns"
+                className="h-8 lg:h-9 w-auto object-contain"
+              />
+            </Link>
+          </div>
+          <h1 className="text-[17px] sm:text-lg font-bold text-[#1A1A1A] tracking-wide">
+            Checkout
           </h1>
+          <div className="w-8" />
         </header>
 
         {/* Center Content */}
@@ -1003,8 +1014,7 @@ const CheckoutPage = () => {
           {/* Action Button */}
           <Link
             to="/"
-            className="inline-flex items-center justify-center px-10 py-3 sm:px-12 sm:py-3.5 text-white font-bold text-xs sm:text-sm uppercase tracking-wider rounded-full shadow-md hover:opacity-95 active:scale-95 transition-all select-none"
-            style={{ background: "#741721" }}
+            className="inline-flex items-center justify-center px-10 py-3 sm:px-12 sm:py-3.5 text-[#1A1A1A] font-extrabold text-xs sm:text-sm uppercase tracking-wider rounded-full shadow-md bg-[#FDCE04] hover:bg-[#E5B800] active:scale-95 transition-all select-none"
           >
             SHOP NOW
           </Link>
@@ -1019,33 +1029,36 @@ const CheckoutPage = () => {
       {/* Order Success Overlay */}
       <CheckoutOrderSuccess orderId={orderId} show={showSuccess} />
 
-      {/* Mobile View - 100% Unchanged */}
+      {/* Mobile View */}
       <div className="lg:hidden">
         {/* Premium Header */}
-        <div className="bg-gradient-to-br from-[var(--brand-700)] via-[var(--brand-600)] to-[var(--brand-400)] pt-6 pb-12 md:pb-24 relative z-10 shadow-lg md:rounded-b-[4rem] rounded-b-[2rem] overflow-hidden">
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-white/5 rounded-full blur-[100px] -mr-32 -mt-64 pointer-events-none" />
-          <div className="absolute bottom-0 left-1/4 w-64 h-64 bg-brand-400/10 rounded-full blur-[80px] pointer-events-none" />
+        <div
+          className="pt-6 pb-12 md:pb-24 relative z-10 shadow-lg md:rounded-b-[4rem] rounded-b-[2rem] overflow-hidden text-[#1A1A1A]"
+          style={{ background: "linear-gradient(180deg, #FECD04 0%, #FDCE04 55%, #F5C502 100%)" }}
+        >
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-white/20 rounded-full blur-[100px] -mr-32 -mt-64 pointer-events-none" />
+          <div className="absolute bottom-0 left-1/4 w-64 h-64 bg-amber-200/30 rounded-full blur-[80px] pointer-events-none" />
           <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
             <div className="flex items-center justify-between">
               <button
                 onClick={() => navigate(-1)}
-                className="w-12 h-12 flex items-center justify-center bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-2xl transition-all active:scale-95">
-                <ChevronLeft size={28} className="text-white" />
+                className="w-12 h-12 flex items-center justify-center bg-black/10 hover:bg-black/20 backdrop-blur-md rounded-2xl transition-all active:scale-95 text-[#1A1A1A]">
+                <ChevronLeft size={28} className="text-[#1A1A1A]" />
               </button>
               <div className="flex flex-col items-center">
-                <h1 className="text-xl md:text-3xl font-[1000] text-white tracking-tight uppercase">Checkout</h1>
+                <h1 className="text-xl md:text-3xl font-[1000] text-[#1A1A1A] tracking-tight uppercase">Checkout</h1>
                 <div className="flex items-center gap-2 mt-1">
-                  <span className="h-1.5 w-1.5 bg-brand-400 rounded-full animate-pulse" />
-                  <p className="text-brand-100/90 text-[10px] md:text-xs font-black tracking-[0.2em] uppercase">
+                  <span className="h-1.5 w-1.5 bg-[#1A1A1A] rounded-full animate-pulse" />
+                  <p className="text-[#1A1A1A]/80 text-[10px] md:text-xs font-black tracking-[0.2em] uppercase">
                     {cartCount} {cartCount === 1 ? "Item" : "Items"} in cart
                   </p>
                 </div>
               </div>
               <button
                 onClick={handleShare}
-                className="h-12 px-4 flex items-center gap-2 bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-2xl transition-all active:scale-95">
-                <Share2 size={20} className="text-white" />
-                <span className="text-xs font-black text-white uppercase tracking-widest hidden sm:block">Share</span>
+                className="h-12 px-4 flex items-center gap-2 bg-black/10 hover:bg-black/20 backdrop-blur-md rounded-2xl transition-all active:scale-95 text-[#1A1A1A]">
+                <Share2 size={20} className="text-[#1A1A1A]" />
+                <span className="text-xs font-black text-[#1A1A1A] uppercase tracking-widest hidden sm:block">Share</span>
               </button>
             </div>
           </div>
@@ -1056,8 +1069,8 @@ const CheckoutPage = () => {
             {/* Delivery Time Banner */}
             <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 mt-3">
               <div className="flex items-center gap-3">
-                <div className="h-12 w-12 rounded-full bg-brand-50 flex items-center justify-center flex-shrink-0">
-                  <Clock size={24} className="text-primary" />
+                <div className="h-12 w-12 rounded-full bg-[#FDCE04]/20 flex items-center justify-center flex-shrink-0">
+                  <Clock size={24} className="text-[#1A1A1A]" />
                 </div>
                 <div>
                   <h3 className="font-black text-slate-800 text-lg">Delivery in 12-15 mins</h3>
@@ -1202,14 +1215,14 @@ const CheckoutPage = () => {
                   <button
                     type="button"
                     onClick={() => setIsAddressModalOpen(true)}
-                    className="text-xs font-semibold text-[#741721] hover:underline cursor-pointer"
+                    className="text-xs font-bold text-slate-800 hover:underline cursor-pointer"
                   >
                     Change
                   </button>
                 </div>
 
                 <div className="bg-white rounded-2xl p-5 border border-[#ede5df] shadow-xs flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-full bg-rose-50 flex items-center justify-center text-[#741721] flex-shrink-0">
+                  <div className="w-10 h-10 rounded-full bg-[#FDCE04]/20 flex items-center justify-center text-[#1A1A1A] flex-shrink-0">
                     <MapPin size={20} />
                   </div>
                   <div className="space-y-0.5 min-w-0">
@@ -1235,8 +1248,8 @@ const CheckoutPage = () => {
                     onClick={() => setSelectedTimeSlot("now")}
                     className={`p-3.5 rounded-2xl flex flex-col items-center justify-center text-center cursor-pointer transition-all ${
                       selectedTimeSlot === "now"
-                        ? "bg-[#741721] text-white shadow-sm"
-                        : "bg-white border border-[#ede5df] text-slate-700 hover:border-[#741721]"
+                        ? "bg-[#FDCE04] text-[#1A1A1A] font-bold shadow-xs"
+                        : "bg-white border border-[#ede5df] text-slate-700 hover:border-[#FDCE04]"
                     }`}
                   >
                     <Bike size={20} className="mb-1" />
@@ -1249,12 +1262,12 @@ const CheckoutPage = () => {
                     onClick={() => setSelectedTimeSlot("slot_9_12")}
                     className={`p-3.5 rounded-2xl flex flex-col items-center justify-center text-center cursor-pointer transition-all ${
                       selectedTimeSlot === "slot_9_12"
-                        ? "bg-[#741721] text-white shadow-sm"
-                        : "bg-white border border-[#ede5df] text-slate-700 hover:border-[#741721]"
+                        ? "bg-[#FDCE04] text-[#1A1A1A] font-bold shadow-xs"
+                        : "bg-white border border-[#ede5df] text-slate-700 hover:border-[#FDCE04]"
                     }`}
                   >
                     <span className="text-xs font-bold">Tomorrow</span>
-                    <span className={`text-[11px] ${selectedTimeSlot === "slot_9_12" ? "opacity-90" : "text-slate-500"}`}>
+                    <span className={`text-[11px] ${selectedTimeSlot === "slot_9_12" ? "opacity-90 font-bold" : "text-slate-500"}`}>
                       9 AM - 12 PM
                     </span>
                   </div>
@@ -1264,12 +1277,12 @@ const CheckoutPage = () => {
                     onClick={() => setSelectedTimeSlot("slot_12_3")}
                     className={`p-3.5 rounded-2xl flex flex-col items-center justify-center text-center cursor-pointer transition-all ${
                       selectedTimeSlot === "slot_12_3"
-                        ? "bg-[#741721] text-white shadow-sm"
-                        : "bg-white border border-[#ede5df] text-slate-700 hover:border-[#741721]"
+                        ? "bg-[#FDCE04] text-[#1A1A1A] font-bold shadow-xs"
+                        : "bg-white border border-[#ede5df] text-slate-700 hover:border-[#FDCE04]"
                     }`}
                   >
                     <span className="text-xs font-bold">Tomorrow</span>
-                    <span className={`text-[11px] ${selectedTimeSlot === "slot_12_3" ? "opacity-90" : "text-slate-500"}`}>
+                    <span className={`text-[11px] ${selectedTimeSlot === "slot_12_3" ? "opacity-90 font-bold" : "text-slate-500"}`}>
                       12 PM - 3 PM
                     </span>
                   </div>
@@ -1279,12 +1292,12 @@ const CheckoutPage = () => {
                     onClick={() => setSelectedTimeSlot("slot_3_6")}
                     className={`p-3.5 rounded-2xl flex flex-col items-center justify-center text-center cursor-pointer transition-all ${
                       selectedTimeSlot === "slot_3_6"
-                        ? "bg-[#741721] text-white shadow-sm"
-                        : "bg-white border border-[#ede5df] text-slate-700 hover:border-[#741721]"
+                        ? "bg-[#FDCE04] text-[#1A1A1A] font-bold shadow-xs"
+                        : "bg-white border border-[#ede5df] text-slate-700 hover:border-[#FDCE04]"
                     }`}
                   >
                     <span className="text-xs font-bold">Tomorrow</span>
-                    <span className={`text-[11px] ${selectedTimeSlot === "slot_3_6" ? "opacity-90" : "text-slate-500"}`}>
+                    <span className={`text-[11px] ${selectedTimeSlot === "slot_3_6" ? "opacity-90 font-bold" : "text-slate-500"}`}>
                       3 PM - 6 PM
                     </span>
                   </div>
@@ -1312,7 +1325,7 @@ const CheckoutPage = () => {
                         name="desktop_payment"
                         checked={desktopPaymentChoice === "upi"}
                         onChange={() => {}}
-                        className="accent-[#741721] w-4 h-4 cursor-pointer"
+                        className="accent-[#FDCE04] w-4 h-4 cursor-pointer"
                       />
                       <span className="text-xs font-bold text-slate-800">
                         UPI (PhonePe / GPay / Paytm)
@@ -1339,7 +1352,7 @@ const CheckoutPage = () => {
                         name="desktop_payment"
                         checked={desktopPaymentChoice === "card"}
                         onChange={() => {}}
-                        className="accent-[#741721] w-4 h-4 cursor-pointer"
+                        className="accent-[#FDCE04] w-4 h-4 cursor-pointer"
                       />
                       <span className="text-xs font-bold text-slate-800">
                         Cards (Credit / Debit)
@@ -1365,7 +1378,7 @@ const CheckoutPage = () => {
                         name="desktop_payment"
                         checked={desktopPaymentChoice === "netbanking"}
                         onChange={() => {}}
-                        className="accent-[#741721] w-4 h-4 cursor-pointer"
+                        className="accent-[#FDCE04] w-4 h-4 cursor-pointer"
                       />
                       <span className="text-xs font-bold text-slate-800">
                         Net Banking
@@ -1387,7 +1400,7 @@ const CheckoutPage = () => {
                         name="desktop_payment"
                         checked={desktopPaymentChoice === "cash"}
                         onChange={() => {}}
-                        className="accent-[#741721] w-4 h-4 cursor-pointer"
+                        className="accent-[#FDCE04] w-4 h-4 cursor-pointer"
                       />
                       <span className="text-xs font-bold text-slate-800">
                         Cash on Delivery
@@ -1398,12 +1411,12 @@ const CheckoutPage = () => {
                 </div>
               </div>
 
-              {/* Big Maroon Place Order CTA */}
+              {/* Big Golden Yellow Place Order CTA */}
               <div>
                 <button
                   onClick={handlePlaceOrder}
                   disabled={isPlacingOrder || isPreviewLoading}
-                  className="w-full py-4 rounded-xl bg-[#741721] hover:bg-[#5e121a] disabled:opacity-50 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-md active:scale-[0.99] transition-all cursor-pointer"
+                  className="w-full py-4 rounded-xl bg-[#FDCE04] hover:bg-[#E5B800] disabled:opacity-50 text-[#1A1A1A] font-extrabold text-sm flex items-center justify-center gap-2 shadow-md active:scale-[0.99] transition-all cursor-pointer"
                 >
                   <span>{isPlacingOrder ? "Placing Order..." : "Place Order"}</span>
                 </button>
@@ -1482,11 +1495,11 @@ const CheckoutPage = () => {
 
                 {/* Freshness Guaranteed Card */}
                 <div className="p-3 rounded-xl bg-[#FDF2F2] border border-[#FADCDD] flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-[#741721] flex-shrink-0">
-                    <ShieldCheck size={18} />
-                  </div>
-                  <div>
-                    <p className="text-xs font-bold text-[#741721]">Freshness Guaranteed</p>
+                  <div className="w-8 h-8 rounded-full bg-[#FDCE04]/20 flex items-center justify-center text-[#1A1A1A] flex-shrink-0">
+                  <CheckCircle size={18} className="stroke-[2.5]" />
+                </div>
+                <div>
+                  <p className="text-xs font-bold text-slate-900">Freshness Guaranteed</p>
                     <p className="text-[11px] text-slate-500">or your money back</p>
                   </div>
                 </div>
@@ -1526,11 +1539,11 @@ const CheckoutPage = () => {
                 disabled={isResolvingAddressCoords}
                 className={`w-full p-4 rounded-2xl border-2 text-left transition-all ${
                   currentAddress.id === addr.id
-                    ? "border-primary bg-brand-50 shadow-sm"
+                    ? "border-[#FDCE04] bg-[#FFFDF0] shadow-sm"
                     : "border-slate-100 bg-white hover:border-slate-200"
                 }`}>
                 <div className="flex items-center gap-3 mb-2">
-                  <div className={`p-2 rounded-full ${currentAddress.id === addr.id ? "bg-primary text-primary-foreground" : "bg-slate-100 text-slate-500"}`}>
+                  <div className={`p-2 rounded-full ${currentAddress.id === addr.id ? "bg-[#FDCE04] text-[#1A1A1A]" : "bg-slate-100 text-slate-500"}`}>
                     <MapPin size={16} />
                   </div>
                   <span className="font-black text-slate-800 uppercase tracking-widest text-[10px]">{addr.label}</span>
@@ -1546,7 +1559,7 @@ const CheckoutPage = () => {
           <DialogFooter>
             <Button
               variant="outline"
-              className="w-full border-brand-600 text-brand-600 hover:bg-brand-50"
+              className="w-full border-[#FDCE04] text-[#1A1A1A] font-bold hover:bg-[#FDCE04]/20"
               onClick={() => navigate("/addresses")}>
               <Plus size={16} className="mr-2" /> Add New Address
             </Button>
@@ -1608,7 +1621,7 @@ const CheckoutPage = () => {
               </Button>
               <Button
                 onClick={handleSaveEditedAddress}
-                className="bg-primary hover:bg-[#0b721b] text-white font-bold">
+                className="bg-[#FDCE04] hover:bg-[#E5B800] text-[#1A1A1A] font-bold">
                 Save changes
               </Button>
             </DialogFooter>

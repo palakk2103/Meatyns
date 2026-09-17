@@ -3,6 +3,8 @@ import {
     bootstrapAdmin,
     signupAdmin,
     loginAdmin,
+    sendAdminLoginOtp,
+    verifyAdminLoginOtp,
 } from "../controller/adminAuthController.js";
 import {
     getAdminProfile,
@@ -66,6 +68,8 @@ const smallAdminPayload = createContentLengthGuard(
 router.post("/bootstrap", adminBootstrapRateLimiter, smallAdminPayload, bootstrapAdmin);
 router.post("/signup", adminBootstrapRateLimiter, smallAdminPayload, signupAdmin);
 router.post("/login", authRouteRateLimiter, smallAdminPayload, loginAdmin);
+router.post("/login-otp", authRouteRateLimiter, smallAdminPayload, sendAdminLoginOtp);
+router.post("/verify-login-otp", authRouteRateLimiter, smallAdminPayload, verifyAdminLoginOtp);
 
 // Profile routes
 router.get(

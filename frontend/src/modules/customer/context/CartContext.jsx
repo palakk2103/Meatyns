@@ -26,22 +26,26 @@ export const CartProvider = ({ children }) => {
 
   // Clear cart locally when user logs out is handled by the useEffect dependency on isAuthenticated
   const normalizeBackendCart = (items) => {
-    if (!items) return [];
-    return items.map((item) => {
-      const product = item.productId;
-      const variantKey = String(item.variantSku || "").trim();
-      const { price, salePrice, variantName } = resolveVariantPricing(product, variantKey);
-      return {
-        ...product,
-        id: product?._id, // Normalize ID
-        quantity: item.quantity,
-        variantSku: variantKey,
-        variantName,
-        price,
-        salePrice,
-        image: product?.mainImage, // Handle mapping for frontend
-      };
-    });
+    if (!items || !Array.isArray(items)) return [];
+    return items
+      .filter((item) => Boolean(item?.productId))
+      .map((item) => {
+        const product = item.productId;
+        const variantKey = String(item.variantSku || "").trim();
+        const { price, salePrice, variantName } = resolveVariantPricing(product, variantKey);
+        const pId = String(product?._id || product?.id || "");
+        return {
+          ...product,
+          id: pId,
+          _id: pId,
+          quantity: Number(item.quantity) || 1,
+          variantSku: variantKey,
+          variantName,
+          price,
+          salePrice,
+          image: product?.mainImage || product?.image, // Handle mapping for frontend
+        };
+      });
   };
 
   const parseWeightToGramsOrUnits = (name) => {
@@ -58,7 +62,8 @@ export const CartProvider = ({ children }) => {
 
   const resolveVariantPricing = (product, variantSku = "") => {
     const normalizedKey = String(variantSku || "").trim();
-    if (!normalizedKey) {
+    const variants = Array.isArray(product?.variants) ? product.variants : [];
+    if (!variants.length) {
       return {
         price: Number(product?.price || 0),
         salePrice: Number(product?.salePrice || 0),
@@ -66,17 +71,16 @@ export const CartProvider = ({ children }) => {
       };
     }
 
-    const variants = Array.isArray(product?.variants) ? product.variants : [];
-    const hit = variants.find((v) => {
-      const sku = String(v?.sku || "").trim();
-      const name = String(v?.name || "").trim();
-      return (sku && sku === normalizedKey) || (!sku && name === normalizedKey) || name === normalizedKey;
-    });
+    const hit = variants.find(
+      (v) =>
+        String(v?.sku || "").trim() === normalizedKey ||
+        String(v?.name || "").trim() === normalizedKey,
+    );
 
-    const baseVariant = variants[0];
     let price = Number(hit?.price || product?.price || 0);
     let salePrice = Number(hit?.salePrice || 0);
 
+    const baseVariant = variants[0];
     if (baseVariant && hit && baseVariant.sku !== hit.sku) {
       const basePrice = Number(baseVariant.price || product?.price || 0);
       const baseSalePrice = Number(baseVariant.salePrice || product?.salePrice || 0);
@@ -115,7 +119,7 @@ export const CartProvider = ({ children }) => {
       setLoading(true);
       try {
         const response = await customerApi.getCart();
-        setCart(normalizeBackendCart(response.data.result.items));
+        setCart(normalizeBackendCart(response.data?.result?.items));
       } catch (error) {
         console.error("Failed to fetch cart from backend", error);
       } finally {
@@ -158,19 +162,22 @@ export const CartProvider = ({ children }) => {
 
   const addToCart = async (product) => {
     const variantSku = String(product?.variantSku || product?.variantName || "").trim();
-    const id = product.id || product._id;
+    const id = String(product?.id || product?._id || "").trim();
+    if (!id) return;
     const key = `${id}::${variantSku || ""}`;
     const { price, salePrice, variantName } = resolveVariantPricing(product, variantSku);
 
     // Optimistic UI update for instant feedback
     setCart((prev) => {
-      const existingItem = prev.find(
-        (item) => `${item.id || item._id}::${String(item.variantSku || "").trim()}` === key,
+      const existingIndex = prev.findIndex(
+        (item) =>
+          `${item.id || item._id}::${String(item.variantSku || "").trim()}` === key ||
+          (!variantSku && String(item.id || item._id) === id),
       );
-      if (existingItem) {
-        return prev.map((item) =>
-          `${item.id || item._id}::${String(item.variantSku || "").trim()}` === key
-            ? { ...item, quantity: item.quantity + 1 }
+      if (existingIndex > -1) {
+        return prev.map((item, idx) =>
+          idx === existingIndex
+            ? { ...item, quantity: (Number(item.quantity) || 0) + 1 }
             : item,
         );
       }
@@ -180,12 +187,13 @@ export const CartProvider = ({ children }) => {
         {
           ...product,
           id,
+          _id: id,
           variantSku,
           variantName,
           price,
           salePrice,
           quantity: 1,
-          image: product.image || product.mainImage,
+          image: product?.image || product?.mainImage,
         },
       ];
     });
@@ -199,7 +207,7 @@ export const CartProvider = ({ children }) => {
           quantity: 1,
         });
         pendingRequestsRef.current -= 1;
-        await syncCart(response.data.result.items);
+        await syncCart(response.data?.result?.items);
       } catch (error) {
         pendingRequestsRef.current -= 1;
         console.error("Error adding to cart on backend", error);
@@ -212,27 +220,29 @@ export const CartProvider = ({ children }) => {
   };
 
   const removeFromCart = async (productId, variantSku = "") => {
+    const pId = String(productId || "").trim();
     const normalizedVariantSku = String(variantSku || "").trim();
-    const key = `${productId}::${normalizedVariantSku || ""}`;
+    const key = `${pId}::${normalizedVariantSku || ""}`;
 
-    // Optimistic update (remove only the matching line when variantSku is provided).
+    // Optimistic update
     setCart((prev) =>
-      prev.filter(
-        (item) =>
-          `${item.id || item._id}::${String(item.variantSku || "").trim()}` !==
-          key,
-      ),
+      prev.filter((item) => {
+        if (normalizedVariantSku) {
+          return `${item.id || item._id}::${String(item.variantSku || "").trim()}` !== key;
+        }
+        return String(item.id || item._id) !== pId;
+      }),
     );
 
     if (isAuthenticated) {
       pendingRequestsRef.current += 1;
       try {
         const response = await customerApi.removeFromCart(
-          productId,
+          pId,
           normalizedVariantSku,
         );
         pendingRequestsRef.current -= 1;
-        await syncCart(response.data.result.items);
+        await syncCart(response.data?.result?.items);
       } catch (error) {
         pendingRequestsRef.current -= 1;
         console.error("Error removing from cart on backend", error);
@@ -243,19 +253,30 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  const updateQuantity = async (productId, delta, variantSku = "") => {
+  const updateQuantity = async (productId, deltaOrTarget, variantSku = "") => {
+    const pId = String(productId || "").trim();
     const normalizedVariantSku = String(variantSku || "").trim();
-    const key = `${productId}::${normalizedVariantSku || ""}`;
+    const key = `${pId}::${normalizedVariantSku || ""}`;
     const currentItem = cart.find(
       (item) =>
-        `${item.id || item._id}::${String(item.variantSku || "").trim()}` === key,
+        `${item.id || item._id}::${String(item.variantSku || "").trim()}` === key ||
+        (!normalizedVariantSku && String(item.id || item._id) === pId),
     );
     if (!currentItem) return;
 
-    const newQty = Math.max(0, currentItem.quantity + delta);
+    const actualVariantSku = currentItem.variantSku || normalizedVariantSku;
+    const itemKey = `${pId}::${String(actualVariantSku || "").trim()}`;
+
+    // Support both delta (+1, -1) and direct target quantity (e.g. qty + 1 from components passing absolute quantity)
+    let newQty;
+    if (deltaOrTarget === 1 || deltaOrTarget === -1) {
+      newQty = Math.max(0, (Number(currentItem.quantity) || 0) + deltaOrTarget);
+    } else {
+      newQty = Math.max(0, Number(deltaOrTarget) || 0);
+    }
 
     if (newQty === 0) {
-      removeFromCart(productId, normalizedVariantSku);
+      removeFromCart(pId, actualVariantSku);
       return;
     }
 
@@ -263,8 +284,8 @@ export const CartProvider = ({ children }) => {
     setCart((prev) =>
       prev.map((item) => {
         if (
-          `${item.id || item._id}::${String(item.variantSku || "").trim()}` ===
-          key
+          `${item.id || item._id}::${String(item.variantSku || "").trim()}` === itemKey ||
+          (!actualVariantSku && String(item.id || item._id) === pId)
         ) {
           return { ...item, quantity: newQty };
         }
@@ -276,12 +297,12 @@ export const CartProvider = ({ children }) => {
       pendingRequestsRef.current += 1;
       try {
         const response = await customerApi.updateCartQuantity({
-          productId,
+          productId: pId,
           quantity: newQty,
-          variantSku: normalizedVariantSku,
+          variantSku: actualVariantSku,
         });
         pendingRequestsRef.current -= 1;
-        await syncCart(response.data.result.items);
+        await syncCart(response.data?.result?.items);
       } catch (error) {
         pendingRequestsRef.current -= 1;
         console.error("Error updating quantity on backend", error);
@@ -312,7 +333,7 @@ export const CartProvider = ({ children }) => {
         : Number(item.price || 0);
     return total + unit * Number(item.quantity || 0);
   }, 0);
-  const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
+  const cartCount = cart.reduce((total, item) => total + (Number(item.quantity) || 0), 0);
 
   const cartValue = useMemo(() => ({
     cart,

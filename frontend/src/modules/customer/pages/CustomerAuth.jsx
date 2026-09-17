@@ -16,7 +16,11 @@ import {
     ShoppingBasket,
     Heart,
     Star,
-    ChevronLeft
+    ChevronLeft,
+    Mail,
+    Lock,
+    Eye,
+    EyeOff
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { customerApi } from '../services/customerApi';
@@ -71,6 +75,8 @@ const CustomerAuth = () => {
         const savedIsLogin = sessionStorage.getItem('auth_isLogin');
         return savedIsLogin !== null ? savedIsLogin === 'true' : true;
     });
+    const [authMode, setAuthMode] = useState('password'); // 'password' | 'otp'
+    const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [showOtp, setShowOtp] = useState(false);
     const [timer, setTimer] = useState(0);
@@ -84,6 +90,8 @@ const CustomerAuth = () => {
     const [formData, setFormData] = useState(() => {
         return {
             phone: sessionStorage.getItem('auth_phone') || '',
+            email: sessionStorage.getItem('auth_email') || '',
+            password: '',
             otp: '',
             name: sessionStorage.getItem('auth_name') || ''
         };
@@ -91,9 +99,10 @@ const CustomerAuth = () => {
 
     useEffect(() => {
         sessionStorage.setItem('auth_phone', formData.phone);
+        sessionStorage.setItem('auth_email', formData.email);
         sessionStorage.setItem('auth_name', formData.name);
         sessionStorage.setItem('auth_isLogin', isLogin);
-    }, [formData.phone, formData.name, isLogin]);
+    }, [formData.phone, formData.email, formData.name, isLogin]);
 
     const activeCategory = CATEGORIES[carouselIndex];
 
@@ -114,28 +123,56 @@ const CustomerAuth = () => {
 
     const handleSendOtp = async (e) => {
         e?.preventDefault();
-        const phoneRegex = /^[6-9]\d{9}$/;
-        if (!phoneRegex.test(formData.phone)) {
-            toast.error('Enter valid 10-digit Indian mobile number');
+        const emailToUse = (formData.email || '').trim();
+        if (!emailToUse || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailToUse)) {
+            toast.error('Please enter a valid email address');
             return;
         }
         setIsLoading(true);
         try {
             let res;
             if (isLogin) {
-                res = await customerApi.sendLoginOtp({ phone: formData.phone });
+                res = await customerApi.sendLoginOtp({ email: emailToUse });
             } else {
-                res = await customerApi.sendSignupOtp({ name: formData.name, phone: formData.phone });
+                res = await customerApi.sendSignupOtp({ name: formData.name, email: emailToUse });
             }
             setShowOtp(true);
             setTimer(30);
-            toast.success('OTP sent!');
+            toast.success('OTP sent to your email!');
             if (res?.data?.result?.mockOtp) {
                 toast.info(`Mock OTP: ${res.data.result.mockOtp}`, { duration: 10000 });
             }
         } catch (error) {
             const apiMessage = error?.response?.data?.message;
             toast.error(apiMessage || 'Failed to send OTP');
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handlePasswordLogin = async (e, customCredentials) => {
+        e?.preventDefault();
+        const emailToUse = customCredentials?.email || formData.email;
+        const passwordToUse = customCredentials?.password || formData.password;
+
+        if (!emailToUse || !passwordToUse) {
+            toast.error('Please enter both email and password');
+            return;
+        }
+
+        setIsLoading(true);
+        try {
+            const res = await customerApi.loginWithPassword({
+                email: emailToUse.trim().toLowerCase(),
+                password: passwordToUse
+            });
+            const { token, customer } = res.data.result;
+            login({ ...customer, token, role: 'customer' });
+            toast.success('Welcome back!');
+            navigate('/');
+        } catch (error) {
+            const apiMessage = error?.response?.data?.message;
+            toast.error(apiMessage || 'Invalid email or password');
         } finally {
             setIsLoading(false);
         }
@@ -154,8 +191,9 @@ const CustomerAuth = () => {
                 deviceId = 'dev_' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
                 localStorage.setItem('deviceId', deviceId);
             }
+            const emailToUse = (formData.email || '').trim();
             const response = await customerApi.verifyOtp({
-                phone: formData.phone,
+                email: emailToUse,
                 otp: formData.otp,
                 deviceId,
                 fingerprint: {
@@ -167,6 +205,7 @@ const CustomerAuth = () => {
             const { token, customer } = response.data.result;
             login({ ...customer, token, role: 'customer' });
             sessionStorage.removeItem('auth_phone');
+            sessionStorage.removeItem('auth_email');
             sessionStorage.removeItem('auth_name');
             sessionStorage.removeItem('auth_isLogin');
             toast.success('Successfully Logged In!');
@@ -356,64 +395,134 @@ const CustomerAuth = () => {
                                         </button>
                                     </div>
 
+                                    {/* Sub-mode selector: Email & Password vs OTP (Login only) */}
+                                    {isLogin && (
+                                        <div className="flex bg-gray-100 rounded-xl p-1 gap-1">
+                                            <button
+                                                type="button"
+                                                onClick={() => setAuthMode('password')}
+                                                className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${authMode === 'password' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+                                            >
+                                                Email & Password
+                                            </button>
+                                            <button
+                                                type="button"
+                                                onClick={() => setAuthMode('otp')}
+                                                className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${authMode === 'otp' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+                                            >
+                                                Email OTP
+                                            </button>
+                                        </div>
+                                    )}
+
                                     <div className="space-y-2 text-center">
                                         <h3 className="text-xl font-black text-gray-900 tracking-tight">
                                             {isLogin ? 'Welcome Back!' : 'Create Account'}
                                         </h3>
                                         <p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest leading-none">
-                                            OTP will be sent for verification
+                                            {isLogin && authMode === 'password' ? 'Login with your registered credentials' : 'Mock OTP will be sent to your email'}
                                         </p>
                                     </div>
 
-                                    <form onSubmit={handleSendOtp} className="space-y-4 sm:space-y-3">
-                                        {!isLogin && (
+                                    {isLogin && authMode === 'password' ? (
+                                        /* Email & Password Login Form */
+                                        <form onSubmit={handlePasswordLogin} className="space-y-4 sm:space-y-3">
                                             <div className="relative group">
-                                                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 transition-colors" style={{ color: 'inherit' }}>
-                                                    <User size={18} className="group-focus-within:text-[var(--theme-color)]" style={{ color: 'inherit' }} />
+                                                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
+                                                    <Mail size={18} />
                                                 </div>
                                                 <input
                                                     required
-                                                    name="name"
-                                                    value={formData.name}
-                                                    placeholder="Full Name"
+                                                    type="email"
+                                                    name="email"
+                                                    value={formData.email}
+                                                    placeholder="Enter your email"
                                                     className="w-full bg-gray-50 border border-gray-100 rounded-2xl pl-12 pr-4 py-4 sm:py-3 text-sm font-bold text-gray-800 outline-none focus:bg-white transition-all"
-                                                    style={{ '--theme-color': activeCategory.theme }}
-                                                    onChange={(e) => setFormData({ ...formData, name: e.target.value.replace(/[^a-zA-Z\s]/g, '') })}
+                                                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                                />
+                                            </div>
+
+                                            <div className="relative group">
+                                                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
+                                                    <Lock size={18} />
+                                                </div>
+                                                <input
+                                                    required
+                                                    type={showPassword ? 'text' : 'password'}
+                                                    name="password"
+                                                    value={formData.password}
+                                                    placeholder="Enter your password"
+                                                    className="w-full bg-gray-50 border border-gray-100 rounded-2xl pl-12 pr-12 py-4 sm:py-3 text-sm font-bold text-gray-800 outline-none focus:bg-white transition-all"
+                                                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                                                />
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setShowPassword(!showPassword)}
+                                                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                                                >
+                                                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                                                </button>
+                                            </div>
+
+                                            <button
+                                                type="submit"
+                                                disabled={isLoading}
+                                                className="w-full text-white py-5 sm:py-3.5 rounded-[24px] text-xs font-black tracking-[4px] flex items-center justify-center gap-3 active:scale-95 transition-all uppercase"
+                                                style={{ backgroundColor: activeCategory.theme, boxShadow: `0 20px 40px ${activeCategory.shadow}` }}
+                                            >
+                                                {isLoading ? 'Logging In...' : 'Login'}
+                                                <ChevronRight size={18} />
+                                            </button>
+                                        </form>
+                                    ) : (
+                                        /* Email OTP Form */
+                                        <form onSubmit={handleSendOtp} className="space-y-4 sm:space-y-3">
+                                            {!isLogin && (
+                                                <div className="relative group">
+                                                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 transition-colors" style={{ color: 'inherit' }}>
+                                                        <User size={18} className="group-focus-within:text-[var(--theme-color)]" style={{ color: 'inherit' }} />
+                                                    </div>
+                                                    <input
+                                                        required
+                                                        name="name"
+                                                        value={formData.name}
+                                                        placeholder="Full Name"
+                                                        className="w-full bg-gray-50 border border-gray-100 rounded-2xl pl-12 pr-4 py-4 sm:py-3 text-sm font-bold text-gray-800 outline-none focus:bg-white transition-all"
+                                                        style={{ '--theme-color': activeCategory.theme }}
+                                                        onChange={(e) => setFormData({ ...formData, name: e.target.value.replace(/[^a-zA-Z\s]/g, '') })}
+                                                        onFocus={(e) => e.target.style.borderColor = activeCategory.theme}
+                                                        onBlur={(e) => e.target.style.borderColor = '#F3F4F6'}
+                                                    />
+                                                </div>
+                                            )}
+                                            <div className="relative group">
+                                                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
+                                                    <Mail size={18} />
+                                                </div>
+                                                <input
+                                                    required
+                                                    type="email"
+                                                    name="email"
+                                                    value={formData.email}
+                                                    placeholder="Enter your email"
+                                                    className="w-full bg-gray-50 border border-gray-100 rounded-2xl pl-12 pr-4 py-4 sm:py-3 text-sm font-bold text-gray-800 outline-none focus:bg-white transition-all"
+                                                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                                                     onFocus={(e) => e.target.style.borderColor = activeCategory.theme}
                                                     onBlur={(e) => e.target.style.borderColor = '#F3F4F6'}
                                                 />
                                             </div>
-                                        )}
-                                        <div className="relative group">
-                                            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 transition-colors">
-                                                <Phone size={18} />
-                                            </div>
-                                            <div className="absolute left-11 top-1/2 -translate-y-1/2 font-black text-sm text-gray-400 border-r border-gray-200 pr-2">
-                                                +91
-                                            </div>
-                                            <input
-                                                required
-                                                name="phone"
-                                                maxLength={10}
-                                                value={formData.phone}
-                                                placeholder="Mobile Number"
-                                                className="w-full bg-gray-50 border border-gray-100 rounded-2xl pl-20 pr-4 py-4 sm:py-3 text-sm font-bold text-gray-800 outline-none focus:bg-white transition-all"
-                                                onChange={(e) => setFormData({ ...formData, phone: e.target.value.replace(/\D/g, '').replace(/^[^6-9]+/, '') })}
-                                                onFocus={(e) => e.target.style.borderColor = activeCategory.theme}
-                                                onBlur={(e) => e.target.style.borderColor = '#F3F4F6'}
-                                            />
-                                        </div>
 
-                                        <button
-                                            type="submit"
-                                            disabled={isLoading}
-                                            className="w-full text-white py-5 sm:py-3.5 rounded-[24px] text-xs font-black tracking-[4px] flex items-center justify-center gap-3 active:scale-95 transition-all uppercase"
-                                            style={{ backgroundColor: activeCategory.theme, boxShadow: `0 20px 40px ${activeCategory.shadow}` }}
-                                        >
-                                            {isLoading ? 'Verifying...' : 'Continue'}
-                                            <ChevronRight size={18} />
-                                        </button>
-                                    </form>
+                                            <button
+                                                type="submit"
+                                                disabled={isLoading}
+                                                className="w-full text-white py-5 sm:py-3.5 rounded-[24px] text-xs font-black tracking-[4px] flex items-center justify-center gap-3 active:scale-95 transition-all uppercase"
+                                                style={{ backgroundColor: activeCategory.theme, boxShadow: `0 20px 40px ${activeCategory.shadow}` }}
+                                            >
+                                                {isLoading ? 'Sending...' : 'Send OTP'}
+                                                <ChevronRight size={18} />
+                                            </button>
+                                        </form>
+                                    )}
 
                                     {/* Legal Agreement Footer */}
                                     <div className="pt-2 flex flex-col items-center gap-1">
@@ -458,8 +567,8 @@ const CustomerAuth = () => {
                                             <ChevronLeft size={20} />
                                         </button>
                                         <div>
-                                            <h3 className="text-xl font-black text-gray-900 tracking-tight">Verify Device</h3>
-                                            <p className="text-[10px] font-black tracking-widest text-gray-400 uppercase">+91 {formData.phone}</p>
+                                            <h3 className="text-xl font-black text-gray-900 tracking-tight">Verify Code</h3>
+                                            <p className="text-[11px] font-bold tracking-wide text-gray-500 lowercase">{formData.email}</p>
                                         </div>
                                     </div>
 
@@ -532,6 +641,9 @@ const CustomerAuth = () => {
                 setShowOtp={setShowOtp}
                 handleSendOtp={handleSendOtp}
                 handleVerifyOtp={handleVerifyOtp}
+                handlePasswordLogin={handlePasswordLogin}
+                authMode={authMode}
+                setAuthMode={setAuthMode}
                 isLoading={isLoading}
                 timer={timer}
             />

@@ -48,6 +48,7 @@ const CheckoutPage = lazy(() => import('../../modules/customer/pages/CheckoutPag
 const PaymentStatusPage = lazy(() => import('../../modules/customer/pages/PaymentStatusPage'));
 const SearchPage = lazy(() => import('../../modules/customer/pages/SearchPage'));
 const WalletPage = lazy(() => import('../../modules/customer/pages/WalletPage'));
+const CartPage = lazy(() => import('../../modules/customer/pages/CartPage'));
 
 // Lazy load heavy modules
 const SellerModule = lazy(() => import('../../modules/seller/routes/index'));
@@ -75,7 +76,9 @@ const RootLayout = () => {
     return (
         <LocationProvider>
             <ScrollToTop />
-            <Outlet />
+            <Suspense fallback={<div className="flex h-screen items-center justify-center font-outfit">Loading...</div>}>
+                <Outlet />
+            </Suspense>
         </LocationProvider>
     );
 };
@@ -190,6 +193,7 @@ const AppRouter = () => {
                         { path: 'settings', element: <ProtectedRoute><SettingsPage /></ProtectedRoute> },
                         { path: 'support', element: <ProtectedRoute><SupportPage /></ProtectedRoute> },
                         { path: 'chat', element: <ProtectedRoute><ChatPage /></ProtectedRoute> },
+                        { path: 'cart', element: <CartPage /> },
                         { path: 'checkout', element: <ProtectedRoute><CheckoutPage /></ProtectedRoute> },
                         { path: 'payment-status', element: <PaymentStatusPage /> },
                         { path: 'profile', element: <ProtectedRoute><ProfilePage /></ProtectedRoute> },

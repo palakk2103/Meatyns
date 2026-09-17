@@ -10,7 +10,7 @@ const phone = trimmedString.pattern(/^\+?\d{10,15}$/);
 export const sellerSignupSchema = Joi.object({
   name: trimmedString.min(2).max(100).required(),
   email: trimmedString.email().lowercase().required(),
-  password: trimmedString.min(8).max(128).required(),
+  password: trimmedString.min(6).max(128).required(),
   phone: phone.required(),
   shopName: trimmedString.min(2).max(200).required(),
   address: trimmedString.max(500).optional(),
@@ -32,7 +32,7 @@ export const sellerProfileUpdateSchema = Joi.object({
 
 export const sellerPasswordChangeSchema = Joi.object({
   currentPassword: trimmedString.min(1).required(),
-  newPassword: trimmedString.min(8).max(128).required(),
+  newPassword: trimmedString.min(6).max(128).required(),
 });
 
 export const withdrawalRequestSchema = Joi.object({

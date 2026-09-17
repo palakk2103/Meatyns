@@ -2,7 +2,7 @@ import Seller from "../models/seller.js";
 import { calculateDistance } from "../utils/helper.js";
 import { buildKey, getOrSet, getTTL } from "./cacheService.js";
 
-const MAX_SELLER_SEARCH_DISTANCE_M = 100000;
+const MAX_SELLER_SEARCH_DISTANCE_M = 10000000;
 
 export function parseCustomerCoordinates(query = {}) {
   const lat = Number(query.lat);
@@ -69,7 +69,7 @@ export async function getNearbySellerIdsForCustomer(lat, lng) {
         }
         if (sellerLng === 0 && sellerLat === 0) return true;
         const distanceKm = calculateDistance(lat, lng, sellerLat, sellerLng);
-        const effectiveRadius = Math.max(Number(seller.serviceRadius) || 25, 25);
+        const effectiveRadius = Math.max(Number(seller.serviceRadius) || 5000, 5000);
         return distanceKm <= effectiveRadius;
       })
       .map((seller) => String(seller._id));

@@ -9,11 +9,11 @@ const settingSchema = new mongoose.Schema(
         // General
         appName: {
             type: String,
-            default: "Appzeto Quick Commerce",
+            default: "Meatyns",
         },
         supportEmail: {
             type: String,
-            default: "anitamegamart@gmail.com",
+            default: "support@meatyns.com",
         },
         supportPhone: {
             type: String,

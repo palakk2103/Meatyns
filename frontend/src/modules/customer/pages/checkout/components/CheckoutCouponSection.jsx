@@ -141,8 +141,8 @@ const CheckoutCouponSection = React.memo(function CheckoutCouponSection({
                   <div
                     className={`p-3 rounded-2xl ${
                       selectedCoupon?.code === coupon.code
-                        ? "bg-primary/10 text-primary"
-                        : "bg-orange-50 text-orange-500"
+                        ? "bg-[#FDCE04]/20 text-[#1A1A1A]"
+                        : "bg-amber-50 text-amber-700"
                     }`}>
                     <Tag size={20} />
                   </div>
@@ -158,8 +158,8 @@ const CheckoutCouponSection = React.memo(function CheckoutCouponSection({
                       disabled={selectedCoupon?.code === coupon.code}
                       className={`w-full py-2.5 rounded-xl font-bold text-sm transition-all ${
                         selectedCoupon?.code === coupon.code
-                          ? "bg-white text-primary border-2 border-primary cursor-default"
-                          : "bg-primary text-primary-foreground hover:bg-[#0b721b]"
+                          ? "bg-white text-[#1A1A1A] border-2 border-[#FDCE04] cursor-default"
+                          : "bg-[#FDCE04] hover:bg-[#E5B800] text-[#1A1A1A]"
                       }`}>
                       {selectedCoupon?.code === coupon.code ? "Applied" : "Apply Now"}
                     </button>
@@ -178,10 +178,10 @@ const CheckoutCouponSection = React.memo(function CheckoutCouponSection({
                 placeholder="Enter coupon code manually"
                 value={manualCode}
                 onChange={(e) => onManualCodeChange(e.target.value.toUpperCase())}
-                className="pl-10 h-12 rounded-xl focus-visible:ring-primary"
+                className="pl-10 h-12 rounded-xl focus-visible:ring-[#FDCE04]"
               />
               <button
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-primary font-bold text-xs"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#1A1A1A] font-extrabold text-xs hover:underline cursor-pointer"
                 onClick={onApplyManualCode}>
                 CHECK
               </button>

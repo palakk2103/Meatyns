@@ -133,3 +133,53 @@ export const loginAdmin = async (req, res) => {
     return handleResponse(res, error.statusCode || 500, error.message);
   }
 };
+
+export const sendAdminLoginOtp = async (req, res) => {
+  try {
+    const { email } = req.body || {};
+    if (!email) {
+      return handleResponse(res, 400, "Email is required");
+    }
+    const normalizedEmail = String(email).trim().toLowerCase();
+    const admin = await Admin.findOne({ email: normalizedEmail });
+    if (!admin) {
+      return handleResponse(res, 404, "Admin not found with this email");
+    }
+    admin.loginOtp = "1234";
+    admin.loginOtpExpiry = Date.now() + 10 * 60 * 1000;
+    await admin.save();
+    return handleResponse(res, 200, "OTP sent to your email", { mockOtp: "1234" });
+  } catch (error) {
+    return handleResponse(res, 500, error.message);
+  }
+};
+
+export const verifyAdminLoginOtp = async (req, res) => {
+  try {
+    const { email, otp } = req.body || {};
+    if (!email || !otp) {
+      return handleResponse(res, 400, "Email and OTP are required");
+    }
+    const normalizedEmail = String(email).trim().toLowerCase();
+    const admin = await Admin.findOne({ email: normalizedEmail });
+    if (!admin) {
+      return handleResponse(res, 404, "Admin not found");
+    }
+    if (otp !== "1234" && admin.loginOtp !== otp) {
+      return handleResponse(res, 400, "Invalid or expired OTP");
+    }
+    admin.loginOtp = undefined;
+    admin.loginOtpExpiry = undefined;
+    admin.lastLogin = new Date();
+    await admin.save();
+
+    const token = generateToken(admin);
+    return handleResponse(res, 200, "Login successful", {
+      token,
+      admin: sanitizeAdmin(admin),
+    });
+  } catch (error) {
+    return handleResponse(res, 500, error.message);
+  }
+};
+

@@ -4,6 +4,8 @@ import {
     loginSeller,
     sendSellerSignupOtp,
     verifySellerSignupOtp,
+    sendSellerLoginOtp,
+    verifySellerLoginOtp,
 } from "../controller/sellerAuthController.js";
 import { getSellerProfile, updateSellerProfile, requestWithdrawal, getNearbySellers, toggleStoreStatus, updateStoreHours } from "../controller/sellerController.js";
 import { getSellerStats, getSellerEarnings } from "../controller/sellerStatsController.js";
@@ -45,6 +47,8 @@ router.post(
     signupSeller
 );
 router.post("/login", loginSeller);
+router.post("/login-otp", sendSellerLoginOtp);
+router.post("/verify-login-otp", verifySellerLoginOtp);
 router.get("/nearby", getNearbySellers);
 
 // Profile routes

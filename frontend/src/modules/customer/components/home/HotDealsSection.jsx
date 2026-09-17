@@ -7,49 +7,49 @@ import { useProductDetail } from "../../context/ProductDetailContext";
 import { toast } from "sonner";
 import { applyCloudinaryTransform } from "@/core/utils/imageUtils";
 
-// 4 Curated Hot Deals directly matching reference screenshot
+// 4 Curated Hot Deals using real product IDs from database
 export const DEFAULT_HOT_DEALS = [
   {
-    id: "deal-chicken-breast",
-    _id: "deal-chicken-breast",
+    id: "6a8740d900d8659486c095e3",
+    _id: "6a8740d900d8659486c095e3",
     name: "Chicken Breast (Boneless)",
     weight: "500 g",
-    price: 149,
+    price: 169,
     originalPrice: 199,
-    discount: "25% OFF",
+    discount: "15% OFF",
     image:
       "https://images.unsplash.com/photo-1604503468506-a8da13d82791?auto=format&fit=crop&q=80&w=500",
   },
   {
-    id: "deal-salmon-fish",
-    _id: "deal-salmon-fish",
+    id: "6a86db0c00d8659486c09034",
+    _id: "6a86db0c00d8659486c09034",
     name: "Salmon Fish (Premium)",
-    weight: "500 g",
-    price: 449,
+    weight: "300 g",
+    price: 529,
     originalPrice: 599,
-    discount: "25% OFF",
+    discount: "12% OFF",
     image:
       "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&q=80&w=500",
   },
   {
-    id: "deal-mutton-curry-cut",
-    _id: "deal-mutton-curry-cut",
+    id: "6a87431700d8659486c09905",
+    _id: "6a87431700d8659486c09905",
     name: "Mutton Curry Cut",
     weight: "500 g",
     price: 349,
-    originalPrice: 449,
-    discount: "22% OFF",
+    originalPrice: 389,
+    discount: "10% OFF",
     image:
-      "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&q=80&w=500",
+      "https://images.unsplash.com/photo-1603048588665-791ca8aea617?auto=format&fit=crop&q=80&w=500",
   },
   {
-    id: "deal-tiger-prawns",
-    _id: "deal-tiger-prawns",
+    id: "6a873fe300d8659486c09479",
+    _id: "6a873fe300d8659486c09479",
     name: "Fresh Tiger Prawns",
-    weight: "500 g",
+    weight: "250 g",
     price: 299,
-    originalPrice: 399,
-    discount: "25% OFF",
+    originalPrice: 349,
+    discount: "14% OFF",
     image:
       "https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&q=80&w=500",
   },
@@ -63,19 +63,16 @@ const HotDealsSection = ({ products = [] }) => {
 
   // Merge real backend products if they have discounts, or fallback to curated defaults
   const displayItems = React.useMemo(() => {
-    const MEAT_KEYWORDS = ["chicken", "fish", "mutton", "meat", "beef", "prawn", "seafood", "steak", "curry cut"];
     const discountedFromBackend = (products || [])
       .filter((p) => {
-        const orig = Number(p.originalPrice || p.price || 0);
         const curr = Number(p.salePrice || p.price || 0);
-        const name = (p.name || "").toLowerCase();
-        const cat = (p.category?.name || p.category || "").toLowerCase();
-        return orig > curr && MEAT_KEYWORDS.some((kw) => name.includes(kw) || cat.includes(kw));
+        const orig = Number(p.originalPrice || p.price || 0);
+        return orig > curr && curr > 0;
       })
       .map((p) => {
-        const orig = Number(p.originalPrice || p.price || 0);
         const curr = Number(p.salePrice || p.price || 0);
-        const pct = Math.round(((orig - curr) / orig) * 100);
+        const orig = Number(p.originalPrice || p.price || 0);
+        const pct = orig > curr ? Math.round(((orig - curr) / orig) * 100) : 0;
         return {
           id: p._id || p.id,
           _id: p._id || p.id,
@@ -106,10 +103,11 @@ const HotDealsSection = ({ products = [] }) => {
   }, [products]);
 
   const getQuantity = (product) => {
+    const pId = String(product?.id || product?._id || "");
     const item = (cart || []).find(
-      (c) => (c.id || c._id) === (product.id || product._id)
+      (c) => String(c.id || c._id) === pId
     );
-    return item ? item.quantity : 0;
+    return item ? Number(item.quantity) || 0 : 0;
   };
 
   const handleCardClick = (product) => {
@@ -131,25 +129,28 @@ const HotDealsSection = ({ products = [] }) => {
   const handleAddToCart = (e, product) => {
     e.preventDefault();
     e.stopPropagation();
-    addToCart(product);
+    addToCart({
+      ...product,
+      id: product.id || product._id,
+      _id: product.id || product._id,
+    });
     toast.success(`${product.name} added to cart!`);
   };
 
   const handleIncrement = (e, product) => {
     e.preventDefault();
     e.stopPropagation();
-    const qty = getQuantity(product);
-    updateQuantity(product.id || product._id, qty + 1);
+    updateQuantity(product.id || product._id, 1);
   };
 
   const handleDecrement = (e, product) => {
     e.preventDefault();
     e.stopPropagation();
     const qty = getQuantity(product);
-    if (qty === 1) {
+    if (qty <= 1) {
       removeFromCart(product.id || product._id);
     } else {
-      updateQuantity(product.id || product._id, qty - 1);
+      updateQuantity(product.id || product._id, -1);
     }
   };
 
@@ -158,17 +159,17 @@ const HotDealsSection = ({ products = [] }) => {
       {/* Section Header */}
       <div className="flex items-center justify-between mb-3 sm:mb-4 px-1">
         <div className="flex items-center gap-2 sm:gap-2.5">
-          <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#6B111F]/10 flex items-center justify-center text-[#6B111F]">
-            <Flame size={18} className="fill-[#6B111F] sm:w-5 sm:h-5" />
+          <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#FDCE04]/20 flex items-center justify-center text-[#EF131F]">
+            <Flame size={18} className="fill-[#EF131F] sm:w-5 sm:h-5" />
           </div>
-          <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-[#6B111F] tracking-tight">
+          <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-slate-900 tracking-tight">
             Hot Deals
           </h2>
         </div>
 
         <button
           onClick={() => navigate("/offers")}
-          className="text-xs sm:text-sm font-bold text-[#6B111F] hover:opacity-80 flex items-center gap-1 cursor-pointer transition-opacity border-0 bg-transparent p-0"
+          className="text-xs sm:text-sm font-bold text-slate-700 hover:text-slate-900 flex items-center gap-1 cursor-pointer transition-colors border-0 bg-transparent p-0"
         >
           <span>View All</span>
           <span className="text-sm font-bold">&rarr;</span>
@@ -197,7 +198,7 @@ const HotDealsSection = ({ products = [] }) => {
                 />
 
                 {/* Hot Deal Red Badge */}
-                <span className="absolute top-1.5 left-1.5 sm:top-2.5 sm:left-2.5 bg-[#E52535] text-white text-[8.5px] sm:text-[11px] font-bold px-1.5 sm:px-2 py-0.5 rounded shadow-xs tracking-wide">
+                <span className="absolute top-1.5 left-1.5 sm:top-2.5 sm:left-2.5 bg-[#EF131F] text-white text-[8.5px] sm:text-[11px] font-bold px-1.5 sm:px-2 py-0.5 rounded shadow-xs tracking-wide">
                   Hot Deal
                 </span>
 
@@ -221,7 +222,7 @@ const HotDealsSection = ({ products = [] }) => {
               {/* Card Content */}
               <div className="p-2 sm:p-3.5 flex flex-col justify-between flex-1 gap-1.5 sm:gap-2">
                 <div>
-                  <h3 className="font-bold text-slate-900 text-[11.5px] sm:text-[14px] leading-snug line-clamp-1 group-hover:text-[#6B111F] transition-colors">
+                  <h3 className="font-bold text-slate-900 text-[11.5px] sm:text-[14px] leading-snug line-clamp-1 group-hover:text-amber-600 transition-colors">
                     {product.name}
                   </h3>
                   <p className="text-[9.5px] sm:text-xs text-slate-400 font-medium mt-0.5">
@@ -239,7 +240,7 @@ const HotDealsSection = ({ products = [] }) => {
                   <span className="text-[13px] sm:text-base md:text-lg font-black text-slate-900">
                     ₹{product.price}
                   </span>
-                  <span className="ml-auto bg-[#DC2626] text-white text-[8px] sm:text-[10.5px] font-bold px-1 sm:px-1.5 py-0.5 rounded shadow-xs tracking-tight">
+                  <span className="ml-auto bg-[#EF131F] text-white text-[8px] sm:text-[10.5px] font-bold px-1 sm:px-1.5 py-0.5 rounded shadow-xs tracking-tight">
                     {product.discount || "25% OFF"}
                   </span>
                 </div>
@@ -248,22 +249,22 @@ const HotDealsSection = ({ products = [] }) => {
                 <div className="pt-0.5 sm:pt-1">
                   {quantity > 0 ? (
                     <div
-                      style={{ borderColor: "#6B111F" }}
-                      className="flex items-center bg-white border border-[#6B111F] rounded-lg sm:rounded-xl p-0.5 justify-between h-6.5 sm:h-8"
+                      style={{ borderColor: "#FDCE04" }}
+                      className="flex items-center bg-white border border-[#FDCE04] rounded-lg sm:rounded-xl p-0.5 justify-between h-6.5 sm:h-8"
                       onClick={(e) => e.stopPropagation()}
                     >
                       <button
                         onClick={(e) => handleDecrement(e, product)}
-                        className="w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-[#6B111F] active:scale-90 transition-transform cursor-pointer border-0 bg-transparent"
+                        className="w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-[#1A1A1A] active:scale-90 transition-transform cursor-pointer border-0 bg-transparent font-bold"
                       >
                         <Minus size={10} strokeWidth={3} />
                       </button>
-                      <span className="font-bold text-[11px] sm:text-xs text-[#6B111F] px-1">
+                      <span className="font-bold text-[11px] sm:text-xs text-[#1A1A1A] px-1">
                         {quantity}
                       </span>
                       <button
                         onClick={(e) => handleIncrement(e, product)}
-                        className="w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-[#6B111F] active:scale-90 transition-transform cursor-pointer border-0 bg-transparent"
+                        className="w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-[#1A1A1A] active:scale-90 transition-transform cursor-pointer border-0 bg-transparent font-bold"
                       >
                         <Plus size={10} strokeWidth={3} />
                       </button>
@@ -272,9 +273,9 @@ const HotDealsSection = ({ products = [] }) => {
                     <button
                       type="button"
                       onClick={(e) => handleAddToCart(e, product)}
-                      className="w-full h-6.5 sm:h-8 py-0.5 sm:py-1 px-2 sm:px-3 rounded-lg sm:rounded-xl bg-[#6B111F] hover:bg-[#8B1A2C] text-white text-[10px] sm:text-xs font-bold flex items-center justify-center gap-1 sm:gap-1.5 transition-colors cursor-pointer shadow-xs active:scale-98 border-0"
+                      className="w-full h-6.5 sm:h-8 py-0.5 sm:py-1 px-2 sm:px-3 rounded-lg sm:rounded-xl bg-[#FDCE04] hover:bg-[#E5B800] text-[#1A1A1A] text-[10px] sm:text-xs font-bold flex items-center justify-center gap-1 sm:gap-1.5 transition-colors cursor-pointer shadow-xs active:scale-98 border-0"
                     >
-                      <ShoppingCart size={11} strokeWidth={2.2} />
+                      <ShoppingCart size={11} strokeWidth={2.4} className="text-[#1A1A1A]" />
                       <span>Add to Cart</span>
                     </button>
                   )}

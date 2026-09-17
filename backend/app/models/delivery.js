@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 
 const deliverySchema = new mongoose.Schema(
     {
@@ -23,6 +24,12 @@ const deliverySchema = new mongoose.Schema(
         email: {
             type: String,
             trim: true,
+            lowercase: true,
+        },
+
+        password: {
+            type: String,
+            select: false,
         },
 
         address: {
@@ -123,6 +130,20 @@ const deliverySchema = new mongoose.Schema(
 
 deliverySchema.index({ location: "2dsphere" });
 deliverySchema.index({ isOnline: 1, isVerified: 1 });
+
+// Hash password before saving if modified
+deliverySchema.pre("save", async function (next) {
+    if (!this.isModified("password") || !this.password) return next();
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
+});
+
+// Compare password
+deliverySchema.methods.comparePassword = async function (enteredPassword) {
+    if (!this.password || !enteredPassword) return false;
+    return await bcrypt.compare(enteredPassword, this.password);
+};
 
 deliverySchema.virtual('id').get(function () {
     return this._id.toHexString();

@@ -3,7 +3,7 @@ import React from "react";
 /**
  * FishEmptyCartIllustration
  * A modern, delightful fish-themed empty cart illustration for Meatyns.
- * Features a cute fresh catch fish with brand color tones (wine-red #741721, coral, soft blush),
+ * Features a cute fresh catch fish with brand color tones (golden yellow #FDCE04, coral, soft blush),
  * water ripples, bubbles, and sparkle accents.
  */
 const FishEmptyCartIllustration = ({ className = "w-60 h-52 sm:w-72 sm:h-64 mx-auto select-none" }) => {
@@ -16,12 +16,12 @@ const FishEmptyCartIllustration = ({ className = "w-60 h-52 sm:w-72 sm:h-64 mx-a
         className="w-full h-full drop-shadow-sm"
       >
         <defs>
-          {/* Fish Body Gradient (Warm Coral-Salmon to Deep Meatyns Wine Red) */}
+          {/* Fish Body Gradient (Warm Coral-Salmon to Golden Yellow) */}
           <linearGradient id="meatynsFishGrad" x1="180" y1="75" x2="50" y2="135" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#FF6B7A" />
-            <stop offset="35%" stopColor="#E63950" />
-            <stop offset="85%" stopColor="#9E1B2B" />
-            <stop offset="100%" stopColor="#741721" />
+            <stop offset="0%" stopColor="#FF8B3D" />
+            <stop offset="40%" stopColor="#F59E0B" />
+            <stop offset="85%" stopColor="#FDCE04" />
+            <stop offset="100%" stopColor="#E5B800" />
           </linearGradient>
 
           {/* Belly Gradient (Soft Creamy Blush) */}
@@ -114,8 +114,8 @@ const FishEmptyCartIllustration = ({ className = "w-60 h-52 sm:w-72 sm:h-64 mx-a
 
         {/* Sparkle Pluses / Stars around */}
         {/* Top Left Sparkle */}
-        <g opacity="0.65">
-          <path d="M52 68 Q52 74 46 74 Q52 74 52 80 Q52 74 58 74 Q52 74 52 68 Z" fill="#741721" />
+        <g opacity="0.8">
+          <path d="M52 68 Q52 74 46 74 Q52 74 52 80 Q52 74 58 74 Q52 74 52 68 Z" fill="#FDCE04" />
         </g>
         {/* Top Right Sparkle */}
         <g opacity="0.7">

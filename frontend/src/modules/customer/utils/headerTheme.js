@@ -20,7 +20,7 @@ export function shiftHex(hex, amount) {
     .join("")}`;
 }
 
-const DEFAULT_BASE = "#520e1e";
+const DEFAULT_BASE = "#FDCE04";
 
 /** Search field surface: crisp white matching reference header design. */
 export function buildSearchBarBackgroundColor(baseHeaderColor) {
@@ -28,21 +28,27 @@ export function buildSearchBarBackgroundColor(baseHeaderColor) {
 }
 
 /**
- * Rich luxury header gradient that retains the deep wine/burgundy color tone.
+ * Rich golden yellow header gradient matching official Meatyns brand identity.
  */
 export function buildHeaderGradient(baseHeaderColor) {
   const base = baseHeaderColor || DEFAULT_BASE;
+  if (base.toLowerCase() === "#fdce04" || base.toLowerCase() === "#520e1e") {
+    return `linear-gradient(180deg, #FECD04 0%, #FDCE04 55%, #F5C502 100%)`;
+  }
   return `linear-gradient(180deg, ${shiftHex(base, -6)} 0%, ${base} 55%, ${shiftHex(base, -10)} 100%)`;
 }
 
-/** Solid fill for floating cart pill: header mid tone, slightly darker. */
+/** Solid fill for floating cart pill: header mid tone. */
 export function buildMiniCartColor(baseHeaderColor) {
   return baseHeaderColor || DEFAULT_BASE;
 }
 
-/** Gradient for floating mini cart pill (same palette as header, horizontal). */
+/** Gradient for floating mini cart pill. */
 export function buildMiniCartGradient(baseHeaderColor) {
   const base = baseHeaderColor || DEFAULT_BASE;
+  if (base.toLowerCase() === "#fdce04" || base.toLowerCase() === "#520e1e") {
+    return `linear-gradient(135deg, #FFD526 0%, #FDCE04 48%, #E5B800 100%)`;
+  }
   const top = shiftHex(base, -12);
   const mid = shiftHex(base, 20);
   const deep = shiftHex(mid, -32);

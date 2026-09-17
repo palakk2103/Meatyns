@@ -118,7 +118,7 @@ const WalletPage = () => {
             key: key || import.meta.env.VITE_RAZORPAY_KEY_ID || "",
             amount: amount,
             currency: currency || "INR",
-            name: settings?.appName || "Anita Megamart",
+            name: settings?.appName || "Meatyns",
             description: "Wallet Recharge",
             order_id: orderId,
             handler: async function (response) {
@@ -153,7 +153,7 @@ const WalletPage = () => {
                 contact: user?.phone || "",
             },
             theme: {
-                color: "#741721",
+                color: "#FDCE04",
             },
             modal: {
                 ondismiss: function () {
@@ -222,30 +222,30 @@ const WalletPage = () => {
 
     return (
         <div className="min-h-screen bg-[#FAF6F0] pb-24 font-outfit text-[#1A1A1A] relative">
-            {/* Top Burgundy App Header */}
+            {/* Top Golden Yellow App Header */}
             <header
                 className="sticky top-0 z-30 px-4 h-14 flex items-center gap-3.5 shadow-sm select-none"
-                style={{ background: "#741721" }}
+                style={{ background: "#FDCE04" }}
             >
                 <button
                     type="button"
                     onClick={() => navigate(-1)}
                     aria-label="Go back"
-                    className="w-8 h-8 flex items-center justify-center text-white active:scale-90 transition-transform rounded-full hover:bg-white/10 -ml-1"
+                    className="w-8 h-8 flex items-center justify-center text-[#1A1A1A] active:scale-90 transition-transform rounded-full hover:bg-black/5 -ml-1"
                 >
                     <ChevronLeft size={24} strokeWidth={2.4} />
                 </button>
-                <h1 className="text-[17px] sm:text-lg font-bold text-white tracking-wide">
+                <h1 className="text-[17px] sm:text-lg font-bold text-[#1A1A1A] tracking-wide">
                     Wallet
                 </h1>
             </header>
 
             <div className="max-w-2xl mx-auto px-3.5 sm:px-4 pt-3.5 relative z-20 space-y-4">
                 {/* Primary Balance Header Card */}
-                <div className="bg-white rounded-2xl border border-[#EBE3D5] p-5 sm:p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4 shadow-[0_4px_16px_rgba(116,23,33,0.04)]">
+                <div className="bg-white rounded-2xl border border-[#EBE3D5] p-5 sm:p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4 shadow-[0_4px_16px_rgba(253,206,4,0.06)]">
                     <div>
                         <p className="text-[11px] font-bold text-[#7A6A60] uppercase tracking-wider">Wallet Balance</p>
-                        <h2 className="text-3xl sm:text-4xl font-extrabold text-[#741721] mt-1 tracking-tight">
+                        <h2 className="text-3xl sm:text-4xl font-extrabold text-[#1A1A1A] mt-1 tracking-tight">
                             {loading ? '...' : `₹${(walletMetrics.walletBalance || 0).toLocaleString('en-IN')}`}
                         </h2>
                         <p className="text-xs font-semibold text-[#8C7E72] mt-1.5">Use up to 25% wallet coins at checkout</p>
@@ -253,8 +253,7 @@ const WalletPage = () => {
                     <div className="flex flex-wrap items-center gap-3">
                         <button
                             onClick={() => setIsRechargeModalOpen(true)}
-                            className="px-6 py-3 text-white rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider transition-all shadow-md hover:opacity-95 active:scale-95 flex items-center gap-2 select-none"
-                            style={{ background: "#741721" }}
+                            className="px-6 py-3 bg-[#FDCE04] hover:bg-[#E5B800] text-[#1A1A1A] rounded-full text-xs sm:text-sm font-extrabold uppercase tracking-wider transition-all shadow-md active:scale-95 flex items-center gap-2 select-none border border-[#E5B800]"
                         >
                             <Plus size={16} strokeWidth={2.5} />
                             Add Money via Razorpay
@@ -264,38 +263,38 @@ const WalletPage = () => {
 
                 {/* 4 Metrics Grid */}
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3">
-                    <div className="bg-white rounded-2xl border border-[#EBE3D5] p-3.5 text-center shadow-[0_2px_8px_rgba(116,23,33,0.03)]">
+                    <div className="bg-white rounded-2xl border border-[#EBE3D5] p-3.5 text-center shadow-[0_2px_8px_rgba(0,0,0,0.02)]">
                         <p className="text-[10px] font-bold text-[#8C7E72] uppercase tracking-wider">Available Coins</p>
-                        <h3 className="text-lg font-extrabold text-[#741721] mt-0.5">{loading ? '...' : walletMetrics.availableCoins}</h3>
+                        <h3 className="text-lg font-extrabold text-[#1A1A1A] mt-0.5">{loading ? '...' : walletMetrics.availableCoins}</h3>
                     </div>
-                    <div className="bg-white rounded-2xl border border-[#EBE3D5] p-3.5 text-center shadow-[0_2px_8px_rgba(116,23,33,0.03)]">
+                    <div className="bg-white rounded-2xl border border-[#EBE3D5] p-3.5 text-center shadow-[0_2px_8px_rgba(0,0,0,0.02)]">
                         <p className="text-[10px] font-bold text-[#8C7E72] uppercase tracking-wider">Used Coins</p>
                         <h3 className="text-lg font-extrabold text-[#B45309] mt-0.5">{loading ? '...' : walletMetrics.usedCoins}</h3>
                     </div>
-                    <div className="bg-white rounded-2xl border border-[#EBE3D5] p-3.5 text-center shadow-[0_2px_8px_rgba(116,23,33,0.03)]">
+                    <div className="bg-white rounded-2xl border border-[#EBE3D5] p-3.5 text-center shadow-[0_2px_8px_rgba(0,0,0,0.02)]">
                         <p className="text-[10px] font-bold text-[#8C7E72] uppercase tracking-wider">Expired Coins</p>
                         <h3 className="text-lg font-extrabold text-[#9E8E80] mt-0.5">{loading ? '...' : walletMetrics.expiredCoins}</h3>
                     </div>
-                    <div className="bg-white rounded-2xl border border-[#EBE3D5] p-3.5 text-center shadow-[0_2px_8px_rgba(116,23,33,0.03)]">
+                    <div className="bg-white rounded-2xl border border-[#EBE3D5] p-3.5 text-center shadow-[0_2px_8px_rgba(0,0,0,0.02)]">
                         <p className="text-[10px] font-bold text-[#8C7E72] uppercase tracking-wider">Total Earned</p>
                         <h3 className="text-lg font-extrabold text-[#047857] mt-0.5">{loading ? '...' : walletMetrics.totalEarned}</h3>
                     </div>
                 </div>
 
-                <div className="bg-white rounded-2xl border border-[#EBE3D5] shadow-[0_4px_16px_rgba(116,23,33,0.03)] overflow-hidden">
+                <div className="bg-white rounded-2xl border border-[#EBE3D5] shadow-[0_4px_16px_rgba(0,0,0,0.02)] overflow-hidden">
                     <div className="px-4 py-3 bg-[#FAF6F0] border-b border-[#F2EDE4] flex items-center justify-between">
-                        <h3 className="text-[14px] sm:text-base font-bold text-[#741721]">Transaction History</h3>
+                        <h3 className="text-[14px] sm:text-base font-bold text-[#1A1A1A]">Transaction History</h3>
                         <Wallet size={18} className="text-[#CEB186]" />
                     </div>
 
                     {loading ? (
-                        <div className="py-12 flex justify-center items-center gap-2.5 text-[#741721] text-sm font-semibold">
-                            <Loader2 className="animate-spin" size={20} />
+                        <div className="py-12 flex justify-center items-center gap-2.5 text-[#1A1A1A] text-sm font-semibold">
+                            <Loader2 className="animate-spin text-[#B45309]" size={20} />
                             Loading...
                         </div>
                     ) : transactions.length === 0 ? (
                         <div className="py-12 flex flex-col items-center justify-center text-center px-6">
-                            <div className="w-14 h-14 rounded-full bg-[#FFF0EF] border border-[#F2B8BF] flex items-center justify-center text-[#741721] mb-3">
+                            <div className="w-14 h-14 rounded-full bg-[#FEF08A] border border-[#FDE68A] flex items-center justify-center text-[#1A1A1A] mb-3">
                                 <Wallet size={26} />
                             </div>
                             <p className="text-sm font-bold text-[#1A1A1A] mb-1">No wallet transactions yet</p>
@@ -308,7 +307,7 @@ const WalletPage = () => {
                             {transactions.map((tx) => (
                                 <div key={tx._id} className="px-4 py-3.5 flex items-center justify-between hover:bg-[#FAF6F0]/60 transition-colors">
                                     <div className="flex items-center gap-3">
-                                        <div className={`h-10 w-10 rounded-xl flex items-center justify-center ${tx.type === 'credit' ? 'bg-[#ECFDF5] text-[#047857] border border-[#A7F3D0]/60' : 'bg-[#FFF0EF] text-[#741721] border border-[#F2B8BF]/60'}`}>
+                                        <div className={`h-10 w-10 rounded-xl flex items-center justify-center ${tx.type === 'credit' ? 'bg-[#ECFDF5] text-[#047857] border border-[#A7F3D0]/60' : 'bg-[#FFFBEB] text-[#1A1A1A] border border-[#FDE68A]'}`}>
                                             {tx.type === 'credit' ? <ArrowDownLeft size={19} /> : <ArrowUpRight size={19} />}
                                         </div>
                                         <div>
@@ -326,7 +325,7 @@ const WalletPage = () => {
                                             </p>
                                         </div>
                                     </div>
-                                    <div className={`text-sm font-extrabold ${tx.type === 'credit' ? 'text-[#047857]' : 'text-[#741721]'}`}>
+                                    <div className={`text-sm font-extrabold ${tx.type === 'credit' ? 'text-[#047857]' : 'text-[#1A1A1A]'}`}>
                                         {tx.type === 'credit' ? '+' : '-'}{(tx.coins || tx.amount || 0).toLocaleString('en-IN')} Coins
                                     </div>
                                 </div>
@@ -342,7 +341,7 @@ const WalletPage = () => {
                     <div className="bg-white rounded-3xl max-w-md w-full border border-[#EBE3D5] shadow-2xl p-6 relative overflow-hidden">
                         <button
                             onClick={() => setIsRechargeModalOpen(false)}
-                            className="absolute top-4 right-4 text-[#8C7E72] hover:text-[#741721] transition-colors p-1"
+                            className="absolute top-4 right-4 text-[#8C7E72] hover:text-[#1A1A1A] transition-colors p-1"
                         >
                             <XCircle size={22} />
                         </button>
@@ -351,13 +350,13 @@ const WalletPage = () => {
 
                         <div className="mt-5 space-y-4">
                             <div>
-                                <label className="block text-xs font-bold text-[#741721] uppercase tracking-wider mb-1.5">Enter Amount (₹)</label>
+                                <label className="block text-xs font-bold text-[#1A1A1A] uppercase tracking-wider mb-1.5">Enter Amount (₹)</label>
                                 <input
                                     type="number"
                                     placeholder="Enter amount (e.g. 500)"
                                     value={rechargeAmount}
                                     onChange={(e) => setRechargeAmount(e.target.value)}
-                                    className="w-full px-4 py-3 bg-[#FAF6F0] border border-[#E4D5BE] rounded-xl text-lg font-bold text-[#1A1A1A] focus:outline-none focus:ring-2 focus:ring-[#741721] focus:bg-white transition-all"
+                                    className="w-full px-4 py-3 bg-[#FAF6F0] border border-[#E4D5BE] rounded-xl text-lg font-bold text-[#1A1A1A] focus:outline-none focus:ring-2 focus:ring-[#FDCE04] focus:bg-white transition-all"
                                 />
                             </div>
 
@@ -368,7 +367,7 @@ const WalletPage = () => {
                                         onClick={() => setRechargeAmount(String(amt))}
                                         className={`py-2.5 px-3 border rounded-xl text-sm font-bold transition-all ${
                                             rechargeAmount === String(amt)
-                                                ? 'bg-[#FFF0EF] border-[#741721] text-[#741721] shadow-sm'
+                                                ? 'bg-[#FEF08A] border-[#FDCE04] text-[#1A1A1A] shadow-sm ring-1 ring-[#FDCE04]'
                                                 : 'border-[#EBE3D5] text-[#1A1A1A] hover:bg-[#FAF6F0]'
                                         }`}
                                     >
@@ -380,8 +379,7 @@ const WalletPage = () => {
                             <button
                                 onClick={handleRecharge}
                                 disabled={rechargeLoading}
-                                className="w-full py-3.5 text-white rounded-full font-bold text-xs sm:text-sm uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-md active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
-                                style={{ background: "#741721" }}
+                                className="w-full py-3.5 bg-[#FDCE04] hover:bg-[#E5B800] text-[#1A1A1A] rounded-full font-extrabold text-xs sm:text-sm uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-md active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed border border-[#E5B800]"
                             >
                                 {rechargeLoading ? (
                                     <>
@@ -403,7 +401,7 @@ const WalletPage = () => {
                     <div className="bg-white rounded-3xl max-w-sm w-full border border-[#EBE3D5] shadow-2xl p-6 text-center">
                         {verificationState === 'verifying' && (
                             <div className="py-6 flex flex-col items-center gap-3">
-                                <Loader2 size={44} className="text-[#741721] animate-spin" />
+                                <Loader2 size={44} className="text-[#FDCE04] animate-spin" />
                                 <h3 className="text-lg font-bold text-[#1A1A1A] mt-2">Verifying Recharge</h3>
                                 <p className="text-xs text-[#7A6A60]">Please wait while we verify your payment status with the bank...</p>
                             </div>
@@ -412,12 +410,11 @@ const WalletPage = () => {
                             <div className="py-6 flex flex-col items-center gap-3">
                                 <CheckCircle2 size={48} className="text-[#047857]" />
                                 <h3 className="text-lg font-bold text-[#1A1A1A] mt-2">Recharge Successful!</h3>
-                                <p className="text-2xl font-black text-[#741721]">₹{verifiedAmount}</p>
+                                <p className="text-2xl font-black text-[#1A1A1A]">₹{verifiedAmount}</p>
                                 <p className="text-xs text-[#7A6A60]">Your wallet balance has been successfully credited.</p>
                                 <button
                                     onClick={() => setVerificationState(null)}
-                                    className="mt-4 px-8 py-2.5 text-white font-bold text-xs uppercase tracking-wider rounded-full shadow-md transition-all active:scale-95"
-                                    style={{ background: "#741721" }}
+                                    className="mt-4 px-8 py-2.5 bg-[#FDCE04] hover:bg-[#E5B800] text-[#1A1A1A] font-extrabold text-xs uppercase tracking-wider rounded-full shadow-md transition-all active:scale-95 border border-[#E5B800]"
                                 >
                                     Done
                                 </button>
@@ -425,7 +422,7 @@ const WalletPage = () => {
                         )}
                         {verificationState === 'failed' && (
                             <div className="py-6 flex flex-col items-center gap-3">
-                                <XCircle size={48} className="text-[#BE123C]" />
+                                <XCircle size={48} className="text-[#EF131F]" />
                                 <h3 className="text-lg font-bold text-[#1A1A1A] mt-2">Payment Verification Failed</h3>
                                 <p className="text-xs text-[#7A6A60]">We could not confirm your payment. If money was deducted, it will be refunded or credited shortly.</p>
                                 <button

@@ -32,50 +32,47 @@ const MobileHeroBanner = () => {
     <div className="w-full px-1.5 sm:px-2.5 pt-0 pb-1.5 select-none">
       <div
         onClick={() => navigate("/category/all")}
-        className="relative w-full h-[175px] sm:h-[195px] rounded-xl overflow-hidden shadow-md cursor-pointer border border-[#520E18]/40 flex items-center group"
+        className="relative w-full h-[175px] sm:h-[195px] rounded-2xl overflow-hidden shadow-sm cursor-pointer border border-[#E5B800]/50 flex items-center group"
         style={{
-          background: "#240408",
+          background:
+            "linear-gradient(105deg, #FECD04 0%, #FDCE04 55%, #F5C502 100%)",
         }}
       >
-        {/* Background Image: Fresh meat on cutting board on right */}
+        {/* Background Image: Fresh meat on cutting board on right (zero yellow wash) */}
         <img
-          src="/hero_banner_fresh_meat.jpg"
+          src="/banners/hero_platter_clean.jpg"
           alt="Fresh Meat & Seafood"
-          className="absolute inset-0 w-full h-full object-cover object-right sm:object-center group-hover:scale-[1.02] transition-transform duration-700"
+          className="absolute right-0 top-0 bottom-0 w-[55%] sm:w-[52%] h-full object-cover object-right pointer-events-none opacity-100 group-hover:scale-[1.02] transition-transform duration-700"
+          style={{
+            maskImage:
+              "linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 6%, rgba(0,0,0,1) 100%)",
+            WebkitMaskImage:
+              "linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 6%, rgba(0,0,0,1) 100%)",
+          }}
           loading="eager"
         />
 
-        {/* Deep Wine-Red Gradient Overlay on Left to guarantee crisp text legibility */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background:
-              "linear-gradient(90deg, rgba(36, 4, 8, 0.96) 0%, rgba(46, 6, 12, 0.92) 42%, rgba(56, 8, 16, 0.65) 65%, rgba(40, 5, 10, 0.15) 85%, transparent 100%)",
-          }}
-        />
-
         {/* Banner Content (Left side) */}
-        <div className="relative z-10 w-[62%] sm:w-[58%] pl-4 sm:pl-6 pr-2 flex flex-col justify-center gap-1.5 sm:gap-2">
+        <div className="relative z-10 w-[58%] sm:w-[55%] pl-3.5 sm:pl-5 pr-1 flex flex-col justify-center gap-1.5 sm:gap-2">
           {/* Eyebrow Label */}
-          <span className="text-[9px] sm:text-[10.5px] font-bold tracking-[0.2em] uppercase text-[#E5A83B]">
+          <span className="text-[8.5px] sm:text-[9.5px] font-extrabold tracking-[0.2em] uppercase text-[#1A1A1A] bg-black/5 px-2 py-0.5 rounded-full w-fit">
             PREMIUM QUALITY
           </span>
 
           {/* Headline */}
           <h2
-            className="text-[19px] sm:text-[23px] font-black text-white leading-[1.15] tracking-tight font-serif"
+            className="text-[18px] sm:text-[22px] font-black text-[#1A1A1A] leading-[1.12] tracking-tight font-serif"
             style={{
               fontFamily: "'Playfair Display', 'Merriweather', 'Georgia', serif",
-              textShadow: "0 2px 10px rgba(0,0,0,0.5)",
             }}
           >
-            Fresh Meat &amp;<br />
-            <span>Seafood</span>
+            Fresh Chicken,<br />
+            <span>Meat &amp; Seafood</span>
           </h2>
 
           {/* Subtitle */}
-          <p className="text-[10px] sm:text-[11.5px] text-[#F3E8E2]/90 font-normal leading-tight line-clamp-2">
-            Clean, hygienic &amp; farm fresh — delivered to your doorstep.
+          <p className="text-[9.5px] sm:text-[11px] text-[#1A1A1A]/85 font-semibold leading-tight line-clamp-2">
+            Farm fresh &bull; Hygienically packed &bull; 15&ndash;30 min delivery
           </p>
 
           {/* Action Button */}
@@ -83,7 +80,7 @@ const MobileHeroBanner = () => {
             <button
               type="button"
               onClick={handleShopNow}
-              className="inline-flex items-center gap-1 px-3 py-1 sm:px-4 sm:py-1.5 rounded-full border border-[#E5A83B] text-[#E5A83B] hover:bg-[#E5A83B]/15 text-[10px] sm:text-[11.5px] font-bold tracking-wide transition-all active:scale-95 bg-black/25 backdrop-blur-xs"
+              className="inline-flex items-center gap-1 px-3.5 py-1 sm:px-4 sm:py-1.5 rounded-full bg-[#1A1A1A] hover:bg-black text-[#FDCE04] text-[10px] sm:text-[11px] font-extrabold tracking-wide uppercase transition-all active:scale-95 shadow-sm border-0"
             >
               <span>Shop Now</span>
               <span className="text-xs">&rarr;</span>
@@ -98,8 +95,8 @@ const MobileHeroBanner = () => {
               key={dot}
               className={`transition-all duration-300 rounded-full ${
                 activeDot === dot
-                  ? "w-2 h-2 bg-[#E52535] ring-2 ring-[#E52535]/30"
-                  : "w-1.5 h-1.5 bg-white/60"
+                  ? "w-3 h-1.5 bg-[#1A1A1A]"
+                  : "w-1.5 h-1.5 bg-black/20"
               }`}
             />
           ))}

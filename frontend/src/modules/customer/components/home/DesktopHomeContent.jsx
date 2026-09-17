@@ -8,6 +8,7 @@ import {
   Clock,
   ChevronRight,
   Award,
+  Heart,
 } from "lucide-react";
 import { useCart } from "../../context/CartContext";
 import { toast } from "sonner";
@@ -38,75 +39,79 @@ const DesktopHomeContent = ({ products = [], categories = [] }) => {
     <div className="w-full flex flex-col lg:flex-row gap-6 p-4 lg:p-6 select-none">
       {/* ──── CENTER / MAIN COLUMN ──── */}
       <div className="flex-1 min-w-0 flex flex-col gap-6">
-        {/* Top Hero Banner */}
+        {/* Top Hero Banner (Golden Yellow Theme with original height & padding) */}
         <div
-          className="relative w-full rounded-2xl overflow-hidden p-6 sm:p-8 lg:p-10 shadow-md text-white"
+          className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden p-6 sm:p-8 lg:p-10 shadow-sm border border-[#E5B800]/50"
           style={{
             background:
-              "radial-gradient(ellipse at 80% 50%, rgba(130, 20, 40, 0.95) 0%, rgba(70, 10, 24, 0.98) 45%, #2B050E 100%)",
+              "linear-gradient(105deg, #FECD04 0%, #FDCE04 52%, #F5C502 100%)",
           }}
         >
-          {/* Meat and Fish background artwork on the right */}
+          {/* Fresh Meat & Seafood Platter Artwork on the right (100% crisp, zero yellow wash over meat) */}
           <div
-            className="absolute right-0 top-0 bottom-0 w-1/2 bg-no-repeat bg-right bg-cover opacity-80 mix-blend-screen pointer-events-none"
+            className="absolute right-0 top-0 bottom-0 w-1/2 lg:w-3/5 bg-no-repeat bg-right bg-cover pointer-events-none opacity-100"
             style={{
-              backgroundImage:
-                "url('https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&q=80&w=800')",
+              backgroundImage: "url('/banners/hero_platter_clean.jpg')",
               maskImage:
-                "linear-gradient(to left, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)",
+                "linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 4%, rgba(0,0,0,1) 100%)",
               WebkitMaskImage:
-                "linear-gradient(to left, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)",
+                "linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 4%, rgba(0,0,0,1) 100%)",
             }}
           />
 
-          {/* 100% Fresh Round Badge on top right */}
-          <div className="absolute top-6 right-8 z-10 hidden sm:flex flex-col items-center justify-center w-14 h-14 rounded-full border border-white/40 bg-black/30 backdrop-blur-md shadow-md text-center">
-            <span className="text-[10px] font-black tracking-wider uppercase leading-none">
-              100%
+          {/* Script Accent Top Right */}
+          <div className="absolute top-6 right-8 z-10 hidden sm:flex flex-col items-end pointer-events-none">
+            <span className="font-serif italic text-sm lg:text-base font-black text-[#1A1A1A] drop-shadow-xs flex items-center gap-1">
+              Good Food Good Health <Heart size={14} className="fill-[#EF131F] text-[#EF131F]" />
             </span>
-            <span className="text-[9px] font-semibold tracking-tight text-white/80 leading-none mt-0.5">
-              FRESH
-            </span>
-            <Sparkles size={9} className="text-amber-300 mt-0.5" />
           </div>
 
-          <div className="relative z-10 max-w-xl flex flex-col items-start gap-2.5">
+          {/* Hero Left Content */}
+          <div className="relative z-10 max-w-sm sm:max-w-md lg:max-w-lg flex flex-col items-start gap-2.5">
             {/* Tagline */}
-            <span className="text-[10.5px] font-black uppercase tracking-[0.25em] text-amber-300/95 font-sans">
-              PREMIUM QUALITY MEAT &amp; FISH
+            <span className="text-[10.5px] font-black uppercase tracking-[0.25em] text-[#1A1A1A] font-sans bg-black/5 px-2.5 py-0.5 rounded-full">
+              PREMIUM QUALITY
             </span>
 
             {/* Main Headline */}
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-white leading-tight drop-shadow-md">
-              Fresh Meat &amp; Seafood
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-[#1A1A1A] leading-[1.15] drop-shadow-xs">
+              Fresh Chicken, Meat &amp; Seafood
             </h2>
 
             {/* Subtitle */}
-            <p className="text-white/80 text-sm sm:text-base font-normal max-w-md leading-relaxed">
-              Directly sourced daily from certified farms &amp; local ports.
+            <p className="text-[#1A1A1A]/85 text-xs sm:text-sm font-semibold max-w-md leading-relaxed">
+              Farm fresh &bull; Hygienically packed &bull; Delivered to your doorstep
             </p>
 
             {/* 3 Value Props */}
-            <div className="flex flex-wrap items-center gap-5 sm:gap-7 mt-2 pt-1">
-              <div className="flex items-center gap-2 text-white/90">
-                <ShieldCheck size={18} className="text-amber-400 shrink-0" />
-                <span className="text-[11.5px] font-medium leading-tight">
-                  Hygienically
+            <div className="flex flex-wrap items-center gap-5 sm:gap-7 mt-2 pt-2 border-t border-black/10 w-full">
+              <div className="flex items-center gap-2 text-[#1A1A1A]">
+                <div className="w-7 h-7 rounded-full bg-black/10 flex items-center justify-center shrink-0">
+                  <ShieldCheck size={16} className="text-[#1A1A1A] stroke-[2.4]" />
+                </div>
+                <span className="text-[11px] font-bold leading-tight">
+                  100% Fresh
                   <br />
-                  Packed
+                  &amp; Natural
                 </span>
               </div>
-              <div className="flex items-center gap-2 text-white/90">
-                <Snowflake size={18} className="text-cyan-300 shrink-0" />
-                <span className="text-[11.5px] font-medium leading-tight">
+
+              <div className="flex items-center gap-2 text-[#1A1A1A]">
+                <div className="w-7 h-7 rounded-full bg-black/10 flex items-center justify-center shrink-0">
+                  <Snowflake size={16} className="text-[#1A1A1A] stroke-[2.4]" />
+                </div>
+                <span className="text-[11px] font-bold leading-tight">
                   Chilled
                   <br />
                   Always
                 </span>
               </div>
-              <div className="flex items-center gap-2 text-white/90">
-                <Truck size={18} className="text-amber-400 shrink-0" />
-                <span className="text-[11.5px] font-medium leading-tight">
+
+              <div className="flex items-center gap-2 text-[#1A1A1A]">
+                <div className="w-7 h-7 rounded-full bg-black/10 flex items-center justify-center shrink-0">
+                  <Truck size={16} className="text-[#1A1A1A] stroke-[2.4]" />
+                </div>
+                <span className="text-[11px] font-bold leading-tight">
                   Fast Delivery
                   <br />
                   15–30 mins
@@ -114,13 +119,13 @@ const DesktopHomeContent = ({ products = [], categories = [] }) => {
               </div>
             </div>
 
-            {/* Shop Now Action Button */}
+            {/* CTA Button */}
             <button
               onClick={() => navigate("/category/all")}
-              className="mt-3 px-6 py-2.5 rounded-xl bg-[#520e1e] hover:bg-[#681327] border border-white/25 text-white font-semibold text-xs tracking-wider uppercase shadow-md hover:shadow-lg transition-all cursor-pointer flex items-center gap-2 active:scale-95"
+              className="mt-2 px-6 py-2.5 rounded-full bg-[#1A1A1A] hover:bg-black text-[#FDCE04] font-extrabold text-xs tracking-wider uppercase shadow-md hover:shadow-lg transition-all cursor-pointer flex items-center gap-2 active:scale-95 border-0"
             >
-              <span>Shop All Deals</span>
-              <span>&rarr;</span>
+              <span>Shop Now</span>
+              <span className="text-sm font-black">&rarr;</span>
             </button>
           </div>
         </div>
@@ -146,19 +151,19 @@ const DesktopHomeContent = ({ products = [], categories = [] }) => {
       {/* ──── RIGHT COLUMN (SIDEBAR RAIL) ──── */}
       <div className="w-full lg:w-72 xl:w-80 shrink-0 flex flex-col gap-4">
         {/* Card 1: "Good Food Good Health" Promo Card */}
-        <div className="relative bg-[#F7EFE8] rounded-2xl p-5 border border-[#ECE0D5] overflow-hidden shadow-xs">
+        <div className="relative bg-[#FFFBEB] rounded-2xl p-5 border border-[#FDE68A] overflow-hidden shadow-xs">
           <div className="relative z-10 max-w-[170px] flex flex-col items-start gap-2">
             <h4 className="text-xl font-serif font-bold text-slate-900 leading-tight">
               Good Food
               <br />
-              <span className="italic text-[#520e1e]">Good Health</span>
+              <span className="italic text-amber-700">Good Health</span>
             </h4>
             <p className="text-[11.5px] text-slate-600 font-medium leading-relaxed">
               Clean, fresh &amp; safe meat and fish for your family.
             </p>
             <button
               onClick={() => navigate("/about")}
-              className="mt-1 px-3.5 py-1.5 rounded-lg bg-[#520e1e] hover:bg-[#681327] text-white text-[11px] font-semibold flex items-center gap-1 transition-colors cursor-pointer border-0"
+              className="mt-1 px-3.5 py-1.5 rounded-lg bg-[#FDCE04] hover:bg-[#E5B800] text-[#1A1A1A] text-[11px] font-bold flex items-center gap-1 transition-colors cursor-pointer border border-[#E5B800] shadow-xs"
             >
               <span>Know More</span>
               <span>&rarr;</span>
@@ -224,14 +229,14 @@ const DesktopHomeContent = ({ products = [], categories = [] }) => {
             type="button"
             onClick={() =>
               handleAddToCart({
-                id: "deal-chicken-breast",
+                id: "6a8740d900d8659486c095e3",
                 name: "Chicken Breast (Boneless)",
-                price: 149,
-                originalPrice: 179,
+                price: 169,
+                originalPrice: 199,
                 weight: "500 g",
               })
             }
-            className="w-full py-2 px-3 rounded-xl bg-[#520e1e] hover:bg-[#681327] text-white text-xs font-semibold flex items-center justify-center gap-2 transition-colors cursor-pointer border-0"
+            className="w-full py-2 px-3 rounded-xl bg-[#FDCE04] hover:bg-[#E5B800] text-[#1A1A1A] text-xs font-bold flex items-center justify-center gap-2 transition-colors cursor-pointer border-0 shadow-xs"
           >
             <span>Add to Cart</span>
           </button>
@@ -240,7 +245,7 @@ const DesktopHomeContent = ({ products = [], categories = [] }) => {
         {/* Card 3: 4 Trust Features Card */}
         <div className="bg-white rounded-2xl p-4 border border-slate-100 shadow-xs flex flex-col gap-3.5">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-[#FCE8EA] flex items-center justify-center text-[#520e1e] shrink-0">
+            <div className="w-8 h-8 rounded-full bg-[#FDCE04]/20 flex items-center justify-center text-[#1A1A1A] shrink-0">
               <ShieldCheck size={18} />
             </div>
             <div>
@@ -254,7 +259,7 @@ const DesktopHomeContent = ({ products = [], categories = [] }) => {
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-[#FCE8EA] flex items-center justify-center text-[#520e1e] shrink-0">
+            <div className="w-8 h-8 rounded-full bg-[#FDCE04]/20 flex items-center justify-center text-[#1A1A1A] shrink-0">
               <Award size={18} />
             </div>
             <div>
@@ -268,7 +273,7 @@ const DesktopHomeContent = ({ products = [], categories = [] }) => {
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-[#FCE8EA] flex items-center justify-center text-[#520e1e] shrink-0">
+            <div className="w-8 h-8 rounded-full bg-[#FDCE04]/20 flex items-center justify-center text-[#1A1A1A] shrink-0">
               <Snowflake size={18} />
             </div>
             <div>
@@ -282,7 +287,7 @@ const DesktopHomeContent = ({ products = [], categories = [] }) => {
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-[#FCE8EA] flex items-center justify-center text-[#520e1e] shrink-0">
+            <div className="w-8 h-8 rounded-full bg-[#FDCE04]/20 flex items-center justify-center text-[#1A1A1A] shrink-0">
               <Clock size={18} />
             </div>
             <div>
@@ -296,19 +301,19 @@ const DesktopHomeContent = ({ products = [], categories = [] }) => {
           </div>
         </div>
 
-        {/* Card 4: "Fresh Seafood" Mini Banner */}
+        {/* Card 4: "Fresh Seafood" Mini Banner (Golden Yellow Theme) */}
         <div
-          className="relative rounded-2xl p-4 overflow-hidden text-white shadow-xs cursor-pointer group"
+          className="relative rounded-2xl p-4 overflow-hidden text-[#1A1A1A] shadow-xs cursor-pointer group border border-[#FDE68A]"
           onClick={() => navigate("/category/seafood")}
           style={{
-            background: "linear-gradient(135deg, #1C0308 0%, #3B0610 100%)",
+            background: "linear-gradient(135deg, #FECD04 0%, #FDCE04 55%, #F5C502 100%)",
           }}
         >
           <div className="relative z-10 max-w-[150px]">
-            <h4 className="text-base font-serif font-bold text-white leading-tight">
+            <h4 className="text-base font-serif font-bold text-[#1A1A1A] leading-tight">
               Fresh Seafood
             </h4>
-            <p className="text-[10.5px] text-white/70 font-medium mt-1 leading-tight">
+            <p className="text-[10.5px] text-[#1A1A1A]/80 font-medium mt-1 leading-tight">
               Prawns, Crab, Lobster &amp; more
             </p>
           </div>

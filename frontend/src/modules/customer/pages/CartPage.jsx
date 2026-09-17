@@ -12,6 +12,7 @@ import {
     ShieldCheck,
     Truck,
     Tag,
+    ShoppingBag,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@shared/components/ui/Toast';
@@ -48,24 +49,24 @@ const CartPage = () => {
 
     return (
         <div>
-            {/* Mobile View - 100% Unchanged */}
+            {/* Mobile View */}
             <div className="md:hidden">
                 {cart.length === 0 ? (
                     <div className="min-h-screen bg-white flex flex-col font-outfit">
                         {/* Top Header Bar */}
                         <header
-                            className="sticky top-0 z-50 text-white px-4 h-14 flex items-center gap-3.5 shadow-sm select-none"
-                            style={{ background: "#741721" }}
+                            className="sticky top-0 z-50 text-[#1A1A1A] px-4 h-14 flex items-center gap-3 shadow-sm select-none"
+                            style={{ background: "linear-gradient(180deg, #FECD04 0%, #FDCE04 55%, #F5C502 100%)" }}
                         >
                             <button
                                 type="button"
                                 onClick={() => navigate(-1)}
                                 aria-label="Go back"
-                                className="flex items-center justify-center w-8 h-8 rounded-full text-white active:scale-90 transition-transform"
+                                className="flex items-center justify-center w-8 h-8 rounded-full text-[#1A1A1A] active:scale-90 transition-transform -ml-1"
                             >
                                 <ArrowLeft size={22} strokeWidth={2.4} />
                             </button>
-                            <h1 className="text-[17px] sm:text-lg font-bold text-white tracking-wide">
+                            <h1 className="text-[17px] font-bold text-[#1A1A1A] tracking-wide">
                                 My Cart
                             </h1>
                         </header>
@@ -83,15 +84,31 @@ const CartPage = () => {
                             </p>
                             <Link
                                 to="/"
-                                className="inline-flex items-center justify-center px-10 py-3 sm:px-12 sm:py-3.5 text-white font-bold text-xs sm:text-sm uppercase tracking-wider rounded-full shadow-md hover:opacity-95 active:scale-95 transition-all select-none"
-                                style={{ background: "#741721" }}
+                                className="inline-flex items-center justify-center px-10 py-3 sm:px-12 sm:py-3.5 text-[#1A1A1A] font-extrabold text-xs sm:text-sm uppercase tracking-wider rounded-full shadow-md bg-[#FDCE04] hover:bg-[#E5B800] active:scale-95 transition-all select-none"
                             >
                                 SHOP NOW
                             </Link>
                         </div>
                     </div>
                 ) : (
-                    <div className="relative isolate w-full overflow-hidden bg-[radial-gradient(circle_at_top_left,_rgba(12,131,31,0.14),_transparent_34%),linear-gradient(180deg,_#f8faf9_0%,_#eef6f0_100%)] animate-in fade-in slide-in-from-bottom-4 duration-700">
+                    <div className="relative isolate w-full min-h-screen overflow-hidden bg-[radial-gradient(circle_at_top_left,_rgba(254,205,4,0.15),_transparent_34%),linear-gradient(180deg,_#fbf8f5_0%,_#f5f1e8_100%)] animate-in fade-in slide-in-from-bottom-4 duration-700">
+                        {/* Top Header Bar */}
+                        <header
+                            className="sticky top-0 z-50 text-[#1A1A1A] px-4 h-14 flex items-center gap-3 shadow-sm select-none"
+                            style={{ background: "linear-gradient(180deg, #FECD04 0%, #FDCE04 55%, #F5C502 100%)" }}
+                        >
+                            <button
+                                type="button"
+                                onClick={() => navigate(-1)}
+                                aria-label="Go back"
+                                className="flex items-center justify-center w-8 h-8 rounded-full text-[#1A1A1A] active:scale-90 transition-transform -ml-1"
+                            >
+                                <ArrowLeft size={22} strokeWidth={2.4} />
+                            </button>
+                            <h1 className="text-[17px] font-bold text-[#1A1A1A] tracking-wide">
+                                My Cart
+                            </h1>
+                        </header>
                         <div className="relative mx-auto w-full max-w-[1440px] px-4 py-6">
                             <section className="space-y-4">
                                 <div className="flex items-center justify-between px-1">
@@ -170,10 +187,10 @@ const CartPage = () => {
                                     </div>
                                     <div className="border-t pt-2 flex justify-between font-black text-base">
                                         <span>Total</span>
-                                        <span className="text-[#741721]">₹{finalCartTotal}</span>
+                                        <span className="text-[#1A1A1A]">₹{finalCartTotal}</span>
                                     </div>
                                     <Link to="/checkout" className="block pt-2">
-                                        <Button className="w-full h-12 rounded-xl bg-[#741721] hover:bg-[#5e121a] text-white font-bold">
+                                        <Button className="w-full h-12 rounded-xl bg-[#FDCE04] hover:bg-[#E5B800] text-[#1A1A1A] font-extrabold border border-[#E5B800]">
                                             Proceed to Checkout
                                         </Button>
                                     </Link>
@@ -196,14 +213,14 @@ const CartPage = () => {
                         <div className="flex-1 min-w-0">
                             {cart.length === 0 ? (
                                 <div className="bg-white rounded-2xl p-12 border border-[#ede5df] shadow-xs text-center">
-                                    <div className="w-20 h-20 mx-auto rounded-full bg-rose-50 flex items-center justify-center text-[#741721] mb-4">
+                                    <div className="w-20 h-20 mx-auto rounded-full bg-[#FFFBEB] border border-[#FDE68A] flex items-center justify-center text-[#1A1A1A] mb-4">
                                         <ShoppingBag size={32} />
                                     </div>
                                     <h2 className="text-xl font-bold text-slate-900 mb-1">Your cart is empty</h2>
                                     <p className="text-xs text-slate-500 mb-6 max-w-sm mx-auto">Explore our fresh meat, poultry, and seafood selections and add your favorites to cart.</p>
                                     <Link
                                         to="/"
-                                        className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#741721] text-white text-xs font-bold hover:bg-[#5e121a] transition-colors"
+                                        className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#FDCE04] hover:bg-[#E5B800] text-[#1A1A1A] text-xs font-extrabold border border-[#E5B800] transition-colors"
                                     >
                                         Start Shopping &rarr;
                                     </Link>
@@ -309,11 +326,11 @@ const CartPage = () => {
                                                 placeholder="Enter code"
                                                 value={couponCode}
                                                 onChange={(e) => setCouponCode(e.target.value)}
-                                                className="px-3.5 py-1.5 text-xs rounded-xl border border-slate-200 focus:outline-none focus:border-[#741721] w-36 uppercase tracking-wider"
+                                                className="px-3.5 py-1.5 text-xs rounded-xl border border-slate-200 focus:outline-none focus:border-[#FDCE04] w-36 uppercase tracking-wider font-semibold"
                                             />
                                             <button
                                                 onClick={handleApplyCoupon}
-                                                className="px-4 py-1.5 rounded-xl bg-[#741721] hover:bg-[#5e121a] text-white text-xs font-bold transition-colors cursor-pointer"
+                                                className="px-4 py-1.5 rounded-xl bg-[#FDCE04] hover:bg-[#E5B800] text-[#1A1A1A] text-xs font-bold border border-[#E5B800] transition-colors cursor-pointer"
                                             >
                                                 Apply
                                             </button>
@@ -366,7 +383,7 @@ const CartPage = () => {
                                 <button
                                     onClick={() => navigate('/checkout')}
                                     disabled={cart.length === 0}
-                                    className="w-full py-3.5 rounded-xl bg-[#741721] hover:bg-[#5e121a] disabled:opacity-50 text-white font-bold text-sm flex items-center justify-center gap-2 transition-all active:scale-[0.99] shadow-md cursor-pointer mt-2"
+                                    className="w-full py-3.5 rounded-xl bg-[#FDCE04] hover:bg-[#E5B800] disabled:opacity-50 text-[#1A1A1A] font-extrabold text-sm flex items-center justify-center gap-2 border border-[#E5B800] transition-all active:scale-[0.99] shadow-sm cursor-pointer mt-2"
                                 >
                                     <span>Proceed to Checkout &rarr;</span>
                                 </button>

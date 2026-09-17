@@ -66,7 +66,7 @@ const DesktopOrderConfirmation = ({
               <div className="flex items-center justify-center gap-3">
                 <button
                   onClick={handleView}
-                  className="px-6 py-3 rounded-xl bg-[#741721] hover:bg-[#5e121a] text-white text-xs font-bold transition-all shadow-sm active:scale-95 cursor-pointer"
+                  className="px-6 py-3 rounded-xl bg-[#FDCE04] hover:bg-[#E5B800] text-[#1A1A1A] text-xs font-extrabold transition-all shadow-sm active:scale-95 cursor-pointer"
                 >
                   View Order Details
                 </button>
@@ -112,21 +112,21 @@ const DesktopOrderConfirmation = ({
                 {/* 3 circular badges */}
                 <div className="flex items-center justify-center gap-6 pt-5 pb-3">
                   <div className="flex flex-col items-center gap-1.5">
-                    <div className="w-10 h-10 rounded-full bg-rose-50 border border-rose-100 flex items-center justify-center text-[#741721]">
+                    <div className="w-10 h-10 rounded-full bg-[#FDCE04]/20 border border-[#FDE68A] flex items-center justify-center text-[#1A1A1A]">
                       <Leaf size={18} />
                     </div>
                     <span className="text-[10px] font-bold text-slate-600">Fresh</span>
                   </div>
 
                   <div className="flex flex-col items-center gap-1.5">
-                    <div className="w-10 h-10 rounded-full bg-rose-50 border border-rose-100 flex items-center justify-center text-[#741721]">
+                    <div className="w-10 h-10 rounded-full bg-[#FDCE04]/20 border border-[#FDE68A] flex items-center justify-center text-[#1A1A1A]">
                       <ShieldCheck size={18} />
                     </div>
                     <span className="text-[10px] font-bold text-slate-600">Hygienic</span>
                   </div>
 
                   <div className="flex flex-col items-center gap-1.5">
-                    <div className="w-10 h-10 rounded-full bg-rose-50 border border-rose-100 flex items-center justify-center text-[#741721]">
+                    <div className="w-10 h-10 rounded-full bg-[#FDCE04]/20 border border-[#FDE68A] flex items-center justify-center text-[#1A1A1A]">
                       <Zap size={18} />
                     </div>
                     <span className="text-[10px] font-bold text-slate-600">Fast</span>

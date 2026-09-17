@@ -30,8 +30,8 @@ const CheckoutPaymentSelector = React.memo(function CheckoutPaymentSelector({
         <motion.div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 overflow-hidden relative">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded-full bg-brand-50 flex items-center justify-center">
-                <Wallet size={16} className="text-primary" />
+              <div className="h-8 w-8 rounded-full bg-[#FDCE04]/20 flex items-center justify-center">
+                <Wallet size={16} className="text-[#1A1A1A]" />
               </div>
               <div>
                 <h3 className="font-black text-slate-800 text-sm tracking-tight uppercase">
@@ -45,11 +45,11 @@ const CheckoutPaymentSelector = React.memo(function CheckoutPaymentSelector({
             <button
               onClick={onToggleWallet}
               className={`w-12 h-6 rounded-full transition-all duration-300 relative flex items-center px-1 ${
-                useWallet ? "bg-primary" : "bg-slate-200"
+                useWallet ? "bg-[#FDCE04]" : "bg-slate-200"
               }`}>
               <motion.div
                 animate={{ x: useWallet ? 24 : 0 }}
-                className="h-4 w-4 rounded-full bg-white shadow-sm"
+                className="h-4 w-4 rounded-full bg-black shadow-sm"
               />
             </button>
           </div>
@@ -58,11 +58,11 @@ const CheckoutPaymentSelector = React.memo(function CheckoutPaymentSelector({
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
               className="pt-2 border-t border-slate-50 mt-2 space-y-1.5">
-              <div className="flex justify-between items-center bg-brand-50/50 p-2 rounded-xl">
+              <div className="flex justify-between items-center bg-[#FFFDF0] p-2 rounded-xl border border-[#FDCE04]/30">
                 <span className="text-[11px] font-bold text-slate-600 uppercase">
                   Amount to be used
                 </span>
-                <span className="text-[13px] font-black text-primary">
+                <span className="text-[13px] font-black text-[#1A1A1A]">
                   ₹{walletAmountToUse}
                 </span>
               </div>
@@ -88,24 +88,24 @@ const CheckoutPaymentSelector = React.memo(function CheckoutPaymentSelector({
                 onClick={() => onSelectPayment(method.id)}
                 className={`w-full p-3 rounded-xl border-2 transition-all flex items-center gap-3 ${
                   selectedPayment === method.id
-                    ? "border-primary bg-brand-50"
+                    ? "border-[#FDCE04] bg-[#FFFDF0]"
                     : "border-slate-200 bg-white hover:border-slate-300"
                 }`}>
                 <div
                   className={`h-10 w-10 rounded-full flex items-center justify-center ${
-                    selectedPayment === method.id ? "bg-brand-100" : "bg-slate-100"
+                    selectedPayment === method.id ? "bg-[#FDCE04] text-[#1A1A1A]" : "bg-slate-100 text-slate-600"
                   }`}>
                   <Icon
                     size={18}
                     className={
-                      selectedPayment === method.id ? "text-primary" : "text-slate-600"
+                      selectedPayment === method.id ? "text-[#1A1A1A]" : "text-slate-600"
                     }
                   />
                 </div>
                 <div className="flex-1 text-left">
                   <p
                     className={`font-bold text-sm ${
-                      selectedPayment === method.id ? "text-primary" : "text-slate-800"
+                      selectedPayment === method.id ? "text-[#1A1A1A]" : "text-slate-800"
                     }`}>
                     {method.label}
                   </p>
@@ -113,10 +113,10 @@ const CheckoutPaymentSelector = React.memo(function CheckoutPaymentSelector({
                 </div>
                 <div
                   className={`h-5 w-5 rounded-full border-2 flex items-center justify-center ${
-                    selectedPayment === method.id ? "border-primary" : "border-slate-300"
+                    selectedPayment === method.id ? "border-[#FDCE04]" : "border-slate-300"
                   }`}>
                   {selectedPayment === method.id && (
-                    <div className="h-3 w-3 rounded-full bg-primary" />
+                    <div className="h-3 w-3 rounded-full bg-[#FDCE04]" />
                   )}
                 </div>
               </button>

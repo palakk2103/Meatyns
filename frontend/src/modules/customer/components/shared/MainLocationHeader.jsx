@@ -209,9 +209,16 @@ const MainLocationHeader = ({
     value > 160 ? "none" : "block",
   );
 
-  const baseHeaderColor = isLight ? "#FAF5EE" : (activeCategory?.headerColor || "#520e1e");
-  const headerFontColor = isLight ? "#1A1A1A" : (activeCategory?.headerFontColor || "#FFFFFF");
-  const headerIconColor = isLight ? "#1A1A1A" : (activeCategory?.headerIconColor || "#FFFFFF");
+  const baseHeaderColor = isLight ? "#FAF5EE" : (activeCategory?.headerColor || "#FDCE04");
+  const isYellowTone = !isLight && (
+    (baseHeaderColor || "").toLowerCase().includes("fdce04") ||
+    (baseHeaderColor || "").toLowerCase().includes("fecd04") ||
+    (baseHeaderColor || "").toLowerCase().includes("ffce00") ||
+    (baseHeaderColor || "").toLowerCase() === "#520e1e"
+  );
+  const defaultHeaderFont = (isLight || isYellowTone) ? "#1A1A1A" : "#FFFFFF";
+  const headerFontColor = activeCategory?.headerFontColor || defaultHeaderFont;
+  const headerIconColor = activeCategory?.headerIconColor || defaultHeaderFont;
   
   const headerGradient = buildHeaderGradient(baseHeaderColor);
   const searchBarBg = isLight ? "#FAF5EC" : buildSearchBarBackgroundColor(baseHeaderColor);
@@ -254,26 +261,20 @@ const MainLocationHeader = ({
               : "shadow-[0_4px_20px_rgba(0,0,0,0.15)]"
           )}>
           {/* Subtle Contrast Overlay (dark mode only) */}
-          {!isLight && <div className="absolute inset-0 bg-black/5 pointer-events-none" />}
+          {!isLight && !isYellowTone && <div className="absolute inset-0 bg-black/5 pointer-events-none" />}
 
           {/* Desktop/Tablet Header Layout (md and above) */}
           <div className="hidden md:flex items-center justify-between relative z-20 w-full max-w-[1440px] mx-auto px-4 lg:px-8 py-1.5">
-            {/* Left Section: Leaf Logo + Meatyns Brand */}
+            {/* Left Section: Meatyns Official Brand Logo */}
             <div
               onClick={() => navigate("/")}
-              className="flex items-center gap-3 cursor-pointer group shrink-0 select-none"
+              className="flex items-center cursor-pointer group shrink-0 select-none py-0.5"
             >
-              <div className="group-hover:scale-105 transition-transform duration-200">
-                <LeafLogo className="w-8 h-8 lg:w-9 lg:h-9 text-white shrink-0 drop-shadow-sm" />
-              </div>
-              <div className="flex flex-col justify-center">
-                <span className="text-[24px] lg:text-[27px] font-serif font-bold text-white tracking-tight leading-none drop-shadow-sm">
-                  Meatyns
-                </span>
-                <span className="text-[10.5px] lg:text-[11px] font-normal text-white/80 tracking-wide mt-1 leading-none">
-                  Fresh &bull; Fast &bull; Everyday
-                </span>
-              </div>
+              <img
+                src="/meatyns_logo_2x.png"
+                alt="Meatyns"
+                className="h-8 lg:h-9 w-auto object-contain group-hover:scale-[1.03] transition-transform duration-200"
+              />
             </div>
 
             {/* Center Section: Pill Search Bar */}
@@ -282,7 +283,7 @@ const MainLocationHeader = ({
                 onClick={handleSearchClick}
                 className="w-full h-11 bg-white rounded-full px-4 flex items-center gap-3 cursor-pointer shadow-sm hover:shadow transition-shadow"
               >
-                <Search size={18} className="text-[#520e1e] shrink-0 stroke-[2.2]" />
+                <Search size={18} className="text-[#FDCE04] shrink-0 stroke-[2.4]" />
                 <input
                   type="text"
                   placeholder="Search for meat, fish, seafood, etc..."
@@ -303,32 +304,39 @@ const MainLocationHeader = ({
                   refreshLocation?.();
                   setIsLocationOpen(true);
                 }}
-                className="flex items-center gap-2 text-left text-white bg-transparent border-0 p-0 cursor-pointer group hover:opacity-90 transition-opacity"
+                style={{ color: headerFontColor }}
+                className="flex items-center gap-2 text-left bg-transparent border-0 p-0 cursor-pointer group hover:opacity-90 transition-opacity"
               >
-                <MapPin size={20} className="text-white shrink-0 stroke-[1.8]" />
+                <MapPin size={20} className="shrink-0 stroke-[2]" style={{ color: headerIconColor }} />
                 <div className="flex flex-col leading-tight">
-                  <span className="text-[11px] text-white/75 font-normal tracking-wide leading-tight">
+                  <span 
+                    style={{ color: isYellowTone ? "rgba(26,26,26,0.7)" : "rgba(255,255,255,0.75)" }}
+                    className="text-[11px] font-normal tracking-wide leading-tight"
+                  >
                     Deliver to
                   </span>
-                  <div className="flex items-center gap-1 text-[13px] lg:text-sm font-bold text-white leading-tight">
+                  <div className="flex items-center gap-1 text-[13px] lg:text-sm font-bold leading-tight">
                     <span className="max-w-[110px] lg:max-w-[140px] truncate">
                       {isFetchingLocation
                         ? "Detecting..."
                         : (currentLocation?.name || "Indore")}
                     </span>
-                    <ChevronDown size={13} className="text-white/80 shrink-0" />
+                    <ChevronDown size={13} className="shrink-0 opacity-80" />
                   </div>
                 </div>
               </button>
 
               {/* Delivery in */}
-              <div className="flex items-center gap-2 text-white">
-                <Zap size={18} className="text-white fill-white shrink-0" />
+              <div className="flex items-center gap-2" style={{ color: headerFontColor }}>
+                <Zap size={18} className="shrink-0 fill-current" />
                 <div className="flex flex-col leading-tight">
-                  <span className="text-[11px] text-white/75 font-normal tracking-wide leading-tight">
+                  <span 
+                    style={{ color: isYellowTone ? "rgba(26,26,26,0.7)" : "rgba(255,255,255,0.75)" }}
+                    className="text-[11px] font-normal tracking-wide leading-tight"
+                  >
                     Delivery in
                   </span>
-                  <span className="text-[13px] lg:text-sm font-bold text-white whitespace-nowrap leading-tight">
+                  <span className="text-[13px] lg:text-sm font-bold whitespace-nowrap leading-tight">
                     {currentLocation?.time || "15–30 mins"}
                   </span>
                 </div>
@@ -339,20 +347,22 @@ const MainLocationHeader = ({
                 type="button"
                 onClick={() => navigate("/profile")}
                 aria-label="Profile"
-                className="text-white hover:opacity-85 transition-opacity flex items-center justify-center p-1 bg-transparent border-0 cursor-pointer"
+                style={{ color: headerIconColor }}
+                className="hover:opacity-85 transition-opacity flex items-center justify-center p-1 bg-transparent border-0 cursor-pointer"
               >
-                <CircleUserRound size={28} className="text-white stroke-[1.7]" />
+                <CircleUserRound size={28} className="stroke-[1.8]" />
               </button>
 
               {/* Cart Icon with badge */}
               <button
                 type="button"
-                onClick={() => navigate("/checkout")}
+                onClick={() => navigate("/cart")}
                 aria-label="Shopping Cart"
-                className="relative text-white hover:opacity-85 transition-opacity flex items-center justify-center p-1 bg-transparent border-0 cursor-pointer"
+                style={{ color: headerIconColor }}
+                className="relative hover:opacity-85 transition-opacity flex items-center justify-center p-1 bg-transparent border-0 cursor-pointer"
               >
-                <ShoppingCart size={24} className="text-white stroke-[2]" />
-                <span className="absolute -top-1.5 -right-2.5 min-w-[18px] h-[18px] px-1 bg-[#e53935] text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-md leading-none">
+                <ShoppingCart size={24} className="stroke-[2.2]" />
+                <span className="absolute -top-1.5 -right-2.5 min-w-[18px] h-[18px] px-1 bg-[#EF131F] text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-md leading-none">
                   {cartCount || 0}
                 </span>
               </button>
@@ -381,7 +391,8 @@ const MainLocationHeader = ({
                     refreshLocation?.();
                     setIsLocationOpen(true);
                   }}
-                  className="flex items-center gap-1.5 text-left text-white bg-transparent border-0 p-0 cursor-pointer group active:scale-95 transition-transform min-w-0 max-w-full"
+                  style={{ color: headerFontColor }}
+                  className="flex items-center gap-1.5 text-left bg-transparent border-0 p-0 cursor-pointer group active:scale-95 transition-transform min-w-0 max-w-full"
                 >
                   <svg
                     viewBox="0 0 24 24"
@@ -390,7 +401,7 @@ const MainLocationHeader = ({
                     strokeWidth="2.2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    className="w-4 h-4 text-white shrink-0"
+                    className="w-4 h-4 shrink-0"
                   >
                     <circle cx="12" cy="12" r="3" />
                     <circle cx="12" cy="12" r="8" />
@@ -400,34 +411,33 @@ const MainLocationHeader = ({
                     <line x1="20" y1="12" x2="22" y2="12" />
                   </svg>
                   <div className="flex flex-col leading-tight min-w-0">
-                    <span className="text-[9.5px] font-semibold text-white/90 leading-tight">
+                    <span 
+                      style={{ color: isYellowTone ? "rgba(26,26,26,0.7)" : "rgba(255,255,255,0.9)" }}
+                      className="text-[9.5px] font-semibold leading-tight"
+                    >
                       Delivery
                     </span>
                     <div className="flex items-center gap-0.5 min-w-0">
-                      <span className="text-[10px] font-bold text-white leading-tight truncate">
+                      <span className="text-[10px] font-bold leading-tight truncate">
                         {isFetchingLocation
                           ? "Detecting..."
                           : (currentLocation?.name || "Address")}
                       </span>
-                      <ChevronDown size={11} className="text-white/80 shrink-0" />
+                      <ChevronDown size={11} className="opacity-80 shrink-0" />
                     </div>
                   </div>
                 </button>
 
-                {/* 2. Center: Meatyns Brand (Safely spaced with guaranteed margins) */}
+                {/* 2. Center: Meatyns Official Brand Logo */}
                 <div
                   onClick={() => navigate("/")}
-                  className="flex items-center justify-center gap-1.5 cursor-pointer select-none active:scale-95 transition-transform shrink-0"
+                  className="flex items-center justify-center cursor-pointer select-none active:scale-95 transition-transform shrink-0"
                 >
-                  <LeafLogo className="w-5 h-5 text-white shrink-0 drop-shadow-xs" />
-                  <div className="flex flex-col items-center justify-center">
-                    <span className="text-[17px] sm:text-[19px] font-serif font-bold text-white tracking-tight leading-none drop-shadow-xs">
-                      Meatyns
-                    </span>
-                    <span className="text-[7.5px] font-normal text-white/80 tracking-wider leading-none mt-0.5 whitespace-nowrap">
-                      Fresh &bull; Fast &bull; Everyday
-                    </span>
-                  </div>
+                  <img
+                    src="/meatyns_logo_2x.png"
+                    alt="Meatyns"
+                    className="h-6 sm:h-7 w-auto object-contain"
+                  />
                 </div>
 
                 {/* 3. Right: Cart Action (Right aligned with padding) */}
@@ -435,17 +445,21 @@ const MainLocationHeader = ({
                   {/* Cart */}
                   <button
                     type="button"
-                    onClick={() => navigate("/checkout")}
+                    onClick={() => navigate("/cart")}
                     aria-label="Cart"
-                    className="relative flex flex-col items-center justify-center text-white bg-transparent border-0 p-0 cursor-pointer active:scale-90 transition-transform select-none"
+                    style={{ color: headerIconColor }}
+                    className="relative flex flex-col items-center justify-center bg-transparent border-0 p-0 cursor-pointer active:scale-90 transition-transform select-none"
                   >
                     <div className="relative inline-flex items-center justify-center">
-                      <ShoppingCart size={19} className="text-white stroke-[2]" />
-                      <span className="absolute -top-1.5 -right-2 min-w-[15px] h-[15px] px-0.5 bg-[#e53935] text-white text-[9px] font-bold rounded-full flex items-center justify-center shadow-sm leading-none">
+                      <ShoppingCart size={19} className="stroke-[2.2]" />
+                      <span className="absolute -top-1.5 -right-2 min-w-[15px] h-[15px] px-0.5 bg-[#EF131F] text-white text-[9px] font-bold rounded-full flex items-center justify-center shadow-sm leading-none">
                         {cartCount || 0}
                       </span>
                     </div>
-                    <span className="text-[8.5px] font-medium text-white/90 leading-none mt-0.5">
+                    <span 
+                      style={{ color: isYellowTone ? "#1A1A1A" : "rgba(255,255,255,0.9)" }}
+                      className="text-[8.5px] font-medium leading-none mt-0.5"
+                    >
                       Cart
                     </span>
                   </button>
@@ -453,6 +467,7 @@ const MainLocationHeader = ({
               </div>
             </motion.div>
           </div>
+
 
           {/* ──── Search Bar (MOBILE ONLY) matching reference screenshot pill style ──── */}
           <div className="relative z-10 mt-0.5 flex items-center md:hidden">

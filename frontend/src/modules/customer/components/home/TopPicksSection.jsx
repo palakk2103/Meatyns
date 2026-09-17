@@ -7,12 +7,12 @@ import { useProductDetail } from "../../context/ProductDetailContext";
 import { toast } from "sonner";
 import { applyCloudinaryTransform } from "@/core/utils/imageUtils";
 
-// 4 Curated Top Picks directly matching reference screenshot
+// 4 Curated Top Picks using real product IDs from database
 const DEFAULT_TOP_PICKS = [
   {
-    id: "pick-rohu-fish",
-    _id: "pick-rohu-fish",
-    name: "Rohu Fish (Whole)",
+    id: "6a8740c900d8659486c09570",
+    _id: "6a8740c900d8659486c09570",
+    name: "Rohu Fish (Curry Cut)",
     weight: "500 g",
     price: 199,
     originalPrice: 249,
@@ -21,37 +21,37 @@ const DEFAULT_TOP_PICKS = [
       "https://images.unsplash.com/photo-1534482421-64566f976cfa?auto=format&fit=crop&q=80&w=500",
   },
   {
-    id: "pick-chicken-thigh",
-    _id: "pick-chicken-thigh",
+    id: "6a87424100d8659486c097a3",
+    _id: "6a87424100d8659486c097a3",
     name: "Chicken Thigh",
     weight: "500 g",
     price: 129,
-    originalPrice: 169,
-    discount: "24% OFF",
+    originalPrice: 159,
+    discount: "19% OFF",
     image:
       "https://images.unsplash.com/photo-1587593810167-a84920ea0781?auto=format&fit=crop&q=80&w=500",
   },
   {
-    id: "pick-mutton-keema",
-    _id: "pick-mutton-keema",
+    id: "6a86da7a00d8659486c08fcd",
+    _id: "6a86da7a00d8659486c08fcd",
     name: "Mutton Keema",
-    weight: "500 g",
-    price: 279,
-    originalPrice: 349,
-    discount: "20% OFF",
+    weight: "450 g",
+    price: 359,
+    originalPrice: 399,
+    discount: "10% OFF",
     image:
-      "https://images.unsplash.com/photo-1588347818036-558601350947?auto=format&fit=crop&q=80&w=500",
+      "https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&q=80&w=500",
   },
   {
-    id: "pick-king-fish",
-    _id: "pick-king-fish",
-    name: "King Fish (Surmai)",
-    weight: "500 g",
-    price: 499,
-    originalPrice: 629,
-    discount: "21% OFF",
+    id: "6a86db0c00d8659486c09034",
+    _id: "6a86db0c00d8659486c09034",
+    name: "Fresh Atlantic Salmon Steaks",
+    weight: "300 g",
+    price: 529,
+    originalPrice: 599,
+    discount: "12% OFF",
     image:
-      "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&q=80&w=500",
+      "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&q=80&w=500",
   },
 ];
 
@@ -104,10 +104,11 @@ const TopPicksSection = ({ products = [] }) => {
   }, [products]);
 
   const getQuantity = (product) => {
+    const pId = String(product?.id || product?._id || "");
     const item = (cart || []).find(
-      (c) => (c.id || c._id) === (product.id || product._id)
+      (c) => String(c.id || c._id) === pId
     );
-    return item ? item.quantity : 0;
+    return item ? Number(item.quantity) || 0 : 0;
   };
 
   const handleCardClick = (product) => {
@@ -129,25 +130,28 @@ const TopPicksSection = ({ products = [] }) => {
   const handleAddToCart = (e, product) => {
     e.preventDefault();
     e.stopPropagation();
-    addToCart(product);
+    addToCart({
+      ...product,
+      id: product.id || product._id,
+      _id: product.id || product._id,
+    });
     toast.success(`${product.name} added to cart!`);
   };
 
   const handleIncrement = (e, product) => {
     e.preventDefault();
     e.stopPropagation();
-    const qty = getQuantity(product);
-    updateQuantity(product.id || product._id, qty + 1);
+    updateQuantity(product.id || product._id, 1);
   };
 
   const handleDecrement = (e, product) => {
     e.preventDefault();
     e.stopPropagation();
     const qty = getQuantity(product);
-    if (qty === 1) {
+    if (qty <= 1) {
       removeFromCart(product.id || product._id);
     } else {
-      updateQuantity(product.id || product._id, qty - 1);
+      updateQuantity(product.id || product._id, -1);
     }
   };
 
@@ -156,17 +160,17 @@ const TopPicksSection = ({ products = [] }) => {
       {/* Section Header */}
       <div className="flex items-center justify-between mb-3 sm:mb-4 px-1">
         <div className="flex items-center gap-2 sm:gap-2.5">
-          <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#6B111F]/10 flex items-center justify-center text-[#6B111F]">
+          <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#FDCE04]/20 flex items-center justify-center text-[#1A1A1A] font-bold">
             <span className="text-base sm:text-lg leading-none">★</span>
           </div>
-          <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-[#6B111F] tracking-tight">
+          <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-slate-900 tracking-tight">
             Top Picks for You
           </h2>
         </div>
 
         <button
           onClick={() => navigate("/category/all")}
-          className="text-xs sm:text-sm font-bold text-[#6B111F] hover:opacity-80 flex items-center gap-1 cursor-pointer transition-opacity border-0 bg-transparent p-0"
+          className="text-xs sm:text-sm font-bold text-slate-700 hover:text-slate-900 flex items-center gap-1 cursor-pointer transition-colors border-0 bg-transparent p-0"
         >
           <span>View All</span>
           <span className="text-sm font-bold">&rarr;</span>
@@ -214,7 +218,7 @@ const TopPicksSection = ({ products = [] }) => {
               {/* Card Content */}
               <div className="p-2 sm:p-3.5 flex flex-col justify-between flex-1 gap-1.5 sm:gap-2">
                 <div>
-                  <h3 className="font-bold text-slate-900 text-[11.5px] sm:text-[14px] leading-snug line-clamp-1 group-hover:text-[#6B111F] transition-colors">
+                  <h3 className="font-bold text-slate-900 text-[11.5px] sm:text-[14px] leading-snug line-clamp-1 group-hover:text-amber-600 transition-colors">
                     {product.name}
                   </h3>
                   <p className="text-[9.5px] sm:text-xs text-slate-400 font-medium mt-0.5">
@@ -232,7 +236,7 @@ const TopPicksSection = ({ products = [] }) => {
                   <span className="text-[13px] sm:text-base md:text-lg font-black text-slate-900">
                     ₹{product.price}
                   </span>
-                  <span className="ml-auto bg-[#DC2626] text-white text-[8px] sm:text-[10.5px] font-bold px-1 sm:px-1.5 py-0.5 rounded shadow-xs tracking-tight">
+                  <span className="ml-auto bg-[#EF131F] text-white text-[8px] sm:text-[10.5px] font-bold px-1 sm:px-1.5 py-0.5 rounded shadow-xs tracking-tight">
                     {product.discount || "20% OFF"}
                   </span>
                 </div>
@@ -241,22 +245,22 @@ const TopPicksSection = ({ products = [] }) => {
                 <div className="pt-0.5 sm:pt-1">
                   {quantity > 0 ? (
                     <div
-                      style={{ borderColor: "#6B111F" }}
-                      className="flex items-center bg-white border border-[#6B111F] rounded-lg sm:rounded-xl p-0.5 justify-between h-6.5 sm:h-8"
+                      style={{ borderColor: "#FDCE04" }}
+                      className="flex items-center bg-white border border-[#FDCE04] rounded-lg sm:rounded-xl p-0.5 justify-between h-6.5 sm:h-8"
                       onClick={(e) => e.stopPropagation()}
                     >
                       <button
                         onClick={(e) => handleDecrement(e, product)}
-                        className="w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-[#6B111F] active:scale-90 transition-transform cursor-pointer border-0 bg-transparent"
+                        className="w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-[#1A1A1A] active:scale-90 transition-transform cursor-pointer border-0 bg-transparent font-bold"
                       >
                         <Minus size={10} strokeWidth={3} />
                       </button>
-                      <span className="font-bold text-[11px] sm:text-xs text-[#6B111F] px-1">
+                      <span className="font-bold text-[11px] sm:text-xs text-[#1A1A1A] px-1">
                         {quantity}
                       </span>
                       <button
                         onClick={(e) => handleIncrement(e, product)}
-                        className="w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-[#6B111F] active:scale-90 transition-transform cursor-pointer border-0 bg-transparent"
+                        className="w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-[#1A1A1A] active:scale-90 transition-transform cursor-pointer border-0 bg-transparent font-bold"
                       >
                         <Plus size={10} strokeWidth={3} />
                       </button>
@@ -265,9 +269,9 @@ const TopPicksSection = ({ products = [] }) => {
                     <button
                       type="button"
                       onClick={(e) => handleAddToCart(e, product)}
-                      className="w-full h-6.5 sm:h-8 py-0.5 sm:py-1 px-2 sm:px-3 rounded-lg sm:rounded-xl bg-[#6B111F] hover:bg-[#8B1A2C] text-white text-[10px] sm:text-xs font-bold flex items-center justify-center gap-1 sm:gap-1.5 transition-colors cursor-pointer shadow-xs active:scale-98 border-0"
+                      className="w-full h-6.5 sm:h-8 py-0.5 sm:py-1 px-2 sm:px-3 rounded-lg sm:rounded-xl bg-[#FDCE04] hover:bg-[#E5B800] text-[#1A1A1A] text-[10px] sm:text-xs font-bold flex items-center justify-center gap-1 sm:gap-1.5 transition-colors cursor-pointer shadow-xs active:scale-98 border-0"
                     >
-                      <ShoppingCart size={11} strokeWidth={2.2} />
+                      <ShoppingCart size={11} strokeWidth={2.4} className="text-[#1A1A1A]" />
                       <span>Add to Cart</span>
                     </button>
                   )}

@@ -85,12 +85,16 @@ const AdminAuth = () => {
     const navigate = useNavigate();
     const appName = settings?.appName || 'Meatyns';
 
+    const [adminLoginMode, setAdminLoginMode] = useState('password'); // 'password' | 'otp'
+    const [loginOtpSent, setLoginOtpSent] = useState(false);
+    const [loginOtp, setLoginOtp] = useState('');
+    const [isSendingLoginOtp, setIsSendingLoginOtp] = useState(false);
+
     const [formData, setFormData] = useState({
         email: '',
         password: '',
         name: '',
         adminCode: '',
-        phone: ''
     });
 
     const handleChange = (e) => {
@@ -98,31 +102,77 @@ const AdminAuth = () => {
         setFormData({ ...formData, [name]: value });
     };
 
+    const handleSendAdminLoginOtp = async () => {
+        const emailToUse = (formData.email || '').trim().toLowerCase();
+        if (!emailToUse || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailToUse)) {
+            toast.error('Please enter a valid administrator email.');
+            return;
+        }
+        setIsSendingLoginOtp(true);
+        setErrorMsg('');
+        try {
+            const res = await adminApi.sendLoginOtp({ email: emailToUse });
+            setLoginOtpSent(true);
+            const mockOtp = res.data?.result?.mockOtp || '1234';
+            toast.success(`Mock OTP: ${mockOtp}`, { duration: 10000 });
+            toast.info(`OTP sent to ${emailToUse}`);
+        } catch (err) {
+            const msg = err.response?.data?.message || 'Failed to send OTP.';
+            setErrorMsg(msg);
+            toast.error(msg);
+        } finally {
+            setIsSendingLoginOtp(false);
+        }
+    };
+
+    const handleVerifyAdminLoginOtp = async (e) => {
+        e?.preventDefault();
+        const emailToUse = (formData.email || '').trim().toLowerCase();
+        if (!loginOtp || loginOtp.length !== 4) {
+            toast.error('Please enter a valid 4-digit OTP.');
+            return;
+        }
+        setIsLoading(true);
+        setErrorMsg('');
+        try {
+            const res = await adminApi.verifyLoginOtp({ email: emailToUse, otp: loginOtp });
+            const { token, admin } = res.data.result;
+            login({
+                ...admin,
+                token,
+                role: 'admin',
+            });
+            toast.success('Welcome back, Administrator.');
+            navigate('/admin');
+        } catch (err) {
+            const msg = err.response?.data?.message || 'Invalid OTP';
+            setErrorMsg(msg);
+            toast.error(msg);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (isLogin && adminLoginMode === 'otp') {
+            if (!loginOtpSent) {
+                handleSendAdminLoginOtp();
+            } else {
+                handleVerifyAdminLoginOtp(e);
+            }
+            return;
+        }
+
         setIsLoading(true);
         setErrorMsg('');
 
-        // Only validate password complexity for signup, not login
+        // Validate password length for signup
         if (!isLogin) {
             const pwd = (formData.password || '').trim();
-            if (pwd.length < 10) {
-                toast.error('Password must be at least 10 characters long.');
-                setIsLoading(false);
-                return;
-            }
-            if (!/[a-z]/.test(pwd)) {
-                toast.error('Password must contain at least one lowercase letter.');
-                setIsLoading(false);
-                return;
-            }
-            if (!/[A-Z]/.test(pwd)) {
-                toast.error('Password must contain at least one uppercase letter.');
-                setIsLoading(false);
-                return;
-            }
-            if (!/[0-9]/.test(pwd)) {
-                toast.error('Password must contain at least one number.');
+            if (pwd.length < 6) {
+                toast.error('Password must be at least 6 characters long.');
                 setIsLoading(false);
                 return;
             }
@@ -157,7 +207,7 @@ const AdminAuth = () => {
             {/* ================================================================= */}
             {/* LEFT COLUMN: Deep Maroon Banner + Full-bleed Background Image     */}
             {/* ================================================================= */}
-            <div className="w-full md:w-1/2 min-h-[380px] md:min-h-screen relative overflow-hidden text-white flex flex-col justify-between">
+            <div className="hidden md:flex md:w-1/2 md:min-h-screen relative overflow-hidden text-white flex-col justify-between">
                 {/* Full-bleed Background Image with Seamless Dark Burgundy Gradient Overlay */}
                 <div className="absolute inset-0 z-0">
                     <img 
@@ -319,6 +369,41 @@ const AdminAuth = () => {
                     </div>
 
                     <form onSubmit={handleSubmit} className="mt-8 space-y-5">
+                        {/* Mode Switcher for Admin Login: Password vs Mock OTP */}
+                        {isLogin && (
+                            <div className="flex bg-stone-100 rounded-xl p-1 gap-1 border border-stone-200/60 mb-2">
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setAdminLoginMode('password');
+                                        setLoginOtpSent(false);
+                                        setErrorMsg('');
+                                    }}
+                                    className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${
+                                        adminLoginMode === 'password'
+                                            ? 'bg-white text-stone-900 shadow-sm'
+                                            : 'text-stone-500 hover:text-stone-700'
+                                    }`}
+                                >
+                                    Email &amp; Password
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setAdminLoginMode('otp');
+                                        setErrorMsg('');
+                                    }}
+                                    className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${
+                                        adminLoginMode === 'otp'
+                                            ? 'bg-white text-stone-900 shadow-sm'
+                                            : 'text-stone-500 hover:text-stone-700'
+                                    }`}
+                                >
+                                    Email OTP
+                                </button>
+                            </div>
+                        )}
+
                         <AnimatePresence mode="popLayout">
                             {!isLogin && (
                                 <motion.div
@@ -369,36 +454,66 @@ const AdminAuth = () => {
                             </div>
                         </div>
 
-                        {/* Password Field */}
-                        <div className="space-y-1.5">
-                            <label className="block text-xs font-semibold text-stone-700">
-                                Password {(!isLogin) && <span className="text-[11px] text-stone-400 font-normal">(min 10 chars, uppercase, number)</span>}
-                            </label>
-                            <div className="relative">
-                                <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400">
-                                    <Lock size={18} />
+                        {/* Password Field (Shown for registration or password login mode) */}
+                        {(!isLogin || (isLogin && adminLoginMode === 'password')) && (
+                            <div className="space-y-1.5">
+                                <label className="block text-xs font-semibold text-stone-700">
+                                    Password {(!isLogin) && <span className="text-[11px] text-stone-400 font-normal">(min 6 chars)</span>}
+                                </label>
+                                <div className="relative">
+                                    <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400">
+                                        <Lock size={18} />
+                                    </div>
+                                    <input
+                                        type={showPassword ? 'text' : 'password'}
+                                        name="password"
+                                        required
+                                        minLength={6}
+                                        maxLength={128}
+                                        autoComplete="current-password"
+                                        value={formData.password}
+                                        onChange={handleChange}
+                                        placeholder="Enter your secure password"
+                                        className="w-full bg-[#FCFAF7] border border-stone-200 rounded-xl pl-10 pr-10 py-3 text-sm text-stone-800 placeholder-stone-400 focus:bg-white focus:border-[#621320] focus:ring-1 focus:ring-[#621320]/20 outline-none transition-all"
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowPassword(!showPassword)}
+                                        className="absolute right-3.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600 transition-colors"
+                                    >
+                                        {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                                    </button>
                                 </div>
-                                <input
-                                    type={showPassword ? 'text' : 'password'}
-                                    name="password"
-                                    required
-                                    minLength={10}
-                                    maxLength={128}
-                                    autoComplete="current-password"
-                                    value={formData.password}
-                                    onChange={handleChange}
-                                    placeholder="Enter your secure password"
-                                    className="w-full bg-[#FCFAF7] border border-stone-200 rounded-xl pl-10 pr-10 py-3 text-sm text-stone-800 placeholder-stone-400 focus:bg-white focus:border-[#621320] focus:ring-1 focus:ring-[#621320]/20 outline-none transition-all"
-                                />
-                                <button
-                                    type="button"
-                                    onClick={() => setShowPassword(!showPassword)}
-                                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600 transition-colors"
-                                >
-                                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                                </button>
                             </div>
-                        </div>
+                        )}
+
+                        {/* Email OTP Field for Admin Login */}
+                        {isLogin && adminLoginMode === 'otp' && loginOtpSent && (
+                            <div className="space-y-2">
+                                <label className="block text-xs font-semibold text-stone-700">
+                                    Security Verification Code
+                                </label>
+                                <div className="flex items-center gap-2 rounded-xl border border-amber-200 bg-amber-50/60 px-3.5 py-2.5">
+                                    <input
+                                        type="text"
+                                        inputMode="numeric"
+                                        maxLength={4}
+                                        placeholder="Enter 4-digit Mock OTP"
+                                        value={loginOtp}
+                                        onChange={(e) => setLoginOtp(e.target.value.replace(/\D/g, '').slice(0, 4))}
+                                        className="flex-1 bg-transparent text-sm font-bold text-slate-800 outline-none placeholder:text-slate-400"
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={handleSendAdminLoginOtp}
+                                        disabled={isSendingLoginOtp}
+                                        className="text-[11px] font-bold text-amber-800 hover:underline disabled:opacity-50"
+                                    >
+                                        {isSendingLoginOtp ? 'Sending...' : 'Resend OTP'}
+                                    </button>
+                                </div>
+                            </div>
+                        )}
 
                         {/* Error Message Box */}
                         <AnimatePresence>
@@ -420,14 +535,22 @@ const AdminAuth = () => {
                         {/* Submit Button */}
                         <button
                             type="submit"
-                            disabled={isLoading}
-                            className="w-full bg-[#5B1121] hover:bg-[#460C18] text-white py-3.5 rounded-xl text-sm font-semibold tracking-wide flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all active:scale-[0.99] disabled:opacity-60"
+                            disabled={isLoading || isSendingLoginOtp}
+                            className="w-full bg-[#FDCE04] hover:bg-[#E5B800] text-[#1A1A1A] py-3.5 rounded-xl text-sm font-extrabold tracking-wide flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all active:scale-[0.99] disabled:opacity-60 border border-[#E5B800]"
                         >
-                            {isLoading ? (
-                                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                            {isLoading || isSendingLoginOtp ? (
+                                <div className="w-5 h-5 border-2 border-[#1A1A1A]/30 border-t-[#1A1A1A] rounded-full animate-spin" />
                             ) : (
                                 <>
-                                    <span>{isLogin ? 'Login to Admin Dashboard' : 'Create Admin Account'}</span>
+                                    <span>
+                                        {isLogin
+                                            ? adminLoginMode === 'otp'
+                                                ? loginOtpSent
+                                                    ? 'Verify OTP & Login'
+                                                    : 'Send Mock OTP'
+                                                : 'Login to Admin Dashboard'
+                                            : 'Create Admin Account'}
+                                    </span>
                                     <ArrowRight size={16} />
                                 </>
                             )}

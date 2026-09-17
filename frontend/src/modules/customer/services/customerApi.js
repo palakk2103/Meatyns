@@ -2,6 +2,8 @@ import axiosInstance from "@core/api/axios";
 import { getWithDedupe, invalidateCache } from "@core/api/dedupe";
 
 export const customerApi = {
+  loginWithPassword: (data) =>
+    axiosInstance.post("/customer/login-password", data),
   sendLoginOtp: (data) => axiosInstance.post("/customer/send-login-otp", data),
   sendSignupOtp: (data) =>
     axiosInstance.post("/customer/send-signup-otp", data),

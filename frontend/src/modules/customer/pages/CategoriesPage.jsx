@@ -10,7 +10,7 @@ const CategoryGridIcon = () => (
   <svg
     viewBox="0 0 24 24"
     fill="none"
-    className="w-5 h-5 sm:w-6 sm:h-6 shrink-0 text-[#6B111F]"
+    className="w-5 h-5 sm:w-6 sm:h-6 shrink-0 text-[#1A1A1A]"
   >
     <rect
       x="3"
@@ -234,13 +234,13 @@ const CategoriesPage = () => {
                 type="button"
                 onClick={() => navigate(-1)}
                 aria-label="Go back"
-                className="flex items-center justify-center w-8 h-8 rounded-full bg-[#F5EBE4] hover:bg-[#EADBCE] text-[#520E1E] active:scale-90 transition-all cursor-pointer shrink-0"
+                className="flex items-center justify-center w-8 h-8 rounded-full bg-slate-100 hover:bg-amber-100 text-[#1A1A1A] active:scale-90 transition-all cursor-pointer shrink-0"
               >
                 <ArrowLeft size={18} strokeWidth={2.4} />
               </button>
               <CategoryGridIcon />
               <div className="w-[1.5px] h-5 sm:h-6 bg-[#CDB5AA]/70 rounded-full" />
-              <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#520E1E] tracking-tight leading-none">
+              <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-900 tracking-tight leading-none">
                 Explore Categories
               </h1>
             </div>
@@ -252,7 +252,7 @@ const CategoriesPage = () => {
                 placeholder="Search categories..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-white border border-[#E9DDD4] rounded-full pl-9 pr-4 py-1.5 text-xs text-[#2A2A2A] placeholder-[#9C8D87] shadow-2xs focus:outline-none focus:border-[#6B111F]/50 transition-all"
+                className="w-full bg-white border border-[#E9DDD4] rounded-full pl-9 pr-4 py-1.5 text-xs text-[#2A2A2A] placeholder-[#9C8D87] shadow-2xs focus:outline-none focus:border-[#FDCE04] transition-all"
               />
               <Search
                 size={14}
@@ -274,8 +274,8 @@ const CategoriesPage = () => {
                 onClick={() => setSelectedGroup("all")}
                 className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
                   selectedGroup === "all"
-                    ? "bg-[#520E1E] text-white shadow-xs"
-                    : "bg-white text-[#520E1E] border border-[#EADBCE] hover:bg-[#FCEAE2]"
+                    ? "bg-[#FDCE04] text-[#1A1A1A] font-bold shadow-xs"
+                    : "bg-white text-slate-700 border border-slate-200 hover:bg-[#FFFBEB]"
                 }`}
               >
                 All
@@ -286,8 +286,8 @@ const CategoriesPage = () => {
                   onClick={() => setSelectedGroup(g.title)}
                   className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
                     selectedGroup === g.title
-                      ? "bg-[#520E1E] text-white shadow-xs"
-                      : "bg-white text-[#520E1E] border border-[#EADBCE] hover:bg-[#FCEAE2]"
+                      ? "bg-[#FDCE04] text-[#1A1A1A] font-bold shadow-xs"
+                      : "bg-white text-slate-700 border border-slate-200 hover:bg-[#FFFBEB]"
                   }`}
                 >
                   {g.title}
@@ -316,10 +316,10 @@ const CategoriesPage = () => {
         {/* ──── EMPTY STATE ──── */}
         {!isLoading && filteredGroups.length === 0 && (
           <div className="bg-white rounded-3xl p-8 sm:p-12 text-center max-w-md mx-auto border border-[#EADBCE] shadow-xs my-10">
-            <div className="w-16 h-16 rounded-full bg-[#FFF9F5] border border-[#EADBCE] flex items-center justify-center text-2xl mx-auto mb-3 text-[#520E1E]">
+            <div className="w-16 h-16 rounded-full bg-[#FFFBEB] border border-[#FDE68A] flex items-center justify-center text-2xl mx-auto mb-3 text-[#1A1A1A]">
               🔍
             </div>
-            <h3 className="text-base sm:text-lg font-bold text-[#520E1E] mb-1">
+            <h3 className="text-base sm:text-lg font-bold text-slate-900 mb-1">
               No Categories Found
             </h3>
             <p className="text-xs text-[#7A6B66] mb-5">
@@ -330,7 +330,7 @@ const CategoriesPage = () => {
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery("")}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full font-bold text-xs text-white transition-all active:scale-95 shadow-sm bg-[#520E1E]"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full font-bold text-xs text-[#1A1A1A] transition-all active:scale-95 shadow-sm bg-[#FDCE04] hover:bg-[#E5B800]"
               >
                 Clear Search
               </button>
@@ -345,7 +345,7 @@ const CategoriesPage = () => {
               {/* Group Heading (if more than 1 group and showing all) */}
               {filteredGroups.length > 1 && (
                 <div className="flex items-center gap-2 mb-2.5 sm:mb-3">
-                  <h2 className="text-[16px] sm:text-lg font-bold text-[#520E1E] tracking-tight">
+                  <h2 className="text-[16px] sm:text-lg font-bold text-slate-900 tracking-tight">
                     {group.title}
                   </h2>
                   <span className="text-[11px] font-semibold text-[#8C7A75]">
@@ -360,7 +360,7 @@ const CategoriesPage = () => {
                   <Link
                     key={category.id}
                     to={`/category/${category.id}`}
-                    className="group bg-[#FFF9F5] border border-[#F3E5DC] rounded-2xl p-2 sm:p-2.5 md:p-3 flex flex-col justify-between shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:border-[#6B111F]/30 hover:shadow-[0_6px_20px_rgba(0,0,0,0.06)] active:scale-[0.97] transition-all cursor-pointer"
+                    className="group bg-[#FFF9F5] border border-[#F3E5DC] rounded-2xl p-2 sm:p-2.5 md:p-3 flex flex-col justify-between shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:border-[#FDCE04]/60 hover:shadow-[0_6px_20px_rgba(0,0,0,0.06)] active:scale-[0.97] transition-all cursor-pointer"
                   >
                     {/* Soft Peach Circular Container for Image */}
                     <div className="relative w-full aspect-square rounded-full bg-[#FEEAE1] flex items-center justify-center overflow-hidden mb-1.5 sm:mb-2 p-1.5 transition-transform duration-300 group-hover:scale-105">
@@ -380,7 +380,7 @@ const CategoriesPage = () => {
                     {/* Bottom Title, Subtitle, & Round Arrow Button */}
                     <div className="flex items-end justify-between gap-1 mt-0.5">
                       <div className="min-w-0 flex-1">
-                        <h3 className="font-bold text-[#1A1A1A] text-[12px] sm:text-[13.5px] md:text-[14.5px] leading-tight line-clamp-1 group-hover:text-[#6B111F] transition-colors tracking-tight">
+                        <h3 className="font-bold text-[#1A1A1A] text-[12px] sm:text-[13.5px] md:text-[14.5px] leading-tight line-clamp-1 group-hover:text-amber-600 transition-colors tracking-tight">
                           {category.name}
                         </h3>
                         <p className="text-[9.5px] sm:text-[10.5px] text-[#8C7A75] font-medium leading-tight mt-0.5 truncate">
@@ -389,7 +389,7 @@ const CategoriesPage = () => {
                       </div>
 
                       {/* Round Arrow Button */}
-                      <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-[#FCEAE2] text-[#6B111F] group-hover:bg-[#6B111F] group-hover:text-white transition-colors flex items-center justify-center shrink-0 shadow-2xs">
+                      <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-[#FDCE04]/20 text-[#1A1A1A] group-hover:bg-[#FDCE04] group-hover:text-[#1A1A1A] transition-colors flex items-center justify-center shrink-0 shadow-2xs font-bold">
                         <ArrowRight size={11} className="stroke-[2.5]" />
                       </div>
                     </div>

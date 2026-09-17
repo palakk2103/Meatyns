@@ -104,7 +104,7 @@ export async function sendSellerVerificationOtpEmail({
     };
   }
 
-  const appName = String(process.env.APP_NAME || "Anita Mega Mart").trim();
+  const appName = String(process.env.APP_NAME || "Meatyns").trim();
 
   const transporter = getTransporter();
   await transporter.sendMail({

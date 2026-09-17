@@ -147,9 +147,9 @@ const ALL_CATEGORY = {
   name: "All",
   icon: HomeIcon,
   theme: DEFAULT_CATEGORY_THEME,
-  headerColor: "#741721",
-  headerFontColor: "#FFFFFF",
-  headerIconColor: "#FFFFFF",
+  headerColor: "#FDCE04",
+  headerFontColor: "#1A1A1A",
+  headerIconColor: "#1A1A1A",
   banner: {
     title: "PREMIUM MEAT",
     subtitle: "FRESH & HYGIENIC",
@@ -178,7 +178,7 @@ const getCachedHomePageData = (location) =>
   homePageDataCache.get(getHomePageDataCacheKey(location)) || null;
 
 const DB_HEADER_THEMES = {
-  "all": { bg: "#741721", text: "#FFFFFF", icon: "#FFFFFF" },
+  "all": { bg: "#FDCE04", text: "#1A1A1A", icon: "#1A1A1A" },
   "dairy & breakfast": { bg: "#ea580c", text: "#111111", icon: "#111111" },
   "vegetables & fruits": { bg: "#16a34a", text: "#111111", icon: "#111111" },
   "cold drinks & juices": { bg: "#0284c7", text: "#111111", icon: "#111111" },
@@ -198,7 +198,7 @@ const DB_HEADER_THEMES = {
   "home": { bg: "#d97706", text: "#ffffff", icon: "#ffffff" },
   "beauty": { bg: "#db2777", text: "#ffffff", icon: "#ffffff" },
   "fashion": { bg: "#e11d48", text: "#ffffff", icon: "#ffffff" },
-  "grocery": { bg: "#741721", text: "#FFFFFF", icon: "#FFFFFF" }
+  "grocery": { bg: "#FDCE04", text: "#1A1A1A", icon: "#1A1A1A" }
 };
 
 const Home = () => {
@@ -327,7 +327,7 @@ const Home = () => {
         const formattedHeaders = dbCats.filter((cat) => cat.type === "header").map((cat) => {
           const catName = cat.name;
           const key = catName.trim().toLowerCase();
-          const theme = DB_HEADER_THEMES[key] || { bg: cat.headerColor || "#741721", text: cat.headerFontColor || "#FFFFFF", icon: cat.headerIconColor || "#FFFFFF" };
+          const theme = DB_HEADER_THEMES[key] || { bg: cat.headerColor || "#FDCE04", text: cat.headerFontColor || (cat.headerColor ? "#FFFFFF" : "#1A1A1A"), icon: cat.headerIconColor || (cat.headerColor ? "#FFFFFF" : "#1A1A1A") };
           const meta = CATEGORY_METADATA[catName] || CATEGORY_METADATA[catName.toUpperCase()] || { icon: Sparkles, theme: DEFAULT_CATEGORY_THEME, banner: { title: catName.toUpperCase(), subtitle: "TOP PICKS", floatingElements: "sparkles" } };
           const IconComp = (cat.iconId && ICON_COMPONENTS[cat.iconId]) || meta.icon || Sparkles;
           return { ...cat, id: cat._id, headerColor: theme.bg, headerFontColor: theme.text, headerIconColor: theme.icon, icon: IconComp, theme: meta.theme, banner: { ...meta.banner, textColor: "text-white" } };

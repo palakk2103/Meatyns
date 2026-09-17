@@ -1135,10 +1135,10 @@ const OrderDetailPage = () => {
                       </p>
                     </div>
                     <span className={`text-xs font-semibold flex items-center gap-1 ${
-                      status === 'out_for_delivery' ? 'text-[#741721] font-bold' : 'text-slate-400'
+                      status === 'out_for_delivery' ? 'text-[#B45309] font-bold' : 'text-slate-400'
                     }`}>
                       {status === 'out_for_delivery' ? (
-                        <>Current <span className="w-1.5 h-1.5 rounded-full bg-[#741721] animate-ping" /></>
+                        <>Current <span className="w-1.5 h-1.5 rounded-full bg-[#FDCE04] animate-ping" /></>
                       ) : status === 'delivered' ? 'completed' : 'pending'}
                     </span>
                   </div>
@@ -1177,7 +1177,7 @@ const OrderDetailPage = () => {
             <div className="col-span-5 xl:col-span-4 space-y-4 select-none">
               {/* Rider Card */}
               <div className="bg-white rounded-2xl p-6 border border-[#ede5df] shadow-xs text-center space-y-4">
-                <div className="w-16 h-16 mx-auto rounded-full bg-rose-50 flex items-center justify-center text-[#741721]">
+                <div className="w-16 h-16 mx-auto rounded-full bg-[#FFFBEB] flex items-center justify-center text-[#1A1A1A] border border-[#FDE68A]">
                   <Bike size={32} strokeWidth={2} />
                 </div>
                 <div>
@@ -1205,7 +1205,7 @@ const OrderDetailPage = () => {
                 <div className="flex items-center gap-3 pt-1">
                   <a
                     href={`tel:${order.deliveryBoy?.phone || "9876543210"}`}
-                    className="flex-1 py-2.5 rounded-xl bg-[#741721] hover:bg-[#5e121a] text-white font-bold text-xs flex items-center justify-center gap-2 transition-colors no-underline shadow-xs"
+                    className="flex-1 py-2.5 rounded-xl bg-[#FDCE04] hover:bg-[#E5B800] text-[#1A1A1A] font-extrabold text-xs flex items-center justify-center gap-2 transition-colors no-underline shadow-xs border border-[#E5B800]"
                   >
                     <Phone size={14} />
                     <span>Call</span>
@@ -1214,7 +1214,7 @@ const OrderDetailPage = () => {
                     href={`https://wa.me/${(order.deliveryBoy?.phone || "919876543210").replace(/[^0-9]/g, "")}`}
                     target="_blank"
                     rel="noreferrer"
-                    className="flex-1 py-2.5 rounded-xl border border-[#741721] text-[#741721] hover:bg-rose-50 font-bold text-xs flex items-center justify-center gap-2 transition-colors no-underline"
+                    className="flex-1 py-2.5 rounded-xl border border-[#FDCE04] text-[#1A1A1A] hover:bg-[#FFFBEB] font-bold text-xs flex items-center justify-center gap-2 transition-colors no-underline"
                   >
                     <MessageSquare size={14} />
                     <span>WhatsApp</span>
@@ -1228,7 +1228,7 @@ const OrderDetailPage = () => {
                   Delivery Address
                 </h3>
                 <div className="flex items-start gap-3 pt-1">
-                  <div className="w-8 h-8 rounded-full bg-rose-50 flex items-center justify-center text-[#741721] flex-shrink-0 mt-0.5">
+                  <div className="w-8 h-8 rounded-full bg-[#FFFBEB] flex items-center justify-center text-[#1A1A1A] border border-[#FDE68A] flex-shrink-0 mt-0.5">
                     <MapPin size={16} />
                   </div>
                   <div className="space-y-0.5 min-w-0">
@@ -1243,13 +1243,13 @@ const OrderDetailPage = () => {
               </div>
 
               {/* Freshness Guaranteed Card */}
-              <div className="p-4 rounded-2xl bg-[#FDF2F2] border border-[#FADCDD] flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-white flex items-center justify-center text-[#741721] flex-shrink-0 shadow-xs">
+              <div className="p-4 rounded-2xl bg-[#FFFBEB] border border-[#FDE68A] flex items-center gap-3">
+                <div className="w-9 h-9 rounded-full bg-white flex items-center justify-center text-[#1A1A1A] flex-shrink-0 shadow-xs border border-[#FDE68A]">
                   <ShieldCheck size={20} />
                 </div>
                 <div>
-                  <p className="text-xs font-bold text-[#741721]">Freshness Guaranteed</p>
-                  <p className="text-[11px] text-slate-500">We ensure your order is fresh and safe</p>
+                  <p className="text-xs font-bold text-[#1A1A1A]">Freshness Guaranteed</p>
+                  <p className="text-[11px] text-slate-600">We ensure your order is fresh and safe</p>
                 </div>
               </div>
             </div>

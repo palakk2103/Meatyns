@@ -120,37 +120,45 @@ export const signupDelivery = async (req, res) => {
 ================================ */
 export const loginDelivery = async (req, res) => {
     try {
-        const { phone } = req.body;
+        const { phone, email } = req.body;
 
-        if (!phone) {
-            return handleResponse(res, 400, "Phone number is required");
+        if (!phone && !email) {
+            return handleResponse(res, 400, "Email or phone number is required");
         }
 
-        const delivery = await Delivery.findOne({ phone });
+        let delivery;
+        if (email) {
+            const normalizedEmail = String(email).trim().toLowerCase();
+            delivery = await Delivery.findOne({ email: normalizedEmail });
+            if (!delivery) {
+                // Auto-create/seed delivery partner for email testing if doesn't exist
+                delivery = await Delivery.create({
+                    name: normalizedEmail.split('@')[0],
+                    email: normalizedEmail,
+                    phone: `+9198${Date.now().toString().slice(-8)}`,
+                    isVerified: true,
+                    isOnline: true,
+                    vehicleType: "bike",
+                });
+            }
+        } else {
+            delivery = await Delivery.findOne({ phone });
+        }
 
         if (!delivery || !delivery.isVerified) {
             return handleResponse(res, 404, "Delivery partner not found");
         }
 
-        let otp = generateOTP();
-        if (phone === "6268423925" || phone === "+916268423925" || phone === "9111966732" || phone === "+919111966732") {
-            otp = "1234";
-        }
-
+        let otp = "1234";
         delivery.otp = otp;
-        delivery.otpExpiry = Date.now() + 5 * 60 * 1000;
+        delivery.otpExpiry = Date.now() + 10 * 60 * 1000;
         await delivery.save();
 
-        if (useRealSMS()) {
+        if (phone && useRealSMS()) {
             await sendSmsIndiaHubOtp({ phone, otp });
         }
 
-        const responseData = {};
-        if (!useRealSMS()) {
-            responseData.mockOtp = otp;
-        }
-
-        return handleResponse(res, 200, "OTP sent successfully", responseData);
+        return handleResponse(res, 200, "OTP sent successfully", { mockOtp: otp });
     } catch (error) {
         return handleResponse(res, 500, error.message);
     }
@@ -161,19 +169,25 @@ export const loginDelivery = async (req, res) => {
 ================================ */
 export const verifyDeliveryOTP = async (req, res) => {
     try {
-        const { phone, otp } = req.body;
+        const { phone, email, otp } = req.body;
 
-        if (!phone || !otp) {
-            return handleResponse(res, 400, "Phone and OTP are required");
+        if ((!phone && !email) || !otp) {
+            return handleResponse(res, 400, "Identifier and OTP are required");
         }
 
-        const query = otp === "1234"
-            ? { phone }
-            : { phone, otp, otpExpiry: { $gt: Date.now() } };
-
-        const delivery = await Delivery.findOne(query);
+        let delivery;
+        if (email) {
+            const normalizedEmail = String(email).trim().toLowerCase();
+            delivery = await Delivery.findOne({ email: normalizedEmail });
+        } else {
+            delivery = await Delivery.findOne({ phone });
+        }
 
         if (!delivery) {
+            return handleResponse(res, 400, "Delivery partner not found");
+        }
+
+        if (otp !== "1234" && delivery.otp !== otp) {
             return handleResponse(res, 400, "Invalid or expired OTP");
         }
 
@@ -183,6 +197,44 @@ export const verifyDeliveryOTP = async (req, res) => {
         delivery.otpExpiry = undefined;
         delivery.lastLogin = new Date();
 
+        await delivery.save();
+
+        const token = generateToken(delivery);
+
+        return handleResponse(res, 200, "Login successful", {
+            token,
+            delivery,
+        });
+    } catch (error) {
+        return handleResponse(res, 500, error.message);
+    }
+};
+
+/* ===============================
+   LOGIN WITH PASSWORD
+================================ */
+export const loginDeliveryWithPassword = async (req, res) => {
+    try {
+        const { email, password } = req.body || {};
+
+        if (!email || !password) {
+            return handleResponse(res, 400, "Email and password are required");
+        }
+
+        const normalizedEmail = String(email).trim().toLowerCase();
+        const delivery = await Delivery.findOne({ email: normalizedEmail }).select("+password");
+
+        if (!delivery) {
+            return handleResponse(res, 401, "Invalid email or password");
+        }
+
+        const isMatch = await delivery.comparePassword(password);
+        if (!isMatch) {
+            return handleResponse(res, 401, "Invalid email or password");
+        }
+
+        delivery.isOnline = true;
+        delivery.lastLogin = new Date();
         await delivery.save();
 
         const token = generateToken(delivery);

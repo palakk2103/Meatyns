@@ -102,34 +102,28 @@ const Header = () => {
 
     return (
         <>
-            {/* ──── Desktop Header Layout (md and above) - 100% UNTOUCHED ──── */}
+            {/* ──── Desktop Header Layout (md and above) ──── */}
             <header className="hidden md:block absolute top-8 left-0 right-0 z-[200] px-4">
                 <div className="container mx-auto max-w-6xl">
                     <div
-                        className="w-full px-4 lg:px-8 py-2.5 rounded-2xl shadow-xl flex items-center justify-between border border-white/10"
-                        style={{ background: 'linear-gradient(90deg, #4d0a1a 0%, #581022 50%, #4d0a1a 100%)' }}
+                        className="w-full px-4 lg:px-8 py-2.5 rounded-2xl shadow-lg flex items-center justify-between border border-black/10 text-[#1A1A1A]"
+                        style={{ background: 'linear-gradient(180deg, #FECD04 0%, #FDCE04 55%, #F5C502 100%)' }}
                     >
-                        {/* Left Section: Leaf Logo + Meatyns Brand */}
-                        <Link to="/" className="flex items-center gap-3 cursor-pointer group shrink-0 select-none no-underline">
-                            <div className="group-hover:scale-105 transition-transform duration-200">
-                                <LeafLogo className="w-8 h-8 lg:w-9 lg:h-9 text-white shrink-0 drop-shadow-sm" />
-                            </div>
-                            <div className="flex flex-col justify-center">
-                                <span className="text-[24px] lg:text-[27px] font-serif font-bold text-white tracking-tight leading-none drop-shadow-sm">
-                                    Meatyns
-                                </span>
-                                <span className="text-[10.5px] lg:text-[11px] font-normal text-white/80 tracking-wide mt-1 leading-none">
-                                    Fresh &bull; Fast &bull; Everyday
-                                </span>
-                            </div>
+                        {/* Left Section: Meatyns Official Brand Logo */}
+                        <Link to="/" className="flex items-center cursor-pointer group shrink-0 select-none no-underline py-0.5">
+                            <img
+                                src="/meatyns_logo_2x.png"
+                                alt="Meatyns"
+                                className="h-8 lg:h-9 w-auto object-contain transition-transform group-hover:scale-105"
+                            />
                         </Link>
 
                         {/* Center Section: Pill Search Bar */}
                         {!isCheckoutPage && (
                             <div className="flex-1 max-w-[420px] lg:max-w-[500px] xl:max-w-[560px] mx-4 lg:mx-8">
-                                <Link to="/search" className="w-full h-11 bg-white rounded-full px-4 flex items-center gap-3 cursor-pointer shadow-sm hover:shadow transition-shadow no-underline">
-                                    <Search size={18} className="text-[#520e1e] shrink-0 stroke-[2.2]" />
-                                    <span className="flex-1 text-slate-400 font-normal text-[13.5px] truncate">
+                                <Link to="/search" className="w-full h-11 bg-white rounded-full px-4 flex items-center gap-3 cursor-pointer shadow-xs hover:shadow-sm transition-shadow no-underline border border-black/5">
+                                    <Search size={18} className="text-[#1A1A1A] shrink-0 stroke-[2.4]" />
+                                    <span className="flex-1 text-slate-500 font-normal text-[13.5px] truncate">
                                         Search for meat, fish, seafood, etc...
                                     </span>
                                 </Link>
@@ -147,30 +141,30 @@ const Header = () => {
                                     refreshLocation?.();
                                     setIsLocationOpen(true);
                                 }}
-                                className="flex items-center gap-2 text-left text-white bg-transparent border-0 p-0 cursor-pointer group hover:opacity-90 transition-opacity"
+                                className="flex items-center gap-2 text-left text-[#1A1A1A] bg-transparent border-0 p-0 cursor-pointer group hover:opacity-85 transition-opacity"
                             >
-                                <MapPin size={20} className="text-white shrink-0 stroke-[1.8]" />
+                                <MapPin size={20} className="text-[#1A1A1A] shrink-0 stroke-[2]" />
                                 <div className="flex flex-col leading-tight">
-                                    <span className="text-[11px] text-white/75 font-normal tracking-wide leading-tight">
+                                    <span className="text-[11px] text-stone-800 font-semibold tracking-wide leading-tight">
                                         Deliver to
                                     </span>
-                                    <div className="flex items-center gap-1 text-[13px] lg:text-sm font-bold text-white leading-tight">
+                                    <div className="flex items-center gap-1 text-[13px] lg:text-sm font-bold text-[#1A1A1A] leading-tight">
                                         <span className="max-w-[110px] lg:max-w-[140px] truncate">
                                             {currentLocation?.name || 'Indore'}
                                         </span>
-                                        <ChevronDown size={13} className="text-white/80 shrink-0" />
+                                        <ChevronDown size={13} className="text-stone-800 shrink-0" />
                                     </div>
                                 </div>
                             </button>
 
                             {/* Delivery in */}
-                            <div className="flex items-center gap-2 text-white">
-                                <Zap size={18} className="text-white fill-white shrink-0" />
+                            <div className="flex items-center gap-2 text-[#1A1A1A]">
+                                <Zap size={18} className="text-[#1A1A1A] fill-[#1A1A1A] shrink-0" />
                                 <div className="flex flex-col leading-tight">
-                                    <span className="text-[11px] text-white/75 font-normal tracking-wide leading-tight">
+                                    <span className="text-[11px] text-stone-800 font-semibold tracking-wide leading-tight">
                                         Delivery in
                                     </span>
-                                    <span className="text-[13px] lg:text-sm font-bold text-white whitespace-nowrap leading-tight">
+                                    <span className="text-[13px] lg:text-sm font-bold text-[#1A1A1A] whitespace-nowrap leading-tight">
                                         {currentLocation?.time || '15–30 mins'}
                                     </span>
                                 </div>
@@ -180,20 +174,20 @@ const Header = () => {
                             <Link
                                 to="/profile"
                                 aria-label="Profile"
-                                className="text-white hover:opacity-85 transition-opacity flex items-center justify-center p-1"
+                                className="text-[#1A1A1A] hover:opacity-80 transition-opacity flex items-center justify-center p-1"
                             >
-                                <CircleUserRound size={28} className="text-white stroke-[1.7]" />
+                                <CircleUserRound size={28} className="text-[#1A1A1A] stroke-[1.9]" />
                             </Link>
 
                             {/* Cart Icon with badge */}
                             <Link
-                                to="/checkout"
+                                to="/cart"
                                 id="header-cart-icon"
                                 aria-label="Shopping Cart"
-                                className="relative text-white hover:opacity-85 transition-opacity flex items-center justify-center p-1"
+                                className="relative text-[#1A1A1A] hover:opacity-80 transition-opacity flex items-center justify-center p-1"
                             >
-                                <ShoppingCart size={24} className="text-white stroke-[2]" />
-                                <span className="absolute -top-1.5 -right-2.5 min-w-[18px] h-[18px] px-1 bg-[#e53935] text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-md leading-none">
+                                <ShoppingCart size={24} className="text-[#1A1A1A] stroke-[2.2]" />
+                                <span className="absolute -top-1.5 -right-2.5 min-w-[18px] h-[18px] px-1 bg-[#EF131F] text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-md leading-none">
                                     {cartCount || 0}
                                 </span>
                             </Link>
@@ -204,12 +198,9 @@ const Header = () => {
 
             {/* ──── Mobile View Header (Strictly md:hidden) matching Meatyns Standard ──── */}
             <header
-                className="md:hidden fixed top-0 left-0 right-0 z-[200] px-4 pt-2.5 pb-2 shadow-[0_4px_20px_rgba(0,0,0,0.15)] select-none"
-                style={{ background: 'linear-gradient(135deg, #4A0C1B 0%, #520e1e 50%, #681327 100%)' }}
+                className="md:hidden fixed top-0 left-0 right-0 z-[200] px-4 pt-2.5 pb-2 shadow-[0_4px_20px_rgba(0,0,0,0.15)] select-none text-[#1A1A1A]"
+                style={{ background: 'linear-gradient(180deg, #FECD04 0%, #FDCE04 55%, #F5C502 100%)' }}
             >
-                {/* Subtle Contrast Overlay */}
-                <div className="absolute inset-0 bg-black/5 pointer-events-none" />
-
                 {/* Top Row: Delivery Address, Meatyns Brand, Cart */}
                 <div className="relative z-10 grid grid-cols-[1fr_auto_1fr] items-center gap-3 min-h-[36px]">
                     {/* 1. Left: Delivery Address */}
@@ -221,54 +212,50 @@ const Header = () => {
                             refreshLocation?.();
                             setIsLocationOpen(true);
                         }}
-                        className="flex items-center gap-1.5 text-left text-white bg-transparent border-0 p-0 cursor-pointer active:scale-95 transition-transform min-w-0 max-w-full"
+                        className="flex items-center gap-1.5 text-left text-[#1A1A1A] bg-transparent border-0 p-0 cursor-pointer active:scale-95 transition-transform min-w-0 max-w-full"
                     >
-                        <MapPin size={16} className="text-white shrink-0 stroke-[2.2]" />
+                        <MapPin size={16} className="text-[#1A1A1A] shrink-0 stroke-[2.2]" />
                         <div className="flex flex-col leading-tight min-w-0">
-                            <span className="text-[9.5px] font-semibold text-white/90 leading-tight">
+                            <span className="text-[9.5px] font-semibold text-stone-700 leading-tight">
                                 Delivery
                             </span>
                             <div className="flex items-center gap-0.5 min-w-0">
-                                <span className="text-[10px] font-bold text-white leading-tight truncate">
+                                <span className="text-[10px] font-bold text-[#1A1A1A] leading-tight truncate">
                                     {isFetchingLocation
                                         ? "Detecting..."
                                         : (currentLocation?.name || "Indore")}
                                 </span>
-                                <ChevronDown size={11} className="text-white/80 shrink-0" />
+                                <ChevronDown size={11} className="text-stone-700 shrink-0" />
                             </div>
                         </div>
                     </button>
 
-                    {/* 2. Center: Meatyns Brand */}
+                    {/* 2. Center: Meatyns Brand Official Logo */}
                     <Link
                         to="/"
-                        className="flex items-center justify-center gap-1.5 cursor-pointer select-none active:scale-95 transition-transform shrink-0 no-underline"
+                        className="flex items-center justify-center cursor-pointer select-none active:scale-95 transition-transform shrink-0 no-underline"
                     >
-                        <LeafLogo className="w-5 h-5 text-white shrink-0 drop-shadow-xs" />
-                        <div className="flex flex-col items-center justify-center">
-                            <span className="text-[17px] font-serif font-bold text-white tracking-tight leading-none drop-shadow-xs">
-                                Meatyns
-                            </span>
-                            <span className="text-[7.5px] font-normal text-white/80 tracking-wider leading-none mt-0.5 whitespace-nowrap">
-                                Fresh &bull; Fast &bull; Everyday
-                            </span>
-                        </div>
+                        <img
+                            src="/meatyns_logo_2x.png"
+                            alt="Meatyns"
+                            className="h-7 w-auto object-contain"
+                        />
                     </Link>
 
                     {/* 3. Right: Cart Action */}
                     <div className="flex items-center justify-end shrink-0 pr-1">
                         <Link
-                            to="/checkout"
+                            to="/cart"
                             aria-label="Cart"
-                            className="relative flex flex-col items-center justify-center text-white bg-transparent border-0 p-0 cursor-pointer active:scale-90 transition-transform select-none no-underline"
+                            className="relative flex flex-col items-center justify-center text-[#1A1A1A] bg-transparent border-0 p-0 cursor-pointer active:scale-90 transition-transform select-none no-underline"
                         >
                             <div className="relative inline-flex items-center justify-center">
-                                <ShoppingCart size={19} className="text-white stroke-[2]" />
-                                <span className="absolute -top-1.5 -right-2 min-w-[15px] h-[15px] px-0.5 bg-[#e53935] text-white text-[9px] font-bold rounded-full flex items-center justify-center shadow-sm leading-none">
+                                <ShoppingCart size={19} className="text-[#1A1A1A] stroke-[2.2]" />
+                                <span className="absolute -top-1.5 -right-2 min-w-[15px] h-[15px] px-0.5 bg-[#EF131F] text-white text-[9px] font-bold rounded-full flex items-center justify-center shadow-sm leading-none">
                                     {cartCount || 0}
                                 </span>
                             </div>
-                            <span className="text-[8.5px] font-medium text-white/90 leading-none mt-0.5">
+                            <span className="text-[8.5px] font-medium text-stone-800 leading-none mt-0.5">
                                 Cart
                             </span>
                         </Link>

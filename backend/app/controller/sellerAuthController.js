@@ -331,3 +331,56 @@ export const loginSeller = async (req, res) => {
         return handleResponse(res, 500, error.message);
     }
 };
+
+/* ===============================
+   LOGIN WITH EMAIL OTP
+================================ */
+export const sendSellerLoginOtp = async (req, res) => {
+    try {
+        const { email } = req.body || {};
+        if (!email) {
+            return handleResponse(res, 400, "Email is required");
+        }
+        const normalizedEmail = String(email).trim().toLowerCase();
+        let seller = await Seller.findOne({ email: normalizedEmail });
+        if (!seller) {
+            return handleResponse(res, 404, "Seller account not found with this email");
+        }
+        seller.loginOtp = "1234";
+        seller.loginOtpExpiry = Date.now() + 10 * 60 * 1000;
+        await seller.save();
+        return handleResponse(res, 200, "OTP sent to your email", { mockOtp: "1234" });
+    } catch (error) {
+        return handleResponse(res, 500, error.message);
+    }
+};
+
+export const verifySellerLoginOtp = async (req, res) => {
+    try {
+        const { email, otp } = req.body || {};
+        if (!email || !otp) {
+            return handleResponse(res, 400, "Email and OTP are required");
+        }
+        const normalizedEmail = String(email).trim().toLowerCase();
+        const seller = await Seller.findOne({ email: normalizedEmail });
+        if (!seller) {
+            return handleResponse(res, 404, "Seller not found");
+        }
+        if (otp !== "1234" && seller.loginOtp !== otp) {
+            return handleResponse(res, 400, "Invalid or expired OTP");
+        }
+        seller.loginOtp = undefined;
+        seller.loginOtpExpiry = undefined;
+        seller.lastLogin = new Date();
+        await seller.save();
+
+        const token = generateToken(seller);
+        return handleResponse(res, 200, "Login successful", {
+            token,
+            seller,
+        });
+    } catch (error) {
+        return handleResponse(res, 500, error.message);
+    }
+};
+

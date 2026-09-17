@@ -192,16 +192,17 @@ const ProductDetailSheet = () => {
         return text;
     };
 
+    const selectedProductId = String(selectedProduct?.id || selectedProduct?._id || "").trim();
     const variantKey = String(selectedVariant?.sku || selectedVariant?.name || "").trim();
-    const cartItem = selectedProduct
+    const cartItem = selectedProductId
         ? cart.find(
             (item) =>
                 `${item.id || item._id}::${String(item.variantSku || "").trim()}` ===
-                `${selectedProduct.id}::${variantKey || ""}`,
+                `${selectedProductId}::${variantKey || ""}`,
         )
         : null;
-    const quantity = cartItem ? cartItem.quantity : 0;
-    const isWishlisted = selectedProduct ? isInWishlist(selectedProduct.id) : false;
+    const quantity = cartItem ? (Number(cartItem.quantity) || 0) : 0;
+    const isWishlisted = selectedProductId ? isInWishlist(selectedProductId) : false;
     const activePrice = selectedProduct ? getCalculatedVariantPrice(selectedProduct, selectedVariant) : 0;
     const activeOriginalPrice = selectedProduct ? getCalculatedVariantOriginalPrice(selectedProduct, selectedVariant) : 0;
     const hasDiscount = activeOriginalPrice > activePrice;
@@ -253,21 +254,24 @@ const ProductDetailSheet = () => {
     };
 
     const handleAddToCart = () => {
+        if (!selectedProductId) return;
         addToCart({
             ...selectedProduct,
-            variantSku: String(selectedVariant?.sku || selectedVariant?.name || "").trim(),
+            id: selectedProductId,
+            _id: selectedProductId,
+            variantSku: variantKey,
         });
         showToast(`${selectedProduct.name} added to cart`, 'success');
     };
 
     const handleIncrement = () =>
-        updateQuantity(selectedProduct.id, 1, String(selectedVariant?.sku || selectedVariant?.name || "").trim());
+        updateQuantity(selectedProductId, 1, variantKey);
 
     const handleDecrement = () => {
-        if (quantity === 1) {
-            removeFromCart(selectedProduct.id, String(selectedVariant?.sku || selectedVariant?.name || "").trim());
+        if (quantity <= 1) {
+            removeFromCart(selectedProductId, variantKey);
         } else {
-            updateQuantity(selectedProduct.id, -1, String(selectedVariant?.sku || selectedVariant?.name || "").trim());
+            updateQuantity(selectedProductId, -1, variantKey);
         }
     };
 
@@ -549,7 +553,7 @@ const ProductDetailSheet = () => {
                                                                 <Minus size={16} strokeWidth={2.5} />
                                                             </motion.button>
                                                             <span className="font-[800] text-base text-gray-800 w-8 text-center">{quantity}</span>
-                                                            <motion.button whileTap={{ scale: 0.85 }} onClick={handleIncrement} style={{ backgroundColor: "#741721" }} className="w-9 h-9 rounded-lg flex items-center justify-center text-white hover:opacity-90 transition-colors shadow-sm">
+                                                            <motion.button whileTap={{ scale: 0.85 }} onClick={handleIncrement} style={{ backgroundColor: "#FDCE04" }} className="w-9 h-9 rounded-lg flex items-center justify-center text-[#1A1A1A] hover:bg-[#E5B800] transition-colors shadow-sm font-bold">
                                                                 <Plus size={16} strokeWidth={2.5} />
                                                             </motion.button>
                                                         </div>
@@ -558,8 +562,8 @@ const ProductDetailSheet = () => {
                                                         whileHover={{ scale: 1.02, y: -2 }}
                                                         whileTap={{ scale: 0.98 }}
                                                         onClick={handleAddToCart}
-                                                        style={{ backgroundColor: "#741721" }}
-                                                        className="text-white h-12 px-8 rounded-xl font-black text-[13px] flex items-center gap-2 shadow-lg hover:opacity-90 transition-all uppercase tracking-widest border border-white/20"
+                                                        style={{ backgroundColor: "#FDCE04" }}
+                                                        className="text-[#1A1A1A] h-12 px-8 rounded-xl font-extrabold text-[13px] flex items-center gap-2 shadow-md hover:bg-[#E5B800] transition-all uppercase tracking-widest border border-amber-300/40 cursor-pointer"
                                                     >
                                                         <ShoppingBag size={16} strokeWidth={3} />
                                                         Add to Cart
@@ -577,7 +581,7 @@ const ProductDetailSheet = () => {
                                                 className="flex justify-center -mt-1"
                                             >
                                                 <Link
-                                                    to="/checkout"
+                                                    to="/cart"
                                                     onClick={closeProduct}
                                                     className="w-[80%] bg-gradient-to-r from-primary to-[var(--brand-500)] text-white h-[40px] rounded-xl flex items-center justify-between px-4 shadow-md shadow-brand-200/40 hover:shadow-lg hover:-translate-y-0.5 transition-all active:scale-[0.98]"
                                                 >
@@ -1077,8 +1081,8 @@ const ProductDetailSheet = () => {
                                             <motion.button
                                                 whileTap={{ scale: 0.9 }}
                                                 onClick={handleIncrement}
-                                                style={{ backgroundColor: "#741721" }}
-                                                className="w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-md transition-all border border-white/20 active:scale-95"
+                                                style={{ backgroundColor: "#FDCE04" }}
+                                                className="w-10 h-10 rounded-xl flex items-center justify-center text-[#1A1A1A] shadow-sm transition-all border border-amber-300/40 active:scale-95 font-bold"
                                             >
                                                 <Plus size={18} strokeWidth={3.5} />
                                             </motion.button>
@@ -1088,8 +1092,8 @@ const ProductDetailSheet = () => {
                                             whileHover={{ scale: 1.02 }}
                                             whileTap={{ scale: 0.95 }}
                                             onClick={handleAddToCart}
-                                            style={{ backgroundColor: "#741721" }}
-                                            className="flex-1 text-white h-[56px] rounded-2xl font-black text-sm flex items-center justify-center gap-2 shadow-xl shadow-brand-100 transition-all hover:opacity-90 border border-white/20 uppercase tracking-[0.05em] whitespace-nowrap px-4"
+                                            style={{ backgroundColor: "#FDCE04" }}
+                                            className="flex-1 text-[#1A1A1A] h-[56px] rounded-2xl font-extrabold text-sm flex items-center justify-center gap-2 shadow-md hover:bg-[#E5B800] transition-all border border-amber-300/40 uppercase tracking-[0.05em] whitespace-nowrap px-4 cursor-pointer"
                                         >
                                             <ShoppingBag size={18} strokeWidth={3} />
                                             Add to Cart
@@ -1105,7 +1109,7 @@ const ProductDetailSheet = () => {
                                         className="mt-2"
                                     >
                                         <Link
-                                            to="/checkout"
+                                            to="/cart"
                                             onClick={closeProduct}
                                             className="w-full bg-gradient-to-r from-primary to-[var(--brand-400)] text-white h-[64px] rounded-2xl flex items-center justify-between px-5 shadow-xl shadow-brand-200/50 hover:shadow-brand-300 transition-all active:scale-[0.98] border border-white/20 relative overflow-hidden group"
                                         >

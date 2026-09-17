@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Cart from "../models/cart.js";
 import Product from "../models/product.js";
 import handleResponse from "../utils/helper.js";
@@ -18,7 +19,7 @@ function sanitizeCartItems(cart) {
 }
 
 async function getCustomerVisibleProductById(productId) {
-  if (!productId) return null;
+  if (!productId || !mongoose.isValidObjectId(productId)) return null;
   return Product.findOne({
     _id: productId,
     ...CUSTOMER_VISIBLE_PRODUCT_MATCH,
@@ -85,7 +86,7 @@ export const addToCart = async (req, res) => {
 
     const itemIndex = cart.items.findIndex(
       (item) =>
-        item.productId.toString() === productId &&
+        String(item.productId?._id || item.productId) === String(productId) &&
         String(item.variantSku || "").trim() === normalizedVariantSku,
     );
 
@@ -121,7 +122,7 @@ export const updateQuantity = async (req, res) => {
 
     const itemIndex = cart.items.findIndex(
       (item) =>
-        item.productId.toString() === productId &&
+        String(item.productId?._id || item.productId) === String(productId) &&
         String(item.variantSku || "").trim() === normalizedVariantSku,
     );
 
@@ -159,7 +160,7 @@ export const removeFromCart = async (req, res) => {
     }
 
     cart.items = cart.items.filter((item) => {
-      if (item.productId.toString() !== productId) return true;
+      if (String(item.productId?._id || item.productId) !== String(productId)) return true;
       // If variantSku is provided, remove only that variant line.
       if (normalizedVariantSku) {
         return String(item.variantSku || "").trim() !== normalizedVariantSku;

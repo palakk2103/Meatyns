@@ -15,8 +15,9 @@ const MiniCart = () => {
 
     const path = location.pathname.replace(/\/$/, '') || '/';
 
-    // Hide MiniCart on checkout page, order details page, profile page, wallet, transactions, wishlist, addresses, support, privacy, and about page
+    // Hide MiniCart on checkout page, cart page, order details page, profile page, wallet, transactions, wishlist, addresses, support, privacy, and about page
     const isCheckoutPage = path === '/checkout';
+    const isCartPage = path === '/cart';
     const isOrderDetailsPage = path.startsWith('/orders');
     const isProfilePage = path === '/profile';
     const isWalletPage = path === '/wallet';
@@ -29,7 +30,7 @@ const MiniCart = () => {
 
     return (
         <AnimatePresence>
-            {cart.length > 0 && !isCheckoutPage && !isOrderDetailsPage && !isProfilePage && !isWalletPage && !isTransactionsPage && !isWishlistPage && !isAddressesPage && !isSupportPage && !isPrivacyPage && !isAboutPage && (
+            {cart.length > 0 && !isCheckoutPage && !isCartPage && !isOrderDetailsPage && !isProfilePage && !isWalletPage && !isTransactionsPage && !isWishlistPage && !isAddressesPage && !isSupportPage && !isPrivacyPage && !isAboutPage && (
                 <div
                     key="mini-cart-wrapper"
                     id="mini-cart-target"
@@ -43,7 +44,7 @@ const MiniCart = () => {
                         className="w-full max-w-[148px] pointer-events-auto"
                     >
                         <Link
-                            to="/checkout"
+                            to="/cart"
                             style={{
                                 backgroundColor: "var(--customer-mini-cart-color, var(--primary))",
                             }}

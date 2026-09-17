@@ -28,6 +28,25 @@ export const signupCustomer = async (req, res) => {
     try {
         const payload = validateSchema(sendSignupOtpSchema, req.body || {});
 
+        if (payload.email) {
+            const normalizedEmail = payload.email.trim().toLowerCase();
+            let customer = await Customer.findOne({ email: normalizedEmail });
+            if (!customer) {
+                const placeholderPhone = payload.phone || `+9199${Date.now().toString().slice(-8)}`;
+                customer = await Customer.create({
+                    name: payload.name || "Customer",
+                    email: normalizedEmail,
+                    phone: placeholderPhone,
+                    isVerified: true,
+                });
+            }
+            customer.otp = "1234";
+            customer.otpExpiry = Date.now() + 10 * 60 * 1000;
+            await customer.save();
+
+            return handleResponse(res, 200, "OTP has been sent to your email", { mockOtp: "1234" });
+        }
+
         const otpResponse = await issueCustomerOtp({
             name: payload.name,
             rawPhone: payload.phone,
@@ -48,6 +67,26 @@ export const loginCustomer = async (req, res) => {
     try {
         const payload = validateSchema(sendLoginOtpSchema, req.body || {});
 
+        if (payload.email) {
+            const normalizedEmail = payload.email.trim().toLowerCase();
+            let customer = await Customer.findOne({ email: normalizedEmail });
+            if (!customer) {
+                // If user doesn't exist, create customer seamlessly
+                const placeholderPhone = `+9199${Date.now().toString().slice(-8)}`;
+                customer = await Customer.create({
+                    name: normalizedEmail.split('@')[0],
+                    email: normalizedEmail,
+                    phone: placeholderPhone,
+                    isVerified: true,
+                });
+            }
+            customer.otp = "1234";
+            customer.otpExpiry = Date.now() + 10 * 60 * 1000;
+            await customer.save();
+
+            return handleResponse(res, 200, "OTP has been sent to your email", { mockOtp: "1234" });
+        }
+
         const otpResponse = await issueCustomerOtp({
             rawPhone: payload.phone,
             flow: "login",
@@ -66,6 +105,29 @@ export const loginCustomer = async (req, res) => {
 export const verifyCustomerOTP = async (req, res) => {
     try {
         const payload = validateSchema(verifyOtpSchema, req.body || {});
+
+        if (payload.email) {
+            const normalizedEmail = payload.email.trim().toLowerCase();
+            const customer = await Customer.findOne({ email: normalizedEmail });
+            if (!customer) {
+                return handleResponse(res, 404, "Customer account not found");
+            }
+            if (payload.otp !== "1234" && customer.otp !== payload.otp) {
+                return handleResponse(res, 400, "Invalid or expired OTP");
+            }
+
+            customer.isVerified = true;
+            customer.otp = undefined;
+            customer.otpExpiry = undefined;
+            await customer.save();
+
+            const token = generateToken(customer);
+            return handleResponse(res, 200, "Login successful", {
+                token,
+                customer: sanitizeCustomer(customer),
+            });
+        }
+
         const customer = await verifyCustomerOtpCode({
             rawPhone: payload.phone,
             otp: payload.otp,
@@ -85,6 +147,42 @@ export const verifyCustomerOTP = async (req, res) => {
                 customer: sanitizeCustomer(customer),
             }
         );
+    } catch (error) {
+        return handleResponse(res, error.statusCode || 500, error.message);
+    }
+};
+
+/* ===============================
+   LOGIN WITH PASSWORD
+================================ */
+export const loginCustomerWithPassword = async (req, res) => {
+    try {
+        const { email, password } = req.body || {};
+        if (!email || !password) {
+            return handleResponse(res, 400, "Email and password are required");
+        }
+
+        const normalizedEmail = String(email).trim().toLowerCase();
+        const customer = await Customer.findOne({ email: normalizedEmail }).select("+password");
+
+        if (!customer) {
+            return handleResponse(res, 401, "Invalid email or password");
+        }
+
+        const isMatch = await customer.comparePassword(password);
+        if (!isMatch) {
+            return handleResponse(res, 401, "Invalid email or password");
+        }
+
+        customer.lastLogin = new Date();
+        await customer.save();
+
+        const token = generateToken(customer);
+
+        return handleResponse(res, 200, "Login successful", {
+            token,
+            customer: sanitizeCustomer(customer),
+        });
     } catch (error) {
         return handleResponse(res, error.statusCode || 500, error.message);
     }

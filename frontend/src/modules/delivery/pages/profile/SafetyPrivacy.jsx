@@ -22,7 +22,7 @@ const SafetyPrivacy = () => {
       }
     }
     return [
-      { id: 1, name: "Anita Kumar (Wife)", phone: "+91 98765 12345" },
+      { id: 1, name: "Pooja Kumar (Wife)", phone: "+91 98765 12345" },
       { id: 2, name: "Ravi Singh (Brother)", phone: "+91 98765 67890" },
     ];
   });

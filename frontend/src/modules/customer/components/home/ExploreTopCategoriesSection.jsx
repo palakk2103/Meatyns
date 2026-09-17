@@ -8,7 +8,7 @@ const CategoryGridIcon = () => (
   <svg
     viewBox="0 0 24 24"
     fill="none"
-    className="w-5 h-5 sm:w-6 sm:h-6 shrink-0 text-[#6B111F]"
+    className="w-5 h-5 sm:w-6 sm:h-6 shrink-0 text-[#1A1A1A]"
   >
     <rect
       x="3"
@@ -198,14 +198,14 @@ const ExploreTopCategoriesSection = ({ categories = [] }) => {
           <div className="flex items-center gap-2 min-w-0">
             <CategoryGridIcon />
             <div className="w-[1.5px] h-4 bg-[#CDB5AA]/70 rounded-full shrink-0" />
-            <h2 className="text-[17px] sm:text-[20px] font-bold text-[#520E1E] tracking-tight leading-none truncate">
+            <h2 className="text-[17px] sm:text-[20px] font-bold text-slate-900 tracking-tight leading-none truncate">
               Explore Top Categories
             </h2>
           </div>
 
           <button
             onClick={() => navigate("/categories")}
-            className="text-xs font-bold text-[#6B111F] hover:opacity-80 flex items-center gap-1 cursor-pointer transition-opacity border-0 bg-transparent p-0 shrink-0"
+            className="text-xs font-bold text-slate-700 hover:text-slate-900 flex items-center gap-1 cursor-pointer transition-colors border-0 bg-transparent p-0 shrink-0"
           >
             <span>View All</span>
             <span className="hidden min-[420px]:inline">Categories</span>
@@ -225,7 +225,7 @@ const ExploreTopCategoriesSection = ({ categories = [] }) => {
           <div
             key={cat.id}
             onClick={() => handleCategoryClick(cat)}
-            className="group bg-[#FFF9F5] border border-[#F3E5DC] rounded-2xl p-2 sm:p-2.5 flex flex-col justify-between shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:border-[#6B111F]/30 hover:shadow-[0_4px_16px_rgba(0,0,0,0.06)] active:scale-[0.97] transition-all cursor-pointer"
+            className="group bg-[#FFF9F5] border border-[#F3E5DC] rounded-2xl p-2 sm:p-2.5 flex flex-col justify-between shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:border-[#FDCE04]/60 hover:shadow-[0_4px_16px_rgba(0,0,0,0.06)] active:scale-[0.97] transition-all cursor-pointer"
           >
             {/* Soft Peach Circular Container for Image */}
             <div className="relative w-full aspect-square rounded-full bg-[#FEEAE1] flex items-center justify-center overflow-hidden mb-1.5 p-1 transition-transform duration-300 group-hover:scale-105">
@@ -240,7 +240,7 @@ const ExploreTopCategoriesSection = ({ categories = [] }) => {
             {/* Bottom Title, Subtitle, & Arrow Button */}
             <div className="flex items-end justify-between gap-1 mt-0.5">
               <div className="min-w-0 flex-1">
-                <h3 className="font-bold text-[#4A0E17] text-[11.5px] sm:text-[13px] leading-tight line-clamp-1 group-hover:text-[#6B111F] transition-colors tracking-tight">
+                <h3 className="font-bold text-slate-900 text-[11.5px] sm:text-[13px] leading-tight line-clamp-1 group-hover:text-amber-600 transition-colors tracking-tight">
                   {cat.name}
                 </h3>
                 <p className="text-[9.5px] sm:text-[10px] text-[#8C7A75] font-medium leading-tight mt-0.5 truncate">
@@ -249,7 +249,7 @@ const ExploreTopCategoriesSection = ({ categories = [] }) => {
               </div>
 
               {/* Round Arrow Button */}
-              <div className="w-5 h-5 sm:w-5.5 sm:h-5.5 rounded-full bg-[#FCEAE2] text-[#6B111F] group-hover:bg-[#6B111F] group-hover:text-white transition-colors flex items-center justify-center shrink-0 shadow-2xs">
+              <div className="w-5 h-5 sm:w-5.5 sm:h-5.5 rounded-full bg-[#FDCE04]/20 text-[#1A1A1A] group-hover:bg-[#FDCE04] group-hover:text-[#1A1A1A] transition-colors flex items-center justify-center shrink-0 shadow-2xs font-bold">
                 <ArrowRight size={10} className="stroke-[2.5]" />
               </div>
             </div>
@@ -262,7 +262,7 @@ const ExploreTopCategoriesSection = ({ categories = [] }) => {
         className="relative w-full mt-3.5 sm:mt-4 rounded-2xl overflow-hidden p-4 sm:p-5 shadow-md text-white select-none"
         style={{
           background:
-            "linear-gradient(100deg, #380811 0%, #4D0E1B 45%, #25040B 100%)",
+            "linear-gradient(100deg, #1C1917 0%, #292524 45%, #18181B 100%)",
         }}
       >
         {/* Right side meat board visual */}
@@ -280,7 +280,7 @@ const ExploreTopCategoriesSection = ({ categories = [] }) => {
         {/* Content on the left */}
         <div className="relative z-10 max-w-[210px] sm:max-w-xs flex flex-col items-start gap-1">
           {/* Leaf + Premium Quality Badge */}
-          <div className="flex items-center gap-1.5 text-[#E6B37E]">
+          <div className="flex items-center gap-1.5 text-[#FDCE04]">
             <Leaf size={12} className="shrink-0 stroke-[2.5]" />
             <span className="text-[9.5px] sm:text-[10px] font-bold uppercase tracking-widest leading-none">
               - PREMIUM QUALITY
@@ -300,7 +300,7 @@ const ExploreTopCategoriesSection = ({ categories = [] }) => {
           {/* CTA Pill Button */}
           <button
             onClick={() => navigate("/category/all")}
-            className="mt-2.5 px-4 py-1.5 sm:px-5 sm:py-2 rounded-full bg-white text-[#4A0E17] font-bold text-xs shadow-md hover:bg-white/90 active:scale-95 transition-all flex items-center gap-1.5 cursor-pointer"
+            className="mt-2.5 px-4 py-1.5 sm:px-5 sm:py-2 rounded-full bg-[#FDCE04] text-[#1A1A1A] font-extrabold text-xs shadow-md hover:bg-[#E5B800] active:scale-95 transition-all flex items-center gap-1.5 cursor-pointer"
           >
             <span>Shop Now</span>
             <ArrowRight size={12} className="stroke-[2.5]" />

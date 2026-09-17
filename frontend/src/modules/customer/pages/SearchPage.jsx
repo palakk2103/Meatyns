@@ -232,37 +232,31 @@ const SearchPage = () => {
             {/* Header / Search Input */}
             <div
                 className={cn(
-                    "sticky top-0 z-50 bg-[#520e1e] shadow-[0_4px_20px_rgba(0,0,0,0.15)] relative overflow-hidden",
+                    "sticky top-0 z-50 bg-[#FDCE04] shadow-[0_4px_20px_rgba(0,0,0,0.08)] relative overflow-hidden",
                     isProductDetailOpen && "hidden md:block"
                 )}
                 style={{
-                    backgroundImage: "linear-gradient(135deg, #4A0C1B 0%, #520e1e 50%, #681327 100%)",
+                    backgroundImage: "linear-gradient(180deg, #FECD04 0%, #FDCE04 55%, #F5C502 100%)",
                 }}
             >
                 {/* ──── Desktop Header Layout (md+) matching Home Page ──── */}
                 <div className="hidden md:flex items-center justify-between relative z-20 w-full max-w-[1440px] mx-auto px-4 lg:px-8 py-2">
-                    {/* Left Section: Leaf Logo + Meatyns Brand */}
+                    {/* Left Section: Meatyns Official Brand Logo */}
                     <div
-                        onClick={() => navigate("/")}
-                        className="flex items-center gap-3 cursor-pointer group shrink-0 select-none"
+                        onClick={() => navigate('/')}
+                        className="flex items-center cursor-pointer group shrink-0 select-none py-0.5"
                     >
-                        <div className="group-hover:scale-105 transition-transform duration-200">
-                            <LeafLogo className="w-8 h-8 lg:w-9 lg:h-9 text-white shrink-0 drop-shadow-sm" />
-                        </div>
-                        <div className="flex flex-col justify-center">
-                            <span className="text-[24px] lg:text-[27px] font-serif font-bold text-white tracking-tight leading-none drop-shadow-sm">
-                                Meatyns
-                            </span>
-                            <span className="text-[10.5px] lg:text-[11px] font-normal text-white/80 tracking-wide mt-1 leading-none">
-                                Fresh &bull; Fast &bull; Everyday
-                            </span>
-                        </div>
+                        <img
+                            src="/meatyns_logo_2x.png"
+                            alt="Meatyns"
+                            className="h-8 lg:h-9 w-auto object-contain group-hover:scale-[1.03] transition-transform duration-200"
+                        />
                     </div>
 
                     {/* Center Section: Pill Search Bar (matching Home Page desktop search bar) */}
                     <div className="flex-1 max-w-[420px] lg:max-w-[500px] xl:max-w-[560px] mx-4 lg:mx-8">
-                        <div className="w-full h-11 bg-white rounded-full px-4 flex items-center gap-3 shadow-sm hover:shadow transition-shadow">
-                            <Search size={18} className="text-[#520e1e] shrink-0 stroke-[2.2]" />
+                        <div className="w-full h-11 bg-white rounded-full px-4 flex items-center gap-3 shadow-sm hover:shadow transition-shadow border border-amber-200/60">
+                            <Search size={18} className="text-[#1A1A1A] shrink-0 stroke-[2.2]" />
                             <input
                                 autoFocus
                                 type="text"
@@ -290,7 +284,7 @@ const SearchPage = () => {
                                 onClick={handleVoiceSearch}
                                 className={cn(
                                     "p-1 transition-all rounded-full cursor-pointer relative border-0 bg-transparent",
-                                    isListening ? "text-red-500 scale-110" : "text-[#520e1e] hover:opacity-80"
+                                    isListening ? "text-red-500 scale-110" : "text-[#1A1A1A] hover:opacity-80"
                                 )}
                             >
                                 <Mic size={17} strokeWidth={2.2} className={cn(isListening && "animate-pulse")} />
@@ -310,32 +304,32 @@ const SearchPage = () => {
                                 refreshLocation?.();
                                 setIsLocationOpen(true);
                             }}
-                            className="flex items-center gap-2 text-left text-white bg-transparent border-0 p-0 cursor-pointer group hover:opacity-90 transition-opacity"
+                            className="flex items-center gap-2 text-left text-[#1A1A1A] bg-transparent border-0 p-0 cursor-pointer group hover:opacity-90 transition-opacity"
                         >
-                            <MapPin size={20} className="text-white shrink-0 stroke-[1.8]" />
+                            <MapPin size={20} className="text-[#1A1A1A] shrink-0 stroke-[2]" />
                             <div className="flex flex-col leading-tight">
-                                <span className="text-[11px] text-white/75 font-normal tracking-wide leading-tight">
+                                <span className="text-[11px] text-[#1A1A1A]/75 font-medium tracking-wide leading-tight">
                                     Deliver to
                                 </span>
-                                <div className="flex items-center gap-1 text-[13px] lg:text-sm font-bold text-white leading-tight">
+                                <div className="flex items-center gap-1 text-[13px] lg:text-sm font-bold text-[#1A1A1A] leading-tight">
                                     <span className="max-w-[110px] lg:max-w-[140px] truncate">
                                         {isFetchingLocation
                                             ? "Detecting..."
                                             : (currentLocation?.name || "Indore")}
                                     </span>
-                                    <ChevronDown size={13} className="text-white/80 shrink-0" />
+                                    <ChevronDown size={13} className="text-[#1A1A1A] shrink-0" />
                                 </div>
                             </div>
                         </button>
 
                         {/* Delivery in */}
-                        <div className="flex items-center gap-2 text-white">
-                            <Zap size={18} className="text-white fill-white shrink-0" />
+                        <div className="flex items-center gap-2 text-[#1A1A1A]">
+                            <Zap size={18} className="text-[#1A1A1A] fill-[#1A1A1A] shrink-0" />
                             <div className="flex flex-col leading-tight">
-                                <span className="text-[11px] text-white/75 font-normal tracking-wide leading-tight">
+                                <span className="text-[11px] text-[#1A1A1A]/75 font-medium tracking-wide leading-tight">
                                     Delivery in
                                 </span>
-                                <span className="text-[13px] lg:text-sm font-bold text-white whitespace-nowrap leading-tight">
+                                <span className="text-[13px] lg:text-sm font-extrabold text-[#1A1A1A] whitespace-nowrap leading-tight">
                                     {currentLocation?.time || "15–30 mins"}
                                 </span>
                             </div>
@@ -346,20 +340,20 @@ const SearchPage = () => {
                             type="button"
                             onClick={() => navigate("/profile")}
                             aria-label="Profile"
-                            className="text-white hover:opacity-85 transition-opacity flex items-center justify-center p-1 bg-transparent border-0 cursor-pointer"
+                            className="text-[#1A1A1A] hover:opacity-85 transition-opacity flex items-center justify-center p-1 bg-transparent border-0 cursor-pointer"
                         >
-                            <CircleUserRound size={28} className="text-white stroke-[1.7]" />
+                            <CircleUserRound size={28} className="text-[#1A1A1A] stroke-[2]" />
                         </button>
 
                         {/* Cart Icon with badge */}
                         <button
                             type="button"
-                            onClick={() => navigate("/checkout")}
+                            onClick={() => navigate("/cart")}
                             aria-label="Shopping Cart"
-                            className="relative text-white hover:opacity-85 transition-opacity flex items-center justify-center p-1 bg-transparent border-0 cursor-pointer"
+                            className="relative text-[#1A1A1A] hover:opacity-85 transition-opacity flex items-center justify-center p-1 bg-transparent border-0 cursor-pointer"
                         >
-                            <ShoppingCart size={24} className="text-white stroke-[2]" />
-                            <span className="absolute -top-1.5 -right-2.5 min-w-[18px] h-[18px] px-1 bg-[#e53935] text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-md leading-none">
+                            <ShoppingCart size={24} className="text-[#1A1A1A] stroke-[2.2]" />
+                            <span className="absolute -top-1.5 -right-2.5 min-w-[18px] h-[18px] px-1 bg-[#EF131F] text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-md leading-none">
                                 {cartCount || 0}
                             </span>
                         </button>
@@ -371,14 +365,14 @@ const SearchPage = () => {
                     <div className="px-4 pt-3 pb-3 flex items-center justify-between gap-2.5 relative z-10 w-full">
                         <button
                             onClick={() => navigate(-1)}
-                            className="flex items-center justify-center w-10 h-10 bg-white/20 hover:bg-white/30 rounded-full text-white backdrop-blur-md border border-white/10 transition-all flex-shrink-0 shadow-sm active:scale-90"
+                            className="flex items-center justify-center w-10 h-10 bg-black/10 hover:bg-black/15 rounded-full text-[#1A1A1A] backdrop-blur-md border border-black/10 transition-all flex-shrink-0 shadow-sm active:scale-90"
                         >
                             <ArrowLeft className="w-5 h-5" strokeWidth={2.5} />
                         </button>
 
                         <div className="flex-1 min-w-0">
-                            <div className="w-full h-10 bg-white rounded-full px-3.5 flex items-center gap-2.5 shadow-sm">
-                                <Search size={17} className="text-[#520e1e] shrink-0 stroke-[2.2]" />
+                            <div className="w-full h-10 bg-white rounded-full px-3.5 flex items-center gap-2.5 shadow-sm border border-amber-200/60">
+                                <Search size={17} className="text-[#1A1A1A] shrink-0 stroke-[2.2]" />
                                 <input
                                     autoFocus
                                     type="text"
@@ -406,7 +400,7 @@ const SearchPage = () => {
                                     onClick={handleVoiceSearch}
                                     className={cn(
                                         "p-1 transition-all rounded-full cursor-pointer relative border-0 bg-transparent shrink-0",
-                                        isListening ? "text-red-500 scale-110" : "text-[#520e1e] hover:opacity-80"
+                                        isListening ? "text-red-500 scale-110" : "text-[#1A1A1A] hover:opacity-80"
                                     )}
                                 >
                                     <Mic size={16} strokeWidth={2.2} className={cn(isListening && "animate-pulse")} />
@@ -427,7 +421,7 @@ const SearchPage = () => {
                         <section>
                             <div className="flex justify-between items-center mb-5 md:mb-6">
                                 <h2 className="text-xl md:text-2xl font-bold text-slate-800 tracking-tight font-serif">
-                                    Search Results for <span className="text-[#520e1e]">"{query}"</span>
+                                    Search Results for <span className="text-[#1A1A1A] font-extrabold underline decoration-[#FDCE04] decoration-4">"{query}"</span>
                                 </h2>
                                 <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">{results.length} found</span>
                             </div>
@@ -464,14 +458,14 @@ const SearchPage = () => {
                                         {pastSearches.map((term) => (
                                             <div
                                                 key={term}
-                                                className="flex items-center gap-2 px-3.5 py-2 bg-white border border-slate-200 shadow-xs rounded-full whitespace-nowrap active:scale-95 transition-transform cursor-pointer hover:border-[#520e1e]/40"
+                                                className="flex items-center gap-2 px-3.5 py-2 bg-white border border-slate-200 shadow-xs rounded-full whitespace-nowrap active:scale-95 transition-transform cursor-pointer hover:border-[#FDCE04]"
                                                 onClick={() => {
                                                     setQuery(term);
                                                     navigate(`/search?q=${encodeURIComponent(term)}`, { replace: true });
                                                 }}
                                             >
-                                                <div className="h-5 w-5 rounded-full flex items-center justify-center bg-[#520e1e]/10">
-                                                    <History size={12} className="text-[#520e1e]" />
+                                                <div className="h-5 w-5 rounded-full flex items-center justify-center bg-[#FDCE04]/20">
+                                                    <History size={12} className="text-[#1A1A1A]" />
                                                 </div>
                                                 <span className="text-xs md:text-sm font-bold text-slate-700">{term}</span>
                                                 <button
@@ -491,7 +485,7 @@ const SearchPage = () => {
                                 <div className="flex justify-between items-center mb-5">
                                     <h2 className="text-xl md:text-2xl font-bold text-slate-800 tracking-tight font-serif">Lowest Price Ever!</h2>
                                     <button 
-                                        className="flex items-center gap-1 md:gap-1.5 px-3 py-1 md:px-4 md:py-1.5 bg-white border border-slate-200 hover:border-[#520e1e] rounded-full text-xs md:text-sm font-bold text-[#520e1e] transition-all cursor-pointer" 
+                                        className="flex items-center gap-1 md:gap-1.5 px-3 py-1 md:px-4 md:py-1.5 bg-white border border-slate-200 hover:border-[#FDCE04] rounded-full text-xs md:text-sm font-bold text-[#1A1A1A] transition-all cursor-pointer" 
                                         onClick={() => navigate('/category/all')}
                                     >
                                         See All <ChevronRight size={14} strokeWidth={3} />

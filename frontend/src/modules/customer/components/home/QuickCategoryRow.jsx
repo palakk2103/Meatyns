@@ -4,10 +4,10 @@ import { motion } from "framer-motion";
 
 const MoreIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5 sm:w-6 sm:h-6">
-    <rect x="3" y="3" width="7" height="7" rx="2" stroke="#520e1e" strokeWidth="2.2" fill="none" />
-    <rect x="14" y="3" width="7" height="7" rx="2" stroke="#520e1e" strokeWidth="2.2" fill="none" />
-    <rect x="3" y="14" width="7" height="7" rx="2" stroke="#520e1e" strokeWidth="2.2" fill="none" />
-    <rect x="14" y="14" width="7" height="7" rx="2" stroke="#520e1e" strokeWidth="2.2" fill="none" />
+    <rect x="3" y="3" width="7" height="7" rx="2" stroke="#1A1A1A" strokeWidth="2.2" fill="#FDCE04" />
+    <rect x="14" y="3" width="7" height="7" rx="2" stroke="#1A1A1A" strokeWidth="2.2" fill="#FDCE04" />
+    <rect x="3" y="14" width="7" height="7" rx="2" stroke="#1A1A1A" strokeWidth="2.2" fill="#FDCE04" />
+    <rect x="14" y="14" width="7" height="7" rx="2" stroke="#1A1A1A" strokeWidth="2.2" fill="#FDCE04" />
   </svg>
 );
 
@@ -230,7 +230,7 @@ const QuickCategoryRow = ({ categories = [], singleRow = false }) => {
     >
       <div className="w-[56px] h-[56px] sm:w-[64px] sm:h-[64px] rounded-full overflow-hidden shadow-xs border border-[#F0E4DA] bg-[#FAF3EE] transition-transform duration-200 group-hover:scale-105 flex items-center justify-center">
         {item.isMore ? (
-          <div className="w-full h-full flex items-center justify-center text-[#520e1e]">
+          <div className="w-full h-full flex items-center justify-center text-[#1A1A1A]">
             <MoreIcon />
           </div>
         ) : (
@@ -242,7 +242,7 @@ const QuickCategoryRow = ({ categories = [], singleRow = false }) => {
           />
         )}
       </div>
-      <span className="text-[11px] sm:text-[12px] font-semibold text-[#2A2A2A] text-center tracking-tight mt-1 leading-tight line-clamp-1 group-hover:text-[#520e1e] transition-colors">
+      <span className="text-[11px] sm:text-[12px] font-semibold text-[#2A2A2A] text-center tracking-tight mt-1 leading-tight line-clamp-1 group-hover:text-amber-800 transition-colors">
         {item.label}
       </span>
     </motion.div>
