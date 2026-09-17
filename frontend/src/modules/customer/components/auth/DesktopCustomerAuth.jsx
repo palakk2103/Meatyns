@@ -11,7 +11,8 @@ import {
     User,
     ArrowRight,
     ArrowLeft,
-    KeyRound
+    KeyRound,
+    Phone
 } from 'lucide-react';
 import meatBoardImg from '@/assets/meat_seafood_board.jpg';
 
@@ -77,43 +78,15 @@ const CowWatermark = () => (
 );
 
 const DesktopCustomerAuth = ({
-    isLogin,
-    setIsLogin,
     formData,
     setFormData,
     showOtp,
     setShowOtp,
     handleSendOtp,
     handleVerifyOtp,
-    handlePasswordLogin,
     isLoading,
     timer
 }) => {
-    const [showPassword, setShowPassword] = useState(false);
-    const [passwordVal, setPasswordVal] = useState(formData.password || '');
-
-    const onSubmitPrimary = (e) => {
-        e.preventDefault();
-        // If OTP is already displayed, verify it
-        if (showOtp) {
-            handleVerifyOtp(e);
-            return;
-        }
-
-        const inputVal = (formData.phoneOrEmail || formData.email || formData.phone || '').trim();
-        const pwd = (passwordVal || formData.password || '').trim();
-
-        // If logging in and password is provided OR input contains @:
-        if (isLogin && (pwd || inputVal.includes('@'))) {
-            if (handlePasswordLogin) {
-                handlePasswordLogin(e, { email: inputVal, password: pwd });
-                return;
-            }
-        }
-
-        // Otherwise initiate OTP send
-        handleSendOtp(e);
-    };
 
     return (
         <div className="hidden md:flex min-h-screen w-full bg-[#FAF7F2] font-['Outfit',_sans-serif]">
@@ -231,45 +204,16 @@ const DesktopCustomerAuth = ({
                 {/* Cow line watermark in bottom-right */}
                 <div className="absolute -bottom-6 -right-6 pointer-events-none">
                     <CowWatermark />
-                </div>
-
-                {/* Top Right: Toggle link between Login and Signup */}
-                <div className="relative z-10 flex justify-end items-center text-xs lg:text-sm">
-                    {isLogin ? (
-                        <div className="text-stone-600">
-                            New here?{' '}
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    setIsLogin(false);
-                                    setShowOtp(false);
-                                }}
-                                className="text-amber-800 hover:text-amber-900 font-bold inline-flex items-center gap-1 hover:underline transition-all"
-                            >
-                                Create an account <ArrowRight size={14} />
-                            </button>
-                        </div>
-                    ) : (
-                        <div className="text-stone-600">
-                            Already have an account?{' '}
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    setIsLogin(true);
-                                    setShowOtp(false);
-                                }}
-                                className="text-amber-800 hover:text-amber-900 font-bold inline-flex items-center gap-1 hover:underline transition-all"
-                            >
-                                Log in <ArrowRight size={14} />
-                            </button>
-                        </div>
-                    )}
+                </div>                {/* Top Right: Tagline */}
+                <div className="relative z-10 flex justify-end items-center text-xs text-stone-500 font-semibold gap-2">
+                    <span className="inline-block w-2 h-2 rounded-full bg-emerald-500"></span>
+                    Fast &amp; Secure Login
                 </div>
 
                 {/* Center Form Container */}
                 <div className="relative z-10 max-w-md w-full mx-auto my-auto py-6">
                     <motion.div
-                        key={isLogin ? 'login-card' : 'signup-card'}
+                        key={showOtp ? 'otp-card' : 'phone-card'}
                         initial={{ opacity: 0, y: 16 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.3 }}
@@ -277,146 +221,66 @@ const DesktopCustomerAuth = ({
                         {/* Heading */}
                         <div className="space-y-1.5 mb-8">
                             <h2 className="text-2xl lg:text-3xl font-bold text-stone-900 tracking-tight font-serif">
-                                {showOtp 
-                                    ? 'Enter Verification Code' 
-                                    : (isLogin ? 'Welcome Back!' : 'Create Your Account')}
+                                {showOtp ? 'Enter Verification Code' : 'Login with Phone'}
                             </h2>
                             <p className="text-stone-500 text-sm">
                                 {showOtp
-                                    ? 'We have sent a one-time verification code to your email.'
-                                    : (isLogin 
-                                        ? 'Access your orders, wishlist, and fresh favorites.' 
-                                        : 'Sign up to order freshest meats delivered in 15–30 mins.')}
+                                    ? `We have sent a 4-digit code to +91 ${formData.phone}`
+                                    : 'Enter your 10-digit mobile number to access your account & orders.'}
                             </p>
                         </div>
 
-
                         <AnimatePresence mode="wait">
                             {!showOtp ? (
-                                /* Credentials Form (Mobile / Password / OTP Trigger) */
                                 <motion.form 
-                                    key="credentials-form"
+                                    key="phone-form"
                                     initial={{ opacity: 0, y: 15 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: -15 }}
-                                    onSubmit={onSubmitPrimary}
+                                    onSubmit={handleSendOtp}
                                     className="mt-8 space-y-5"
                                 >
-                                    {/* Full Name Field (when Sign Up) */}
-                                    {!isLogin && (
-                                        <div className="space-y-1.5">
-                                            <label className="block text-xs font-semibold text-stone-700">
-                                                Full Name
-                                            </label>
-                                            <div className="relative">
-                                                <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400">
-                                                    <User size={18} />
-                                                </div>
-                                                <input
-                                                    required
-                                                    type="text"
-                                                    name="name"
-                                                    value={formData.name}
-                                                    placeholder="Enter your full name"
-                                                    onChange={(e) => setFormData({ ...formData, name: e.target.value.replace(/[^a-zA-Z\s]/g, '') })}
-                                                    className="w-full bg-[#FCFAF7] border border-stone-200 rounded-xl pl-10 pr-4 py-3 text-sm text-stone-800 placeholder-stone-400 focus:bg-white focus:border-[#FDCE04] focus:ring-1 focus:ring-[#FDCE04]/40 outline-none transition-all"
-                                                />
-                                            </div>
-                                        </div>
-                                    )}
-
-                                    {/* Email Address Input */}
                                     <div className="space-y-1.5">
-                                        <label className="block text-xs font-semibold text-stone-700">
-                                            Email Address
+                                        <label className="block text-xs font-bold uppercase tracking-wider text-stone-700">
+                                            Mobile Number
                                         </label>
-                                        <div className="relative">
-                                            <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400">
-                                                <Mail size={18} />
+                                        <div className="relative flex items-center">
+                                            <div className="absolute left-3.5 top-1/2 -translate-y-1/2 flex items-center gap-2 text-stone-500 pointer-events-none">
+                                                <Phone size={17} className="text-stone-400" />
+                                                <span className="text-sm font-bold text-stone-700">+91</span>
+                                                <span className="w-[1px] h-4 bg-stone-300"></span>
                                             </div>
                                             <input
                                                 required
-                                                type="email"
-                                                name="email"
-                                                value={formData.email || formData.phoneOrEmail || ''}
-                                                placeholder="Enter your email address"
+                                                type="tel"
+                                                inputMode="numeric"
+                                                name="phone"
+                                                maxLength={10}
+                                                value={formData.phone}
+                                                placeholder="Enter 10-digit number"
                                                 onChange={(e) => {
-                                                    const val = e.target.value;
-                                                    setFormData({
-                                                        ...formData,
-                                                        email: val,
-                                                        phoneOrEmail: val,
-                                                    });
+                                                    const val = e.target.value.replace(/\D/g, '').slice(0, 10);
+                                                    setFormData({ ...formData, phone: val });
                                                 }}
-                                                className="w-full bg-[#FCFAF7] border border-stone-200 rounded-xl pl-10 pr-4 py-3 text-sm text-stone-800 placeholder-stone-400 focus:bg-white focus:border-[#FDCE04] focus:ring-1 focus:ring-[#FDCE04]/40 outline-none transition-all"
+                                                className="w-full bg-[#FCFAF7] border border-stone-200 rounded-xl pl-20 pr-4 py-3.5 text-sm font-bold text-stone-800 placeholder-stone-400 focus:bg-white focus:border-[#FDCE04] focus:ring-1 focus:ring-[#FDCE04]/40 outline-none transition-all tracking-wider placeholder:font-normal placeholder:tracking-normal"
                                             />
                                         </div>
                                     </div>
 
-                                    {/* Password Input */}
-                                    <div className="space-y-1.5">
-                                        <label className="block text-xs font-semibold text-stone-700">
-                                            Password
-                                        </label>
-                                        <div className="relative">
-                                            <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400">
-                                                <Lock size={18} />
-                                            </div>
-                                            <input
-                                                type={showPassword ? 'text' : 'password'}
-                                                value={passwordVal}
-                                                onChange={(e) => {
-                                                    setPasswordVal(e.target.value);
-                                                    setFormData({ ...formData, password: e.target.value });
-                                                }}
-                                                placeholder="Enter your password"
-                                                className="w-full bg-[#FCFAF7] border border-stone-200 rounded-xl pl-10 pr-10 py-3 text-sm text-stone-800 placeholder-stone-400 focus:bg-white focus:border-[#FDCE04] focus:ring-1 focus:ring-[#FDCE04]/40 outline-none transition-all"
-                                            />
-                                            <button
-                                                type="button"
-                                                onClick={() => setShowPassword(!showPassword)}
-                                                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600 transition-colors"
-                                            >
-                                                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                                            </button>
-                                        </div>
-
-                                        {/* Forgot password link */}
-                                        <div className="flex justify-end pt-1">
-                                            <button
-                                                type="button"
-                                                onClick={() => setShowOtp(true)}
-                                                className="text-[11px] font-semibold text-amber-800 hover:underline"
-                                            >
-                                                Forgot password?
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    {/* Large Golden Yellow CTA Button */}
                                     <button
                                         type="submit"
-                                        disabled={isLoading}
-                                        className="w-full bg-[#FDCE04] hover:bg-[#E5B800] text-[#1A1A1A] py-3.5 rounded-xl text-sm font-extrabold tracking-wide flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all active:scale-[0.99] disabled:opacity-60 border border-[#E5B800]"
+                                        disabled={isLoading || (formData.phone || '').replace(/\D/g, '').length < 10}
+                                        className="w-full bg-[#FDCE04] hover:bg-[#E5B800] text-[#1A1A1A] py-3.5 rounded-xl text-sm font-extrabold tracking-wide flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all active:scale-[0.99] disabled:opacity-50 border border-[#E5B800]"
                                     >
-                                        <span>{isLoading ? 'Processing...' : (isLogin ? 'Login' : 'Create Account')}</span>
+                                        <span>{isLoading ? 'Sending OTP...' : 'Continue'}</span>
                                         <ArrowRight size={16} />
                                     </button>
 
-                                    {isLogin && (
-                                        <div className="text-center pt-1">
-                                            <button
-                                                type="button"
-                                                onClick={handleSendOtp}
-                                                className="text-xs text-stone-500 hover:text-amber-800 font-medium transition-colors hover:underline"
-                                            >
-                                                Or sign in via Mock OTP
-                                            </button>
-                                        </div>
-                                    )}
+                                    <p className="text-[11px] text-stone-400 text-center pt-2 leading-relaxed">
+                                        By continuing, you agree to Meatyns's Terms &amp; Conditions and Privacy Policy.
+                                    </p>
                                 </motion.form>
                             ) : (
-                                /* OTP Verification Step */
                                 <motion.div
                                     key="otp-form"
                                     initial={{ opacity: 0, x: 20 }}
@@ -431,7 +295,7 @@ const DesktopCustomerAuth = ({
                                             </div>
                                             <div>
                                                 <p className="text-xs font-bold text-stone-800">Verification Code</p>
-                                                <p className="text-[11px] text-stone-500">Sent to {formData.email || formData.phoneOrEmail}</p>
+                                                <p className="text-[11px] text-stone-500">Sent to +91 {formData.phone}</p>
                                             </div>
                                         </div>
                                         <button
@@ -450,6 +314,7 @@ const DesktopCustomerAuth = ({
                                                     key={i}
                                                     type="tel"
                                                     maxLength={1}
+                                                    value={formData.otp?.[i] || ''}
                                                     className="w-14 h-16 bg-white border-2 border-stone-300 rounded-2xl text-center text-2xl font-black text-[#1A1A1A] outline-none shadow-sm focus:border-[#FDCE04] focus:ring-2 focus:ring-[#FDCE04]/40 transition-all"
                                                     onKeyDown={(e) => {
                                                         if (e.key === 'Backspace' && !e.target.value && i > 0) {
@@ -457,11 +322,12 @@ const DesktopCustomerAuth = ({
                                                         }
                                                     }}
                                                     onChange={(e) => {
-                                                        const val = e.target.value;
-                                                        if (val && i < 3) e.target.nextElementSibling?.focus();
+                                                        const val = e.target.value.replace(/\D/g, '');
                                                         const otpArr = (formData.otp || '').split('');
                                                         otpArr[i] = val;
-                                                        setFormData({ ...formData, otp: otpArr.join('') });
+                                                        const newOtp = otpArr.join('').slice(0, 4);
+                                                        setFormData({ ...formData, otp: newOtp });
+                                                        if (val && i < 3) e.target.nextElementSibling?.focus();
                                                     }}
                                                 />
                                             ))}
@@ -469,8 +335,8 @@ const DesktopCustomerAuth = ({
 
                                         <button
                                             type="submit"
-                                            disabled={isLoading}
-                                            className="w-full bg-[#FDCE04] hover:bg-[#E5B800] text-[#1A1A1A] py-3.5 rounded-xl text-sm font-extrabold tracking-wide flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all active:scale-[0.99] disabled:opacity-60 border border-[#E5B800]"
+                                            disabled={isLoading || (formData.otp || '').length !== 4}
+                                            className="w-full bg-[#FDCE04] hover:bg-[#E5B800] text-[#1A1A1A] py-3.5 rounded-xl text-sm font-extrabold tracking-wide flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all active:scale-[0.99] disabled:opacity-50 border border-[#E5B800]"
                                         >
                                             <span>{isLoading ? 'Verifying...' : 'Verify & Login'}</span>
                                             <ArrowRight size={16} />
