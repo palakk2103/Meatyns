@@ -1,6 +1,39 @@
 @import "tailwindcss";
 @import "./styles/design-system.css";
 
+/* Global rule: Any black or dark button, pill, or badge across the entire app must always have crisp white text & icons */
+button.bg-black,
+button[class*="bg-black"],
+button[class*="bg-black"] *,
+button[class*="bg-slate-900"],
+button[class*="bg-slate-900"] *,
+button[class*="bg-gray-900"],
+button[class*="bg-gray-900"] *,
+button[class*="bg-zinc-900"],
+button[class*="bg-zinc-900"] *,
+a[class*="bg-black"],
+a[class*="bg-black"] *,
+[class*="bg-black"].ds-btn,
+[class*="bg-black"].ds-btn *,
+[class*="bg-black"][role="button"],
+[class*="bg-black"][role="button"] *,
+[class*="bg-black"][class*="text-primary-foreground"],
+[class*="bg-black"][class*="text-primary-foreground"] * {
+  color: #ffffff !important;
+}
+
+button.bg-black svg,
+button[class*="bg-black"] svg,
+button[class*="bg-black"] svg *,
+button[class*="bg-slate-900"] svg,
+button[class*="bg-slate-900"] svg *,
+[class*="bg-black"] svg,
+[class*="bg-black"] svg *,
+[class*="bg-black"][class*="text-primary-foreground"] svg {
+  color: #ffffff !important;
+  stroke: #ffffff !important;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 :root {
@@ -466,3 +499,30 @@ body {
 [data-meat-theme] .btn-add-to-cart:hover {
   background: #A93645;
 }
+
+/* ==========================================================================
+   GLOBAL HIGH-CONTRAST OVERRIDE FOR DARK/BLACK BUTTONS & PILLS
+   Ensures text and icons are 100% visible, legible, and crisp white across
+   all browsers, dark/light themes, and dynamic color changes.
+   ========================================================================== */
+button[class*="bg-black"],
+button.bg-black,
+button[class*="bg-black"] *,
+a[class*="bg-black"],
+a[class*="bg-black"] *,
+[class*="bg-black"].ds-btn,
+[class*="bg-black"].ds-btn *,
+[class*="bg-black"][role="button"],
+[class*="bg-black"][role="button"] * {
+  color: #ffffff !important;
+}
+
+button[class*="bg-black"] svg,
+button.bg-black svg,
+button[class*="bg-black"] svg *,
+a[class*="bg-black"] svg,
+[class*="bg-black"] svg {
+  color: #ffffff !important;
+  stroke: #ffffff !important;
+}
+

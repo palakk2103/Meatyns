@@ -232,12 +232,9 @@ const SearchPage = () => {
             {/* Header / Search Input */}
             <div
                 className={cn(
-                    "sticky top-0 z-50 bg-[#FDCE04] shadow-[0_4px_20px_rgba(0,0,0,0.08)] relative overflow-hidden",
+                    "sticky top-0 z-50 bg-white border-b-[3px] border-[#FAB82C] shadow-xs relative overflow-hidden",
                     isProductDetailOpen && "hidden md:block"
                 )}
-                style={{
-                    backgroundImage: "linear-gradient(180deg, #FECD04 0%, #FDCE04 55%, #F5C502 100%)",
-                }}
             >
                 {/* ──── Desktop Header Layout (md+) matching Home Page ──── */}
                 <div className="hidden md:flex items-center justify-between relative z-20 w-full max-w-[1440px] mx-auto px-4 lg:px-8 py-2">
@@ -255,8 +252,8 @@ const SearchPage = () => {
 
                     {/* Center Section: Pill Search Bar (matching Home Page desktop search bar) */}
                     <div className="flex-1 max-w-[420px] lg:max-w-[500px] xl:max-w-[560px] mx-4 lg:mx-8">
-                        <div className="w-full h-11 bg-white rounded-full px-4 flex items-center gap-3 shadow-sm hover:shadow transition-shadow border border-amber-200/60">
-                            <Search size={18} className="text-[#1A1A1A] shrink-0 stroke-[2.2]" />
+                        <div className="w-full h-11 bg-white rounded-full px-4 flex items-center gap-3 border border-slate-200 shadow-xs hover:border-slate-300 transition-colors">
+                            <Search size={18} className="text-[#111111] shrink-0 stroke-[2.2]" />
                             <input
                                 autoFocus
                                 type="text"
@@ -267,7 +264,7 @@ const SearchPage = () => {
                                     setQuery(e.target.value);
                                     navigate(`/search?q=${encodeURIComponent(e.target.value)}`, { replace: true });
                                 }}
-                                className="flex-1 bg-transparent border-none outline-none text-slate-800 placeholder:text-slate-400 font-normal text-[13.5px]"
+                                className="flex-1 bg-transparent border-none outline-none text-[#111111] placeholder:text-slate-400 font-normal text-[13.5px]"
                             />
                             {query && (
                                 <button
@@ -284,7 +281,7 @@ const SearchPage = () => {
                                 onClick={handleVoiceSearch}
                                 className={cn(
                                     "p-1 transition-all rounded-full cursor-pointer relative border-0 bg-transparent",
-                                    isListening ? "text-red-500 scale-110" : "text-[#1A1A1A] hover:opacity-80"
+                                    isListening ? "text-red-500 scale-110" : "text-[#111111] hover:opacity-80"
                                 )}
                             >
                                 <Mic size={17} strokeWidth={2.2} className={cn(isListening && "animate-pulse")} />
@@ -304,33 +301,33 @@ const SearchPage = () => {
                                 refreshLocation?.();
                                 setIsLocationOpen(true);
                             }}
-                            className="flex items-center gap-2 text-left text-[#1A1A1A] bg-transparent border-0 p-0 cursor-pointer group hover:opacity-90 transition-opacity"
+                            className="flex items-center gap-2 text-left text-[#111111] bg-transparent border-0 p-0 cursor-pointer group hover:opacity-90 transition-opacity"
                         >
-                            <MapPin size={20} className="text-[#1A1A1A] shrink-0 stroke-[2]" />
+                            <MapPin size={20} className="text-[#111111] shrink-0 stroke-[2]" />
                             <div className="flex flex-col leading-tight">
-                                <span className="text-[11px] text-[#1A1A1A]/75 font-medium tracking-wide leading-tight">
+                                <span className="text-[11px] font-normal text-slate-500 tracking-wide leading-tight">
                                     Deliver to
                                 </span>
-                                <div className="flex items-center gap-1 text-[13px] lg:text-sm font-bold text-[#1A1A1A] leading-tight">
+                                <div className="flex items-center gap-1 text-[13px] lg:text-sm font-bold text-[#111111] leading-tight">
                                     <span className="max-w-[110px] lg:max-w-[140px] truncate">
                                         {isFetchingLocation
                                             ? "Detecting..."
                                             : (currentLocation?.name || "Indore")}
                                     </span>
-                                    <ChevronDown size={13} className="text-[#1A1A1A] shrink-0" />
+                                    <ChevronDown size={13} className="text-slate-500 shrink-0" />
                                 </div>
                             </div>
                         </button>
 
                         {/* Delivery in */}
-                        <div className="flex items-center gap-2 text-[#1A1A1A]">
-                            <Zap size={18} className="text-[#1A1A1A] fill-[#1A1A1A] shrink-0" />
+                        <div className="flex items-center gap-2 text-[#111111]">
+                            <Zap size={18} className="text-[#111111] fill-current shrink-0" />
                             <div className="flex flex-col leading-tight">
-                                <span className="text-[11px] text-[#1A1A1A]/75 font-medium tracking-wide leading-tight">
+                                <span className="text-[11px] font-normal text-slate-500 tracking-wide leading-tight">
                                     Delivery in
                                 </span>
-                                <span className="text-[13px] lg:text-sm font-extrabold text-[#1A1A1A] whitespace-nowrap leading-tight">
-                                    {currentLocation?.time || "15–30 mins"}
+                                <span className="text-[13px] lg:text-sm font-bold text-[#111111] whitespace-nowrap leading-tight">
+                                    {currentLocation?.time || "12-15 mins"}
                                 </span>
                             </div>
                         </div>
@@ -340,9 +337,9 @@ const SearchPage = () => {
                             type="button"
                             onClick={() => navigate("/profile")}
                             aria-label="Profile"
-                            className="text-[#1A1A1A] hover:opacity-85 transition-opacity flex items-center justify-center p-1 bg-transparent border-0 cursor-pointer"
+                            className="text-[#111111] hover:opacity-85 transition-opacity flex items-center justify-center p-1 bg-transparent border-0 cursor-pointer"
                         >
-                            <CircleUserRound size={28} className="text-[#1A1A1A] stroke-[2]" />
+                            <CircleUserRound size={28} className="stroke-[1.8] text-[#111111]" />
                         </button>
 
                         {/* Cart Icon with badge */}
@@ -350,10 +347,10 @@ const SearchPage = () => {
                             type="button"
                             onClick={() => navigate("/cart")}
                             aria-label="Shopping Cart"
-                            className="relative text-[#1A1A1A] hover:opacity-85 transition-opacity flex items-center justify-center p-1 bg-transparent border-0 cursor-pointer"
+                            className="relative text-[#111111] hover:opacity-85 transition-opacity flex items-center justify-center p-1 bg-transparent border-0 cursor-pointer"
                         >
-                            <ShoppingCart size={24} className="text-[#1A1A1A] stroke-[2.2]" />
-                            <span className="absolute -top-1.5 -right-2.5 min-w-[18px] h-[18px] px-1 bg-[#EF131F] text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-md leading-none">
+                            <ShoppingCart size={24} className="stroke-[2.2] text-[#111111]" />
+                            <span className="absolute -top-1.5 -right-2.5 min-w-[18px] h-[18px] px-1 bg-[#C81017] text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-md leading-none">
                                 {cartCount || 0}
                             </span>
                         </button>
@@ -365,14 +362,14 @@ const SearchPage = () => {
                     <div className="px-4 pt-3 pb-3 flex items-center justify-between gap-2.5 relative z-10 w-full">
                         <button
                             onClick={() => navigate(-1)}
-                            className="flex items-center justify-center w-10 h-10 bg-black/10 hover:bg-black/15 rounded-full text-[#1A1A1A] backdrop-blur-md border border-black/10 transition-all flex-shrink-0 shadow-sm active:scale-90"
+                            className="flex items-center justify-center w-10 h-10 bg-slate-100 hover:bg-slate-200 rounded-full text-[#111111] border border-slate-200 transition-all flex-shrink-0 shadow-sm active:scale-90"
                         >
                             <ArrowLeft className="w-5 h-5" strokeWidth={2.5} />
                         </button>
 
                         <div className="flex-1 min-w-0">
-                            <div className="w-full h-10 bg-white rounded-full px-3.5 flex items-center gap-2.5 shadow-sm border border-amber-200/60">
-                                <Search size={17} className="text-[#1A1A1A] shrink-0 stroke-[2.2]" />
+                            <div className="w-full h-10 bg-white rounded-full px-3.5 flex items-center gap-2.5 shadow-xs border border-slate-200">
+                                <Search size={17} className="text-[#111111] shrink-0 stroke-[2.2]" />
                                 <input
                                     autoFocus
                                     type="text"
@@ -383,7 +380,7 @@ const SearchPage = () => {
                                         setQuery(e.target.value);
                                         navigate(`/search?q=${encodeURIComponent(e.target.value)}`, { replace: true });
                                     }}
-                                    className="flex-1 min-w-0 bg-transparent border-none outline-none text-slate-800 placeholder:text-slate-400 font-normal text-[13px]"
+                                    className="flex-1 min-w-0 bg-transparent border-none outline-none text-[#111111] placeholder:text-slate-400 font-normal text-[13px]"
                                 />
                                 {query && (
                                     <button
@@ -400,7 +397,7 @@ const SearchPage = () => {
                                     onClick={handleVoiceSearch}
                                     className={cn(
                                         "p-1 transition-all rounded-full cursor-pointer relative border-0 bg-transparent shrink-0",
-                                        isListening ? "text-red-500 scale-110" : "text-[#1A1A1A] hover:opacity-80"
+                                        isListening ? "text-red-500 scale-110" : "text-[#111111] hover:opacity-80"
                                     )}
                                 >
                                     <Mic size={16} strokeWidth={2.2} className={cn(isListening && "animate-pulse")} />
@@ -421,13 +418,13 @@ const SearchPage = () => {
                         <section>
                             <div className="flex justify-between items-center mb-5 md:mb-6">
                                 <h2 className="text-xl md:text-2xl font-bold text-slate-800 tracking-tight font-serif">
-                                    Search Results for <span className="text-[#1A1A1A] font-extrabold underline decoration-[#FDCE04] decoration-4">"{query}"</span>
+                                    Search Results for <span className="text-[#111111] font-extrabold underline decoration-[#FAB82C] decoration-4">"{query}"</span>
                                 </h2>
                                 <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">{results.length} found</span>
                             </div>
 
                             {results.length > 0 ? (
-                                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 gap-2.5 sm:gap-4 md:gap-5">
+                                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 min-[1800px]:grid-cols-8 gap-2.5 sm:gap-3.5 md:gap-4">
                                     {results.map((product) => (
                                         <div key={product.id} onClick={() => saveSearch(query)} className="flex justify-center w-full">
                                             <ProductCard product={product} variant="homeDesktop" />
@@ -458,14 +455,14 @@ const SearchPage = () => {
                                         {pastSearches.map((term) => (
                                             <div
                                                 key={term}
-                                                className="flex items-center gap-2 px-3.5 py-2 bg-white border border-slate-200 shadow-xs rounded-full whitespace-nowrap active:scale-95 transition-transform cursor-pointer hover:border-[#FDCE04]"
+                                                className="flex items-center gap-2 px-3.5 py-2 bg-white border border-slate-200 shadow-xs rounded-full whitespace-nowrap active:scale-95 transition-transform cursor-pointer hover:border-[#FAB82C]"
                                                 onClick={() => {
                                                     setQuery(term);
                                                     navigate(`/search?q=${encodeURIComponent(term)}`, { replace: true });
                                                 }}
                                             >
-                                                <div className="h-5 w-5 rounded-full flex items-center justify-center bg-[#FDCE04]/20">
-                                                    <History size={12} className="text-[#1A1A1A]" />
+                                                <div className="h-5 w-5 rounded-full flex items-center justify-center bg-[#FAB82C]/20">
+                                                    <History size={12} className="text-[#111111]" />
                                                 </div>
                                                 <span className="text-xs md:text-sm font-bold text-slate-700">{term}</span>
                                                 <button
@@ -485,7 +482,7 @@ const SearchPage = () => {
                                 <div className="flex justify-between items-center mb-5">
                                     <h2 className="text-xl md:text-2xl font-bold text-slate-800 tracking-tight font-serif">Lowest Price Ever!</h2>
                                     <button 
-                                        className="flex items-center gap-1 md:gap-1.5 px-3 py-1 md:px-4 md:py-1.5 bg-white border border-slate-200 hover:border-[#FDCE04] rounded-full text-xs md:text-sm font-bold text-[#1A1A1A] transition-all cursor-pointer" 
+                                        className="flex items-center gap-1 md:gap-1.5 px-3 py-1 md:px-4 md:py-1.5 bg-white border border-slate-200 hover:border-[#FAB82C] rounded-full text-xs md:text-sm font-bold text-[#111111] transition-all cursor-pointer" 
                                         onClick={() => navigate('/category/all')}
                                     >
                                         See All <ChevronRight size={14} strokeWidth={3} />
@@ -494,10 +491,10 @@ const SearchPage = () => {
                                 <div className="flex gap-2.5 sm:gap-3 md:gap-4 overflow-x-auto no-scrollbar -mx-4 md:mx-0 px-4 md:px-0 pb-3 snap-x">
                                     {isLoading && allProducts.length === 0 ? (
                                         [...Array(5)].map((_, i) => (
-                                            <div key={i} className="min-w-[136px] sm:min-w-[160px] md:min-w-[210px] h-52 sm:h-60 md:h-72 bg-white rounded-xl md:rounded-2xl animate-pulse border border-slate-100 shadow-xs" />
+                                            <div key={i} className="w-[136px] sm:w-[155px] md:w-[172px] shrink-0 h-48 sm:h-56 md:h-64 bg-white rounded-xl md:rounded-2xl animate-pulse border border-slate-100 shadow-xs" />
                                         ))
                                     ) : lowestPriceProducts.map((product) => (
-                                        <div key={product.id} className="min-w-[136px] sm:min-w-[160px] md:min-w-[210px] snap-start flex justify-center">
+                                        <div key={product.id} className="w-[136px] sm:w-[155px] md:w-[172px] shrink-0 snap-start flex justify-center">
                                             <ProductCard product={product} variant="homeDesktop" />
                                         </div>
                                     ))}

@@ -8,6 +8,7 @@ import {
   ChevronDown,
   Zap,
   CircleUserRound,
+  Mic,
 } from "lucide-react";
 import LocationDrawer from "./LocationDrawer";
 import { useLocation } from "../../context/LocationContext";
@@ -251,17 +252,11 @@ const MainLocationHeader = ({
             borderBottomLeftRadius: headerRoundness,
             borderBottomRightRadius: headerRoundness,
             opacity: bgOpacity,
-            backgroundImage: isLight ? undefined : headerGradient,
-            backgroundColor: isLight ? "#FAF5EE" : undefined,
+            backgroundColor: "#FFFFFF",
           }}
           className={cn(
-            "px-4 overflow-hidden transform-gpu will-change-transform",
-            isLight
-              ? "border-b border-[#EFE5D8] shadow-[0_2px_12px_rgba(0,0,0,0.03)]"
-              : "shadow-[0_4px_20px_rgba(0,0,0,0.15)]"
+            "px-4 overflow-hidden transform-gpu will-change-transform bg-white border-b border-slate-100 shadow-xs md:border-b-[3px] md:border-[#FAB82C]"
           )}>
-          {/* Subtle Contrast Overlay (dark mode only) */}
-          {!isLight && !isYellowTone && <div className="absolute inset-0 bg-black/5 pointer-events-none" />}
 
           {/* Desktop/Tablet Header Layout (md and above) */}
           <div className="hidden md:flex items-center justify-between relative z-20 w-full max-w-[1440px] mx-auto px-4 lg:px-8 py-1.5">
@@ -281,14 +276,14 @@ const MainLocationHeader = ({
             <div className="flex-1 max-w-[420px] lg:max-w-[500px] xl:max-w-[560px] mx-4 lg:mx-8">
               <div
                 onClick={handleSearchClick}
-                className="w-full h-11 bg-white rounded-full px-4 flex items-center gap-3 cursor-pointer shadow-sm hover:shadow transition-shadow"
+                className="w-full h-11 bg-white rounded-full px-4 flex items-center gap-3 cursor-pointer border border-slate-200 shadow-xs hover:border-slate-300 transition-colors"
               >
-                <Search size={18} className="text-[#FDCE04] shrink-0 stroke-[2.4]" />
+                <Search size={18} className="text-[#111111] shrink-0 stroke-[2.2]" />
                 <input
                   type="text"
                   placeholder="Search for meat, fish, seafood, etc..."
                   readOnly
-                  className="flex-1 bg-transparent border-none outline-none text-slate-800 placeholder:text-slate-400 font-normal text-[13.5px] cursor-pointer select-none"
+                  className="flex-1 bg-transparent border-none outline-none text-[#111111] placeholder:text-slate-400 font-normal text-[13.5px] cursor-pointer select-none"
                 />
               </div>
             </div>
@@ -304,40 +299,33 @@ const MainLocationHeader = ({
                   refreshLocation?.();
                   setIsLocationOpen(true);
                 }}
-                style={{ color: headerFontColor }}
-                className="flex items-center gap-2 text-left bg-transparent border-0 p-0 cursor-pointer group hover:opacity-90 transition-opacity"
+                className="flex items-center gap-2 text-left bg-transparent border-0 p-0 cursor-pointer text-[#111111] group hover:opacity-90 transition-opacity"
               >
-                <MapPin size={20} className="shrink-0 stroke-[2]" style={{ color: headerIconColor }} />
+                <MapPin size={20} className="shrink-0 stroke-[2] text-[#111111]" />
                 <div className="flex flex-col leading-tight">
-                  <span 
-                    style={{ color: isYellowTone ? "rgba(26,26,26,0.7)" : "rgba(255,255,255,0.75)" }}
-                    className="text-[11px] font-normal tracking-wide leading-tight"
-                  >
+                  <span className="text-[11px] font-normal text-slate-500 tracking-wide leading-tight">
                     Deliver to
                   </span>
-                  <div className="flex items-center gap-1 text-[13px] lg:text-sm font-bold leading-tight">
+                  <div className="flex items-center gap-1 text-[13px] lg:text-sm font-bold text-[#111111] leading-tight">
                     <span className="max-w-[110px] lg:max-w-[140px] truncate">
                       {isFetchingLocation
                         ? "Detecting..."
                         : (currentLocation?.name || "Indore")}
                     </span>
-                    <ChevronDown size={13} className="shrink-0 opacity-80" />
+                    <ChevronDown size={13} className="shrink-0 text-slate-500" />
                   </div>
                 </div>
               </button>
 
               {/* Delivery in */}
-              <div className="flex items-center gap-2" style={{ color: headerFontColor }}>
-                <Zap size={18} className="shrink-0 fill-current" />
+              <div className="flex items-center gap-2 text-[#111111]">
+                <Zap size={18} className="shrink-0 fill-current text-[#111111]" />
                 <div className="flex flex-col leading-tight">
-                  <span 
-                    style={{ color: isYellowTone ? "rgba(26,26,26,0.7)" : "rgba(255,255,255,0.75)" }}
-                    className="text-[11px] font-normal tracking-wide leading-tight"
-                  >
+                  <span className="text-[11px] font-normal text-slate-500 tracking-wide leading-tight">
                     Delivery in
                   </span>
-                  <span className="text-[13px] lg:text-sm font-bold whitespace-nowrap leading-tight">
-                    {currentLocation?.time || "15–30 mins"}
+                  <span className="text-[13px] lg:text-sm font-bold text-[#111111] whitespace-nowrap leading-tight">
+                    {currentLocation?.time || "12-15 mins"}
                   </span>
                 </div>
               </div>
@@ -347,10 +335,9 @@ const MainLocationHeader = ({
                 type="button"
                 onClick={() => navigate("/profile")}
                 aria-label="Profile"
-                style={{ color: headerIconColor }}
-                className="hover:opacity-85 transition-opacity flex items-center justify-center p-1 bg-transparent border-0 cursor-pointer"
+                className="text-[#111111] hover:opacity-85 transition-opacity flex items-center justify-center p-1 bg-transparent border-0 cursor-pointer"
               >
-                <CircleUserRound size={28} className="stroke-[1.8]" />
+                <CircleUserRound size={28} className="stroke-[1.8] text-[#111111]" />
               </button>
 
               {/* Cart Icon with badge */}
@@ -358,11 +345,10 @@ const MainLocationHeader = ({
                 type="button"
                 onClick={() => navigate("/cart")}
                 aria-label="Shopping Cart"
-                style={{ color: headerIconColor }}
-                className="relative hover:opacity-85 transition-opacity flex items-center justify-center p-1 bg-transparent border-0 cursor-pointer"
+                className="relative text-[#111111] hover:opacity-85 transition-opacity flex items-center justify-center p-1 bg-transparent border-0 cursor-pointer"
               >
-                <ShoppingCart size={24} className="stroke-[2.2]" />
-                <span className="absolute -top-1.5 -right-2.5 min-w-[18px] h-[18px] px-1 bg-[#EF131F] text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-md leading-none">
+                <ShoppingCart size={24} className="stroke-[2.2] text-[#111111]" />
+                <span className="absolute -top-1.5 -right-2.5 min-w-[18px] h-[18px] px-1 bg-[#C81017] text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-md leading-none">
                   {cartCount || 0}
                 </span>
               </button>
@@ -391,39 +377,20 @@ const MainLocationHeader = ({
                     refreshLocation?.();
                     setIsLocationOpen(true);
                   }}
-                  style={{ color: headerFontColor }}
-                  className="flex items-center gap-1.5 text-left bg-transparent border-0 p-0 cursor-pointer group active:scale-95 transition-transform min-w-0 max-w-full"
+                  className="flex items-center gap-1.5 text-left bg-transparent border-0 p-0 cursor-pointer group active:scale-95 transition-transform min-w-0 max-w-full text-[#111111]"
                 >
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="w-4 h-4 shrink-0"
-                  >
-                    <circle cx="12" cy="12" r="3" />
-                    <circle cx="12" cy="12" r="8" />
-                    <line x1="12" y1="2" x2="12" y2="4" />
-                    <line x1="12" y1="20" x2="12" y2="22" />
-                    <line x1="2" y1="12" x2="4" y2="12" />
-                    <line x1="20" y1="12" x2="22" y2="12" />
-                  </svg>
+                  <MapPin size={17} className="text-[#C81017] fill-[#C81017] shrink-0" />
                   <div className="flex flex-col leading-tight min-w-0">
-                    <span 
-                      style={{ color: isYellowTone ? "rgba(26,26,26,0.7)" : "rgba(255,255,255,0.9)" }}
-                      className="text-[9.5px] font-semibold leading-tight"
-                    >
-                      Delivery
+                    <span className="text-[9.5px] font-medium text-slate-500 leading-tight">
+                      Deliver to
                     </span>
                     <div className="flex items-center gap-0.5 min-w-0">
-                      <span className="text-[10px] font-bold leading-tight truncate">
+                      <span className="text-[10.5px] font-bold text-[#111111] leading-tight truncate">
                         {isFetchingLocation
                           ? "Detecting..."
-                          : (currentLocation?.name || "Address")}
+                          : (currentLocation?.name || "Corporate Ho...")}
                       </span>
-                      <ChevronDown size={11} className="opacity-80 shrink-0" />
+                      <ChevronDown size={11} className="text-slate-500 shrink-0" />
                     </div>
                   </div>
                 </button>
@@ -441,25 +408,21 @@ const MainLocationHeader = ({
                 </div>
 
                 {/* 3. Right: Cart Action (Right aligned with padding) */}
-                <div className="flex items-center justify-end shrink-0 pr-1.5">
+                <div className="flex items-center justify-end shrink-0 pr-1">
                   {/* Cart */}
                   <button
                     type="button"
                     onClick={() => navigate("/cart")}
                     aria-label="Cart"
-                    style={{ color: headerIconColor }}
-                    className="relative flex flex-col items-center justify-center bg-transparent border-0 p-0 cursor-pointer active:scale-90 transition-transform select-none"
+                    className="relative flex flex-col items-center justify-center bg-transparent border-0 p-0 cursor-pointer active:scale-90 transition-transform select-none text-[#111111]"
                   >
                     <div className="relative inline-flex items-center justify-center">
-                      <ShoppingCart size={19} className="stroke-[2.2]" />
-                      <span className="absolute -top-1.5 -right-2 min-w-[15px] h-[15px] px-0.5 bg-[#EF131F] text-white text-[9px] font-bold rounded-full flex items-center justify-center shadow-sm leading-none">
+                      <ShoppingCart size={19} className="stroke-[2.2] text-[#111111]" />
+                      <span className="absolute -top-1.5 -right-2 min-w-[15px] h-[15px] px-0.5 bg-[#C81017] text-white text-[9px] font-bold rounded-full flex items-center justify-center shadow-xs leading-none">
                         {cartCount || 0}
                       </span>
                     </div>
-                    <span 
-                      style={{ color: isYellowTone ? "#1A1A1A" : "rgba(255,255,255,0.9)" }}
-                      className="text-[8.5px] font-medium leading-none mt-0.5"
-                    >
+                    <span className="text-[8.5px] font-medium text-slate-700 leading-none mt-0.5">
                       Cart
                     </span>
                   </button>
@@ -470,23 +433,19 @@ const MainLocationHeader = ({
 
 
           {/* ──── Search Bar (MOBILE ONLY) matching reference screenshot pill style ──── */}
-          <div className="relative z-10 mt-0.5 flex items-center md:hidden">
-            <motion.div
+          <div className="relative z-10 mt-1 flex items-center md:hidden pb-0.5">
+            <div
               onClick={handleSearchClick}
-              whileTap={{ scale: 0.98 }}
-              className="w-full h-[34px] bg-white rounded-full px-3 flex items-center gap-2 shadow-xs cursor-pointer active:scale-[0.99] transition-transform"
+              className="w-full h-[38px] bg-[#F8FAFC] border border-slate-200/90 rounded-full px-3.5 flex flex-row flex-nowrap items-center justify-between gap-2.5 shadow-2xs cursor-pointer active:scale-[0.99] transition-transform"
             >
-              <Search size={15} className="text-slate-500 shrink-0 stroke-[2.2]" />
-              <input
-                type="text"
-                placeholder={searchPlaceholder || "Search for meat, fish, seafood, etc..."}
-                readOnly
-                className="flex-1 bg-transparent border-none outline-none text-slate-800 placeholder:text-slate-400 font-normal text-[12.5px] cursor-pointer select-none"
-              />
-              <div className="flex items-center pl-1">
-                <MicIcon sx={{ color: "#9ca3af", fontSize: 16 }} />
+              <div className="flex flex-row flex-nowrap items-center gap-2.5 flex-1 min-w-0">
+                <Search size={16} className="text-slate-400 shrink-0 stroke-[2.2]" />
+                <span className="text-slate-400 font-normal text-[12.5px] truncate select-none leading-normal">
+                  {searchPlaceholder || "Search for chicken, fish, seafood..."}
+                </span>
               </div>
-            </motion.div>
+              <Mic size={16} className="text-slate-400 shrink-0" />
+            </div>
           </div>
 
           {/* Background Decorative patterns (dark mode only) */}

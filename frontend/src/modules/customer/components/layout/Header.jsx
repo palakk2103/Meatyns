@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Search, ShoppingCart, Heart, User, Menu, MapPin, ChevronDown, Zap, CircleUserRound } from 'lucide-react';
+import { Search, ShoppingCart, Heart, User, Menu, MapPin, ChevronDown, Zap, CircleUserRound, Mic } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useWishlist } from '../../context/WishlistContext';
 import { useCart } from '../../context/CartContext';
@@ -198,8 +198,7 @@ const Header = () => {
 
             {/* ──── Mobile View Header (Strictly md:hidden) matching Meatyns Standard ──── */}
             <header
-                className="md:hidden fixed top-0 left-0 right-0 z-[200] px-4 pt-2.5 pb-2 shadow-[0_4px_20px_rgba(0,0,0,0.15)] select-none text-[#1A1A1A]"
-                style={{ background: 'linear-gradient(180deg, #FECD04 0%, #FDCE04 55%, #F5C502 100%)' }}
+                className="md:hidden fixed top-0 left-0 right-0 z-[200] px-4 pt-2.5 pb-2 bg-white border-b border-slate-100 shadow-xs select-none text-[#111111]"
             >
                 {/* Top Row: Delivery Address, Meatyns Brand, Cart */}
                 <div className="relative z-10 grid grid-cols-[1fr_auto_1fr] items-center gap-3 min-h-[36px]">
@@ -212,20 +211,20 @@ const Header = () => {
                             refreshLocation?.();
                             setIsLocationOpen(true);
                         }}
-                        className="flex items-center gap-1.5 text-left text-[#1A1A1A] bg-transparent border-0 p-0 cursor-pointer active:scale-95 transition-transform min-w-0 max-w-full"
+                        className="flex items-center gap-1.5 text-left text-[#111111] bg-transparent border-0 p-0 cursor-pointer active:scale-95 transition-transform min-w-0 max-w-full"
                     >
-                        <MapPin size={16} className="text-[#1A1A1A] shrink-0 stroke-[2.2]" />
+                        <MapPin size={17} className="text-[#C81017] fill-[#C81017] shrink-0" />
                         <div className="flex flex-col leading-tight min-w-0">
-                            <span className="text-[9.5px] font-semibold text-stone-700 leading-tight">
-                                Delivery
+                            <span className="text-[9.5px] font-medium text-slate-500 leading-tight">
+                                Deliver to
                             </span>
                             <div className="flex items-center gap-0.5 min-w-0">
-                                <span className="text-[10px] font-bold text-[#1A1A1A] leading-tight truncate">
+                                <span className="text-[10.5px] font-bold text-[#111111] leading-tight truncate">
                                     {isFetchingLocation
                                         ? "Detecting..."
-                                        : (currentLocation?.name || "Indore")}
+                                        : (currentLocation?.name || "Corporate Ho...")}
                                 </span>
-                                <ChevronDown size={11} className="text-stone-700 shrink-0" />
+                                <ChevronDown size={11} className="text-slate-500 shrink-0" />
                             </div>
                         </div>
                     </button>
@@ -238,7 +237,7 @@ const Header = () => {
                         <img
                             src="/meatyns_logo_2x.png"
                             alt="Meatyns"
-                            className="h-7 w-auto object-contain"
+                            className="h-6 sm:h-7 w-auto object-contain"
                         />
                     </Link>
 
@@ -247,15 +246,15 @@ const Header = () => {
                         <Link
                             to="/cart"
                             aria-label="Cart"
-                            className="relative flex flex-col items-center justify-center text-[#1A1A1A] bg-transparent border-0 p-0 cursor-pointer active:scale-90 transition-transform select-none no-underline"
+                            className="relative flex flex-col items-center justify-center text-[#111111] bg-transparent border-0 p-0 cursor-pointer active:scale-90 transition-transform select-none no-underline"
                         >
                             <div className="relative inline-flex items-center justify-center">
-                                <ShoppingCart size={19} className="text-[#1A1A1A] stroke-[2.2]" />
-                                <span className="absolute -top-1.5 -right-2 min-w-[15px] h-[15px] px-0.5 bg-[#EF131F] text-white text-[9px] font-bold rounded-full flex items-center justify-center shadow-sm leading-none">
+                                <ShoppingCart size={19} className="text-[#111111] stroke-[2.2]" />
+                                <span className="absolute -top-1.5 -right-2 min-w-[15px] h-[15px] px-0.5 bg-[#C81017] text-white text-[9px] font-bold rounded-full flex items-center justify-center shadow-xs leading-none">
                                     {cartCount || 0}
                                 </span>
                             </div>
-                            <span className="text-[8.5px] font-medium text-stone-800 leading-none mt-0.5">
+                            <span className="text-[8.5px] font-medium text-slate-700 leading-none mt-0.5">
                                 Cart
                             </span>
                         </Link>
@@ -264,15 +263,18 @@ const Header = () => {
 
                 {/* Search Bar Row (Mobile) */}
                 {!isCheckoutPage && (
-                    <div className="relative z-10 mt-1.5 flex items-center">
+                    <div className="relative z-10 mt-1 flex items-center pb-0.5">
                         <Link
                             to="/search"
-                            className="w-full h-[34px] bg-white rounded-full px-3 flex items-center gap-2 shadow-xs cursor-pointer active:scale-[0.99] transition-transform no-underline"
+                            className="w-full h-[38px] bg-[#F8FAFC] border border-slate-200/90 rounded-full px-3.5 flex flex-row flex-nowrap items-center justify-between gap-2.5 shadow-2xs cursor-pointer active:scale-[0.99] transition-transform no-underline"
                         >
-                            <Search size={15} className="text-slate-500 shrink-0 stroke-[2.2]" />
-                            <span className="flex-1 text-slate-400 font-normal text-[12.5px] truncate">
-                                {searchPlaceholder || 'Search for meat, fish, seafood, etc...'}
-                            </span>
+                            <div className="flex flex-row flex-nowrap items-center gap-2.5 flex-1 min-w-0">
+                                <Search size={16} className="text-slate-400 shrink-0 stroke-[2.2]" />
+                                <span className="text-slate-400 font-normal text-[12.5px] truncate leading-normal">
+                                    {searchPlaceholder || 'Search for chicken, fish, seafood...'}
+                                </span>
+                            </div>
+                            <Mic size={16} className="text-slate-400 shrink-0" />
                         </Link>
                     </div>
                 )}

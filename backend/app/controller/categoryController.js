@@ -330,6 +330,92 @@ export const updateCategory = async (req, res) => {
 };
 
 /* ===============================
+   DELETE BULK CATEGORIES
+ ================================ */
+export const deleteBulkCategories = async (req, res) => {
+  try {
+    const ids = req.body?.ids || req.query?.ids;
+    if (!Array.isArray(ids) || ids.length === 0) {
+      return handleResponse(res, 400, "Please provide an array of category IDs to delete");
+    }
+
+    const deleteWithChildren = async (parentId) => {
+      const children = await Category.find({ parentId }).select("_id").lean();
+      for (const child of children) {
+        await deleteWithChildren(child._id);
+      }
+      await Category.findByIdAndDelete(parentId);
+    };
+
+    for (const id of ids) {
+      if (mongoose.Types.ObjectId.isValid(id)) {
+        await deleteWithChildren(id);
+        invalidateCategoryName(id).catch(() => {});
+      }
+    }
+
+    invalidate("cache:catalog:categories:*").catch((err) => {
+      console.warn("[Category] Cache invalidation failed:", err.message);
+    });
+
+    return handleResponse(res, 200, `${ids.length} categories and their descendants deleted`);
+  } catch (error) {
+    return handleResponse(res, 500, error.message);
+  }
+};
+
+/* ===============================
+   DELETE ALL CATEGORIES
+ ================================ */
+export const deleteAllCategories = async (req, res) => {
+  try {
+    const type = req.query?.type || req.body?.type || "all";
+    const parentId = req.query?.parentId || req.body?.parentId;
+
+    const deleteWithChildren = async (id) => {
+      const children = await Category.find({ parentId: id }).select("_id").lean();
+      for (const child of children) {
+        await deleteWithChildren(child._id);
+      }
+      await Category.findByIdAndDelete(id);
+    };
+
+    if (type === "header") {
+      const headers = await Category.find({ type: "header" }).select("_id").lean();
+      for (const h of headers) {
+        await deleteWithChildren(h._id);
+      }
+    } else if (type === "category") {
+      const query = { type: "category" };
+      if (parentId && parentId !== "all" && mongoose.Types.ObjectId.isValid(parentId)) {
+        query.parentId = parentId;
+      }
+      const cats = await Category.find(query).select("_id").lean();
+      for (const c of cats) {
+        await deleteWithChildren(c._id);
+      }
+    } else if (type === "subcategory") {
+      const query = { type: "subcategory" };
+      if (parentId && parentId !== "all" && mongoose.Types.ObjectId.isValid(parentId)) {
+        query.parentId = parentId;
+      }
+      await Category.deleteMany(query);
+    } else {
+      // type === "all"
+      await Category.deleteMany({});
+    }
+
+    invalidate("cache:catalog:categories:*").catch((err) => {
+      console.warn("[Category] Cache invalidation failed:", err.message);
+    });
+
+    return handleResponse(res, 200, `Categories (${type}) deleted successfully`);
+  } catch (error) {
+    return handleResponse(res, 500, error.message);
+  }
+};
+
+/* ===============================
    DELETE CATEGORY
  ================================ */
 export const deleteCategory = async (req, res) => {
@@ -358,3 +444,4 @@ export const deleteCategory = async (req, res) => {
     return handleResponse(res, 500, error.message);
   }
 };
+

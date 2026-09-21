@@ -476,7 +476,7 @@ const Home = () => {
   };
 
   return (
-    <div className={`min-h-screen pt-[113px] md:pt-[68px] pb-20 md:pb-10 ${products.length === 0 && !isLoading ? "bg-[#FFF9F4]" : "bg-[#FFF9F4]"}`}>
+    <div className={`min-h-screen pt-[113px] md:pt-[68px] pb-20 md:pb-10 ${products.length === 0 && !isLoading ? "bg-[#FFF9F4] md:bg-white" : "bg-[#FFF9F4] md:bg-white"}`}>
       <div className={cn("contents", isProductDetailOpen && "hidden md:contents")}>
         <MainLocationHeader categories={categories} activeCategory={activeCategory} onCategorySelect={setActiveCategory} />
       </div>

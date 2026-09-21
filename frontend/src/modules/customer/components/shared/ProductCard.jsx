@@ -160,10 +160,16 @@ const ProductCard = React.memo(
     );
 
     if (variant !== "legacy") {
+      const discountPercent =
+        product.discount ||
+        (product.originalPrice && product.originalPrice > product.price
+          ? `${Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% OFF`
+          : null);
+
       return (
         <div
           className={cn(
-            "bg-white rounded-xl md:rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow overflow-hidden flex flex-col justify-between group cursor-pointer w-full select-none",
+            "bg-white rounded-xl sm:rounded-2xl border border-slate-100 shadow-xs hover:shadow-md transition-shadow overflow-hidden flex flex-col justify-between group cursor-pointer w-full select-none",
             className
           )}
           onClick={handleProductClick}
@@ -177,54 +183,58 @@ const ProductCard = React.memo(
               loading="lazy"
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             />
-            {/* Fresh Badge or Discount Badge */}
-            {badge || product.discount || (product.originalPrice && product.originalPrice > product.price) ? (
-              <span className="absolute top-1 sm:top-1.5 md:top-2 left-1 sm:left-1.5 md:left-2 bg-[#EF131F] text-white text-[7.5px] sm:text-[8px] md:text-[9px] font-bold px-1.5 sm:px-2 py-0.5 rounded-full shadow-xs">
-                {badge || product.discount || `${Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% OFF`}
+            {/* Badge */}
+            {badge || discountPercent ? (
+              <span className="absolute top-1 sm:top-1.5 left-1 sm:left-1.5 bg-[#C81017] text-white text-[7.5px] sm:text-[9px] font-bold px-1.5 sm:px-2 py-0.5 rounded shadow-xs tracking-wide">
+                {badge || discountPercent}
               </span>
-            ) : (
-              <span className="absolute top-1 sm:top-1.5 md:top-2 left-1 sm:left-1.5 md:left-2 bg-emerald-600 text-white text-[7.5px] sm:text-[8px] md:text-[9px] font-bold px-1.5 sm:px-2 py-0.5 rounded-full shadow-xs">
-                Fresh
-              </span>
-            )}
+            ) : null}
 
             {/* Wishlist Heart */}
             <button
               type="button"
               onClick={toggleWishlist}
-              className="absolute top-1 sm:top-1.5 md:top-2 right-1 sm:top-1.5 md:right-2 w-5.5 h-5.5 sm:w-6 sm:h-6 md:w-7 md:h-7 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center text-slate-600 hover:text-rose-600 shadow-xs transition-colors border-0 cursor-pointer"
+              className="absolute top-1 sm:top-1.5 right-1 sm:right-1.5 w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-black/40 backdrop-blur-xs flex items-center justify-center text-white hover:text-rose-500 hover:bg-black/60 shadow-xs transition-colors border-0 cursor-pointer"
             >
               <Heart
-                size={11}
-                className={cn("sm:w-3 sm:h-3 md:w-3.5 md:h-3.5", isWishlisted ? "fill-rose-500 text-rose-500" : "")}
+                size={10}
+                className={cn(
+                  "sm:w-3 sm:h-3 transition-colors",
+                  isWishlisted ? "fill-rose-500 text-rose-500" : "text-white"
+                )}
               />
             </button>
           </div>
 
           {/* Info Area */}
-          <div className="p-1.5 sm:p-2 md:p-3 flex flex-col gap-1 md:gap-2 flex-1 justify-between">
+          <div className="p-1.5 sm:p-2.5 flex flex-col justify-between flex-1 gap-1 sm:gap-1.5">
             <div>
-              <h4 className="text-[11.5px] sm:text-[12.5px] md:text-[13px] font-bold text-slate-800 line-clamp-1 leading-tight">
+              <h4 className="font-bold text-slate-800 text-[11px] sm:text-xs leading-snug line-clamp-1 group-hover:text-amber-800 transition-colors">
                 {product.name}
               </h4>
-              <span className="text-[9.5px] sm:text-[10.5px] md:text-[11px] text-slate-400 font-medium">
+              <p className="text-[9px] sm:text-[10px] text-slate-400 font-medium mt-0.5">
                 {product.weight || "500 g"}
-              </span>
+              </p>
             </div>
 
-            <div>
-              {/* Price */}
-              <div className="flex items-baseline justify-between mb-1 md:mb-2">
-                <div className="flex items-baseline gap-1 sm:gap-1.5">
-                  <span className="text-[12.5px] sm:text-[13.5px] md:text-base font-bold text-slate-900">
+            <div className="mt-auto">
+              {/* Price & Discount */}
+              <div className="flex items-baseline justify-between mb-1 sm:mb-1.5">
+                <div className="flex items-baseline gap-1">
+                  <span className="font-bold text-slate-900 text-xs sm:text-sm">
                     ₹{product.price}
                   </span>
-                  {product.originalPrice > product.price && (
-                    <span className="text-[9.5px] sm:text-[10.5px] md:text-xs text-slate-400 line-through">
+                  {product.originalPrice && product.originalPrice > product.price && (
+                    <span className="text-[9px] sm:text-[10px] text-slate-400 line-through">
                       ₹{product.originalPrice}
                     </span>
                   )}
                 </div>
+                {discountPercent && (
+                  <span className="text-[8.5px] sm:text-[9.5px] font-bold text-emerald-600">
+                    {discountPercent}
+                  </span>
+                )}
               </div>
 
               {/* Add to Cart Button or Quantity Selector */}
@@ -236,39 +246,38 @@ const ProductCard = React.memo(
                     e.stopPropagation();
                     showToast("Shop is currently closed and not accepting orders");
                   }}
-                  className="w-full h-7 sm:h-7.5 md:h-9 py-1 md:py-2 px-2 md:px-3 rounded-lg md:rounded-xl bg-slate-100 text-slate-400 text-[10px] sm:text-[11px] md:text-xs font-semibold cursor-not-allowed border-0"
+                  className="w-full h-6.5 sm:h-8 py-0.5 sm:py-1 px-2 sm:px-3 rounded-lg sm:rounded-xl bg-slate-100 text-slate-400 text-[10px] sm:text-xs font-semibold cursor-not-allowed border-0"
                 >
                   Store Closed
                 </button>
               ) : quantity > 0 ? (
                 <div
-                  style={{ borderColor: "#FDCE04" }}
-                  className="flex items-center bg-white border border-[#FDCE04] rounded-lg md:rounded-xl p-0.5 justify-between h-7 sm:h-7.5 md:h-9"
+                  className="w-full h-6 sm:h-7.5 bg-white border border-[#FDCE04] rounded-lg sm:rounded-xl flex items-center justify-between px-1 shadow-xs"
                   onClick={(e) => e.stopPropagation()}
                 >
                   <button
                     onClick={handleDecrement}
-                    className="w-5.5 h-5.5 sm:w-6 sm:h-6 md:w-7 md:h-7 flex items-center justify-center text-[#1A1A1A] active:scale-90 transition-transform cursor-pointer border-0 bg-transparent font-bold"
+                    className="w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-[#1A1A1A] active:scale-90 transition-transform cursor-pointer border-0 bg-transparent font-bold"
                   >
-                    <Minus size={11} strokeWidth={3} className="sm:w-3 sm:h-3 md:w-3.5 md:h-3.5" />
+                    <Minus size={10} strokeWidth={3} />
                   </button>
-                  <span className="font-extrabold text-[10.5px] sm:text-[11.5px] md:text-xs text-[#1A1A1A]">
+                  <span className="font-bold text-[11px] sm:text-xs text-[#1A1A1A] px-1">
                     {quantity}
                   </span>
                   <button
                     onClick={handleIncrement}
-                    className="w-5.5 h-5.5 sm:w-6 sm:h-6 md:w-7 md:h-7 flex items-center justify-center text-[#1A1A1A] active:scale-90 transition-transform cursor-pointer border-0 bg-transparent font-bold"
+                    className="w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-[#1A1A1A] active:scale-90 transition-transform cursor-pointer border-0 bg-transparent font-bold"
                   >
-                    <Plus size={11} strokeWidth={3} className="sm:w-3 sm:h-3 md:w-3.5 md:h-3.5" />
+                    <Plus size={10} strokeWidth={3} />
                   </button>
                 </div>
               ) : (
                 <button
                   type="button"
                   onClick={handleAddToCart}
-                  className="w-full h-7 sm:h-7.5 md:h-9 py-1 md:py-2 px-2 md:px-3 rounded-lg md:rounded-xl bg-[#FDCE04] hover:bg-[#E5B800] text-[#1A1A1A] text-[10px] sm:text-[11px] md:text-xs font-bold flex items-center justify-center gap-1 md:gap-2 transition-colors cursor-pointer shadow-xs active:scale-98 border-0"
+                  className="w-full h-6.5 sm:h-8 py-0.5 sm:py-1 px-2 sm:px-3 rounded-lg sm:rounded-xl bg-[#FDCE04] hover:bg-[#E5B800] text-[#1A1A1A] text-[10px] sm:text-xs font-bold flex items-center justify-center gap-1 sm:gap-1.5 transition-colors cursor-pointer shadow-xs active:scale-98 border-0"
                 >
-                  <ShoppingCart size={11} strokeWidth={2.4} className="sm:w-3 sm:h-3 md:w-3.5 md:h-3.5 text-[#1A1A1A]" />
+                  <ShoppingCart size={11} strokeWidth={2.4} className="text-[#1A1A1A]" />
                   <span>Add to Cart</span>
                 </button>
               )}

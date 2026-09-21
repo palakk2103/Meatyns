@@ -206,7 +206,7 @@ const OffersPage = () => {
         </div>
 
         {/* Responsive Grid for Hot Deals Cards */}
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-4.5">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 min-[1800px]:grid-cols-8 gap-2.5 sm:gap-3.5 md:gap-4">
           {hotDeals.map((product) => {
             const isWishlisted = isInWishlist(product.id || product._id);
             const quantity = getQuantity(product);
@@ -227,7 +227,7 @@ const OffersPage = () => {
                   />
 
                   {/* Hot Deal Red Badge */}
-                  <span className="absolute top-1.5 left-1.5 sm:top-2.5 sm:left-2.5 bg-[#EF131F] text-white text-[8.5px] sm:text-[11px] font-bold px-1.5 sm:px-2 py-0.5 rounded shadow-xs tracking-wide">
+                  <span className="absolute top-1.5 left-1.5 sm:top-2.5 sm:left-2.5 bg-[#C81017] text-white text-[8.5px] sm:text-[11px] font-bold px-1.5 sm:px-2 py-0.5 rounded shadow-xs tracking-wide">
                     Hot Deal
                   </span>
 
@@ -241,7 +241,7 @@ const OffersPage = () => {
                       size={11}
                       className={`sm:w-[13px] sm:h-[13px] transition-colors ${
                         isWishlisted
-                          ? "fill-[#EF131F] text-[#EF131F]"
+                          ? "fill-rose-500 text-rose-500"
                           : "text-white"
                       }`}
                     />
@@ -251,7 +251,7 @@ const OffersPage = () => {
                 {/* Card Content */}
                 <div className="p-2 sm:p-3.5 flex flex-col justify-between flex-1 gap-1.5 sm:gap-2">
                   <div>
-                    <h3 className="font-bold text-slate-900 text-[11.5px] sm:text-[14px] leading-snug line-clamp-1 group-hover:text-amber-800 transition-colors">
+                    <h3 className="font-bold text-slate-900 text-[11.5px] sm:text-[14px] leading-snug line-clamp-1 group-hover:text-amber-600 transition-colors">
                       {product.name}
                     </h3>
                     <p className="text-[9.5px] sm:text-xs text-slate-400 font-medium mt-0.5">
@@ -284,7 +284,7 @@ const OffersPage = () => {
                       >
                         <button
                           onClick={(e) => handleDecrement(e, product)}
-                          className="w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-[#1A1A1A] active:scale-90 transition-transform cursor-pointer border-0 bg-transparent"
+                          className="w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-[#1A1A1A] active:scale-90 transition-transform cursor-pointer border-0 bg-transparent font-bold"
                         >
                           <Minus size={10} strokeWidth={3} />
                         </button>
@@ -293,7 +293,7 @@ const OffersPage = () => {
                         </span>
                         <button
                           onClick={(e) => handleIncrement(e, product)}
-                          className="w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-[#1A1A1A] active:scale-90 transition-transform cursor-pointer border-0 bg-transparent"
+                          className="w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-[#1A1A1A] active:scale-90 transition-transform cursor-pointer border-0 bg-transparent font-bold"
                         >
                           <Plus size={10} strokeWidth={3} />
                         </button>
@@ -302,9 +302,9 @@ const OffersPage = () => {
                       <button
                         type="button"
                         onClick={(e) => handleAddToCart(e, product)}
-                        className="w-full h-6.5 sm:h-8 py-0.5 sm:py-1 px-2 sm:px-3 rounded-lg sm:rounded-xl bg-[#FDCE04] hover:bg-[#E5B800] text-[#1A1A1A] text-[10px] sm:text-xs font-extrabold flex items-center justify-center gap-1 sm:gap-1.5 transition-colors cursor-pointer shadow-xs active:scale-98 border border-[#E5B800]"
+                        className="w-full h-6.5 sm:h-8 py-0.5 sm:py-1 px-2 sm:px-3 rounded-lg sm:rounded-xl bg-[#FDCE04] hover:bg-[#E5B800] text-[#1A1A1A] text-[10px] sm:text-xs font-bold flex items-center justify-center gap-1 sm:gap-1.5 transition-colors cursor-pointer shadow-xs active:scale-98 border-0"
                       >
-                        <ShoppingCart size={11} strokeWidth={2.2} />
+                        <ShoppingCart size={11} strokeWidth={2.4} className="text-[#1A1A1A]" />
                         <span>Add to Cart</span>
                       </button>
                     )}

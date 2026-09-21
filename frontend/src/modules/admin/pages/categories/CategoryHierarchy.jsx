@@ -11,6 +11,7 @@ import {
   Layers,
   ArrowRight,
   Package,
+  Trash2,
 } from "lucide-react";
 import { adminApi } from "../../services/adminApi";
 import Card from "@shared/components/ui/Card";
@@ -21,6 +22,8 @@ const CategoryHierarchy = () => {
   const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
+  const [isDeleteAllModalOpen, setIsDeleteAllModalOpen] = useState(false);
+  const [isDeletingAll, setIsDeletingAll] = useState(false);
 
   // Selection State for Miller Columns
   const [selectedHeader, setSelectedHeader] = useState(null);
@@ -59,6 +62,22 @@ const CategoryHierarchy = () => {
       toast.error("Failed to fetch category hierarchy");
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleDeleteAll = async () => {
+    setIsDeletingAll(true);
+    try {
+      await adminApi.deleteAllCategories({ type: "all" });
+      toast.success("All categories deleted successfully");
+      setIsDeleteAllModalOpen(false);
+      setSelectedHeader(null);
+      setSelectedLevel2(null);
+      fetchCategories();
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to delete all categories");
+    } finally {
+      setIsDeletingAll(false);
     }
   };
 
@@ -201,6 +220,15 @@ const CategoryHierarchy = () => {
               </span>
             </div>
           </div>
+          {stats.total > 0 && (
+            <button
+              type="button"
+              onClick={() => setIsDeleteAllModalOpen(true)}
+              className="flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-xl hover:bg-red-700 transition-colors font-medium text-sm shadow-sm">
+              <Trash2 className="w-4 h-4 text-white" />
+              Delete All Categories
+            </button>
+          )}
         </div>
       </div>
 
@@ -361,6 +389,50 @@ const CategoryHierarchy = () => {
           )}
         </div>
       </div>
+
+      {/* Delete All Confirmation Modal */}
+      <AnimatePresence>
+        {isDeleteAllModalOpen && (
+          <div className="fixed inset-0 z-[999] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-white rounded-xl shadow-xl w-full max-w-md overflow-hidden">
+              <div className="p-6 text-center">
+                <div className="w-12 h-12 rounded-full bg-red-100 text-red-600 flex items-center justify-center mx-auto mb-4">
+                  <Trash2 className="w-6 h-6" />
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-2">
+                  Delete All Categories?
+                </h3>
+                <p className="text-gray-500 text-sm mb-6">
+                  Are you sure you want to delete <span className="font-semibold text-gray-900">ALL {stats.total} categories</span>? This will permanently delete all Header Categories, Main Categories, and Sub-Categories. This action cannot be undone.
+                </p>
+                <div className="flex gap-3 justify-center">
+                  <button
+                    type="button"
+                    onClick={() => setIsDeleteAllModalOpen(false)}
+                    disabled={isDeletingAll}
+                    className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg font-medium transition-colors">
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleDeleteAll}
+                    disabled={isDeletingAll}
+                    className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 font-medium transition-colors flex items-center gap-2">
+                    {isDeletingAll && (
+                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    )}
+                    {isDeletingAll ? "Deleting..." : "Delete All"}
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

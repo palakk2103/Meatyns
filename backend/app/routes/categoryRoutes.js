@@ -3,7 +3,9 @@ import {
     getCategories,
     createCategory,
     updateCategory,
-    deleteCategory
+    deleteCategory,
+    deleteBulkCategories,
+    deleteAllCategories
 } from "../controller/categoryController.js";
 import { verifyToken, allowRoles } from "../middleware/authMiddleware.js";
 import multer from "multer";
@@ -31,6 +33,20 @@ router.put(
     allowRoles("admin"),
     upload.single("image"),
     updateCategory
+);
+
+router.delete(
+    "/bulk",
+    verifyToken,
+    allowRoles("admin"),
+    deleteBulkCategories
+);
+
+router.delete(
+    "/all",
+    verifyToken,
+    allowRoles("admin"),
+    deleteAllCategories
 );
 
 router.delete(

@@ -39,6 +39,8 @@ const SubCategories = () => {
   const [pageSize, setPageSize] = useState(25);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isDeleteAllModalOpen, setIsDeleteAllModalOpen] = useState(false);
+  const [isDeletingAll, setIsDeletingAll] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [isSaving, setIsSaving] = useState(false);
@@ -287,9 +289,7 @@ const SubCategories = () => {
       )
     ) {
       try {
-        await Promise.all(
-          selectedItems.map((id) => adminApi.deleteCategory(id)),
-        );
+        await adminApi.deleteBulkCategories({ ids: selectedItems });
         toast.success("Subcategories deleted");
         setSelectedItems([]);
         fetchCategories();
@@ -297,6 +297,25 @@ const SubCategories = () => {
         console.error("Bulk delete error:", error);
         toast.error("Failed to delete some subcategories");
       }
+    }
+  };
+
+  const handleDeleteAll = async () => {
+    setIsDeletingAll(true);
+    try {
+      const isFiltered = filterLevel2 && filterLevel2 !== "all";
+      await adminApi.deleteAllCategories({
+        type: "subcategory",
+        parentId: isFiltered ? filterLevel2 : undefined,
+      });
+      toast.success("Subcategories deleted successfully");
+      setIsDeleteAllModalOpen(false);
+      setSelectedItems([]);
+      fetchCategories();
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to delete subcategories");
+    } finally {
+      setIsDeletingAll(false);
     }
   };
 
@@ -309,16 +328,35 @@ const SubCategories = () => {
             Manage level 3 categories linked to secondary categories
           </p>
         </div>
-        <button
-          onClick={openAddModal}
-          className="flex items-center gap-2 bg-black  text-primary-foreground px-4 py-2 rounded-lg hover:bg-brand-700 transition-colors">
-          <Plus className="w-5 h-5" />
-          Add New Subcategory
-        </button>
+        <div className="flex items-center gap-3">
+          {categories.length > 0 && (
+            <button
+              type="button"
+              onClick={() => setIsDeleteAllModalOpen(true)}
+              className="flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors font-medium text-sm shadow-sm">
+              <Trash2 className="w-4 h-4 text-white" />
+              Delete All
+            </button>
+          )}
+          <button
+            onClick={openAddModal}
+            className="flex items-center gap-2 bg-black text-white px-4 py-2 rounded-lg hover:bg-brand-700 transition-colors font-medium text-sm shadow-sm">
+            <Plus className="w-5 h-5 text-white" />
+            Add New Subcategory
+          </button>
+        </div>
       </div>
 
       <Card className="border-none shadow-sm">
         <div className="p-4 border-b border-gray-100 flex gap-4 items-center flex-wrap">
+          {selectedItems.length > 0 && (
+            <button
+              onClick={handleBulkDelete}
+              className="flex items-center gap-2 px-4 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors text-sm font-medium">
+              <Trash2 className="w-4 h-4" />
+              Delete ({selectedItems.length})
+            </button>
+          )}
           <div className="relative flex-1 min-w-[200px]">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
             <input
@@ -622,7 +660,7 @@ const SubCategories = () => {
                 <button
                   onClick={handleSave}
                   disabled={isSaving}
-                  className="px-4 py-2 bg-black  text-primary-foreground rounded-lg hover:bg-brand-700 font-medium disabled:opacity-50 flex items-center gap-2">
+                  className="px-4 py-2 bg-black text-white rounded-lg hover:bg-brand-700 font-medium disabled:opacity-50 flex items-center gap-2">
                   {isSaving && (
                     <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                   )}
@@ -645,7 +683,7 @@ const SubCategories = () => {
               className="bg-white rounded-xl shadow-xl w-full max-w-sm overflow-hidden">
               <div className="p-6 text-center">
                 <div className="w-12 h-12 rounded-full bg-red-100 text-red-600 flex items-center justify-center mx-auto mb-4">
-                  <Trash className="w-6 h-6" />
+                  <Trash2 className="w-6 h-6" />
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 mb-2">
                   Delete Subcategory?
@@ -667,6 +705,52 @@ const SubCategories = () => {
                     onClick={handleDelete}
                     className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 font-medium transition-colors">
                     Delete
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Delete All Confirmation Modal */}
+      <AnimatePresence>
+        {isDeleteAllModalOpen && (
+          <div className="fixed inset-0 z-[999] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-white rounded-xl shadow-xl w-full max-w-md overflow-hidden">
+              <div className="p-6 text-center">
+                <div className="w-12 h-12 rounded-full bg-red-100 text-red-600 flex items-center justify-center mx-auto mb-4">
+                  <Trash2 className="w-6 h-6" />
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-2">
+                  Delete All Subcategories?
+                </h3>
+                <p className="text-gray-500 text-sm mb-6">
+                  {filterLevel2 && filterLevel2 !== "all"
+                    ? "Are you sure you want to delete all subcategories under the selected category?"
+                    : "Are you sure you want to delete ALL subcategories? This action cannot be undone."}
+                </p>
+                <div className="flex gap-3 justify-center">
+                  <button
+                    type="button"
+                    onClick={() => setIsDeleteAllModalOpen(false)}
+                    disabled={isDeletingAll}
+                    className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg font-medium transition-colors">
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleDeleteAll}
+                    disabled={isDeletingAll}
+                    className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 font-medium transition-colors flex items-center gap-2">
+                    {isDeletingAll && (
+                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    )}
+                    {isDeletingAll ? "Deleting..." : "Delete All"}
                   </button>
                 </div>
               </div>

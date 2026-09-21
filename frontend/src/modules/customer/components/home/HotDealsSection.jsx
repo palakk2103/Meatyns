@@ -158,18 +158,17 @@ const HotDealsSection = ({ products = [] }) => {
     <section className="w-full mb-6 sm:mb-8 select-none">
       {/* Section Header */}
       <div className="flex items-center justify-between mb-3 sm:mb-4 px-1">
-        <div className="flex items-center gap-2 sm:gap-2.5">
-          <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#FDCE04]/20 flex items-center justify-center text-[#EF131F]">
-            <Flame size={18} className="fill-[#EF131F] sm:w-5 sm:h-5" />
-          </div>
-          <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-slate-900 tracking-tight">
+        <div className="flex items-center gap-2">
+          <Flame size={20} className="fill-[#C81017] text-[#C81017] shrink-0" />
+          <h2 className="text-lg sm:text-xl md:text-2xl font-black text-[#111111] uppercase tracking-tight">
             Hot Deals
           </h2>
+          <div className="w-10 h-1 bg-[#FAB82C] rounded-full ml-1" />
         </div>
 
         <button
           onClick={() => navigate("/offers")}
-          className="text-xs sm:text-sm font-bold text-slate-700 hover:text-slate-900 flex items-center gap-1 cursor-pointer transition-colors border-0 bg-transparent p-0"
+          className="text-xs sm:text-sm font-bold text-[#111111] hover:text-black flex items-center gap-1 cursor-pointer transition-colors border-0 bg-transparent p-0"
         >
           <span>View All</span>
           <span className="text-sm font-bold">&rarr;</span>
@@ -198,7 +197,7 @@ const HotDealsSection = ({ products = [] }) => {
                 />
 
                 {/* Hot Deal Red Badge */}
-                <span className="absolute top-1.5 left-1.5 sm:top-2.5 sm:left-2.5 bg-[#EF131F] text-white text-[8.5px] sm:text-[11px] font-bold px-1.5 sm:px-2 py-0.5 rounded shadow-xs tracking-wide">
+                <span className="absolute top-1.5 left-1.5 sm:top-2.5 sm:left-2.5 bg-[#C81017] text-white text-[8.5px] sm:text-[11px] font-bold px-1.5 sm:px-2 py-0.5 rounded shadow-xs tracking-wide">
                   Hot Deal
                 </span>
 

@@ -311,7 +311,7 @@ const Earnings = () => {
                     setIsWithdrawModalOpen(false);
                     alert("Withdrawal request submitted!");
                   }}
-                  className="py-3 rounded-lg bg-black  text-primary-foreground font-black shadow-lg shadow-brand-200 hover:bg-brand-700 hover:shadow-brand-300 transition-all">
+                  className="py-3 rounded-lg bg-black text-white font-black shadow-lg shadow-brand-200 hover:bg-brand-700 hover:shadow-brand-300 transition-all">
                   CONFIRM
                 </button>
               </div>

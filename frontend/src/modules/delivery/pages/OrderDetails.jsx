@@ -963,8 +963,8 @@ const OrderDetails = () => {
                   <p className="text-gray-500 text-sm mb-4">
                     {isReturn ? order.seller?.address : order.address?.city}
                   </p>
-                  <Button onClick={handleNavigate} className="w-full bg-black  hover:bg-brand-700 text-primary-foreground border-none">
-                    <Navigation size={18} className="mr-2" />{" "}
+                  <Button onClick={handleNavigate} className="w-full bg-black hover:bg-brand-700 text-white border-none">
+                    <Navigation size={18} className="mr-2 text-white" />{" "}
                     {isReturn ? "Navigate to Seller" : "Navigate to Customer"}
                   </Button>
                 </div>

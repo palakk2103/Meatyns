@@ -61,6 +61,8 @@ const HeaderCategories = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isDeleteAllModalOpen, setIsDeleteAllModalOpen] = useState(false);
+  const [isDeletingAll, setIsDeletingAll] = useState(false);
   const [isIconSelectorOpen, setIsIconSelectorOpen] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
   const [deleteTarget, setDeleteTarget] = useState(null);
@@ -154,14 +156,37 @@ const HeaderCategories = () => {
     }
   };
 
-  const handleBulkDelete = () => {
+  const handleBulkDelete = async () => {
     if (selectedItems.length === 0) return;
-    // In a real app, you would have a bulk delete API endpoint
-    // For now, we'll just show a toast
-    toast.info(
-      `Bulk delete functionality for ${selectedItems.length} items would be triggered here.`,
-    );
-    setSelectedItems([]);
+    if (
+      window.confirm(
+        `Are you sure you want to delete ${selectedItems.length} selected header categories? This will also remove their subcategories.`,
+      )
+    ) {
+      try {
+        await adminApi.deleteBulkCategories({ ids: selectedItems });
+        toast.success("Selected header categories deleted");
+        setSelectedItems([]);
+        fetchCategories(page);
+      } catch (error) {
+        toast.error("Failed to delete selected categories");
+      }
+    }
+  };
+
+  const handleDeleteAll = async () => {
+    setIsDeletingAll(true);
+    try {
+      await adminApi.deleteAllCategories({ type: "header" });
+      toast.success("All header categories deleted successfully");
+      setIsDeleteAllModalOpen(false);
+      setSelectedItems([]);
+      fetchCategories(1);
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to delete all header categories");
+    } finally {
+      setIsDeletingAll(false);
+    }
   };
 
   const handleImageChange = (e) => {
@@ -281,12 +306,23 @@ const HeaderCategories = () => {
           </h1>
           <p className="text-gray-500 mt-1">Manage top-level categories</p>
         </div>
-        <button
-          onClick={openAddModal}
-          className="flex items-center gap-2 bg-black text-primary-foreground px-4 py-2 rounded-lg hover:bg-brand-700 transition-colors">
-          <Plus className="w-5 h-5" />
-          Add New Header
-        </button>
+        <div className="flex items-center gap-3">
+          {categories.length > 0 && (
+            <button
+              type="button"
+              onClick={() => setIsDeleteAllModalOpen(true)}
+              className="flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors font-medium text-sm shadow-sm">
+              <Trash2 className="w-4 h-4 text-white" />
+              Delete All
+            </button>
+          )}
+          <button
+            onClick={openAddModal}
+            className="flex items-center gap-2 bg-black text-white px-4 py-2 rounded-lg hover:bg-brand-700 transition-colors font-medium text-sm shadow-sm">
+            <Plus className="w-5 h-5 text-white" />
+            Add New Header
+          </button>
+        </div>
       </div>
 
       <Card className="border-none shadow-sm">
@@ -511,7 +547,7 @@ const HeaderCategories = () => {
                       <button
                         type="button"
                         onClick={() => setIsIconSelectorOpen(true)}
-                        className="px-3 py-1.5 text-sm bg-black text-primary-foreground rounded-lg hover:bg-brand-700 transition-colors">
+                        className="px-3 py-1.5 text-sm bg-black text-white rounded-lg hover:bg-brand-700 transition-colors">
                         {formData.iconId ? 'Change Icon' : 'Select Icon'}
                       </button>
                     </div>
@@ -749,7 +785,7 @@ const HeaderCategories = () => {
                 <button
                   onClick={handleSave}
                   disabled={isSaving}
-                  className="px-4 py-2 bg-black text-primary-foreground rounded-lg hover:bg-brand-700 font-medium disabled:opacity-50 flex items-center gap-2">
+                  className="px-4 py-2 bg-black text-white rounded-lg hover:bg-brand-700 font-medium disabled:opacity-50 flex items-center gap-2">
                   {isSaving && (
                     <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                   )}
@@ -808,6 +844,50 @@ const HeaderCategories = () => {
                     onClick={handleDelete}
                     className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 font-medium transition-colors">
                     Delete
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Delete All Confirmation Modal */}
+      <AnimatePresence>
+        {isDeleteAllModalOpen && (
+          <div className="fixed inset-0 z-[999] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-white rounded-xl shadow-xl w-full max-w-md overflow-hidden">
+              <div className="p-6 text-center">
+                <div className="w-12 h-12 rounded-full bg-red-100 text-red-600 flex items-center justify-center mx-auto mb-4">
+                  <Trash2 className="w-6 h-6" />
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-2">
+                  Delete All Header Categories?
+                </h3>
+                <p className="text-gray-500 text-sm mb-6">
+                  Are you sure you want to delete <span className="font-semibold text-gray-900">ALL</span> header categories? This will also permanently delete all their linked Main Categories and Sub-Categories. This action cannot be undone.
+                </p>
+                <div className="flex gap-3 justify-center">
+                  <button
+                    type="button"
+                    onClick={() => setIsDeleteAllModalOpen(false)}
+                    disabled={isDeletingAll}
+                    className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg font-medium transition-colors">
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleDeleteAll}
+                    disabled={isDeletingAll}
+                    className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 font-medium transition-colors flex items-center gap-2">
+                    {isDeletingAll && (
+                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    )}
+                    {isDeletingAll ? "Deleting..." : "Delete All"}
                   </button>
                 </div>
               </div>
