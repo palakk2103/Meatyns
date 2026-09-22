@@ -22,12 +22,12 @@ const products = [
     },
     {
         id: 3,
-        name: 'Beef Boneless',
-        category: 'Meat',
-        price: 399,
-        originalPrice: 449,
+        name: 'Fresh Surmai (King Fish) Steaks',
+        category: 'Fish',
+        price: 389,
+        originalPrice: 439,
         weight: '500 g',
-        image: 'https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&q=80&w=600&h=600',
+        image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&q=80&w=600&h=600',
     },
     {
         id: 4,

@@ -16,21 +16,22 @@ import {
 } from 'lucide-react';
 import meatBoardImg from '@/assets/meat_seafood_board.jpg';
 
-// Stylized Meatyns Animal Crest Logo (Cow head, Rooster, Fish)
+// Stylized Meatyns Animal Crest Logo (Fish & Fresh Meat Crest)
 const MeatynsBrandLogo = () => (
     <div className="flex items-center gap-3 select-none">
         <div className="w-14 h-14 rounded-full border border-white/20 bg-white/10 backdrop-blur-md flex items-center justify-center p-2 shadow-lg shrink-0">
             <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full text-white">
                 {/* Outer decorative ring */}
                 <circle cx="50" cy="50" r="46" stroke="white" strokeWidth="2" strokeDasharray="3 3" opacity="0.6" />
-                {/* Cow Horns & Head */}
-                <path d="M28 34 C26 22, 42 20, 50 28 C58 20, 74 22, 72 34 C69 44, 60 52, 50 54 C40 52, 31 44, 28 34 Z" fill="white" />
-                {/* Cow Snout */}
-                <ellipse cx="50" cy="46" rx="9" ry="6" fill="#3B0710" />
-                <circle cx="47" cy="46" r="1.5" fill="white" />
-                <circle cx="53" cy="46" r="1.5" fill="white" />
-                {/* Rooster comb on top */}
-                <path d="M46 22 C47 16, 53 16, 54 22 Z" fill="#E5A93C" />
+                {/* Fresh fish leaping center */}
+                <path d="M30 46 C32 32, 46 26, 62 30 C68 32, 74 38, 76 46 C74 54, 66 60, 52 60 C38 60, 31 54, 30 46 Z" fill="white" />
+                {/* Fish tail fin */}
+                <polygon points="28,46 18,38 22,46 18,54" fill="white" />
+                {/* Fish dorsal fin & gill curve */}
+                <path d="M48 26 C52 20, 58 22, 60 28 Z" fill="#E5A93C" />
+                <path d="M40 58 C44 64, 50 64, 52 58 Z" fill="white" opacity="0.8" />
+                <path d="M58 38 C56 42, 56 48, 58 52" stroke="#3B0710" strokeWidth="2" strokeLinecap="round" />
+                <circle cx="67" cy="42" r="2.5" fill="#3B0710" />
                 {/* Swimming Fish swoosh at bottom */}
                 <path d="M30 68 C38 60, 62 60, 70 68 C62 76, 38 76, 30 68 Z" fill="white" opacity="0.95" />
                 <polygon points="68,68 76,64 76,72" fill="white" />
@@ -64,16 +65,25 @@ const BotanicalLeaf = () => (
     </svg>
 );
 
-// Faint Cow Line-Art Watermark for Bottom-Right
-const CowWatermark = () => (
+// Faint Fish Line-Art Watermark for Bottom-Right
+const FishWatermark = () => (
     <svg width="220" height="220" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-[#8B2D3B]/10">
-        <path d="M40 30 C30 18, 20 20, 15 35 C12 45, 18 55, 25 65 C32 75, 45 85, 60 90 C75 88, 85 75, 88 60 C90 45, 82 32, 70 25 C62 20, 52 18, 40 30 Z" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-        <path d="M15 35 C8 30, 6 22, 10 16 C16 12, 22 18, 24 25" stroke="currentColor" strokeWidth="1.2" />
-        <path d="M70 25 C78 18, 86 16, 90 20 C92 26, 84 32, 78 35" stroke="currentColor" strokeWidth="1.2" />
-        <ellipse cx="60" cy="72" rx="14" ry="10" stroke="currentColor" strokeWidth="1.2" />
-        <circle cx="55" cy="72" r="2" fill="currentColor" />
-        <circle cx="65" cy="72" r="2" fill="currentColor" />
-        <ellipse cx="38" cy="48" rx="3" ry="2" fill="currentColor" />
+        {/* Sleek fish body contour */}
+        <path d="M15 50 C25 25, 65 25, 82 50 C65 75, 25 75, 15 50 Z" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+        {/* Tail fins */}
+        <path d="M16 50 C10 40, 4 35, 2 42 C4 48, 10 50, 15 50" stroke="currentColor" strokeWidth="1.2" />
+        <path d="M16 50 C10 60, 4 65, 2 58 C4 52, 10 50, 15 50" stroke="currentColor" strokeWidth="1.2" />
+        {/* Dorsal fin */}
+        <path d="M42 32 C50 18, 62 20, 68 34" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+        {/* Pectoral fin */}
+        <path d="M48 52 C55 58, 60 62, 54 66 C48 64, 45 58, 48 52" stroke="currentColor" strokeWidth="1.2" />
+        {/* Gill slit curve */}
+        <path d="M64 38 C60 44, 60 54, 64 60" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+        {/* Eye */}
+        <circle cx="73" cy="46" r="2.5" fill="currentColor" />
+        {/* Gentle water ripples */}
+        <path d="M30 82 C45 78, 55 86, 70 82" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeDasharray="2 3" opacity="0.6" />
+        <path d="M20 20 C35 16, 45 24, 60 20" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeDasharray="2 3" opacity="0.6" />
     </svg>
 );
 
@@ -201,9 +211,9 @@ const DesktopCustomerAuth = ({
                     <BotanicalLeaf />
                 </div>
 
-                {/* Cow line watermark in bottom-right */}
-                <div className="absolute -bottom-6 -right-6 pointer-events-none">
-                    <CowWatermark />
+                {/* Fish line watermark in bottom-right */}
+                <div className="absolute -bottom-6 -right-6 pointer-events-none select-none">
+                    <FishWatermark />
                 </div>                {/* Top Right: Tagline */}
                 <div className="relative z-10 flex justify-end items-center text-xs text-stone-500 font-semibold gap-2">
                     <span className="inline-block w-2 h-2 rounded-full bg-emerald-500"></span>

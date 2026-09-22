@@ -58,7 +58,7 @@ const Header = () => {
     });
 
     const staticText = "Search ";
-    const typingPhrases = ['"mutton"', '"chicken"', '"fish"', '"prawns"', '"goat meat"', '"beef"'];
+    const typingPhrases = ['"mutton"', '"chicken"', '"fish"', '"prawns"', '"goat meat"', '"pomfret"'];
 
     React.useEffect(() => {
         const { textIndex, charIndex, isDeleting, isPaused } = typingState;

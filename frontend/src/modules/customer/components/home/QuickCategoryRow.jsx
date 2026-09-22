@@ -14,10 +14,10 @@ const MoreIcon = () => (
 // Pure meat, poultry, seafood, eggs & marinated specialties for Meatyns
 const ROW_1_ITEMS = [
   {
-    id: "beef",
-    label: "Beef",
-    query: "beef",
-    image: "/categories/beef.png",
+    id: "fish_fillets",
+    label: "Fish Fillets",
+    query: "fish fillet",
+    image: "/categories/fish.png",
   },
   {
     id: "mutton",
@@ -91,7 +91,7 @@ const ROW_2_ITEMS = [
 ];
 
 const MEAT_KEYWORDS = [
-  "beef",
+  "surmai",
   "mutton",
   "goat",
   "lamb",
@@ -193,7 +193,7 @@ const QuickCategoryRow = ({ categories = [], singleRow = false }) => {
         id: c._id || c.id,
         label: c.name,
         query: c.name,
-        image: c.image || c.icon || "/categories/beef.png",
+        image: c.image || c.icon || "/categories/fish.png",
       }));
 
     if (extraCategories.length === 0) {

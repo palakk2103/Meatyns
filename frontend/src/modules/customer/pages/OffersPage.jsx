@@ -48,7 +48,7 @@ const OffersPage = () => {
           "fish",
           "mutton",
           "meat",
-          "beef",
+          "pomfret",
           "prawn",
           "seafood",
           "steak",

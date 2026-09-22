@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
     Home,
-    Beef,
+    Fish,
     Apple,
     Milk,
     ShoppingBag,
@@ -16,7 +16,7 @@ import {
 
 const mainCategories = [
     { label: 'Home', icon: Home, path: '/' },
-    { label: 'Meat & Seafood', icon: Beef, path: '/category/Meat%20%26%20Seafood' },
+    { label: 'Meat & Seafood', icon: Fish, path: '/category/Meat%20%26%20Seafood' },
     { label: 'Fruits & Vegetables', icon: Apple, path: '/categories' },
     { label: 'Dairy & Eggs', icon: Milk, path: '/categories' },
     { label: 'Grocery', icon: ShoppingBag, path: '/categories' },

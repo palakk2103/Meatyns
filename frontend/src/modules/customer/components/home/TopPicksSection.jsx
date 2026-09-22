@@ -63,7 +63,7 @@ const TopPicksSection = ({ products = [] }) => {
 
   // Prioritize meat & fish products matching the store identity or fallback to curated screenshot items
   const displayItems = React.useMemo(() => {
-    const MEAT_KEYWORDS = ["fish", "chicken", "mutton", "meat", "beef", "prawn", "seafood", "keema", "surmai", "rohu"];
+    const MEAT_KEYWORDS = ["fish", "chicken", "mutton", "meat", "pomfret", "prawn", "seafood", "keema", "surmai", "rohu"];
     const validFromBackend = (products || [])
       .filter((p) => {
         const name = (p.name || "").toLowerCase();

@@ -115,7 +115,7 @@ const MainLocationHeader = ({
     '"fish fillets"',
     '"prawns"',
     '"goat meat"',
-    '"beef"',
+    '"surmai fish"',
     '"lamb chops"',
   ];
 
