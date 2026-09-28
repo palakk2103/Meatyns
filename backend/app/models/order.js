@@ -6,6 +6,7 @@ import {
   ALL_PAYMENT_MODES,
   CURRENCY,
 } from "../constants/finance.js";
+import { ALL_DELIVERY_METHODS } from "../constants/deliverySlots.js";
 
 const orderSchema = new mongoose.Schema(
   {
@@ -364,6 +365,38 @@ const orderSchema = new mongoose.Schema(
       type: String,
       default: "now",
     },
+    deliveryMethod: {
+      type: String,
+      enum: ALL_DELIVERY_METHODS,
+      default: "NORMAL",
+      index: true,
+    },
+    scheduledDate: {
+      type: String,
+      default: null,
+      index: true,
+    },
+    scheduledStartTime: {
+      type: String,
+      default: null,
+    },
+    scheduledEndTime: {
+      type: String,
+      default: null,
+    },
+    estimatedDeliveryStart: {
+      type: Date,
+      default: null,
+    },
+    estimatedDeliveryEnd: {
+      type: Date,
+      default: null,
+    },
+    deliverySlotId: {
+      type: String,
+      default: null,
+      index: true,
+    },
     deliveryBoy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Delivery",
@@ -569,6 +602,8 @@ orderSchema.index(
 orderSchema.index({ "stockReservation.status": 1, "stockReservation.expiresAt": 1 });
 orderSchema.index({ checkoutGroupId: 1, createdAt: -1 });
 orderSchema.index({ checkoutGroupId: 1, checkoutGroupIndex: 1 });
+orderSchema.index({ seller: 1, scheduledDate: 1, scheduledStartTime: 1, status: 1 });
+orderSchema.index({ deliveryMethod: 1, scheduledDate: 1, workflowStatus: 1 });
 orderSchema.index(
   { "placement.idempotencyKeyExpiry": 1 },
   { 

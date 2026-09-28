@@ -8,6 +8,7 @@
  */
 
 import mongoose from 'mongoose';
+import dns from 'node:dns';
 import { getProcessRole, isComponentEnabled, validateProcessRole } from './processRole.js';
 import { isRedisEnabled, getRedisClient, waitForRedis } from '../config/redis.js';
 import { createAllIndexes } from '../services/databaseIndexManager.js';
@@ -182,7 +183,7 @@ async function connectMongoDB(maxRetries = 5) {
       process.env.DATABASE_URL ||
       "",
   ).trim();
-  const connectTimeout = parseInt(process.env.MONGO_CONNECT_TIMEOUT_MS || '10000', 10);
+  const connectTimeout = parseInt(process.env.MONGO_CONNECT_TIMEOUT_MS || '15000', 10);
   
   if (!mongoUri) {
     throw new Error('MONGO_URI environment variable is required (or set MONGODB_URI / DATABASE_URL)');
@@ -191,6 +192,20 @@ async function connectMongoDB(maxRetries = 5) {
   // If already connected, return
   if (mongoose.connection.readyState === 1) {
     return;
+  }
+
+  // If using MongoDB SRV connection string, ensure public DNS resolvers are active
+  // to avoid Windows/local router DNS querySrv ETIMEOUT failures
+  if (mongoUri.startsWith('mongodb+srv://')) {
+    try {
+      const publicDns = (process.env.PUBLIC_DNS_SERVERS || '8.8.8.8,1.1.1.1,8.8.4.4')
+        .split(',')
+        .map(s => s.trim())
+        .filter(Boolean);
+      dns.setServers(publicDns);
+    } catch (dnsErr) {
+      console.warn('[Startup] Failed to set public DNS resolvers:', dnsErr?.message);
+    }
   }
   
   const options = {
@@ -204,6 +219,14 @@ async function connectMongoDB(maxRetries = 5) {
       return;
     } catch (error) {
       const isLastAttempt = attempt === maxRetries;
+      
+      // If error is related to SRV lookup timeout, re-apply public DNS servers
+      if (error.message && (error.message.includes('querySrv') || error.message.includes('ETIMEOUT'))) {
+        try {
+          dns.setServers(['8.8.8.8', '1.1.1.1', '8.8.4.4']);
+          console.warn(`[Startup] DNS SRV timeout on attempt ${attempt}. Re-applied Google/Cloudflare DNS resolvers.`);
+        } catch (_) {}
+      }
       
       if (isLastAttempt) {
         throw new Error(

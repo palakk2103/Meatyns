@@ -38,7 +38,6 @@ import {
   ShieldCheck,
   Lock,
 } from "lucide-react";
-import Header from "../components/layout/Header";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import { useToast } from "@shared/components/ui/Toast";
@@ -67,7 +66,7 @@ import { Label } from "@/components/ui/label";
 
 // Sub-components
 import CheckoutAddressSection from "./checkout/components/CheckoutAddressSection";
-
+import CheckoutDeliverySelector from "./checkout/components/CheckoutDeliverySelector";
 import CheckoutCartSummary from "./checkout/components/CheckoutCartSummary";
 import CheckoutPricingBreakdown from "./checkout/components/CheckoutPricingBreakdown";
 import CheckoutPaymentSelector from "./checkout/components/CheckoutPaymentSelector";
@@ -137,6 +136,14 @@ const CheckoutPage = () => {
 
   // State management
   const [selectedTimeSlot, setSelectedTimeSlot] = useState("now");
+  const [deliveryMethod, setDeliveryMethod] = useState("NORMAL");
+  const [deliveryOptions, setDeliveryOptions] = useState({});
+  const [availableDeliveryDates, setAvailableDeliveryDates] = useState([]);
+  const [selectedDeliveryDate, setSelectedDeliveryDate] = useState("");
+  const [deliverySlots, setDeliverySlots] = useState([]);
+  const [selectedSlot, setSelectedSlot] = useState(null);
+  const [isLoadingDeliverySlots, setIsLoadingDeliverySlots] = useState(false);
+  const [deliverySlotError, setDeliverySlotError] = useState(null);
   const [selectedPayment, setSelectedPayment] = useState("cash");
   const [desktopPaymentChoice, setDesktopPaymentChoice] = useState("upi");
   const [selectedTip, setSelectedTip] = useState(0);
@@ -628,6 +635,59 @@ const CheckoutPage = () => {
     [cart]
   );
 
+  // Fetch delivery slots from backend
+  const fetchDeliverySlots = async (dateToUse = null) => {
+    if (cart.length === 0) return;
+    try {
+      setIsLoadingDeliverySlots(true);
+      setDeliverySlotError(null);
+      const targetAddr = buildAddressForOrder();
+      const res = await customerApi.getDeliverySlots({
+        address: targetAddr,
+        customerLocation: targetAddr?.location || (currentLocation ? { lat: currentLocation.latitude, lng: currentLocation.longitude } : null),
+        items: cart.map((i) => ({ product: i.id || i._id, quantity: i.quantity })),
+        date: dateToUse || selectedDeliveryDate || undefined,
+      });
+
+      if (res.data?.success) {
+        const result = res.data.result || {};
+        setDeliveryOptions(result.deliveryOptions || {});
+        setAvailableDeliveryDates(result.availableDates || []);
+        if (result.selectedDate && (!selectedDeliveryDate || dateToUse)) {
+          setSelectedDeliveryDate(result.selectedDate);
+        }
+        setDeliverySlots(result.slots || []);
+
+        if (selectedSlot) {
+          const isValid = (result.slots || []).some(
+            (s) => s.slotId === selectedSlot.slotId && s.available
+          );
+          if (!isValid) {
+            setSelectedSlot(null);
+          }
+        }
+      }
+    } catch (err) {
+      console.warn("Could not fetch delivery slots:", err);
+      setDeliverySlotError("Failed to fetch slots. Please check connection.");
+    } finally {
+      setIsLoadingDeliverySlots(false);
+    }
+  };
+
+  // Re-fetch slots when address or cart changes
+  useEffect(() => {
+    fetchDeliverySlots();
+  }, [
+    currentAddress?.address,
+    currentAddress?.location?.lat,
+    currentAddress?.location?.lng,
+    savedRecipient?.completeAddress,
+    currentLocation?.latitude,
+    currentLocation?.longitude,
+    cart.length,
+  ]);
+
   // Load recipient from localStorage + fetch coupons on mount
   useEffect(() => {
     const parsed = getJSON(RECIPIENT_STORAGE_KEY, null);
@@ -671,7 +731,12 @@ const CheckoutPage = () => {
       taxTotal: 0,
       tipAmount: selectedTip,
       paymentMode: (selectedPayment === "razorpay") ? "ONLINE" : "COD",
-      timeSlot: selectedTimeSlot,
+      timeSlot: deliveryMethod === "SCHEDULED" && selectedSlot ? selectedSlot.label : selectedTimeSlot,
+      deliveryMethod,
+      scheduledDate: deliveryMethod === "SCHEDULED" ? (selectedDeliveryDate || null) : null,
+      scheduledStartTime: deliveryMethod === "SCHEDULED" ? (selectedSlot?.startTime || null) : null,
+      scheduledEndTime: deliveryMethod === "SCHEDULED" ? (selectedSlot?.endTime || null) : null,
+      deliverySlotId: deliveryMethod === "SCHEDULED" ? (selectedSlot?.slotId || null) : null,
     });
 
     const fetchPreview = async () => {
@@ -698,6 +763,9 @@ const CheckoutPage = () => {
     selectedPayment,
     selectedTip,
     selectedTimeSlot,
+    deliveryMethod,
+    selectedDeliveryDate,
+    selectedSlot,
     discountAmount,
     savedRecipient,
     currentAddress,
@@ -728,6 +796,11 @@ const CheckoutPage = () => {
   }, [cartProductIdKey]);
 
   const handlePlaceOrder = async () => {
+    if (deliveryMethod === "SCHEDULED" && !selectedSlot) {
+      showToast("Please select a delivery date and time slot.", "warning");
+      return;
+    }
+
     setIsPlacingOrder(true);
     try {
       const taxAmount = pricingPreview?.taxTotal || 0;
@@ -737,7 +810,12 @@ const CheckoutPage = () => {
         discountTotal: discountAmount,
         taxTotal: taxAmount,
         tipAmount: selectedTip,
-        timeSlot: selectedTimeSlot,
+        deliveryMethod,
+        scheduledDate: deliveryMethod === "SCHEDULED" ? (selectedDeliveryDate || null) : null,
+        scheduledStartTime: deliveryMethod === "SCHEDULED" ? (selectedSlot?.startTime || null) : null,
+        scheduledEndTime: deliveryMethod === "SCHEDULED" ? (selectedSlot?.endTime || null) : null,
+        deliverySlotId: deliveryMethod === "SCHEDULED" ? (selectedSlot?.slotId || null) : null,
+        timeSlot: deliveryMethod === "SCHEDULED" && selectedSlot ? selectedSlot.label : (deliveryMethod === "EXPRESS" ? "Express (ASAP)" : "Normal (1-2 hrs)"),
         walletAmount: walletAmountToUse,
         items: cart.map((item) => ({
           product: item.id || item._id,
@@ -1073,7 +1151,15 @@ const CheckoutPage = () => {
                   <Clock size={24} className="text-[#1A1A1A]" />
                 </div>
                 <div>
-                  <h3 className="font-black text-slate-800 text-lg">Delivery in 12-15 mins</h3>
+                  <h3 className="font-black text-slate-800 text-lg">
+                    {deliveryMethod === "EXPRESS"
+                      ? `Express: ${deliveryOptions?.EXPRESS?.estimatedLabel || "20-30 mins"}`
+                      : deliveryMethod === "NORMAL"
+                      ? "Normal: 1–2 hours"
+                      : selectedSlot
+                      ? `Scheduled: ${selectedSlot.label}`
+                      : "Scheduled Delivery"}
+                  </h3>
                   <p className="text-sm text-slate-500">Shipment of {cartCount} items</p>
                 </div>
               </div>
@@ -1097,6 +1183,27 @@ const CheckoutPage = () => {
               displayName={displayName}
               displayPhone={displayPhone}
               displayAddress={displayAddress}
+            />
+
+            {/* Delivery Method & Slot Selection (Mobile) */}
+            <CheckoutDeliverySelector
+              deliveryMethod={deliveryMethod}
+              onSelectDeliveryMethod={setDeliveryMethod}
+              deliveryOptions={deliveryOptions}
+              availableDates={availableDeliveryDates}
+              selectedDate={selectedDeliveryDate}
+              onSelectDate={(newDate) => {
+                setSelectedDeliveryDate(newDate);
+                fetchDeliverySlots(newDate);
+              }}
+              slots={deliverySlots}
+              selectedSlot={selectedSlot}
+              onSelectSlot={(slot) => {
+                setSelectedSlot(slot);
+                setSelectedTimeSlot(slot ? slot.label : "now");
+              }}
+              isLoadingSlots={isLoadingDeliverySlots}
+              error={deliverySlotError}
             />
 
             {/* Cart Summary */}
@@ -1201,8 +1308,7 @@ const CheckoutPage = () => {
 
       {/* Desktop View - Matching Image 3 */}
       <div className="hidden lg:block">
-        <Header />
-        <div className="min-h-screen bg-[#FBF8F5] pt-28 pb-16 px-6 lg:px-12">
+        <div className="min-h-screen bg-[#FBF8F5] pt-8 pb-16 px-6 lg:px-12">
           <div className="max-w-7xl mx-auto grid grid-cols-12 gap-8 items-start">
             {/* Left Column: Numbered Checkout Steps */}
             <div className="col-span-7 xl:col-span-8 space-y-6">
@@ -1236,73 +1342,26 @@ const CheckoutPage = () => {
                 </div>
               </div>
 
-              {/* Step 2. Delivery Slot */}
-              <div className="space-y-3">
-                <h2 className="text-base font-bold text-slate-900 tracking-tight">
-                  2. Delivery Slot
-                </h2>
-
-                <div className="grid grid-cols-4 gap-3">
-                  {/* Slot 1: Today 15 - 30 mins (Default Active) */}
-                  <div
-                    onClick={() => setSelectedTimeSlot("now")}
-                    className={`p-3.5 rounded-2xl flex flex-col items-center justify-center text-center cursor-pointer transition-all ${
-                      selectedTimeSlot === "now"
-                        ? "bg-[#FDCE04] text-[#1A1A1A] font-bold shadow-xs"
-                        : "bg-white border border-[#ede5df] text-slate-700 hover:border-[#FDCE04]"
-                    }`}
-                  >
-                    <Bike size={20} className="mb-1" />
-                    <span className="text-xs font-bold">Today</span>
-                    <span className="text-[11px] opacity-90">15 - 30 mins</span>
-                  </div>
-
-                  {/* Slot 2: Tomorrow 9 AM - 12 PM */}
-                  <div
-                    onClick={() => setSelectedTimeSlot("slot_9_12")}
-                    className={`p-3.5 rounded-2xl flex flex-col items-center justify-center text-center cursor-pointer transition-all ${
-                      selectedTimeSlot === "slot_9_12"
-                        ? "bg-[#FDCE04] text-[#1A1A1A] font-bold shadow-xs"
-                        : "bg-white border border-[#ede5df] text-slate-700 hover:border-[#FDCE04]"
-                    }`}
-                  >
-                    <span className="text-xs font-bold">Tomorrow</span>
-                    <span className={`text-[11px] ${selectedTimeSlot === "slot_9_12" ? "opacity-90 font-bold" : "text-slate-500"}`}>
-                      9 AM - 12 PM
-                    </span>
-                  </div>
-
-                  {/* Slot 3: Tomorrow 12 PM - 3 PM */}
-                  <div
-                    onClick={() => setSelectedTimeSlot("slot_12_3")}
-                    className={`p-3.5 rounded-2xl flex flex-col items-center justify-center text-center cursor-pointer transition-all ${
-                      selectedTimeSlot === "slot_12_3"
-                        ? "bg-[#FDCE04] text-[#1A1A1A] font-bold shadow-xs"
-                        : "bg-white border border-[#ede5df] text-slate-700 hover:border-[#FDCE04]"
-                    }`}
-                  >
-                    <span className="text-xs font-bold">Tomorrow</span>
-                    <span className={`text-[11px] ${selectedTimeSlot === "slot_12_3" ? "opacity-90 font-bold" : "text-slate-500"}`}>
-                      12 PM - 3 PM
-                    </span>
-                  </div>
-
-                  {/* Slot 4: Tomorrow 3 PM - 6 PM */}
-                  <div
-                    onClick={() => setSelectedTimeSlot("slot_3_6")}
-                    className={`p-3.5 rounded-2xl flex flex-col items-center justify-center text-center cursor-pointer transition-all ${
-                      selectedTimeSlot === "slot_3_6"
-                        ? "bg-[#FDCE04] text-[#1A1A1A] font-bold shadow-xs"
-                        : "bg-white border border-[#ede5df] text-slate-700 hover:border-[#FDCE04]"
-                    }`}
-                  >
-                    <span className="text-xs font-bold">Tomorrow</span>
-                    <span className={`text-[11px] ${selectedTimeSlot === "slot_3_6" ? "opacity-90 font-bold" : "text-slate-500"}`}>
-                      3 PM - 6 PM
-                    </span>
-                  </div>
-                </div>
-              </div>
+              {/* Step 2. Delivery Option & Slot (Desktop) */}
+              <CheckoutDeliverySelector
+                deliveryMethod={deliveryMethod}
+                onSelectDeliveryMethod={setDeliveryMethod}
+                deliveryOptions={deliveryOptions}
+                availableDates={availableDeliveryDates}
+                selectedDate={selectedDeliveryDate}
+                onSelectDate={(newDate) => {
+                  setSelectedDeliveryDate(newDate);
+                  fetchDeliverySlots(newDate);
+                }}
+                slots={deliverySlots}
+                selectedSlot={selectedSlot}
+                onSelectSlot={(slot) => {
+                  setSelectedSlot(slot);
+                  setSelectedTimeSlot(slot ? slot.label : "now");
+                }}
+                isLoadingSlots={isLoadingDeliverySlots}
+                error={deliverySlotError}
+              />
 
               {/* Step 3. Payment Method */}
               <div className="space-y-3">

@@ -144,8 +144,8 @@ const ProductManagement = () => {
             return toast.error('Only product editing is allowed for admins');
         }
 
-        if (!formData.name || !formData.price || !formData.stock || !formData.header || !formData.categoryId || !formData.subcategoryId) {
-            return toast.error('Please fill all required fields, including categories');
+        if (!formData.name || !formData.price || !formData.stock || !(formData.categoryId || formData.header) || !formData.subcategoryId) {
+            return toast.error('Please fill all required fields, including category and subcategory');
         }
 
         setIsSaving(true);
@@ -160,8 +160,8 @@ const ProductManagement = () => {
             data.append('stock', Number(formData.stock));
             data.append('lowStockAlert', Number(formData.lowStockAlert) || 5);
             data.append('unit', formData.unit);
-            data.append('headerId', formData.header);
-            data.append('categoryId', formData.categoryId);
+            data.append('headerId', formData.header || formData.categoryId);
+            data.append('categoryId', formData.categoryId || formData.header);
             data.append('subcategoryId', formData.subcategoryId);
             data.append('status', formData.status);
             data.append('isFeatured', formData.isFeatured);
@@ -820,44 +820,57 @@ const ProductManagement = () => {
                                         <div className="ds-section-spacing animate-in fade-in slide-in-from-right-2 duration-300">
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                                 <div className="space-y-1.5 flex flex-col">
-                                                    <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest ml-1">Main Group (Header) <span className="text-rose-500">*</span></label>
+                                                    <label className="text-[10px] font-bold text-slate-600 uppercase tracking-widest ml-1">Category <span className="text-rose-500">*</span></label>
                                                     <select
-                                                        value={formData.header}
-                                                        onChange={(e) => setFormData({ ...formData, header: e.target.value, categoryId: '', subcategoryId: '' })}
-                                                        className="w-full px-4 py-2.5 bg-slate-100 border-none rounded-xl text-sm font-bold outline-none cursor-pointer"
-                                                    >
-                                                        <option value="">Select Main Group</option>
-                                                        {categories.map(h => <option key={h._id} value={h._id}>{h.name}</option>)}
-                                                    </select>
-                                                </div>
-                                                <div className="space-y-1.5 flex flex-col">
-                                                    <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest ml-1">Specific Category <span className="text-rose-500">*</span></label>
-                                                    <select
-                                                        value={formData.categoryId}
-                                                        onChange={(e) => setFormData({ ...formData, categoryId: e.target.value, subcategoryId: '' })}
-                                                        disabled={!formData.header}
-                                                        className="w-full px-4 py-2.5 bg-slate-100 border-none rounded-xl text-sm font-bold outline-none cursor-pointer disabled:opacity-50"
+                                                        value={formData.categoryId || formData.header}
+                                                        onChange={(e) => {
+                                                            const selectedId = e.target.value;
+                                                            setFormData({
+                                                                ...formData,
+                                                                header: selectedId,
+                                                                categoryId: selectedId,
+                                                                subcategoryId: ''
+                                                            });
+                                                        }}
+                                                        className="w-full px-4 py-2.5 bg-slate-100 border-none rounded-xl text-sm font-bold outline-none cursor-pointer focus:ring-2 focus:ring-rose-500/20"
                                                     >
                                                         <option value="">Select Category</option>
-                                                        {categories.find(h => h._id === formData.header)?.children?.map(c => (
-                                                            <option key={c._id} value={c._id}>{c.name}</option>
+                                                        {categories.map(cat => (
+                                                            <option key={cat._id} value={cat._id}>{cat.name}</option>
                                                         ))}
                                                     </select>
                                                 </div>
-                                            </div>
-                                            <div className="space-y-1.5 flex flex-col">
-                                                <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest ml-1">Sub-Category <span className="text-rose-500">*</span></label>
-                                                <select
-                                                    value={formData.subcategoryId}
-                                                    onChange={(e) => setFormData({ ...formData, subcategoryId: e.target.value })}
-                                                    disabled={!formData.categoryId}
-                                                    className="w-full px-4 py-2.5 bg-slate-100 border-none rounded-xl text-sm font-bold outline-none cursor-pointer disabled:opacity-50"
-                                                >
-                                                    <option value="">Select Sub-Category</option>
-                                                    {categories.find(h => h._id === formData.header)?.children?.find(c => c._id === formData.categoryId)?.children?.map(sc => (
-                                                        <option key={sc._id} value={sc._id}>{sc.name}</option>
-                                                    ))}
-                                                </select>
+                                                <div className="space-y-1.5 flex flex-col">
+                                                    <label className="text-[10px] font-bold text-slate-600 uppercase tracking-widest ml-1">Subcategory <span className="text-rose-500">*</span></label>
+                                                    <select
+                                                        value={formData.subcategoryId}
+                                                        onChange={(e) => setFormData({ ...formData, subcategoryId: e.target.value })}
+                                                        disabled={!(formData.categoryId || formData.header)}
+                                                        className="w-full px-4 py-2.5 bg-slate-100 border-none rounded-xl text-sm font-bold outline-none cursor-pointer disabled:opacity-50 focus:ring-2 focus:ring-rose-500/20"
+                                                    >
+                                                        <option value="">Select Subcategory</option>
+                                                        {(() => {
+                                                            const activeCatId = formData.categoryId || formData.header;
+                                                            const matchedCat = categories.find(c => c._id === activeCatId);
+                                                            if (!matchedCat || !Array.isArray(matchedCat.children)) return null;
+
+                                                            const hasGrandchildren = matchedCat.children.some(c => Array.isArray(c.children) && c.children.length > 0);
+                                                            if (hasGrandchildren) {
+                                                                return matchedCat.children.map(group => (
+                                                                    <optgroup key={group._id} label={group.name}>
+                                                                        {(group.children || []).map(sub => (
+                                                                            <option key={sub._id} value={sub._id}>{sub.name}</option>
+                                                                        ))}
+                                                                    </optgroup>
+                                                                ));
+                                                            }
+
+                                                            return matchedCat.children.map(sub => (
+                                                                <option key={sub._id} value={sub._id}>{sub.name}</option>
+                                                            ));
+                                                        })()}
+                                                    </select>
+                                                </div>
                                             </div>
                                         </div>
                                     )}

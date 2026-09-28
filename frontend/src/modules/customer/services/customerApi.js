@@ -18,7 +18,7 @@ export const customerApi = {
     getWithDedupe("/customer/transactions", params),
   getCategories: (params) =>
     getWithDedupe("/categories", params, { ttl: 60 * 1000 }), // 1 min for categories
-  getProducts: (params) => getWithDedupe("/products", params),
+  getProducts: (params, options) => getWithDedupe("/products", params, options),
   getProductById: (id, params) => getWithDedupe(`/products/${id}`, params),
 
   // Sellers & Location
@@ -62,6 +62,8 @@ export const customerApi = {
   },
 
   // Orders
+  getDeliverySlots: (data) =>
+    axiosInstance.post("/orders/delivery/slots", data, { timeout: 15000 }),
   // Explicit timeout so checkout never waits forever if the server blocks (e.g. Redis/Bull).
   checkoutPreview: (data) =>
     axiosInstance.post("/orders/checkout/preview", data, { timeout: 120000 }),

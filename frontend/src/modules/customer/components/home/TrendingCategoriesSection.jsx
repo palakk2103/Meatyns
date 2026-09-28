@@ -37,8 +37,27 @@ const TRENDING_CATEGORIES = [
   },
 ];
 
-const TrendingCategoriesSection = () => {
+const TrendingCategoriesSection = ({ categories = [] }) => {
   const navigate = useNavigate();
+
+  const displayCategories = React.useMemo(() => {
+    const valid = (categories || []).filter(
+      (c) => c && c.name && c.id !== "all" && c._id !== "all"
+    );
+    if (valid.length > 0) {
+      return valid.slice(0, 6).map((cat, idx) => ({
+        id: cat._id || cat.id || `trend-${idx}`,
+        name: cat.name,
+        subtitle: cat.subtitle || "Farm Fresh & Safe",
+        route: `/category/${cat._id || cat.id}`,
+        image:
+          cat.image ||
+          cat.icon ||
+          "https://images.unsplash.com/photo-1604503468506-a8da13d82791?auto=format&fit=crop&q=80&w=240",
+      }));
+    }
+    return TRENDING_CATEGORIES;
+  }, [categories]);
 
   return (
     <section className="w-full mb-6 sm:mb-8 select-none">
@@ -62,9 +81,9 @@ const TrendingCategoriesSection = () => {
         </button>
       </div>
 
-      {/* 4 Cards Single Row */}
+      {/* Cards Single Row */}
       <div className="flex items-center gap-3 sm:gap-4 overflow-x-auto no-scrollbar py-1 px-0.5">
-        {TRENDING_CATEGORIES.map((cat) => (
+        {displayCategories.map((cat) => (
           <div
             key={cat.id}
             onClick={() => navigate(cat.route)}
@@ -77,6 +96,11 @@ const TrendingCategoriesSection = () => {
                 alt={cat.name}
                 loading="lazy"
                 className="w-full h-full object-cover rounded-full"
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src =
+                    "https://images.unsplash.com/photo-1604503468506-a8da13d82791?auto=format&fit=crop&q=80&w=240";
+                }}
               />
             </div>
 

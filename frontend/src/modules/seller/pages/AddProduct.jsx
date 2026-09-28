@@ -124,11 +124,13 @@ const AddProduct = () => {
       return;
     }
 
-    // Validate all three category levels are selected
-    if (!formData.header || !formData.category || !formData.subcategory) {
-      toast.error("Please select all three category levels: Main Group, Specific Category, and Sub-Category");
+    // Validate category and subcategory levels
+    if (!(formData.category || formData.header) || !formData.subcategory) {
+      toast.error("Please select Category and Subcategory");
       return;
     }
+    formData.header = formData.header || formData.category;
+    formData.category = formData.category || formData.header;
 
     const firstVariant = formData.variants[0] || {};
     if (!firstVariant.price || !firstVariant.stock) {
@@ -545,15 +547,21 @@ const AddProduct = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-1.5 flex flex-col">
                   <label className="text-[10px] sm:text-xs font-bold text-slate-600 uppercase tracking-widest ml-1">
-                    Main Group <span className="text-rose-500">*</span>
+                    Category <span className="text-rose-500">*</span>
                   </label>
                   <select
-                    value={formData.header}
-                    onChange={(e) =>
-                      setFormData({ ...formData, header: e.target.value, category: "", subcategory: "" })
-                    }
+                    value={formData.category || formData.header}
+                    onChange={(e) => {
+                      const selectedId = e.target.value;
+                      setFormData({
+                        ...formData,
+                        header: selectedId,
+                        category: selectedId,
+                        subcategory: ""
+                      });
+                    }}
                     className="w-full px-4 py-2.5 bg-slate-100 border-none rounded-md text-sm font-bold outline-none cursor-pointer focus:ring-2 focus:ring-primary/5 transition-all">
-                    <option value="">Select Main Group</option>
+                    <option value="">Select Category</option>
                     {categories.map((h) => (
                       <option key={h._id || h.id} value={h._id || h.id}>
                         {h.name}
@@ -563,47 +571,42 @@ const AddProduct = () => {
                 </div>
                 <div className="space-y-1.5 flex flex-col">
                   <label className="text-[10px] sm:text-xs font-bold text-slate-600 uppercase tracking-widest ml-1">
-                    Specific Category <span className="text-rose-500">*</span>
-                  </label>
-                  <select
-                    value={formData.category}
-                    onChange={(e) =>
-                      setFormData({ ...formData, category: e.target.value, subcategory: "" })
-                    }
-                    disabled={!formData.header}
-                    className="w-full px-4 py-2.5 bg-slate-100 border-none rounded-md text-sm font-bold outline-none cursor-pointer focus:ring-2 focus:ring-primary/5 transition-all disabled:opacity-50 disabled:cursor-not-allowed">
-                    <option value="">Select Category</option>
-                    {categories
-                      .find((h) => (h._id || h.id) === formData.header)
-                      ?.children?.map((c) => (
-                        <option key={c._id || c.id} value={c._id || c.id}>
-                          {c.name}
-                        </option>
-                      ))}
-                  </select>
-                </div>
-              </div>
-              <div className="grid grid-cols-1 gap-6">
-                <div className="space-y-1.5 flex flex-col">
-                  <label className="text-[10px] sm:text-xs font-bold text-slate-600 uppercase tracking-widest ml-1">
-                    Sub-Category <span className="text-rose-500">*</span>
+                    Subcategory <span className="text-rose-500">*</span>
                   </label>
                   <select
                     value={formData.subcategory}
                     onChange={(e) =>
                       setFormData({ ...formData, subcategory: e.target.value })
                     }
-                    disabled={!formData.category}
+                    disabled={!(formData.category || formData.header)}
                     className="w-full px-4 py-2.5 bg-slate-100 border-none rounded-md text-sm font-bold outline-none cursor-pointer focus:ring-2 focus:ring-primary/5 transition-all disabled:opacity-50 disabled:cursor-not-allowed">
-                    <option value="">Select Sub-Category</option>
-                    {categories
-                      .find((h) => (h._id || h.id) === formData.header)
-                      ?.children?.find((c) => (c._id || c.id) === formData.category)
-                      ?.children?.map((sc) => (
-                        <option key={sc._id || sc.id} value={sc._id || sc.id}>
-                          {sc.name}
+                    <option value="">Select Subcategory</option>
+                    {(() => {
+                      const activeCatId = formData.category || formData.header;
+                      const matchedCat = categories.find((c) => (c._id || c.id) === activeCatId);
+                      if (!matchedCat || !Array.isArray(matchedCat.children)) return null;
+
+                      const hasGrandchildren = matchedCat.children.some(
+                        (c) => Array.isArray(c.children) && c.children.length > 0
+                      );
+                      if (hasGrandchildren) {
+                        return matchedCat.children.map((group) => (
+                          <optgroup key={group._id || group.id} label={group.name}>
+                            {(group.children || []).map((sub) => (
+                              <option key={sub._id || sub.id} value={sub._id || sub.id}>
+                                {sub.name}
+                              </option>
+                            ))}
+                          </optgroup>
+                        ));
+                      }
+
+                      return matchedCat.children.map((sub) => (
+                        <option key={sub._id || sub.id} value={sub._id || sub.id}>
+                          {sub.name}
                         </option>
-                      ))}
+                      ));
+                    })()}
                   </select>
                 </div>
               </div>

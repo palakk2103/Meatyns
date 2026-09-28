@@ -7,7 +7,9 @@ import {
   createFinanceOrderSchema,
   deliveredSchema,
   verifyOnlinePaymentSchema,
+  getDeliverySlotsSchema,
 } from "../validation/financeValidation.js";
+import { getDeliveryOptionsAndSlots } from "../services/deliverySlotService.js";
 import {
   handleCodOrderFinance,
   reconcileCodCash,
@@ -87,6 +89,11 @@ export const createOrderWithFinancialSnapshot = async (req, res) => {
       address: validated.address,
       paymentMode: validated.paymentMode,
       timeSlot: validated.timeSlot || "now",
+      deliveryMethod: validated.deliveryMethod || "NORMAL",
+      scheduledDate: validated.scheduledDate || null,
+      scheduledStartTime: validated.scheduledStartTime || null,
+      scheduledEndTime: validated.scheduledEndTime || null,
+      deliverySlotId: validated.deliverySlotId || null,
       tipAmount: validated.tipAmount || 0,
       walletAmount: validated.walletAmount || 0,
       couponId: validated.couponId || null,
@@ -297,6 +304,33 @@ export const reconcileCodCashSubmission = async (req, res) => {
     );
 
     return handleResponse(res, 200, "COD cash reconciled successfully", updated);
+  } catch (error) {
+    return handleResponse(res, error.statusCode || 500, error.message);
+  }
+};
+
+export const getAvailableDeliverySlots = async (req, res) => {
+  try {
+    const rawInput = {
+      ...(req.query || {}),
+      ...(req.body || {}),
+    };
+    if (rawInput.lat && rawInput.lng && !rawInput.customerLocation) {
+      rawInput.customerLocation = {
+        lat: Number(rawInput.lat),
+        lng: Number(rawInput.lng),
+      };
+    }
+    const payload = validateWithJoi(getDeliverySlotsSchema, rawInput);
+    const result = await getDeliveryOptionsAndSlots({
+      customerLocation: payload.customerLocation || payload.address?.location || null,
+      address: payload.address || null,
+      items: payload.items || [],
+      sellerId: payload.sellerId || null,
+      selectedDate: payload.date || null,
+    });
+
+    return handleResponse(res, 200, "Delivery options and slots retrieved", result);
   } catch (error) {
     return handleResponse(res, error.statusCode || 500, error.message);
   }

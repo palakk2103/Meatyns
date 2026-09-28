@@ -464,6 +464,47 @@ const OrderDetail = () => {
                         </div>
                     </Card>
 
+                    {/* Delivery Logistics */}
+                    <Card className="border-none shadow-xl ring-1 ring-slate-100 bg-white rounded-xl p-6 text-left">
+                        <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+                            <Truck className="h-4 w-4 text-brand-500" />
+                            Logistics & Delivery Method
+                        </h4>
+                        <div className="space-y-3">
+                            <div className="flex items-center justify-between px-2">
+                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Delivery Option</span>
+                                <Badge variant="outline" className={cn(
+                                    "text-[10px] font-black uppercase tracking-widest",
+                                    order.deliveryMethod === 'EXPRESS' ? "bg-amber-50 text-amber-900 border-amber-200" :
+                                    order.deliveryMethod === 'SCHEDULED' ? "bg-emerald-50 text-emerald-900 border-emerald-200" :
+                                    "bg-blue-50 text-blue-900 border-blue-200"
+                                )}>
+                                    {order.deliveryMethod || 'NORMAL'}
+                                </Badge>
+                            </div>
+                            {order.deliveryMethod === 'SCHEDULED' && (
+                                <>
+                                    <div className="flex items-center justify-between px-2">
+                                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Scheduled Date</span>
+                                        <span className="text-xs font-black text-slate-800">{order.scheduledDate || 'N/A'}</span>
+                                    </div>
+                                    <div className="flex items-center justify-between px-2">
+                                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Time Window</span>
+                                        <span className="text-xs font-black text-slate-800">
+                                            {order.scheduledStartTime && order.scheduledEndTime ? `${order.scheduledStartTime} – ${order.scheduledEndTime}` : (order.timeSlot || 'N/A')}
+                                        </span>
+                                    </div>
+                                </>
+                            )}
+                            {order.deliveryMethod === 'EXPRESS' && (
+                                <div className="flex items-center justify-between px-2">
+                                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Priority</span>
+                                    <span className="text-xs font-black text-amber-700">⚡ High (ASAP)</span>
+                                </div>
+                            )}
+                        </div>
+                    </Card>
+
                     {/* Intelligence Notes */}
                     <Card className="border-none shadow-xl ring-1 ring-amber-100 bg-amber-50/30 rounded-xl p-6 text-left">
                         <h4 className="text-[10px] font-black text-amber-900 uppercase tracking-widest mb-4 flex items-center gap-2">

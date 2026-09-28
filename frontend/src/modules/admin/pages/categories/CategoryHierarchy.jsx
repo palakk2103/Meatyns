@@ -28,6 +28,8 @@ const CategoryHierarchy = () => {
   // Selection State for Miller Columns
   const [selectedHeader, setSelectedHeader] = useState(null);
   const [selectedLevel2, setSelectedLevel2] = useState(null);
+  const [subProducts, setSubProducts] = useState([]);
+  const [isLoadingProducts, setIsLoadingProducts] = useState(false);
 
   // Stats
   const stats = useMemo(() => {
@@ -105,10 +107,33 @@ const CategoryHierarchy = () => {
     return selectedLevel2.children || [];
   }, [selectedLevel2]);
 
+  // Fetch products for selected subcategory
+  useEffect(() => {
+    if (!selectedLevel2) {
+      setSubProducts([]);
+      return;
+    }
+    const fetchSubProducts = async () => {
+      setIsLoadingProducts(true);
+      try {
+        const subId = selectedLevel2._id || selectedLevel2.id;
+        const res = await adminApi.getProducts({ subcategoryId: subId, limit: 50 });
+        const list = res.data?.results || res.data?.result?.items || res.data?.result || [];
+        setSubProducts(Array.isArray(list) ? list : []);
+      } catch (e) {
+        setSubProducts([]);
+      } finally {
+        setIsLoadingProducts(false);
+      }
+    };
+    fetchSubProducts();
+  }, [selectedLevel2]);
+
   // Handle Selection
   const handleHeaderSelect = (header) => {
     setSelectedHeader(header);
     setSelectedLevel2(null);
+    setSubProducts([]);
   };
 
   const handleLevel2Select = (l2) => {
@@ -202,21 +227,21 @@ const CategoryHierarchy = () => {
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-brand-500"></span>
               <span>
-                Headers: <b>{stats.headers}</b>
+                Categories: <b>{stats.headers}</b>
               </span>
             </div>
             <div className="w-px h-4 bg-gray-300"></div>
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-purple-500"></span>
               <span>
-                Level 2: <b>{stats.l2}</b>
+                Subcategories: <b>{stats.l2 + stats.subs}</b>
               </span>
             </div>
             <div className="w-px h-4 bg-gray-300"></div>
             <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-brand-500"></span>
+              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
               <span>
-                Subcategories: <b>{stats.subs}</b>
+                Mode: <b>Category &rarr; Subcategory</b>
               </span>
             </div>
           </div>
@@ -237,7 +262,7 @@ const CategoryHierarchy = () => {
         {/* Column 1: Headers */}
         <div className="bg-white rounded-2xl border border-gray-200 shadow-sm flex flex-col overflow-hidden min-h-0 h-full">
           <ColumnHeader
-            title="Header Categories"
+            title="Categories"
             icon={LayoutGrid}
             count={filteredHeaders.length}
             color="border-l-4 border-l-brand-500"
@@ -248,7 +273,7 @@ const CategoryHierarchy = () => {
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input
                 type="text"
-                placeholder="Filter headers..."
+                placeholder="Filter categories..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full pl-9 pr-4 py-2 bg-gray-50 border-none rounded-lg text-sm focus:ring-2 focus:ring-brand-100 transition-all"
@@ -289,10 +314,10 @@ const CategoryHierarchy = () => {
           </div>
         </div>
 
-        {/* Column 2: Level 2 */}
+        {/* Column 2: Subcategories */}
         <div className="bg-white rounded-2xl border border-gray-200 shadow-sm flex flex-col overflow-hidden min-h-0 h-full transition-all duration-300">
           <ColumnHeader
-            title="Level 2 Categories"
+            title="Subcategories"
             icon={Folder}
             count={activeLevel2.length}
             color="border-l-4 border-l-purple-500"
@@ -302,9 +327,9 @@ const CategoryHierarchy = () => {
             <div className="flex-1 flex flex-col items-center justify-center text-gray-400 p-8 text-center bg-gray-50/50">
               <ArrowRight className="w-12 h-12 mb-3 opacity-20" />
               <p className="text-sm">
-                Select a Header Category
+                Select a Category
                 <br />
-                to view its contents
+                to view its subcategories
               </p>
             </div>
           ) : (
@@ -316,7 +341,7 @@ const CategoryHierarchy = () => {
             >
               {activeLevel2.length === 0 ? (
                 <div className="p-8 text-center text-gray-400 text-sm">
-                  No Level 2 categories in <br />
+                  No subcategories in <br />
                   <span className="font-bold text-gray-600">
                     "{selectedHeader.name}"
                   </span>
@@ -341,22 +366,22 @@ const CategoryHierarchy = () => {
           )}
         </div>
 
-        {/* Column 3: Subcategories */}
+        {/* Column 3: Products / Cuts or Level 3 */}
         <div className="bg-white rounded-2xl border border-gray-200 shadow-sm flex flex-col overflow-hidden min-h-0 h-full">
           <ColumnHeader
-            title="Subcategories"
-            icon={Tag}
-            count={activeSubs.length}
-            color="border-l-4 border-l-brand-500"
+            title={activeSubs.length > 0 ? "Level 3 Subcategories" : "Products & Cuts"}
+            icon={activeSubs.length > 0 ? Tag : Package}
+            count={activeSubs.length > 0 ? activeSubs.length : subProducts.length}
+            color="border-l-4 border-l-emerald-500"
           />
 
           {!selectedLevel2 ? (
             <div className="flex-1 flex flex-col items-center justify-center text-gray-400 p-8 text-center bg-gray-50/50">
               <ArrowRight className="w-12 h-12 mb-3 opacity-20" />
               <p className="text-sm">
-                Select a Level 2 Category
+                Select a Subcategory
                 <br />
-                to view subcategories
+                to view its assigned products
               </p>
             </div>
           ) : (
@@ -366,14 +391,7 @@ const CategoryHierarchy = () => {
               onWheel={(e) => e.stopPropagation()}
               onTouchMove={(e) => e.stopPropagation()}
             >
-              {activeSubs.length === 0 ? (
-                <div className="p-8 text-center text-gray-400 text-sm">
-                  No subcategories in <br />
-                  <span className="font-bold text-gray-600">
-                    "{selectedLevel2.name}"
-                  </span>
-                </div>
-              ) : (
+              {activeSubs.length > 0 ? (
                 activeSubs.map((sub) => (
                   <ListItem
                     key={sub._id || sub.id}
@@ -384,6 +402,56 @@ const CategoryHierarchy = () => {
                     hasChildren={false}
                   />
                 ))
+              ) : isLoadingProducts ? (
+                <div className="p-8 text-center text-gray-400 text-sm">
+                  Loading products...
+                </div>
+              ) : subProducts.length === 0 ? (
+                <div className="p-8 text-center text-gray-400 text-sm flex flex-col items-center">
+                  <Package className="w-8 h-8 mb-2 opacity-30 text-gray-500" />
+                  <p>
+                    No products assigned to <br />
+                    <span className="font-bold text-gray-600">
+                      "{selectedLevel2.name}"
+                    </span>
+                  </p>
+                  <p className="text-xs text-gray-400 mt-2">
+                    Assign cuts from Admin &rarr; Products
+                  </p>
+                </div>
+              ) : (
+                <div className="px-3 py-1 space-y-2">
+                  <div className="px-1 py-1 text-xs font-semibold text-gray-500 flex items-center justify-between">
+                    <span>Mapped Products ({subProducts.length})</span>
+                    <span className="text-[10px] text-brand-600 font-mono">Subcategory: {selectedLevel2.name}</span>
+                  </div>
+                  {subProducts.map((p) => (
+                    <div
+                      key={p._id || p.id}
+                      className="flex items-center gap-3 p-2.5 bg-gray-50 hover:bg-gray-100/80 rounded-xl border border-gray-100 transition-all text-xs"
+                    >
+                      <div className="w-10 h-10 rounded-lg overflow-hidden bg-white border border-gray-200 shrink-0">
+                        <img
+                          src={p.mainImage || p.image || "/categories/chicken.png"}
+                          alt={p.name}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-bold text-gray-800 truncate">{p.name}</p>
+                        <div className="flex items-center gap-2 mt-0.5 text-[11px] text-gray-500">
+                          <span className="font-bold text-brand-700">₹{p.salePrice || p.price}</span>
+                          {p.weight && <span>• {p.weight}</span>}
+                          {p.stock !== undefined && (
+                            <span className={p.stock > 0 ? "text-emerald-600" : "text-red-500"}>
+                              • Stock: {p.stock}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               )}
             </div>
           )}

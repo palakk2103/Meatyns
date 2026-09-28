@@ -31,9 +31,10 @@ function buildNearbySellersKey(lat, lng) {
 
 export async function getNearbySellerIdsForCustomer(lat, lng) {
   const fetchFn = async () => {
-    // 1. Fetch sellers matching 2dsphere near query
+    // 1. Fetch active approved sellers matching 2dsphere near query
     const geoSellers = await Seller.find({
       isActive: true,
+      applicationStatus: { $ne: "rejected" },
       location: {
         $near: {
           $geometry: {
@@ -44,50 +45,52 @@ export async function getNearbySellerIdsForCustomer(lat, lng) {
         },
       },
     })
-      .select("_id location serviceRadius")
+      .select("_id location serviceRadius isOnline isActive storeHours")
       .lean();
 
-    // 2. Fetch active approved sellers with default [0, 0] coordinates or missing location
-    const unassignedSellers = await Seller.find({
-      isActive: true,
-      $or: [
-        { "location.coordinates": [0, 0] },
-        { location: { $exists: false } },
-        { "location.coordinates": { $exists: false } },
-      ],
-    })
-      .select("_id")
-      .lean();
+    const matchedSellers = [];
 
-    const matchedGeoIds = geoSellers
-      .filter((seller) => {
-        const coords = seller?.location?.coordinates;
-        if (!Array.isArray(coords) || coords.length < 2) return false;
-        const [sellerLng, sellerLat] = coords;
-        if (!Number.isFinite(sellerLat) || !Number.isFinite(sellerLng)) {
-          return false;
-        }
-        if (sellerLng === 0 && sellerLat === 0) return true;
-        const distanceKm = calculateDistance(lat, lng, sellerLat, sellerLng);
-        const effectiveRadius = Math.max(Number(seller.serviceRadius) || 5000, 5000);
-        return distanceKm <= effectiveRadius;
-      })
-      .map((seller) => String(seller._id));
+    for (const seller of geoSellers) {
+      const coords = seller?.location?.coordinates;
+      if (!Array.isArray(coords) || coords.length < 2) continue;
+      const [sellerLng, sellerLat] = coords;
+      if (!Number.isFinite(sellerLat) || !Number.isFinite(sellerLng)) continue;
 
-    const unassignedIds = unassignedSellers.map((seller) => String(seller._id));
-    const allIds = [...new Set([...matchedGeoIds, ...unassignedIds])];
+      // Skip invalid [0, 0] coordinates
+      if (sellerLng === 0 && sellerLat === 0) continue;
 
-    if (allIds.length === 0) {
-      // Fallback: If no sellers matched specific radius, include all active approved sellers
-      const fallbackSellers = await Seller.find({
-        isActive: true,
-        applicationStatus: { $ne: "rejected" },
-      }).select("_id").lean();
-      return fallbackSellers.map((seller) => String(seller._id));
+      const distanceKm = calculateDistance(lat, lng, sellerLat, sellerLng);
+      const effectiveRadius = Math.max(Number(seller.serviceRadius) || 5, 1);
+
+      if (distanceKm <= effectiveRadius) {
+        matchedSellers.push({
+          id: String(seller._id),
+          distanceKm,
+          isOnline: seller.isOnline !== false,
+        });
+      }
     }
 
-    return allIds;
+    // Sort sellers: 
+    // 1. Online stores first
+    // 2. Closest distance first (nearest outlet)
+    matchedSellers.sort((a, b) => {
+      if (a.isOnline !== b.isOnline) {
+        return a.isOnline ? -1 : 1;
+      }
+      return a.distanceKm - b.distanceKm;
+    });
+
+    return matchedSellers.map((s) => s.id);
   };
 
   return getOrSet(buildNearbySellersKey(lat, lng), fetchFn, getTTL("nearbySellers"));
+}
+
+/**
+ * Helper to get the single nearest active outlet for customer coordinates
+ */
+export async function getNearestSellerForCustomer(lat, lng) {
+  const nearbyIds = await getNearbySellerIdsForCustomer(lat, lng);
+  return nearbyIds.length > 0 ? nearbyIds[0] : null;
 }

@@ -93,6 +93,30 @@ const TopPicksSection = ({ products = [] }) => {
 
     const merged = [...validFromBackend];
     const existingNames = new Set(merged.map((m) => m.name.toLowerCase()));
+
+    // Fill with any remaining real products from backend before falling back to defaults
+    for (const p of (products || [])) {
+      if (merged.length >= 4) break;
+      const pName = (p.name || "").toLowerCase();
+      if (pName && !existingNames.has(pName)) {
+        const orig = Number(p.originalPrice || 0);
+        const curr = Number(p.salePrice || p.price || 0);
+        const effectiveOrig = orig > curr ? orig : Math.round(curr * 1.25);
+        const pct = Math.round(((effectiveOrig - curr) / effectiveOrig) * 100);
+        merged.push({
+          id: p._id || p.id,
+          _id: p._id || p.id,
+          name: p.name,
+          weight: p.weight || "500 g",
+          price: curr,
+          originalPrice: effectiveOrig,
+          discount: `${pct}% OFF`,
+          image: p.mainImage || p.image || DEFAULT_TOP_PICKS[0].image,
+        });
+        existingNames.add(pName);
+      }
+    }
+
     for (const item of DEFAULT_TOP_PICKS) {
       if (merged.length >= 4) break;
       if (!existingNames.has(item.name.toLowerCase())) {

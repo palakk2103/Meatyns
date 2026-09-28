@@ -109,20 +109,27 @@ const CategoryProductsPage = () => {
             if (catRes.data.success) {
                 const tree = catRes.data.results || catRes.data.result || [];
                 console.log(`[CategoryProductsPage] fetchData [seq=${seq}] total tree headers:`, tree.length);
-                const headerMatch = tree.find(h => h._id === catId);
+                const normalizedCatId = decodeURIComponent(String(catId || "")).toLowerCase().trim();
+                const matches = (item) =>
+                    item &&
+                    (item._id === catId ||
+                     (item.slug && item.slug.toLowerCase() === normalizedCatId) ||
+                     (item.name && item.name.toLowerCase() === normalizedCatId));
+
+                const headerMatch = tree.find(matches);
                 if (headerMatch) {
                     categoryType = 'header';
                     currentCat = headerMatch;
                 } else {
                     for (const header of tree) {
-                        const found = (header.children || []).find(c => c._id === catId);
+                        const found = (header.children || []).find(matches);
                         if (found) {
                             categoryType = 'category';
                             currentCat = found;
                             break;
                         } else {
                             for (const cat of (header.children || [])) {
-                                const subMatch = (cat.children || []).find(s => s._id === catId);
+                                const subMatch = (cat.children || []).find(matches);
                                 if (subMatch) {
                                     categoryType = 'subcategory';
                                     currentCat = {
@@ -147,12 +154,13 @@ const CategoryProductsPage = () => {
                 lng: currentLocation?.longitude,
                 limit: 1000,
             };
+            const resolvedId = currentCat?._id || catId;
             if (categoryType === 'header') {
-                productParams.headerId = catId;
+                productParams.headerId = resolvedId;
             } else if (categoryType === 'subcategory') {
-                productParams.subcategoryId = catId;
+                productParams.subcategoryId = resolvedId;
             } else {
-                productParams.categoryId = catId;
+                productParams.categoryId = resolvedId;
             }
 
             console.log(`[CategoryProductsPage] fetchData [seq=${seq}] requesting products with params:`, productParams);
@@ -226,12 +234,36 @@ const CategoryProductsPage = () => {
     const safeProducts = Array.isArray(products) ? products : [];
 
     const filteredProducts = safeProducts.filter(p => {
-        if (selectedSubCategory === 'all') return true;
-        if (isHeaderCategory) {
-            return p.categoryId?._id === selectedSubCategory || p.categoryId === selectedSubCategory;
-        } else {
-            return p.subcategoryId?._id === selectedSubCategory || p.subcategoryId === selectedSubCategory;
+        if (!selectedSubCategory || selectedSubCategory === 'all') return true;
+
+        const targetId = String(selectedSubCategory).trim();
+        const pSubId = String(p.subcategoryId?._id || p.subcategoryId || '').trim();
+        const pCatId = String(p.categoryId?._id || p.categoryId || '').trim();
+
+        // 1. Direct match with subcategoryId (standard 2-tier subcategory mapping)
+        if (pSubId && pSubId === targetId) return true;
+
+        // 2. Direct match with categoryId (fallback if product was assigned via categoryId)
+        if (pCatId && pCatId === targetId) return true;
+
+        // 3. Fallback matching against active subCategories item name/slug
+        const activeSub = subCategories.find(s => String(s.id).trim() === targetId);
+        if (activeSub) {
+            const activeName = String(activeSub.name || '').toLowerCase().trim();
+            const pSubName = String(p.subcategoryId?.name || p.subCategory || '').toLowerCase().trim();
+            if (pSubName && (pSubName === activeName || activeName.includes(pSubName) || pSubName.includes(activeName))) {
+                return true;
+            }
+
+            // Keyword match in product title (e.g. "drumstick", "curry cut", "breast")
+            const pTitle = String(p.name || '').toLowerCase();
+            const keyword = activeName.replace(/chicken|mutton|fish|prawns?|eggs?/gi, '').trim();
+            if (keyword.length >= 3 && pTitle.includes(keyword)) {
+                return true;
+            }
         }
+
+        return false;
     });
 
     const productsById = React.useMemo(() => {
@@ -350,15 +382,36 @@ const CategoryProductsPage = () => {
 
                         {/* Content */}
                         <main className="flex-1 p-2 sm:p-4 md:p-6 pb-28 bg-white space-y-4 overflow-x-hidden min-h-[calc(100vh-60px)]">
-                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-2.5 sm:gap-3.5 md:gap-4">
-                                {filteredProducts.map((product) => (
-                                    <ProductCard
-                                        key={product.id || product._id}
-                                        product={product}
-                                        variant="homeDesktop"
-                                    />
-                                ))}
-                            </div>
+                            {filteredProducts.length > 0 ? (
+                                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-2.5 sm:gap-3.5 md:gap-4">
+                                    {filteredProducts.map((product) => (
+                                        <ProductCard
+                                            key={product.id || product._id}
+                                            product={product}
+                                            variant="homeDesktop"
+                                        />
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className="flex flex-col items-center justify-center py-20 px-4 text-center">
+                                    <div className="w-16 h-16 rounded-2xl bg-amber-50 flex items-center justify-center mb-3">
+                                        <span className="text-3xl">🍗</span>
+                                    </div>
+                                    <h4 className="text-base sm:text-lg font-bold text-slate-800 mb-1">
+                                        No products in &ldquo;{subCategories.find(s => s.id === selectedSubCategory)?.name || "this subcategory"}&rdquo; right now
+                                    </h4>
+                                    <p className="text-xs text-slate-500 max-w-sm mb-4">
+                                        Fresh inventory is being prepared. You can explore all items in {category?.name || "this category"} below.
+                                    </p>
+                                    <button
+                                        type="button"
+                                        onClick={() => setSelectedSubCategory('all')}
+                                        className="px-5 py-2.5 bg-primary text-white text-xs font-bold rounded-xl shadow-sm hover:opacity-90 active:scale-95 transition-all cursor-pointer"
+                                    >
+                                        View All {category?.name || "Items"}
+                                    </button>
+                                </div>
+                            )}
                         </main>
                     </>
                 )}

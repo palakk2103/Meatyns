@@ -89,9 +89,32 @@ const HotDealsSection = ({ products = [] }) => {
       return discountedFromBackend.slice(0, 4);
     }
 
-    // Merge backend with curated items to guarantee exactly 4 beautiful cards
+    // Merge backend discounted with other real database products first
     const merged = [...discountedFromBackend];
     const existingNames = new Set(merged.map((m) => m.name.toLowerCase()));
+
+    for (const p of (products || [])) {
+      if (merged.length >= 4) break;
+      const pName = (p.name || "").toLowerCase();
+      if (pName && !existingNames.has(pName)) {
+        const curr = Number(p.salePrice || p.price || 0);
+        const orig = Number(p.originalPrice || 0) || Math.round(curr * 1.2);
+        const pct = orig > curr ? Math.round(((orig - curr) / orig) * 100) : 15;
+        merged.push({
+          id: p._id || p.id,
+          _id: p._id || p.id,
+          name: p.name,
+          weight: p.weight || "500 g",
+          price: curr,
+          originalPrice: orig,
+          discount: `${pct}% OFF`,
+          image: p.mainImage || p.image || DEFAULT_HOT_DEALS[0].image,
+        });
+        existingNames.add(pName);
+      }
+    }
+
+    // Only if total products in DB are less than 4, fill remaining from curated
     for (const item of DEFAULT_HOT_DEALS) {
       if (merged.length >= 4) break;
       if (!existingNames.has(item.name.toLowerCase())) {

@@ -46,6 +46,7 @@ import TopPicksSection from "../components/home/TopPicksSection";
 import TrendingCategoriesSection from "../components/home/TrendingCategoriesSection";
 import TrustFeaturesBanner from "../components/home/TrustFeaturesBanner";
 import MobileHeroBanner from "../components/home/MobileHeroBanner";
+import MobileHeaderCategoryNav from "../components/home/MobileHeaderCategoryNav";
 import ExploreTopCategoriesSection from "../components/home/ExploreTopCategoriesSection";
 
 const DEFAULT_CATEGORY_THEME = {
@@ -291,7 +292,7 @@ const Home = () => {
     setIsLoading(true);
     try {
       const hasValidLocation = Number.isFinite(currentLocation?.latitude) && Number.isFinite(currentLocation?.longitude);
-      const productParams = { limit: 20 };
+      const productParams = { limit: 50 };
       if (hasValidLocation) {
         productParams.lat = currentLocation.latitude;
         productParams.lng = currentLocation.longitude;
@@ -476,12 +477,12 @@ const Home = () => {
   };
 
   return (
-    <div className={`min-h-screen pt-[113px] md:pt-[68px] pb-20 md:pb-10 ${products.length === 0 && !isLoading ? "bg-[#FFF9F4] md:bg-white" : "bg-[#FFF9F4] md:bg-white"}`}>
+    <div className={`min-h-screen pt-[113px] md:pt-[118px] pb-20 md:pb-10 ${products.length === 0 && !isLoading ? "bg-[#FFF9F4] md:bg-white" : "bg-[#FFF9F4] md:bg-white"}`}>
       <div className={cn("contents", isProductDetailOpen && "hidden md:contents")}>
         <MainLocationHeader categories={categories} activeCategory={activeCategory} onCategorySelect={setActiveCategory} />
       </div>
 
-      <div className="flex w-full min-h-[calc(100vh-68px)]">
+      <div className="flex w-full min-h-[calc(100vh-118px)]">
         {/* Desktop Left Sidebar (hidden on mobile, visible on md+) */}
         <DesktopSidebar
           activeCategory={activeCategory}
@@ -505,15 +506,23 @@ const Home = () => {
                 <DesktopHomeContent
                   products={products}
                   categories={categories}
+                  heroConfig={heroConfig}
                   onCategorySelect={setActiveCategory}
                 />
               </div>
 
               {/* ──── Mobile Content (Strictly md:hidden) ──── */}
               <div className="block md:hidden">
+                {/* ──── Mobile Header Category Section (Directly Above Banner) ──── */}
+                <MobileHeaderCategoryNav
+                  categories={categories}
+                  activeCategory={activeCategory}
+                  onCategorySelect={setActiveCategory}
+                />
+
                 <motion.div ref={heroRef} className="will-change-transform" style={isMobile ? { opacity: 1 } : { opacity, y, scale, pointerEvents }}>
                   <div className="relative w-full overflow-hidden">
-                    <MobileHeroBanner />
+                    <MobileHeroBanner heroConfig={heroConfig} />
                   </div>
                 </motion.div>
 
@@ -529,7 +538,7 @@ const Home = () => {
                   <TopPicksSection products={effectiveLowestPriceProducts.length ? effectiveLowestPriceProducts : products} />
 
                   {/* 3. 📈 Trending Now */}
-                  <TrendingCategoriesSection />
+                  <TrendingCategoriesSection categories={categories} />
 
                   {/* 4. 🗂️ Explore Top Categories */}
                   <ExploreTopCategoriesSection categories={categories} />

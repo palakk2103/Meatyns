@@ -35,6 +35,7 @@ const OrdersList = () => {
     const { showToast } = useToast();
     const [searchTerm, setSearchTerm] = useState('');
     const [dateRange, setDateRange] = useState('All Time');
+    const [deliveryMethodFilter, setDeliveryMethodFilter] = useState('ALL');
     const [orders, setOrders] = useState([]);
     const [summary, setSummary] = useState({
         totalOrders: 0,
@@ -91,6 +92,7 @@ const OrdersList = () => {
         try {
             const params = { page: requestedPage, limit: pageSize };
             if (status !== 'all') params.status = status;
+            if (deliveryMethodFilter !== 'ALL') params.deliveryMethod = deliveryMethodFilter;
             if (searchTerm.trim()) params.search = searchTerm.trim();
             if (dateRange !== 'All Time') {
                 params.dateFilter = dateRange.toLowerCase().replace(/ /g, '_');
@@ -110,6 +112,11 @@ const OrdersList = () => {
                     workflowStatus: o.workflowStatus,
                     workflowVersion: o.workflowVersion,
                     returnStatus: o.returnStatus,
+                    deliveryMethod: o.deliveryMethod || 'NORMAL',
+                    scheduledDate: o.scheduledDate || null,
+                    scheduledStartTime: o.scheduledStartTime || null,
+                    scheduledEndTime: o.scheduledEndTime || null,
+                    timeSlot: o.timeSlot || null,
                     date: new Date(o.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }),
                     payment: o.payment?.method === 'cod' ? 'COD' : 'Digital',
                 }));
@@ -161,7 +168,7 @@ const OrdersList = () => {
             fetchOrders(1);
         }, 500);
         return () => clearTimeout(timer);
-    }, [pageSize, status, searchTerm, dateRange]);
+    }, [pageSize, status, searchTerm, dateRange, deliveryMethodFilter]);
 
     const safeOrders = useMemo(
         () => (Array.isArray(orders) ? orders : []),
@@ -343,7 +350,31 @@ const OrdersList = () => {
                             className="w-full pl-11 pr-4 py-3 bg-slate-50 border-none rounded-2xl text-xs font-semibold outline-none focus:ring-2 focus:ring-fuchsia-500/10 transition-all"
                         />
                     </div>
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2 flex-wrap">
+                        {/* Delivery Method Filter Pills */}
+                        <div className="flex items-center bg-slate-50 p-1 rounded-2xl border border-slate-100">
+                            {[
+                                { id: 'ALL', label: 'All Methods' },
+                                { id: 'EXPRESS', label: '⚡ Express' },
+                                { id: 'NORMAL', label: '🚚 Normal' },
+                                { id: 'SCHEDULED', label: '📅 Scheduled' },
+                            ].map((tab) => (
+                                <button
+                                    key={tab.id}
+                                    type="button"
+                                    onClick={() => setDeliveryMethodFilter(tab.id)}
+                                    className={cn(
+                                        "px-3 py-1.5 rounded-xl text-[10px] font-bold transition-all",
+                                        deliveryMethodFilter === tab.id
+                                            ? "bg-white text-slate-900 shadow-sm"
+                                            : "text-slate-500 hover:text-slate-800"
+                                    )}
+                                >
+                                    {tab.label}
+                                </button>
+                            ))}
+                        </div>
+
                         {status === 'processed' && (
                             <button
                                 onClick={handleCSVExport}
@@ -401,6 +432,24 @@ const OrdersList = () => {
                                                     <span className="text-[10px] font-bold text-slate-300">•</span>
                                                     <span className="text-[10px] font-bold text-slate-400">{order.date}</span>
                                                 </div>
+                                                {order.deliveryMethod && (
+                                                    <div className="mt-1.5">
+                                                        <span className={cn(
+                                                            "inline-flex items-center text-[9px] font-bold px-1.5 py-0.5 rounded border",
+                                                            order.deliveryMethod === 'EXPRESS'
+                                                                ? "bg-amber-50 text-amber-900 border-amber-200"
+                                                                : order.deliveryMethod === 'SCHEDULED'
+                                                                ? "bg-emerald-50 text-emerald-900 border-emerald-200"
+                                                                : "bg-blue-50 text-blue-900 border-blue-200"
+                                                        )}>
+                                                            {order.deliveryMethod === 'EXPRESS'
+                                                                ? "⚡ Express"
+                                                                : order.deliveryMethod === 'SCHEDULED'
+                                                                ? `📅 Slot: ${order.scheduledDate || ''} (${order.timeSlot || ''})`
+                                                                : "🚚 Normal"}
+                                                        </span>
+                                                    </div>
+                                                )}
                                             </div>
                                         </div>
                                     </td>

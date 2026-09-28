@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Product from "../../models/product.js";
 import Category from "../../models/category.js";
 import {
@@ -34,7 +35,7 @@ function parseWeightToGramsOrUnits(name) {
 }
 
 function toObjectIdString(value) {
-  if (!value) return "";
+  if (!value || value === "undefined" || value === "null") return "";
   if (typeof value === "object" && value._id) return String(value._id);
   return String(value);
 }
@@ -333,7 +334,7 @@ export async function hydrateOrderItems(
     .filter(Boolean);
 
   const productQuery = Product.find({ _id: { $in: productIds } })
-    .select("_id name salePrice price mainImage headerId sellerId status approvalStatus variants")
+    .select("_id name salePrice price mainImage headerId categoryId sellerId status approvalStatus variants")
     .lean();
   if (session) productQuery.session(session);
   const products = await productQuery;
@@ -407,14 +408,23 @@ export async function hydrateOrderItems(
       ? serverUnitPrice
       : normalizeLinePrice(item.price) || serverUnitPrice;
 
+    const rawHeader = product.headerId || product.categoryId || "";
+    const validHeaderStr =
+      rawHeader &&
+      String(rawHeader).trim() !== "" &&
+      String(rawHeader) !== "undefined" &&
+      String(rawHeader) !== "null"
+        ? String(rawHeader)
+        : "";
+
     return {
       productId,
       productName: item.name || product.name,
       quantity,
       price: inferredUnitPrice,
       image: item.image || product.mainImage,
-      headerCategoryId: String(product.headerId),
-      sellerId: String(product.sellerId),
+      headerCategoryId: validHeaderStr,
+      sellerId: String(product.sellerId || ""),
       variantSku: rawVariantSku || "",
       variantName: resolvedVariant ? String(resolvedVariant?.name || "").trim() : "",
     };
@@ -454,16 +464,22 @@ export async function generateOrderPaymentBreakdown({
   }
 
   const headerIds = Array.from(
-    new Set(normalizedItems.map((item) => item.headerCategoryId).filter(Boolean)),
+    new Set(
+      normalizedItems
+        .map((item) => toObjectIdString(item.headerCategoryId))
+        .filter((id) => id && id !== "undefined" && id !== "null"),
+    ),
   );
 
-  const categoryQuery = Category.find({ _id: { $in: headerIds } })
-    .select(
-      "_id name adminCommission adminCommissionType adminCommissionValue adminCommissionFixedRule handlingFees handlingFeeType handlingFeeValue",
-    )
-    .lean();
-  if (session) categoryQuery.session(session);
-  const categories = await categoryQuery;
+  const categoryQuery = headerIds.length > 0
+    ? Category.find({ _id: { $in: headerIds } })
+        .select(
+          "_id name adminCommission adminCommissionType adminCommissionValue adminCommissionFixedRule handlingFees handlingFeeType handlingFeeValue",
+        )
+        .lean()
+    : null;
+  if (session && categoryQuery) categoryQuery.session(session);
+  const categories = categoryQuery ? await categoryQuery : [];
   const categoryById = new Map(categories.map((category) => [String(category._id), category]));
 
   const effectiveSettings =

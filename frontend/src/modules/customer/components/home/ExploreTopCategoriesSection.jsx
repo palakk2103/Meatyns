@@ -49,139 +49,96 @@ const CategoryGridIcon = () => (
   </svg>
 );
 
-// 15 curated top categories matching the reference image layout and style
+// Curated Meatyns meat categories fallback matching reference
 const TOP_CATEGORIES = [
-  {
-    id: "meat",
-    name: "Meat",
-    count: "12+ Products",
-    query: "meat",
-    image:
-      "https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&q=80&w=350&h=350",
-  },
   {
     id: "chicken",
     name: "Chicken",
-    count: "10+ Products",
+    count: "16+ Cuts",
     query: "chicken",
-    image:
-      "https://images.unsplash.com/photo-1604503468506-a8da13d82791?auto=format&fit=crop&q=80&w=350&h=350",
+    image: "/categories/chicken.png",
   },
   {
     id: "fish-seafood",
     name: "Fish & Seafood",
-    count: "8+ Products",
+    count: "10+ Types",
     query: "fish",
-    image:
-      "https://images.unsplash.com/photo-1534482421-64566f976cfa?auto=format&fit=crop&q=80&w=350&h=350",
-  },
-  {
-    id: "prawns",
-    name: "Prawns",
-    count: "6+ Products",
-    query: "prawns",
-    image:
-      "https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&q=80&w=350&h=350",
+    image: "/categories/fish.png",
   },
   {
     id: "mutton",
     name: "Mutton",
-    count: "8+ Products",
+    count: "8+ Cuts",
     query: "mutton",
-    image:
-      "https://images.unsplash.com/photo-1603048588665-791ca8aea617?auto=format&fit=crop&q=80&w=350&h=350",
+    image: "/categories/mutton.png",
+  },
+  {
+    id: "eggs",
+    name: "Classic & Farm Eggs",
+    count: "5+ Varieties",
+    query: "egg",
+    image: "/categories/eggs.jpg",
+  },
+  {
+    id: "prawns",
+    name: "Prawns & Crabs",
+    count: "6+ Sizes",
+    query: "prawn",
+    image: "/categories/prawns.png",
+  },
+  {
+    id: "cold-cuts",
+    name: "Cold Cuts & Sausages",
+    count: "8+ Options",
+    query: "cold cut",
+    image: "/categories/coldcuts.jpg",
   },
   {
     id: "ready-to-cook",
-    name: "Ready to Cook",
-    count: "14+ Products",
+    name: "Ready to Cook & Marinated",
+    count: "12+ Dishes",
     query: "ready to cook",
-    image:
-      "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&q=80&w=350&h=350",
+    image: "/categories/marinades.jpg",
   },
   {
-    id: "frozen-foods",
-    name: "Frozen Foods",
-    count: "15+ Products",
-    query: "frozen",
-    image:
-      "https://images.unsplash.com/photo-1496116218417-1a781b1c416c?auto=format&fit=crop&q=80&w=350&h=350",
-  },
-  {
-    id: "dairy-eggs",
-    name: "Dairy & Eggs",
-    count: "10+ Products",
-    query: "egg",
-    image:
-      "https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?auto=format&fit=crop&q=80&w=350&h=350",
-  },
-  {
-    id: "bakery-bread",
-    name: "Bakery & Bread",
-    count: "8+ Products",
-    query: "bread",
-    image:
-      "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&q=80&w=350&h=350",
-  },
-  {
-    id: "fruits-veg",
-    name: "Fruits & Vegetables",
-    count: "20+ Products",
-    query: "vegetable",
-    image:
-      "https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&q=80&w=350&h=350",
-  },
-  {
-    id: "beverages",
-    name: "Beverages",
-    count: "12+ Products",
-    query: "beverage",
-    image:
-      "https://images.unsplash.com/photo-1613478223719-2ab802602423?auto=format&fit=crop&q=80&w=350&h=350",
-  },
-  {
-    id: "snacks-more",
-    name: "Snacks & More",
-    count: "18+ Products",
-    query: "snack",
-    image:
-      "https://images.unsplash.com/photo-1621939514649-28b12e81658b?auto=format&fit=crop&q=80&w=350&h=350",
-  },
-  {
-    id: "spices-masalas",
-    name: "Spices & Masalas",
-    count: "10+ Products",
-    query: "spice",
-    image:
-      "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&q=80&w=350&h=350",
-  },
-  {
-    id: "household-essentials",
-    name: "Household Essentials",
-    count: "16+ Products",
-    query: "clean",
-    image:
-      "https://images.unsplash.com/photo-1585421514738-01798e348b17?auto=format&fit=crop&q=80&w=350&h=350",
-  },
-  {
-    id: "personal-care",
-    name: "Personal Care",
-    count: "12+ Products",
-    query: "personal",
-    image:
-      "https://images.unsplash.com/photo-1556228578-8d84f5ae1d41?auto=format&fit=crop&q=80&w=350&h=350",
+    id: "ready-to-eat-spreads",
+    name: "Spreads & Ready to Eat",
+    count: "5+ Flavors",
+    query: "spread",
+    image: "/categories/steaks.jpg",
   },
 ];
 
 const ExploreTopCategoriesSection = ({ categories = [] }) => {
   const navigate = useNavigate();
 
-  const handleCategoryClick = (cat) => {
-    // Try matching backend category by query or name
-    const match = categories?.find((c) =>
-      c.name?.toLowerCase().includes(cat.query.toLowerCase())
+  const displayCategories = React.useMemo(() => {
+    const valid = (categories || []).filter(
+      (c) => c && c.name && c.id !== "all" && c._id !== "all"
     );
+    if (valid.length > 0) {
+      return valid.map((cat, idx) => ({
+        id: cat._id || cat.id || `cat-${idx}`,
+        name: cat.name,
+        count: cat.productCount ? `${cat.productCount}+ Products` : "Fresh & Safe",
+        image:
+          cat.image ||
+          cat.icon ||
+          "https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&q=80&w=350&h=350",
+        raw: cat,
+      }));
+    }
+    return TOP_CATEGORIES;
+  }, [categories]);
 
+  const handleCategoryClick = (cat) => {
+    if (cat.raw) {
+      navigate(`/category/${cat.raw._id || cat.raw.id}`);
+      return;
+    }
+    const match = categories?.find((c) =>
+      c.name?.toLowerCase().includes((cat.query || cat.name).toLowerCase())
+    );
     if (match) {
       navigate(`/category/${match._id || match.id}`);
     } else {
@@ -219,9 +176,9 @@ const ExploreTopCategoriesSection = ({ categories = [] }) => {
         </p>
       </div>
 
-      {/* ──── 15 CATEGORY CARDS (RESPONSIVE GRID) ──── */}
+      {/* ──── DYNAMIC CATEGORY CARDS (RESPONSIVE GRID) ──── */}
       <div className="grid grid-cols-3 gap-2 sm:gap-3">
-        {TOP_CATEGORIES.map((cat) => (
+        {displayCategories.map((cat) => (
           <div
             key={cat.id}
             onClick={() => handleCategoryClick(cat)}
@@ -234,6 +191,11 @@ const ExploreTopCategoriesSection = ({ categories = [] }) => {
                 alt={cat.name}
                 loading="lazy"
                 className="w-[88%] h-[88%] object-contain drop-shadow-sm pointer-events-none select-none rounded-full"
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src =
+                    "https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&q=80&w=350&h=350";
+                }}
               />
             </div>
 

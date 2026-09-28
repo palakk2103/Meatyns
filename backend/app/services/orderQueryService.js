@@ -75,10 +75,14 @@ export function buildSellerOrdersQuery({
   role,
   userId,
   statusParam,
+  deliveryMethod,
   startDate,
   endDate,
 }) {
   const base = role === "admin" ? {} : { seller: userId };
+  if (deliveryMethod && ["EXPRESS", "NORMAL", "SCHEDULED"].includes(String(deliveryMethod).toUpperCase())) {
+    base.deliveryMethod = String(deliveryMethod).toUpperCase();
+  }
   const withStatus = {
     ...base,
     ...normalizeSellerStatusFilter(statusParam),
@@ -90,6 +94,7 @@ export async function fetchSellerOrdersPage({
   role,
   userId,
   statusParam,
+  deliveryMethod,
   startDate,
   endDate,
   skip,
@@ -99,6 +104,7 @@ export async function fetchSellerOrdersPage({
     role,
     userId,
     statusParam,
+    deliveryMethod,
     startDate,
     endDate,
   });
@@ -411,7 +417,7 @@ export async function getCustomerOrders(customerId, pagination) {
       const [orders, total] = await Promise.all([
         Order.find({ customer: customerId })
           .select(
-            "orderId checkoutGroupId customer seller items address payment pricing status workflowStatus workflowVersion returnStatus timeSlot createdAt",
+            "orderId checkoutGroupId customer seller items address payment pricing status workflowStatus workflowVersion returnStatus timeSlot deliveryMethod scheduledDate scheduledStartTime scheduledEndTime estimatedDeliveryStart estimatedDeliveryEnd deliverySlotId createdAt",
           )
           .sort({ createdAt: -1, _id: -1 })
           .skip(skip)

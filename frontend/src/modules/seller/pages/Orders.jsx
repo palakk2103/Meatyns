@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, useRef } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import Card from '@shared/components/ui/Card';
 import Button from '@shared/components/ui/Button';
 import Badge from '@shared/components/ui/Badge';
@@ -128,7 +128,12 @@ const Orders = () => {
                 location: order.address?.location || null,
                 payment: order.payment?.method === 'cash' || order.payment?.method === 'cod'
                     ? 'Cash on Delivery'
-                    : 'Online Paid'
+                    : 'Online Paid',
+                deliveryMethod: order.deliveryMethod || 'NORMAL',
+                scheduledDate: order.scheduledDate || null,
+                scheduledStartTime: order.scheduledStartTime || null,
+                scheduledEndTime: order.scheduledEndTime || null,
+                timeSlot: order.timeSlot || null,
             }));
 
             setOrders(formattedOrders);
@@ -468,6 +473,17 @@ const Orders = () => {
                                                         <HiOutlineCalendarDays className="h-3 w-3 shrink-0" />
                                                         {order.date} • {order.time}
                                                     </p>
+                                                    {order.deliveryMethod && (
+                                                        <span className={`inline-flex items-center text-[10px] font-bold px-1.5 py-0.5 rounded border mt-1 ${
+                                                            order.deliveryMethod === 'EXPRESS'
+                                                                ? 'bg-amber-50 text-amber-900 border-amber-200'
+                                                                : order.deliveryMethod === 'SCHEDULED'
+                                                                ? 'bg-emerald-50 text-emerald-900 border-emerald-200'
+                                                                : 'bg-blue-50 text-blue-900 border-blue-200'
+                                                        }`}>
+                                                            {order.deliveryMethod === 'EXPRESS' ? '⚡ Express' : order.deliveryMethod === 'SCHEDULED' ? `📅 Slot: ${order.scheduledDate || ''} (${order.timeSlot || ''})` : '🚚 Normal'}
+                                                        </span>
+                                                    )}
                                                     <div className="flex items-center gap-2 mt-2">
                                                         <div className="h-7 w-7 rounded-full bg-slate-900 flex items-center justify-center text-[10px] font-black text-white shrink-0">
                                                             {order.customer.avatar}
@@ -546,6 +562,17 @@ const Orders = () => {
                                                                 <HiOutlineCalendarDays className="h-3 w-3" />
                                                                 {order.date} • {order.time}
                                                             </div>
+                                                            {order.deliveryMethod && (
+                                                                <span className={`inline-flex items-center text-[10px] font-bold px-2 py-0.5 rounded border mt-1.5 ${
+                                                                    order.deliveryMethod === 'EXPRESS'
+                                                                        ? 'bg-amber-50 text-amber-900 border-amber-200'
+                                                                        : order.deliveryMethod === 'SCHEDULED'
+                                                                        ? 'bg-emerald-50 text-emerald-900 border-emerald-200'
+                                                                        : 'bg-blue-50 text-blue-900 border-blue-200'
+                                                                }`}>
+                                                                    {order.deliveryMethod === 'EXPRESS' ? '⚡ Express' : order.deliveryMethod === 'SCHEDULED' ? `📅 Slot: ${order.scheduledDate || ''} (${order.timeSlot || ''})` : '🚚 Normal'}
+                                                                </span>
+                                                            )}
                                                         </div>
                                                     </td>
                                                     <td className="px-4 lg:px-6 py-3 lg:py-4">
@@ -809,6 +836,32 @@ const Orders = () => {
                                                     <p className="text-xs font-bold text-slate-800 leading-relaxed bg-slate-50 p-3 rounded-2xl border border-slate-100 shadow-sm">
                                                         {selectedOrder.address}
                                                     </p>
+                                                </div>
+
+                                                <div>
+                                                    <h4 className="text-xs font-black text-slate-600 uppercase tracking-widest flex items-center gap-2 mb-2">
+                                                        <HiOutlineTruck className="h-3 w-3 text-primary" /> Delivery Method
+                                                    </h4>
+                                                    <div className={`p-3 rounded-2xl border ${
+                                                        selectedOrder.deliveryMethod === 'EXPRESS'
+                                                            ? 'bg-amber-50 border-amber-200'
+                                                            : selectedOrder.deliveryMethod === 'SCHEDULED'
+                                                            ? 'bg-emerald-50 border-emerald-200'
+                                                            : 'bg-blue-50 border-blue-200'
+                                                    }`}>
+                                                        <p className="text-xs font-bold text-slate-900">
+                                                            {selectedOrder.deliveryMethod === 'EXPRESS'
+                                                                ? '⚡ Express Delivery (Deliver ASAP)'
+                                                                : selectedOrder.deliveryMethod === 'SCHEDULED'
+                                                                ? `📅 Scheduled Delivery: ${selectedOrder.scheduledDate || ''} (${selectedOrder.timeSlot || ''})`
+                                                                : '🚚 Normal Delivery (1–2 hours)'}
+                                                        </p>
+                                                        {selectedOrder.deliveryMethod === 'SCHEDULED' && (
+                                                            <p className="text-[11px] text-emerald-800 font-semibold mt-1">
+                                                                Please ensure this order is prepared and ready for dispatch in accordance with the selected slot.
+                                                            </p>
+                                                        )}
+                                                    </div>
                                                 </div>
                                                 <div>
                                                     <h4 className="text-xs font-black text-slate-600 uppercase tracking-widest mb-2 flex items-center gap-2">

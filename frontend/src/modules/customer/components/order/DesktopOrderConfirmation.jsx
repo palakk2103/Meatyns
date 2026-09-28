@@ -1,7 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Check, Leaf, ShieldCheck, Zap } from "lucide-react";
-import Header from "../layout/Header";
 
 const DesktopOrderConfirmation = ({
   orderId = "FK123456",
@@ -34,8 +33,7 @@ const DesktopOrderConfirmation = ({
 
   return (
     <div className="min-h-screen bg-[#FBF8F5] pb-16">
-      <Header />
-      <div className="pt-28 px-6 lg:px-12 max-w-5xl mx-auto">
+      <div className="pt-8 px-6 lg:px-12 max-w-5xl mx-auto">
         <h1 className="text-xl font-bold text-slate-800 mb-6 tracking-tight">
           Order Confirmation
         </h1>

@@ -30,8 +30,9 @@ import {
   Bike,
   ShieldCheck,
   Check,
+  Zap,
+  CalendarDays,
 } from "lucide-react";
-import Header from "../components/layout/Header";
 import { customerApi } from "../services/customerApi";
 import { toast } from "sonner";
 import { subscribeToOrderLocation, subscribeToOrderTrail, subscribeToOrderRoute } from "@/core/services/trackingClient";
@@ -814,6 +815,60 @@ const OrderDetailPage = () => {
             </motion.div>
           )}
 
+          {/* Delivery Method Banner (Mobile) */}
+          <div className="rounded-2xl p-4 border shadow-xs transition-all bg-white border-slate-100 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div
+                className={`w-10 h-10 rounded-xl flex items-center justify-center font-bold ${
+                  order.deliveryMethod === "EXPRESS"
+                    ? "bg-[#FDCE04] text-[#1A1A1A]"
+                    : order.deliveryMethod === "SCHEDULED"
+                    ? "bg-emerald-100 text-emerald-800"
+                    : "bg-blue-100 text-blue-800"
+                }`}
+              >
+                {order.deliveryMethod === "EXPRESS" ? (
+                  <Zap size={20} strokeWidth={2.4} />
+                ) : order.deliveryMethod === "SCHEDULED" ? (
+                  <CalendarDays size={20} strokeWidth={2.4} />
+                ) : (
+                  <Truck size={20} strokeWidth={2.4} />
+                )}
+              </div>
+              <div>
+                <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 block">
+                  {order.deliveryMethod === "EXPRESS"
+                    ? "Express Delivery"
+                    : order.deliveryMethod === "SCHEDULED"
+                    ? "Scheduled Delivery"
+                    : "Normal Delivery"}
+                </span>
+                <p className="text-xs font-bold text-slate-800">
+                  {order.deliveryMethod === "EXPRESS"
+                    ? "Deliver as soon as possible"
+                    : order.deliveryMethod === "SCHEDULED"
+                    ? `${order.scheduledDate ? order.scheduledDate : ""}${order.timeSlot && order.timeSlot !== "now" ? `, ${order.timeSlot}` : ""}`
+                    : "Estimated arrival: 1–2 hours"}
+                </p>
+              </div>
+            </div>
+            <span
+              className={`text-[10px] font-extrabold px-2.5 py-1 rounded-full border ${
+                order.deliveryMethod === "EXPRESS"
+                  ? "bg-amber-50 border-amber-200 text-amber-900"
+                  : order.deliveryMethod === "SCHEDULED"
+                  ? "bg-emerald-50 border-emerald-200 text-emerald-900"
+                  : "bg-blue-50 border-blue-200 text-blue-900"
+              }`}
+            >
+              {order.deliveryMethod === "EXPRESS"
+                ? "⚡ ASAP"
+                : order.deliveryMethod === "SCHEDULED"
+                ? "📅 Slot"
+                : "Standard"}
+            </span>
+          </div>
+
           {/* Enhanced Map with Cleaner Design - Hide when delivered or cancelled */}
           {!isAwaitingOnlinePayment && status !== "delivered" && status !== "cancelled" && (
             <motion.div
@@ -1029,8 +1084,7 @@ const OrderDetailPage = () => {
 
       {/* Desktop View - Matching Image 5 */}
       <div className="hidden lg:block">
-        <Header />
-        <div className="min-h-screen bg-[#FBF8F5] pt-28 pb-16 px-6 lg:px-12">
+        <div className="min-h-screen bg-[#FBF8F5] pt-8 pb-16 px-6 lg:px-12">
           <div className="max-w-7xl mx-auto grid grid-cols-12 gap-8 items-start">
             {/* Left Column: Order Header & Vertical Timeline Tracker */}
             <div className="col-span-7 xl:col-span-8 space-y-4">
@@ -1053,6 +1107,60 @@ const OrderDetailPage = () => {
                     {estimatedArrival?.arrivingInText ? `Expected in ${estimatedArrival.arrivingInText}` : 'Expected in 14 mins'}
                   </p>
                 </div>
+              </div>
+
+              {/* Delivery Method Banner (Desktop) */}
+              <div className="rounded-2xl p-4 border shadow-xs transition-all bg-white border-[#ede5df] flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`w-10 h-10 rounded-xl flex items-center justify-center font-bold ${
+                      order.deliveryMethod === "EXPRESS"
+                        ? "bg-[#FDCE04] text-[#1A1A1A]"
+                        : order.deliveryMethod === "SCHEDULED"
+                        ? "bg-emerald-100 text-emerald-800"
+                        : "bg-blue-100 text-blue-800"
+                    }`}
+                  >
+                    {order.deliveryMethod === "EXPRESS" ? (
+                      <Zap size={20} strokeWidth={2.4} />
+                    ) : order.deliveryMethod === "SCHEDULED" ? (
+                      <CalendarDays size={20} strokeWidth={2.4} />
+                    ) : (
+                      <Truck size={20} strokeWidth={2.4} />
+                    )}
+                  </div>
+                  <div>
+                    <span className="text-xs font-bold uppercase tracking-wider text-slate-500 block">
+                      {order.deliveryMethod === "EXPRESS"
+                        ? "Express Delivery"
+                        : order.deliveryMethod === "SCHEDULED"
+                        ? "Scheduled Delivery"
+                        : "Normal Delivery"}
+                    </span>
+                    <p className="text-sm font-extrabold text-slate-800">
+                      {order.deliveryMethod === "EXPRESS"
+                        ? "Deliver as soon as possible"
+                        : order.deliveryMethod === "SCHEDULED"
+                        ? `${order.scheduledDate ? order.scheduledDate : ""}${order.timeSlot && order.timeSlot !== "now" ? `, ${order.timeSlot}` : ""}`
+                        : "Estimated delivery: 1–2 hours"}
+                    </p>
+                  </div>
+                </div>
+                <span
+                  className={`text-xs font-extrabold px-3 py-1 rounded-full border ${
+                    order.deliveryMethod === "EXPRESS"
+                      ? "bg-amber-50 border-amber-200 text-amber-900"
+                      : order.deliveryMethod === "SCHEDULED"
+                      ? "bg-emerald-50 border-emerald-200 text-emerald-900"
+                      : "bg-blue-50 border-blue-200 text-blue-900"
+                  }`}
+                >
+                  {order.deliveryMethod === "EXPRESS"
+                    ? "⚡ Express"
+                    : order.deliveryMethod === "SCHEDULED"
+                    ? "📅 Advance Slot"
+                    : "Standard"}
+                </span>
               </div>
 
               {/* Vertical Step Tracker Card */}

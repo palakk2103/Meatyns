@@ -24,6 +24,7 @@ import {
   shiftHex,
 } from "../../utils/headerTheme";
 import LogoImage from "../../../../assets/Logo.png";
+import HeaderCategoryNav from "../layout/HeaderCategoryNav";
 
 // MUI Icons
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
@@ -255,7 +256,7 @@ const MainLocationHeader = ({
             backgroundColor: "#FFFFFF",
           }}
           className={cn(
-            "px-4 overflow-hidden transform-gpu will-change-transform bg-white border-b border-slate-100 shadow-xs md:border-b-[3px] md:border-[#FAB82C]"
+            "px-4 overflow-hidden md:overflow-visible transform-gpu will-change-transform bg-white border-b border-slate-100 shadow-xs md:border-b md:border-slate-200/80"
           )}>
 
           {/* Desktop/Tablet Header Layout (md and above) */}
@@ -353,6 +354,15 @@ const MainLocationHeader = ({
                 </span>
               </button>
             </div>
+          </div>
+
+          {/* ──── Desktop Header Category Section (Horizontal scroll - main categories) ──── */}
+          <div className="hidden md:block relative z-20 w-full max-w-[1440px] mx-auto px-4 lg:px-8 pt-0 pb-1">
+            <HeaderCategoryNav
+              categories={categories}
+              activeCategory={activeCategory}
+              onCategorySelect={onCategorySelect}
+            />
           </div>
 
           {/* ──── Mobile View Navbar (Strictly md:hidden) matching reference screenshot ──── */}

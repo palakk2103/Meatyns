@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Package, ChevronRight, CheckCircle, Loader2, ChevronLeft } from 'lucide-react';
 import { customerApi } from '../services/customerApi';
@@ -143,6 +143,24 @@ const OrdersPage = () => {
                                                         minute: '2-digit',
                                                     })}
                                                 </p>
+                                                {order.deliveryMethod && (
+                                                    <div className="mt-1.5 flex items-center gap-1.5 flex-wrap">
+                                                        <span className={`inline-flex items-center text-[10px] font-bold px-2 py-0.5 rounded-md border ${
+                                                            order.deliveryMethod === 'EXPRESS'
+                                                                ? 'bg-amber-50 text-amber-900 border-amber-200'
+                                                                : order.deliveryMethod === 'SCHEDULED'
+                                                                ? 'bg-emerald-50 text-emerald-900 border-emerald-200'
+                                                                : 'bg-blue-50 text-blue-900 border-blue-200'
+                                                        }`}>
+                                                            {order.deliveryMethod === 'EXPRESS' ? '⚡ Express' : order.deliveryMethod === 'SCHEDULED' ? '📅 Scheduled' : '🚚 Normal'}
+                                                        </span>
+                                                        {order.deliveryMethod === 'SCHEDULED' && (order.scheduledDate || order.timeSlot) && (
+                                                            <span className="text-[10px] font-semibold text-slate-600">
+                                                                {order.scheduledDate ? `${order.scheduledDate}` : ''} {order.timeSlot && order.timeSlot !== 'now' ? `(${order.timeSlot})` : ''}
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                )}
                                             </div>
                                         </div>
                                         <div className="flex flex-col items-end gap-1 shrink-0 text-right">

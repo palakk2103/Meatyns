@@ -108,9 +108,12 @@ const Footer = () => {
                         <ul className="space-y-2.5 md:space-y-3.5">
                             <li><Link to="/" className="text-slate-300 hover:text-[#FAB82C] hover:font-bold transition-all text-sm md:text-[15px] font-medium flex items-center group"><span className="w-0 h-0.5 bg-[#FAB82C] group-hover:w-3 group-hover:mr-2 transition-all rounded-full"></span>Home</Link></li>
                             <li><Link to="/about" className="text-slate-300 hover:text-[#FAB82C] hover:font-bold transition-all text-sm md:text-[15px] font-medium flex items-center group"><span className="w-0 h-0.5 bg-[#FAB82C] group-hover:w-3 group-hover:mr-2 transition-all rounded-full"></span>About Meatyns</Link></li>
+                            <li><Link to="/franchise" className="text-slate-300 hover:text-[#FAB82C] hover:font-bold transition-all text-sm md:text-[15px] font-medium flex items-center group"><span className="w-0 h-0.5 bg-[#FAB82C] group-hover:w-3 group-hover:mr-2 transition-all rounded-full"></span>Franchise Opportunities</Link></li>
+                            <li><Link to="/what-we-deliver" className="text-slate-300 hover:text-[#FAB82C] hover:font-bold transition-all text-sm md:text-[15px] font-medium flex items-center group"><span className="w-0 h-0.5 bg-[#FAB82C] group-hover:w-3 group-hover:mr-2 transition-all rounded-full"></span>What We Deliver</Link></li>
                             <li><Link to="/category/all" className="text-slate-300 hover:text-[#FAB82C] hover:font-bold transition-all text-sm md:text-[15px] font-medium flex items-center group"><span className="w-0 h-0.5 bg-[#FAB82C] group-hover:w-3 group-hover:mr-2 transition-all rounded-full"></span>All Categories</Link></li>
                             <li><Link to="/offers" className="text-slate-300 hover:text-[#FAB82C] hover:font-bold transition-all text-sm md:text-[15px] font-medium flex items-center group"><span className="w-0 h-0.5 bg-[#FAB82C] group-hover:w-3 group-hover:mr-2 transition-all rounded-full"></span>Offers &amp; Deals</Link></li>
                             <li><Link to="/support" className="text-slate-300 hover:text-[#FAB82C] hover:font-bold transition-all text-sm md:text-[15px] font-medium flex items-center group"><span className="w-0 h-0.5 bg-[#FAB82C] group-hover:w-3 group-hover:mr-2 transition-all rounded-full"></span>Customer Support</Link></li>
+                            <li><Link to="/contact" className="text-slate-300 hover:text-[#FAB82C] hover:font-bold transition-all text-sm md:text-[15px] font-medium flex items-center group"><span className="w-0 h-0.5 bg-[#FAB82C] group-hover:w-3 group-hover:mr-2 transition-all rounded-full"></span>Contact Us</Link></li>
                         </ul>
                     </div>
 
@@ -139,24 +142,34 @@ const Footer = () => {
                                     <MapPin size={18} />
                                 </div>
                                 <span className="text-sm md:text-[14.5px] text-slate-300 pt-1 font-medium leading-snug">
-                                    {settings?.address || 'Ramkrishna Nagar, Patna 800020'}
+                                    {settings?.contactAddress || settings?.address || "Unit-A, Shop No. 11, Sharda Vihar Apartment, Isolation Ring Road, Near Dhyan Chand Hockey Stadium, Kolhapur"}
                                 </span>
                             </li>
                             <li className="flex items-center gap-3.5 group">
                                 <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-[#FAB82C] shrink-0 group-hover:bg-[#C81017] group-hover:text-white transition-colors">
                                     <Phone size={18} />
                                 </div>
-                                <span className="text-sm md:text-[14.5px] text-slate-300 font-medium">
-                                    {settings?.supportPhone || '+91 9555581201'}
-                                </span>
+                                <div className="text-sm md:text-[14.5px] text-slate-300 font-medium flex flex-wrap items-center gap-1.5">
+                                    {settings?.contactPhone || settings?.phone ? (
+                                        <a href={`tel:${settings?.contactPhone || settings?.phone}`} className="hover:text-[#FAB82C] transition-colors">
+                                            {settings?.contactPhone || settings?.phone}
+                                        </a>
+                                    ) : (
+                                        <>
+                                            <a href="tel:18002338590" className="hover:text-[#FAB82C] transition-colors">1800-233-8590</a>
+                                            <span>|</span>
+                                            <a href="tel:7558598590" className="hover:text-[#FAB82C] transition-colors">75585 98590</a>
+                                        </>
+                                    )}
+                                </div>
                             </li>
                             <li className="flex items-center gap-3.5 group">
                                 <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-[#FAB82C] shrink-0 group-hover:bg-[#C81017] group-hover:text-white transition-colors">
                                     <Mail size={18} />
                                 </div>
-                                <span className="text-sm md:text-[14.5px] text-slate-300 font-medium">
-                                    {settings?.supportEmail || 'support@meatyns.com'}
-                                </span>
+                                <a href={`mailto:${settings?.contactEmail || settings?.email || "contact@meatyns.com"}`} className="text-sm md:text-[14.5px] text-slate-300 font-medium hover:text-[#FAB82C] transition-colors">
+                                    {settings?.contactEmail || settings?.email || "contact@meatyns.com"}
+                                </a>
                             </li>
                         </ul>
                     </div>
@@ -167,11 +180,13 @@ const Footer = () => {
                     <p className="text-slate-400 font-medium">
                         &copy; {new Date().getFullYear()} Meatyns. All rights reserved.
                     </p>
-                    <div className="flex gap-6 justify-center md:justify-end mt-4 md:mt-0 font-medium">
+                    <div className="flex flex-wrap gap-4 md:gap-6 justify-center md:justify-end mt-4 md:mt-0 font-medium">
+                        <Link to="/policy" className="text-slate-400 hover:text-[#FAB82C] transition-colors">Our Policies</Link>
+                        <Link to="/quality-policy" className="text-slate-400 hover:text-[#FAB82C] transition-colors">Quality Policy</Link>
+                        <Link to="/shipping-policy" className="text-slate-400 hover:text-[#FAB82C] transition-colors">Delivery Policy</Link>
+                        <Link to="/refund-policy" className="text-slate-400 hover:text-[#FAB82C] transition-colors">Refund & Replacement</Link>
                         <Link to="/privacy" className="text-slate-400 hover:text-[#FAB82C] transition-colors">Privacy Policy</Link>
                         <Link to="/terms" className="text-slate-400 hover:text-[#FAB82C] transition-colors">Terms of Service</Link>
-                        <Link to="/shipping-policy" className="text-slate-400 hover:text-[#FAB82C] transition-colors">Shipping Policy</Link>
-                        <Link to="/return-policy" className="text-slate-400 hover:text-[#FAB82C] transition-colors">Return Policy</Link>
                     </div>
                 </div>
             </div>

@@ -41,6 +41,11 @@ export const checkoutPreviewSchema = Joi.object({
   walletAmount: Joi.number().min(0).default(0),
   paymentMode: Joi.string().valid("ONLINE", "COD").default("COD"),
   timeSlot: Joi.string().allow("", null),
+  deliveryMethod: Joi.string().valid("EXPRESS", "NORMAL", "SCHEDULED").default("NORMAL"),
+  scheduledDate: Joi.string().allow("", null).optional(),
+  scheduledStartTime: Joi.string().allow("", null).optional(),
+  scheduledEndTime: Joi.string().allow("", null).optional(),
+  deliverySlotId: Joi.string().allow("", null).optional(),
   couponId: Joi.string().allow("", null).optional(),
   // Audit Phase 5 (C-2 + H-7): accept the coupon CODE as an alternative
   // to couponId so the server can re-validate the coupon end-to-end
@@ -49,6 +54,17 @@ export const checkoutPreviewSchema = Joi.object({
   // snapshot ignores client-supplied `discountTotal` when either
   // identifier is provided and SERVER_SIDE_COUPON_ENGINE is on.
   couponCode: Joi.string().trim().allow("", null).optional(),
+});
+
+export const getDeliverySlotsSchema = Joi.object({
+  address: Joi.object({
+    location: locationSchema.optional(),
+    city: Joi.string().allow("", null).optional(),
+  }).unknown(true).optional(),
+  customerLocation: locationSchema.optional(),
+  items: Joi.array().items(orderItemSchema).optional(),
+  sellerId: Joi.string().allow("", null).optional(),
+  date: Joi.string().allow("", null).optional(),
 });
 
 export const createFinanceOrderSchema = checkoutPreviewSchema.keys({

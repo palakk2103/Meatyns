@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Seller from "../models/seller.js";
 import Category from "../models/category.js";
 import { distanceMeters } from "../utils/geoUtils.js";
@@ -188,7 +189,11 @@ function allocateCheckoutTipToSellerBreakdowns(
 
 async function computeGlobalHandlingFeeForCheckout(hydratedItems = [], { session = null } = {}) {
   const headerIds = Array.from(
-    new Set(hydratedItems.map((item) => String(item?.headerCategoryId || "")).filter(Boolean)),
+    new Set(
+      hydratedItems
+        .map((item) => String(item?.headerCategoryId || "").trim())
+        .filter((id) => id && id !== "undefined" && id !== "null"),
+    ),
   );
   if (headerIds.length === 0) {
     return {

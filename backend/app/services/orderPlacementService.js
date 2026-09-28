@@ -44,6 +44,7 @@ import {
   validateIdempotencyKey,
 } from "./idempotencyService.js";
 import { buildCheckoutPricingSnapshot } from "./checkoutPricingService.js";
+import { verifySlotAvailabilityBeforePlacement } from "./deliverySlotService.js";
 import { emitNotificationEvent } from "../modules/notifications/notification.emitter.js";
 import { NOTIFICATION_EVENTS } from "../modules/notifications/notification.constants.js";
 import * as logger from "./logger.js";
@@ -461,6 +462,23 @@ export async function placeOrderAtomic({
 
     for (let index = 0; index < pricingSnapshot.sellerBreakdownEntries.length; index += 1) {
       const entry = pricingSnapshot.sellerBreakdownEntries[index];
+
+      // Anti-Double-Booking atomic capacity check for scheduled slots
+      if (normalizedPayload.deliveryMethod === "SCHEDULED") {
+        const slotCheck = await verifySlotAvailabilityBeforePlacement({
+          sellerId: entry.sellerId,
+          deliveryMethod: normalizedPayload.deliveryMethod,
+          scheduledDate: normalizedPayload.scheduledDate,
+          scheduledStartTime: normalizedPayload.scheduledStartTime,
+          session,
+        });
+        if (!slotCheck.ok) {
+          const slotErr = new Error(slotCheck.reason || "This delivery slot is no longer available. Please select another slot.");
+          slotErr.statusCode = 409;
+          throw slotErr;
+        }
+      }
+
       const orderId = await generateUniquePublicOrderId({ session });
       const orderReservation = computeStockReservationWindow(paymentMode);
       const sellerLowStockAlerts = await reserveStockForItems({
@@ -529,7 +547,12 @@ export async function placeOrderAtomic({
         ...(persistedCouponSnapshot ? { couponSnapshot: persistedCouponSnapshot } : {}),
         status: "pending",
         orderStatus: "pending",
-        timeSlot: normalizedPayload.timeSlot || "now",
+        deliveryMethod: normalizedPayload.deliveryMethod || "NORMAL",
+        scheduledDate: normalizedPayload.scheduledDate || null,
+        scheduledStartTime: normalizedPayload.scheduledStartTime || null,
+        scheduledEndTime: normalizedPayload.scheduledEndTime || null,
+        deliverySlotId: normalizedPayload.deliverySlotId || null,
+        timeSlot: normalizedPayload.timeSlot || (normalizedPayload.scheduledStartTime && normalizedPayload.scheduledEndTime ? `${normalizedPayload.scheduledStartTime} - ${normalizedPayload.scheduledEndTime}` : "now"),
         workflowVersion: 2,
         workflowStatus: startSellerWorkflow
           ? WORKFLOW_STATUS.SELLER_PENDING
@@ -560,6 +583,11 @@ export async function placeOrderAtomic({
 
     checkoutGroup.orderIds = orders.map((order) => order._id);
     checkoutGroup.publicOrderIds = orders.map((order) => order.orderId);
+    checkoutGroup.deliveryMethod = normalizedPayload.deliveryMethod || "NORMAL";
+    checkoutGroup.scheduledDate = normalizedPayload.scheduledDate || null;
+    checkoutGroup.scheduledStartTime = normalizedPayload.scheduledStartTime || null;
+    checkoutGroup.scheduledEndTime = normalizedPayload.scheduledEndTime || null;
+    checkoutGroup.deliverySlotId = normalizedPayload.deliverySlotId || null;
     checkoutGroup.sellerBreakdown = orders.map((order, index) => ({
       seller: order.seller,
       order: order._id,

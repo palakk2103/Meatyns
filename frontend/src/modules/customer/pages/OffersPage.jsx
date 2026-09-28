@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { Tag, Sparkles, Clock, ArrowRight, Flame, Heart, ShoppingCart, Plus, Minus } from "lucide-react";
+import { Tag, Sparkles, Clock, ArrowRight, ArrowLeft, Flame, Heart, ShoppingCart, Plus, Minus } from "lucide-react";
 import { motion } from "framer-motion";
 import { customerApi } from "../services/customerApi";
 import { useWishlist } from "../context/WishlistContext";
@@ -170,20 +170,36 @@ const OffersPage = () => {
     .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 
   return (
-    <div className="relative z-10 w-full max-w-[1920px] mx-auto px-4 md:px-[50px] pt-[104px] md:pt-0 mt-0 md:mt-24 pb-8 md:py-8">
+    <div className="relative z-10 w-full max-w-[1920px] mx-auto px-4 md:px-[50px] pt-4 sm:pt-6 md:pt-8 pb-8 md:py-8">
       {/* Top Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="mb-6 sm:mb-8 text-left"
+        className="mb-6 sm:mb-8 text-left flex items-center gap-3.5"
       >
-        <h1 className="text-2xl sm:text-3xl md:text-5xl font-black tracking-tight text-primary mb-1.5 sm:mb-2">
-          Best Offers for You
-        </h1>
-        <p className="text-gray-500 text-sm md:text-lg font-medium">
-          Grab these exclusive deals before they expire!
-        </p>
+        <button
+          type="button"
+          onClick={() => {
+            if (window.history.length > 1) {
+              navigate(-1);
+            } else {
+              navigate('/');
+            }
+          }}
+          aria-label="Go back"
+          className="flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white border border-slate-200 hover:bg-slate-50 text-[#1A1A1A] active:scale-90 transition-all cursor-pointer shadow-xs shrink-0"
+        >
+          <ArrowLeft size={18} strokeWidth={2.4} />
+        </button>
+        <div>
+          <h1 className="text-2xl sm:text-3xl md:text-5xl font-black tracking-tight text-primary mb-1 sm:mb-1.5">
+            Best Offers for You
+          </h1>
+          <p className="text-gray-500 text-sm md:text-lg font-medium">
+            Grab these exclusive deals before they expire!
+          </p>
+        </div>
       </motion.div>
 
       {/* ─── Hot Deals Product Cards Section ────────────────────────── */}

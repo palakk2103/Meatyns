@@ -162,6 +162,11 @@ export const placeOrder = async (req, res) => {
         inferPaymentMode(payment) ||
         "COD",
       timeSlot: timeSlot || "now",
+      deliveryMethod: req.body?.deliveryMethod || "NORMAL",
+      scheduledDate: req.body?.scheduledDate || null,
+      scheduledStartTime: req.body?.scheduledStartTime || null,
+      scheduledEndTime: req.body?.scheduledEndTime || null,
+      deliverySlotId: req.body?.deliverySlotId || null,
       tipAmount: Number(req.body?.tipAmount || 0),
     });
 
@@ -1234,7 +1239,7 @@ export const updateReturnStatus = async (req, res) => {
 export const getSellerOrders = async (req, res) => {
   try {
     const { id: userId, role } = req.user;
-    const { startDate, endDate, status: statusParam } = req.query;
+    const { startDate, endDate, status: statusParam, deliveryMethod } = req.query;
 
     const { page, limit, skip } = getPagination(req, {
       defaultLimit: 25,
@@ -1245,6 +1250,7 @@ export const getSellerOrders = async (req, res) => {
       role,
       userId,
       statusParam,
+      deliveryMethod,
       startDate,
       endDate,
       skip,

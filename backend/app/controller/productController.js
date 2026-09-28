@@ -291,11 +291,17 @@ export const getProducts = async (req, res) => {
           : nearbySellerIds;
 
         if (finalSellerIds.length > 0) {
-          query.sellerId = { $in: finalSellerIds };
+          query.sellerId = finalSellerIds.length === 1 ? finalSellerIds[0] : { $in: finalSellerIds };
+        } else {
+          // Requested seller is outside service radius
+          query.sellerId = { $in: [] };
         }
       } else if (requestedSellerIds.length > 0) {
         // Fallback: If user explicitly requested a specific seller, honor it
         query.sellerId = { $in: requestedSellerIds };
+      } else {
+        // Customer location has no active serving outlet within service radius
+        query.sellerId = { $in: [] };
       }
     }
 

@@ -1,0 +1,32 @@
+/**
+ * Delivery Method and Slot Constants & Configuration
+ * 
+ * Supports EXPRESS, NORMAL, and SCHEDULED delivery options.
+ */
+
+export const DELIVERY_METHODS = Object.freeze({
+  EXPRESS: "EXPRESS",
+  NORMAL: "NORMAL",
+  SCHEDULED: "SCHEDULED",
+});
+
+export const ALL_DELIVERY_METHODS = Object.freeze([
+  DELIVERY_METHODS.EXPRESS,
+  DELIVERY_METHODS.NORMAL,
+  DELIVERY_METHODS.SCHEDULED,
+]);
+
+export const DELIVERY_SLOT_CONFIG = Object.freeze({
+  SLOT_DURATION_MINUTES: parseInt(process.env.DELIVERY_SLOT_DURATION_MINS || "60", 10),
+  MINIMUM_ADVANCE_MINUTES: parseInt(process.env.DELIVERY_SLOT_MIN_ADVANCE_MINS || "60", 10),
+  MAXIMUM_ADVANCE_DAYS: parseInt(process.env.DELIVERY_SLOT_MAX_DAYS || "7", 10),
+  NORMAL_MIN_MINUTES: parseInt(process.env.DELIVERY_NORMAL_MIN_MINS || "60", 10),
+  NORMAL_MAX_MINUTES: parseInt(process.env.DELIVERY_NORMAL_MAX_MINS || "120", 10),
+  EXPRESS_BASE_PREP_MINUTES: parseInt(process.env.DELIVERY_EXPRESS_PREP_MINS || "15", 10),
+  EXPRESS_TRAVEL_MINUTES_PER_KM: parseInt(process.env.DELIVERY_EXPRESS_MINS_PER_KM || "3", 10),
+  DEFAULT_MAX_ORDERS_PER_SLOT: parseInt(process.env.DELIVERY_SLOT_MAX_ORDERS || "10", 10),
+  DEFAULT_STORE_OPEN_TIME: process.env.DELIVERY_DEFAULT_OPEN_TIME || "09:00",
+  DEFAULT_STORE_CLOSE_TIME: process.env.DELIVERY_DEFAULT_CLOSE_TIME || "21:00",
+  SCHEDULED_DISPATCH_LEAD_MINUTES: parseInt(process.env.DELIVERY_SCHEDULED_LEAD_MINS || "35", 10),
+  DEFAULT_TIMEZONE: process.env.APP_TIMEZONE || "Asia/Kolkata",
+});

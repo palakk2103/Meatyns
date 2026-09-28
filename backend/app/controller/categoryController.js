@@ -1,4 +1,5 @@
 import Category from "../models/category.js";
+import Product from "../models/product.js";
 import handleResponse from "../utils/helper.js";
 import getPagination from "../utils/pagination.js";
 import { buildKey, getOrSet, getTTL, invalidate } from "../services/cacheService.js";
@@ -31,16 +32,15 @@ function normalizeParentId(parentId) {
 }
 
 async function validateParentForType(type, parentId) {
-  if (type === "header") return true;
-  if (!parentId) return false;
+  if (type === "header" || !parentId) return true;
 
   try {
     const parent = await Category.findById(parentId).select("type").lean();
     if (!parent) return false;
     
-    // Strict hierarchy check
-    if (type === "category" && parent.type !== "header") return false;
-    if (type === "subcategory" && parent.type !== "category") return false;
+    // Support flexible hierarchy (Subcategory can belong to Header or Category)
+    if (type === "category" && !["header", "category"].includes(parent.type)) return false;
+    if (type === "subcategory" && !["header", "category"].includes(parent.type)) return false;
     
     return true;
   } catch (err) {
@@ -73,25 +73,31 @@ async function generateUniqueCategorySlug(text, excludeCategoryId = null) {
  ================================ */
 export const getCategories = async (req, res) => {
   try {
-    const { flat, tree, type } = req.query;
+    const { flat, tree, type, status, withCounts } = req.query;
 
     if (tree === "true") {
-      const cacheKey = categoryCacheKey({ tree: true, type: "header" });
+      const cacheKey = categoryCacheKey({ tree: true, type: type || "header" });
       const categories = await getOrSet(
         cacheKey,
         async () => {
-          const selectFields = "name slug image iconId type parentId headerColor headerFontColor headerIconColor";
-          return Category.find({ type: "header" })
+          const selectFields = "name slug image iconId type parentId headerColor headerFontColor headerIconColor displayOrder status description";
+          const treeQuery = { type: type || "header" };
+          if (status && status !== "all") {
+            treeQuery.status = status;
+          }
+          return Category.find(treeQuery)
             .select(selectFields)
             .populate({
               path: "children",
               select: selectFields,
+              options: { sort: { displayOrder: 1, name: 1, _id: 1 } },
               populate: {
                 path: "children",
                 select: selectFields,
+                options: { sort: { displayOrder: 1, name: 1, _id: 1 } },
               },
             })
-            .sort({ name: 1, _id: 1 })
+            .sort({ displayOrder: 1, name: 1, _id: 1 })
             .lean();
         },
         getTTL("categories"),
@@ -110,11 +116,13 @@ export const getCategories = async (req, res) => {
       if (type === "header" || type === "category" || type === "subcategory") {
         query.type = type;
       }
+      if (status && status !== "all") {
+        query.status = status;
+      }
       const search = (req.query.search || "").trim();
-      const parentId = req.query.parentId || req.query.parentId; // Support both naming variants
+      const parentId = req.query.parentId;
 
       if (search) {
-        // P3-5: same substring search; user input is now regex-escaped.
         const safe = buildSearchRegex(String(search), { anchored: false });
         query.$or = [
           { name: safe },
@@ -123,13 +131,69 @@ export const getCategories = async (req, res) => {
       }
       
       if (parentId && parentId !== "all") {
-        query.parentId = parentId;
+        if (parentId === "null" || parentId === "root") {
+          query.parentId = null;
+        } else if (mongoose.Types.ObjectId.isValid(parentId)) {
+          query.parentId = new mongoose.Types.ObjectId(parentId);
+        }
       }
 
-      const [items, total] = await Promise.all([
-        Category.find(query).sort({ name: 1 }).skip(skip).limit(limit).lean(),
+      const [rawItems, total] = await Promise.all([
+        Category.find(query).sort({ displayOrder: 1, name: 1, _id: 1 }).skip(skip).limit(limit).lean(),
         Category.countDocuments(query),
       ]);
+
+      // Attach subcategory and product counts
+      const categoryIds = rawItems.map((c) => c._id);
+      let subCountsMap = {};
+      let prodCountsMap = {};
+
+      if (categoryIds.length > 0) {
+        try {
+          const [subCounts, prodCounts] = await Promise.all([
+            Category.aggregate([
+              { $match: { parentId: { $in: categoryIds } } },
+              { $group: { _id: "$parentId", count: { $sum: 1 } } }
+            ]),
+            Product.aggregate([
+              {
+                $match: {
+                  $or: [
+                    { categoryId: { $in: categoryIds } },
+                    { subcategoryId: { $in: categoryIds } },
+                    { headerId: { $in: categoryIds } }
+                  ]
+                }
+              },
+              {
+                $project: {
+                  matchedIds: {
+                    $filter: {
+                      input: ["$categoryId", "$subcategoryId", "$headerId"],
+                      as: "id",
+                      cond: { $in: ["$$id", categoryIds] }
+                    }
+                  }
+                }
+              },
+              { $unwind: "$matchedIds" },
+              { $group: { _id: "$matchedIds", count: { $sum: 1 } } }
+            ])
+          ]);
+
+          subCounts.forEach((s) => { subCountsMap[String(s._id)] = s.count; });
+          prodCounts.forEach((p) => { prodCountsMap[String(p._id)] = p.count; });
+        } catch (aggErr) {
+          console.warn("[Category] Count aggregation failed:", aggErr.message);
+        }
+      }
+
+      const items = rawItems.map((item) => ({
+        ...item,
+        subCategoryCount: subCountsMap[String(item._id)] || 0,
+        productCount: prodCountsMap[String(item._id)] || 0,
+      }));
+
       return handleResponse(res, 200, "Categories fetched successfully", {
         items,
         page,
@@ -143,17 +207,79 @@ export const getCategories = async (req, res) => {
     if (type === "header" || type === "category" || type === "subcategory") {
       query.type = type;
     }
-    const cacheKey = categoryCacheKey({ tree: false, type: query.type || "all" });
-    const categories = await getOrSet(
-      cacheKey,
-      async () => Category.find(query).sort({ name: 1, _id: 1 }).lean(),
-      getTTL("categories"),
-    );
+    if (status && status !== "all") {
+      query.status = status;
+    }
+    const parentId = req.query.parentId;
+    if (parentId && parentId !== "all") {
+      if (parentId === "null" || parentId === "root") {
+        query.parentId = null;
+      } else if (mongoose.Types.ObjectId.isValid(parentId)) {
+        query.parentId = new mongoose.Types.ObjectId(parentId);
+      }
+    }
+
+    const rawCategories = await Category.find(query).sort({ displayOrder: 1, name: 1, _id: 1 }).lean();
+
+    if (withCounts === "true") {
+      const categoryIds = rawCategories.map((c) => c._id);
+      let subCountsMap = {};
+      let prodCountsMap = {};
+
+      if (categoryIds.length > 0) {
+        try {
+          const [subCounts, prodCounts] = await Promise.all([
+            Category.aggregate([
+              { $match: { parentId: { $in: categoryIds } } },
+              { $group: { _id: "$parentId", count: { $sum: 1 } } }
+            ]),
+            Product.aggregate([
+              {
+                $match: {
+                  $or: [
+                    { categoryId: { $in: categoryIds } },
+                    { subcategoryId: { $in: categoryIds } },
+                    { headerId: { $in: categoryIds } }
+                  ]
+                }
+              },
+              {
+                $project: {
+                  matchedIds: {
+                    $filter: {
+                      input: ["$categoryId", "$subcategoryId", "$headerId"],
+                      as: "id",
+                      cond: { $in: ["$$id", categoryIds] }
+                    }
+                  }
+                }
+              },
+              { $unwind: "$matchedIds" },
+              { $group: { _id: "$matchedIds", count: { $sum: 1 } } }
+            ])
+          ]);
+
+          subCounts.forEach((s) => { subCountsMap[String(s._id)] = s.count; });
+          prodCounts.forEach((p) => { prodCountsMap[String(p._id)] = p.count; });
+        } catch (aggErr) {
+          console.warn("[Category] Count aggregation failed:", aggErr.message);
+        }
+      }
+
+      const categoriesWithCounts = rawCategories.map((item) => ({
+        ...item,
+        subCategoryCount: subCountsMap[String(item._id)] || 0,
+        productCount: prodCountsMap[String(item._id)] || 0,
+      }));
+
+      return handleResponse(res, 200, "Categories fetched successfully", categoriesWithCounts);
+    }
+
     return handleResponse(
       res,
       200,
       "Categories fetched successfully",
-      categories,
+      rawCategories,
     );
   } catch (error) {
     return handleResponse(res, 500, error.message);
@@ -166,7 +292,7 @@ export const getCategories = async (req, res) => {
 export const createCategory = async (req, res) => {
   try {
     const categoryData = {};
-    const allowedKeys = ["name", "slug", "description", "type", "parentId", "status", "iconId", "headerColor", "headerFontColor", "headerIconColor", "adminCommission", "adminCommissionType", "adminCommissionValue", "handlingFees", "handlingFeeType", "handlingFeeValue"];
+    const allowedKeys = ["name", "slug", "description", "type", "parentId", "status", "iconId", "headerColor", "headerFontColor", "headerIconColor", "adminCommission", "adminCommissionType", "adminCommissionValue", "handlingFees", "handlingFeeType", "handlingFeeValue", "displayOrder"];
     
     // Strict Whitelisting and Sanitization
     for (const key of allowedKeys) {
@@ -178,6 +304,10 @@ export const createCategory = async (req, res) => {
         }
         categoryData[key] = val;
       }
+    }
+
+    if (categoryData.displayOrder !== undefined) {
+      categoryData.displayOrder = Number(categoryData.displayOrder) || 0;
     }
     
     // Handle Images
@@ -250,7 +380,7 @@ export const updateCategory = async (req, res) => {
     }
 
     const categoryData = {};
-    const allowedKeys = ["name", "slug", "description", "type", "parentId", "status", "iconId", "headerColor", "headerFontColor", "headerIconColor", "adminCommission", "adminCommissionType", "adminCommissionValue", "handlingFees", "handlingFeeType", "handlingFeeValue"];
+    const allowedKeys = ["name", "slug", "description", "type", "parentId", "status", "iconId", "headerColor", "headerFontColor", "headerIconColor", "adminCommission", "adminCommissionType", "adminCommissionValue", "handlingFees", "handlingFeeType", "handlingFeeValue", "displayOrder"];
     
     for (const key of allowedKeys) {
       if (Object.prototype.hasOwnProperty.call(req.body, key)) {
@@ -260,6 +390,10 @@ export const updateCategory = async (req, res) => {
         }
         categoryData[key] = val;
       }
+    }
+
+    if (categoryData.displayOrder !== undefined) {
+      categoryData.displayOrder = Number(categoryData.displayOrder) || 0;
     }
 
     if (req.file) {
@@ -296,15 +430,13 @@ export const updateCategory = async (req, res) => {
     
     const parentOk = await validateParentForType(type, parentToValidate);
     if (!parentOk) {
-      if (type === "category") return handleResponse(res, 400, "Level 2 Category must be linked to a Level 1 Header category");
-      if (type === "subcategory") return handleResponse(res, 400, "Level 3 Subcategory must be linked to a Level 2 Category");
+      return handleResponse(res, 400, "Invalid parent category hierarchy relationship");
     }
 
     if (categoryData.slug !== undefined || categoryData.name) {
       const slugInput = categoryData.slug || categoryData.name || existing.slug || existing.name;
       categoryData.slug = await generateUniqueCategorySlug(slugInput, id);
     }
-
 
     const updatedCategory = await Category.findByIdAndUpdate(
       id,
@@ -339,6 +471,45 @@ export const deleteBulkCategories = async (req, res) => {
       return handleResponse(res, 400, "Please provide an array of category IDs to delete");
     }
 
+    const validObjectIds = ids.filter(id => mongoose.Types.ObjectId.isValid(id)).map(id => new mongoose.Types.ObjectId(id));
+    if (validObjectIds.length === 0) {
+      return handleResponse(res, 400, "No valid category IDs provided");
+    }
+
+    // Collect all descendants
+    const collectDescendantIds = async (parentId) => {
+      let result = [parentId];
+      const children = await Category.find({ parentId }).select("_id").lean();
+      for (const child of children) {
+        const subIds = await collectDescendantIds(child._id);
+        result = result.concat(subIds);
+      }
+      return result;
+    };
+
+    let allTargetIds = [];
+    for (const pId of validObjectIds) {
+      const branchIds = await collectDescendantIds(pId);
+      allTargetIds = allTargetIds.concat(branchIds);
+    }
+
+    // Safety check: ensure no products are linked
+    const linkedCount = await Product.countDocuments({
+      $or: [
+        { categoryId: { $in: allTargetIds } },
+        { subcategoryId: { $in: allTargetIds } },
+        { headerId: { $in: allTargetIds } }
+      ]
+    });
+
+    if (linkedCount > 0) {
+      return handleResponse(
+        res,
+        400,
+        `Cannot delete: Selected categories (or their subcategories) are assigned to ${linkedCount} product(s). Please reassign or remove the products before deleting.`
+      );
+    }
+
     const deleteWithChildren = async (parentId) => {
       const children = await Category.find({ parentId }).select("_id").lean();
       for (const child of children) {
@@ -347,11 +518,9 @@ export const deleteBulkCategories = async (req, res) => {
       await Category.findByIdAndDelete(parentId);
     };
 
-    for (const id of ids) {
-      if (mongoose.Types.ObjectId.isValid(id)) {
-        await deleteWithChildren(id);
-        invalidateCategoryName(id).catch(() => {});
-      }
+    for (const id of validObjectIds) {
+      await deleteWithChildren(id);
+      invalidateCategoryName(id).catch(() => {});
     }
 
     invalidate("cache:catalog:categories:*").catch((err) => {
@@ -371,6 +540,16 @@ export const deleteAllCategories = async (req, res) => {
   try {
     const type = req.query?.type || req.body?.type || "all";
     const parentId = req.query?.parentId || req.body?.parentId;
+
+    // Check if any products exist before allowing wholesale deletion
+    const totalLinked = await Product.countDocuments({});
+    if (totalLinked > 0) {
+      return handleResponse(
+        res,
+        400,
+        `Cannot delete categories: There are ${totalLinked} products in the database. Please reassign or remove products first to prevent orphaned records.`
+      );
+    }
 
     const deleteWithChildren = async (id) => {
       const children = await Category.find({ parentId: id }).select("_id").lean();
@@ -401,7 +580,6 @@ export const deleteAllCategories = async (req, res) => {
       }
       await Category.deleteMany(query);
     } else {
-      // type === "all"
       await Category.deleteMany({});
     }
 
@@ -416,11 +594,47 @@ export const deleteAllCategories = async (req, res) => {
 };
 
 /* ===============================
-   DELETE CATEGORY
+   DELETE CATEGORY (Protected)
  ================================ */
 export const deleteCategory = async (req, res) => {
   try {
     const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return handleResponse(res, 400, "Invalid category ID");
+    }
+
+    const targetObjectId = new mongoose.Types.ObjectId(id);
+
+    // Recursively collect all descendant IDs
+    const collectDescendantIds = async (parentId) => {
+      let result = [parentId];
+      const children = await Category.find({ parentId }).select("_id").lean();
+      for (const child of children) {
+        const subIds = await collectDescendantIds(child._id);
+        result = result.concat(subIds);
+      }
+      return result;
+    };
+
+    const allIds = await collectDescendantIds(targetObjectId);
+
+    // CRITICAL PRODUCT SAFETY CHECK:
+    // Check if any product references this category, header, or subcategory
+    const linkedProductCount = await Product.countDocuments({
+      $or: [
+        { categoryId: { $in: allIds } },
+        { subcategoryId: { $in: allIds } },
+        { headerId: { $in: allIds } }
+      ]
+    });
+
+    if (linkedProductCount > 0) {
+      return handleResponse(
+        res,
+        400,
+        `Cannot delete: This category (or its subcategories) contains ${linkedProductCount} associated product(s). Please reassign or remove the products before deleting.`
+      );
+    }
 
     const deleteWithChildren = async (parentId) => {
       const children = await Category.find({ parentId });
@@ -430,16 +644,17 @@ export const deleteCategory = async (req, res) => {
       await Category.findByIdAndDelete(parentId);
     };
 
-    await deleteWithChildren(id);
+    await deleteWithChildren(targetObjectId);
     
+    for (const subId of allIds) {
+      invalidateCategoryName(subId).catch(() => {});
+    }
+
     invalidate("cache:catalog:categories:*").catch(err => {
       console.warn("[Category] Cache invalidation failed:", err.message);
     });
-    invalidateCategoryName(id).catch(err => {
-      console.warn("[Category] Name cache invalidation failed:", err.message);
-    });
 
-    return handleResponse(res, 200, "Category and all descendants deleted");
+    return handleResponse(res, 200, "Category and all descendants deleted successfully");
   } catch (error) {
     return handleResponse(res, 500, error.message);
   }

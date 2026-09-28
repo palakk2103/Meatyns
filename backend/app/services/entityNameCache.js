@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Category from "../models/category.js";
 import Seller from "../models/seller.js";
 import { buildKey, getOrSet, getTTL, invalidate } from "./cacheService.js";
@@ -8,7 +9,7 @@ import { buildKey, getOrSet, getTTL, invalidate } from "./cacheService.js";
  * @returns {Promise<string|null>}
  */
 export async function resolveCategoryName(id) {
-  if (!id) return null;
+  if (!id || id === "undefined" || id === "null" || !mongoose.Types.ObjectId.isValid(id)) return null;
   const key = buildKey("catalog", "categoryName", String(id));
   const cat = await getOrSet(
     key,
@@ -24,7 +25,7 @@ export async function resolveCategoryName(id) {
  * @returns {Promise<string|null>}
  */
 export async function resolveSellerName(id) {
-  if (!id) return null;
+  if (!id || id === "undefined" || id === "null" || !mongoose.Types.ObjectId.isValid(id)) return null;
   const key = buildKey("catalog", "sellerName", String(id));
   const seller = await getOrSet(
     key,

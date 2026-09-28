@@ -71,7 +71,18 @@ function eventDefinition(eventType) {
         role: NOTIFICATION_ROLES.CUSTOMER,
         recipientIds: (payload) => normalizeIdList(payload.userId || payload.customerId),
         title: () => "Order Placed",
-        body: () => "Your order has been placed successfully.",
+        body: (payload) => {
+          if (payload?.deliveryMethod === "SCHEDULED" && payload?.scheduledDate) {
+            const slotStr = payload.scheduledStartTime && payload.scheduledEndTime
+              ? `, ${payload.scheduledStartTime} – ${payload.scheduledEndTime}`
+              : (payload.timeSlot ? `, ${payload.timeSlot}` : "");
+            return `Your order is scheduled for delivery on ${payload.scheduledDate}${slotStr}.`;
+          }
+          if (payload?.deliveryMethod === "EXPRESS") {
+            return "Your express order has been placed. Delivering as soon as possible!";
+          }
+          return "Your order has been placed successfully.";
+        },
       };
     case NOTIFICATION_EVENTS.PAYMENT_SUCCESS:
       return {
@@ -85,7 +96,12 @@ function eventDefinition(eventType) {
         role: NOTIFICATION_ROLES.CUSTOMER,
         recipientIds: (payload) => normalizeIdList(payload.userId || payload.customerId),
         title: () => "Order Confirmed",
-        body: () => "Seller has confirmed your order.",
+        body: (payload) => {
+          if (payload?.deliveryMethod === "SCHEDULED" && payload?.scheduledDate) {
+            return `Your order is confirmed and scheduled for delivery on ${payload.scheduledDate}.`;
+          }
+          return "Seller has confirmed your order.";
+        },
       };
     case NOTIFICATION_EVENTS.ORDER_PACKED:
       return {

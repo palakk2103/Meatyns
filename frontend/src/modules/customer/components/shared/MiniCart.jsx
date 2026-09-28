@@ -27,10 +27,12 @@ const MiniCart = () => {
     const isSupportPage = path.startsWith('/support');
     const isPrivacyPage = path.startsWith('/privacy');
     const isAboutPage = path.startsWith('/about');
+    const isFranchisePage = path.startsWith('/franchise');
+    const isContactPage = path.startsWith('/contact');
 
     return (
         <AnimatePresence>
-            {cart.length > 0 && !isCheckoutPage && !isCartPage && !isOrderDetailsPage && !isProfilePage && !isWalletPage && !isTransactionsPage && !isWishlistPage && !isAddressesPage && !isSupportPage && !isPrivacyPage && !isAboutPage && (
+            {cart.length > 0 && !isCheckoutPage && !isCartPage && !isOrderDetailsPage && !isProfilePage && !isWalletPage && !isTransactionsPage && !isWishlistPage && !isAddressesPage && !isSupportPage && !isPrivacyPage && !isAboutPage && !isFranchisePage && !isContactPage && (
                 <div
                     key="mini-cart-wrapper"
                     id="mini-cart-target"
@@ -48,7 +50,7 @@ const MiniCart = () => {
                             style={{
                                 backgroundColor: "var(--customer-mini-cart-color, var(--primary))",
                             }}
-                            className="flex items-center gap-2 text-white py-1.5 px-2.5 rounded-full shadow-[0_10px_30px_rgba(0,0,0,0.22)] hover:scale-[1.02] active:scale-95 transition-all group border border-white/10 relative overflow-hidden"
+                            className="flex items-center gap-2 text-[#1A1A1A] py-1.5 px-2.5 rounded-full shadow-[0_10px_30px_rgba(0,0,0,0.22)] hover:scale-[1.02] active:scale-95 transition-all group border border-black/10 relative overflow-hidden"
                         >
                             <div className="absolute inset-0 overflow-hidden rounded-full pointer-events-none">
                                 <div className="mini-cart-shimmer absolute inset-y-0 left-[-40%] w-[40%] bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-[-20deg]" />
@@ -68,13 +70,13 @@ const MiniCart = () => {
 
                             {/* Text Section */}
                             <div className="flex-1 flex flex-col justify-center min-w-0">
-                                <h4 className="text-[12px] font-black leading-tight truncate">View cart</h4>
-                                <p className="text-[9px] opacity-90 font-bold leading-tight">{cartCount} {cartCount === 1 ? 'item' : 'items'}</p>
+                                <h4 className="text-[12px] font-black leading-tight truncate text-[#1A1A1A]">View cart</h4>
+                                <p className="text-[9px] font-bold leading-tight text-[#1A1A1A]/80">{cartCount} {cartCount === 1 ? 'item' : 'items'}</p>
                             </div>
 
                             {/* Arrow Icon in circle */}
-                            <div className="h-6 w-6 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0">
-                                <ChevronRight size={15} strokeWidth={3} className="text-white" />
+                            <div className="h-6 w-6 rounded-full bg-black/10 flex items-center justify-center flex-shrink-0">
+                                <ChevronRight size={15} strokeWidth={3} className="text-[#1A1A1A]" />
                             </div>
                         </Link>
                     </motion.div>

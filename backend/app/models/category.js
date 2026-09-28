@@ -90,6 +90,10 @@ const categorySchema = new mongoose.Schema(
       type: String,
       trim: true, // Hex color for icons (e.g. #ffffff)
     },
+    displayOrder: {
+      type: Number,
+      default: 0,
+    },
   },
   {
     timestamps: true,
@@ -232,6 +236,7 @@ categorySchema.pre("findOneAndUpdate", function syncLegacyFinanceFieldsOnUpdate(
 categorySchema.index({ type: 1, status: 1 });
 categorySchema.index({ parentId: 1, status: 1 });
 categorySchema.index({ name: 1 });
+categorySchema.index({ displayOrder: 1, name: 1 });
 
 // Virtual for children categories
 categorySchema.virtual("children", {

@@ -4,6 +4,7 @@ import {
   ALL_PAYMENT_MODES,
   CURRENCY,
 } from "../constants/finance.js";
+import { ALL_DELIVERY_METHODS } from "../constants/deliverySlots.js";
 
 const checkoutGroupSchema = new mongoose.Schema(
   {
@@ -52,6 +53,37 @@ const checkoutGroupSchema = new mongoose.Schema(
       enum: ["CREATED", "PAYMENT_PENDING", "PAID", "CANCELLED", "EXPIRED", "FULFILLED"],
       default: "CREATED",
       index: true,
+    },
+    deliveryMethod: {
+      type: String,
+      enum: ALL_DELIVERY_METHODS,
+      default: "NORMAL",
+      index: true,
+    },
+    scheduledDate: {
+      type: String,
+      default: null,
+      index: true,
+    },
+    scheduledStartTime: {
+      type: String,
+      default: null,
+    },
+    scheduledEndTime: {
+      type: String,
+      default: null,
+    },
+    estimatedDeliveryStart: {
+      type: Date,
+      default: null,
+    },
+    estimatedDeliveryEnd: {
+      type: Date,
+      default: null,
+    },
+    deliverySlotId: {
+      type: String,
+      default: null,
     },
     stockReservation: {
       status: {

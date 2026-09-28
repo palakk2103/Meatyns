@@ -28,6 +28,7 @@ import {
   previewCheckoutFinance,
   reconcileCodCashSubmission,
   verifyOnlineOrderPayment,
+  getAvailableDeliverySlots,
 } from "../controller/orderFinanceController.js";
 import {
   confirmPickup,
@@ -48,6 +49,10 @@ import {
 } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
+
+// Delivery slot & method availability
+router.post("/delivery/slots", getAvailableDeliverySlots);
+router.get("/delivery/slots", getAvailableDeliverySlots);
 
 // Finance-aware checkout/order flow
 router.post(

@@ -106,7 +106,8 @@ const navItems = [
     icon: Tag,
     color: "rose",
     children: [
-      { label: "All Categories", path: "/admin/categories/hierarchy" },
+      { label: "Category Management", path: "/admin/categories" },
+      { label: "Category Hierarchy", path: "/admin/categories/hierarchy" },
       { label: "Header Categories", path: "/admin/categories/header" },
       { label: "Main Categories", path: "/admin/categories/level2" },
       { label: "Sub-Categories", path: "/admin/categories/sub" },
@@ -232,11 +233,8 @@ const AdminRoutes = () => {
         <Route path="/" element={<Dashboard />} />
         <Route path="/users" element={<UserManagement />} />
         <Route path="/profile" element={<AdminProfile />} />
-        {/* Lazy routes for new sections */}
-        <Route
-          path="/categories"
-          element={<Navigate to="/admin/categories/header" replace />}
-        />
+        {/* Category management routes */}
+        <Route path="/categories" element={<CategoryManagement />} />
         <Route path="/categories/header" element={<HeaderCategories />} />
         <Route path="/categories/level2" element={<Level2Categories />} />
         <Route path="/categories/sub" element={<SubCategories />} />

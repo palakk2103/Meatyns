@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import {
     User, MapPin, Package, CreditCard, Wallet, ChevronRight,
     LogOut, ShieldCheck, Heart, HelpCircle, Info, Edit2, ChevronLeft, Bell,
-    ScrollText, RotateCcw, Truck, Coins
+    ScrollText, RotateCcw, Truck, Coins, Sparkles, Store, Phone, Mail, Clock, Award
 } from 'lucide-react';
 import { useAuth } from '@core/context/AuthContext';
 import { useSettings } from '@core/context/SettingsContext';
@@ -224,6 +224,14 @@ const ProfilePage = () => {
                                 bg="#EFF6FF"
                             />
                             <MenuItem
+                                icon={Award}
+                                label="Quality & Policies"
+                                sub="100% Fresh Meat, Hygiene & Delivery Guarantee"
+                                path="/policy"
+                                color="#C81017"
+                                bg="#FEE2E2"
+                            />
+                            <MenuItem
                                 icon={ShieldCheck}
                                 label="Privacy Policy"
                                 path="/privacy"
@@ -238,22 +246,15 @@ const ProfilePage = () => {
                                 bg="#FFFBEB"
                             />
                             <MenuItem
-                                icon={RotateCcw}
-                                label="Return Policy"
-                                path="/return-policy"
-                                color="#0369A1"
-                                bg="#F0F9FF"
-                            />
-                            <MenuItem
                                 icon={Truck}
-                                label="Shipping Policy"
+                                label="Delivery Policy"
                                 path="/shipping-policy"
                                 color="#B45309"
                                 bg="#FEF3C7"
                             />
                             <MenuItem
-                                icon={Coins}
-                                label="Refund Policy"
+                                icon={RotateCcw}
+                                label="Refund & Replacement Policy"
                                 path="/refund-policy"
                                 color="#047857"
                                 bg="#ECFDF5"
@@ -264,6 +265,30 @@ const ProfilePage = () => {
                                 path="/about"
                                 color="#1A1A1A"
                                 bg="#FAF6F0"
+                            />
+                            <MenuItem
+                                icon={Sparkles}
+                                label="What We Deliver"
+                                sub="Premium Fresh Meat, Delivered with Care"
+                                path="/what-we-deliver"
+                                color="#C81017"
+                                bg="#FEE2E2"
+                            />
+                            <MenuItem
+                                icon={Store}
+                                label="Franchise Opportunities"
+                                sub="Be a Part of Meat Revolution in Maharashtra"
+                                path="/franchise"
+                                color="#B45309"
+                                bg="#FEF3C7"
+                            />
+                            <MenuItem
+                                icon={Phone}
+                                label="Contact Us"
+                                sub="Kolhapur Outlet, Helpline & Timings"
+                                path="/contact"
+                                color="#0284C7"
+                                bg="#E0F2FE"
                             />
                         </div>
                     </div>

@@ -77,9 +77,13 @@ const SubCategories = () => {
             : Array.isArray(payload?.items)
               ? payload.items
               : [];
-        setCategories(allCats.filter((c) => c.type === "subcategory"));
-        setLevel2Categories(allCats.filter((c) => c.type === "category"));
-        setHeaderCategories(allCats.filter((c) => c.type === "header"));
+        const headers = allCats.filter((c) => c.type === "header");
+        const level2 = allCats.filter((c) => c.type === "category");
+        // Show all child cuts / subcategories (both 2-tier child categories and subcategories)
+        const subCats = allCats.filter((c) => c.type === "subcategory" || (c.type === "category" && c.parentId != null));
+        setCategories(subCats.length > 0 ? subCats : allCats.filter((c) => c.type === "subcategory"));
+        setLevel2Categories(headers.length > 0 ? headers : level2);
+        setHeaderCategories(headers);
       }
     } catch (error) {
       toast.error("Failed to fetch categories");
@@ -90,15 +94,15 @@ const SubCategories = () => {
 
   const getParentInfo = (parentId) => {
     const id = parentId?._id || parentId;
-    const parent = level2Categories.find((c) => (c._id || c.id) === id);
-    if (!parent) return { name: "Unknown", headerName: "Unknown" };
+    const parent = headerCategories.find((h) => (h._id || h.id) === id) || level2Categories.find((c) => (c._id || c.id) === id);
+    if (!parent) return { name: "Root", headerName: "Main" };
 
     const headerId = parent.parentId?._id || parent.parentId;
-    const header = headerCategories.find((h) => (h._id || h.id) === headerId);
+    const header = headerCategories.find((h) => (h._id || h.id) === headerId) || parent;
 
     return {
       name: parent.name,
-      headerName: header ? header.name : "Unknown",
+      headerName: header ? header.name : parent.name,
     };
   };
 
@@ -155,14 +159,19 @@ const SubCategories = () => {
     return [...level2Categories]
       .map((c) => {
         const headerId = c.parentId?._id || c.parentId;
+        if (!headerId) {
+          return {
+            id: c._id || c.id,
+            label: c.name,
+          };
+        }
         const header = headerCategories.find(
-          (h) => (h._id || h.id) === headerId,
+          (h) => String(h._id || h.id) === String(headerId),
         );
-        const headerName = header ? header.name : "Unknown";
-
+        const headerName = header ? header.name : "";
         return {
           id: c._id || c.id,
-          label: `${headerName} > ${c.name}`,
+          label: headerName ? `${headerName} > ${c.name}` : c.name,
         };
       })
       .sort((a, b) => a.label.localeCompare(b.label));
@@ -373,7 +382,7 @@ const SubCategories = () => {
               value={filterLevel2}
               onChange={(e) => setFilterLevel2(e.target.value)}
               className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500">
-              <option value="all">All Level 2 Categories</option>
+              <option value="all">All Categories</option>
               {level2Categories.map((c) => (
                 <option key={c._id || c.id} value={c._id || c.id}>
                   {c.name}
@@ -419,7 +428,7 @@ const SubCategories = () => {
                   Name
                 </th>
                 <th className="text-left py-3 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                  Parent Chain
+                  Parent Category
                 </th>
                 <th className="text-left py-3 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
                   Slug
@@ -477,13 +486,10 @@ const SubCategories = () => {
                         {cat.name}
                       </td>
                       <td className="py-3 px-4">
-                        <div className="flex flex-col gap-1">
-                          <span className="text-xs text-gray-500 flex items-center gap-1">
-                            <span className="w-1.5 h-1.5 rounded-full bg-gray-300"></span>
-                            {parentInfo.headerName}
-                          </span>
-                          <span className="text-sm text-gray-700 font-medium pl-2.5 border-l-2 border-gray-200">
-                            {parentInfo.name}
+                        <div className="flex items-center gap-2">
+                          <span className="w-2 h-2 rounded-full bg-brand-500"></span>
+                          <span className="text-sm font-semibold text-gray-800">
+                            {parentInfo.name && parentInfo.name !== "Unknown" ? parentInfo.name : parentInfo.headerName}
                           </span>
                         </div>
                       </td>
@@ -586,7 +592,7 @@ const SubCategories = () => {
 
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700">
-                    Parent Category (Level 2)
+                    Parent Category
                   </label>
                   <select
                     value={formData.parentId}

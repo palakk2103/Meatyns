@@ -17,7 +17,6 @@ import {
 import { Button } from '@/components/ui/button';
 import { useToast } from '@shared/components/ui/Toast';
 import { applyCloudinaryTransform } from '@/core/utils/imageUtils';
-import Header from '../components/layout/Header';
 import DesktopSidebarNav from '../components/shared/DesktopSidebarNav';
 import FishEmptyCartIllustration from '../components/shared/FishEmptyCartIllustration';
 
@@ -203,8 +202,7 @@ const CartPage = () => {
 
             {/* Desktop View - Matching Image 2 */}
             <div className="hidden md:block">
-                <Header />
-                <div className="min-h-screen bg-[#FBF8F5] pt-24 lg:pt-28 pb-16 px-4 lg:px-8">
+                <div className="min-h-screen bg-[#FBF8F5] pt-6 lg:pt-8 pb-16 px-4 lg:px-8">
                     <div className="max-w-7xl mx-auto flex gap-8 items-start">
                         {/* 1. Left Sidebar Navigation */}
                         <DesktopSidebarNav />

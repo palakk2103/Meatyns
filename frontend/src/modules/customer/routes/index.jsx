@@ -16,9 +16,14 @@ import ChatPage from '../pages/ChatPage';
 import TermsPage from '../pages/TermsPage';
 import PrivacyPage from '../pages/PrivacyPage';
 import AboutPage from '../pages/AboutPage';
+import WhatWeDeliverPage from '../pages/WhatWeDeliverPage';
+import FranchisePage from '../pages/FranchisePage';
+import ContactUsPage from '../pages/ContactUsPage';
 import ReturnPolicyPage from '../pages/ReturnPolicyPage';
 import ShippingPolicyPage from '../pages/ShippingPolicyPage';
 import RefundPolicyPage from '../pages/RefundPolicyPage';
+import PolicyPage from '../pages/PolicyPage';
+import QualityPolicyPage from '../pages/QualityPolicyPage';
 import EditProfilePage from '../pages/EditProfilePage';
 import OrderDetailPage from '../pages/OrderDetailPage';
 import ProductDetailPage from '../pages/ProductDetailPage';
@@ -47,9 +52,19 @@ const CustomerRoutes = () => {
                             <Route path="terms" element={<TermsPage />} />
                             <Route path="privacy" element={<PrivacyPage />} />
                             <Route path="about" element={<AboutPage />} />
+                            <Route path="franchise" element={<FranchisePage />} />
+                            <Route path="contact" element={<ContactUsPage />} />
+                            <Route path="contact-us" element={<ContactUsPage />} />
+                            <Route path="what-we-deliver" element={<WhatWeDeliverPage />} />
+                            <Route path="products" element={<WhatWeDeliverPage />} />
                             <Route path="return-policy" element={<ReturnPolicyPage />} />
                             <Route path="shipping-policy" element={<ShippingPolicyPage />} />
+                            <Route path="delivery-policy" element={<ShippingPolicyPage />} />
                             <Route path="refund-policy" element={<RefundPolicyPage />} />
+                            <Route path="refund-replacement-policy" element={<RefundPolicyPage />} />
+                            <Route path="policy" element={<PolicyPage />} />
+                            <Route path="policies" element={<PolicyPage />} />
+                            <Route path="quality-policy" element={<QualityPolicyPage />} />
                             <Route path="offers" element={<OffersPage />} />
 
                             {/* Protected Customer Routes */}
