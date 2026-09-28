@@ -317,6 +317,21 @@ const DeliveryAuth = () => {
 
           {/* Header with Lottie */}
           <div className="bg-gradient-to-br from-brand-50 to-purple-50 p-8 pt-10 flex flex-col items-center relative shrink-0">
+            {/* Back Button */}
+            <button
+              type="button"
+              onClick={() => {
+                if (window.history.length > 1) {
+                  navigate(-1);
+                } else {
+                  navigate('/');
+                }
+              }}
+              className="absolute top-4 left-4 z-20 w-8 h-8 rounded-full bg-white/80 border border-gray-200 flex items-center justify-center text-gray-700 active:scale-90 transition-transform shadow-xs cursor-pointer hover:bg-white"
+              aria-label="Go back"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
             <div className="z-10 mb-2">
               <div className="w-20 h-20 rounded-2xl bg-white/90 backdrop-blur-sm border border-brand-100 shadow-sm flex items-center justify-center overflow-hidden p-2">
                 {logoUrl ? (

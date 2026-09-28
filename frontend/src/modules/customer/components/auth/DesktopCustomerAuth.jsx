@@ -12,8 +12,10 @@ import {
     ArrowRight,
     ArrowLeft,
     KeyRound,
-    Phone
+    Phone,
+    ChevronLeft
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import meatBoardImg from '@/assets/meat_seafood_board.jpg';
 
 // Stylized Meatyns Animal Crest Logo (Fish & Fresh Meat Crest)
@@ -97,6 +99,7 @@ const DesktopCustomerAuth = ({
     isLoading,
     timer
 }) => {
+    const navigate = useNavigate();
 
     return (
         <div className="hidden md:flex min-h-screen w-full bg-[#FAF7F2] font-['Outfit',_sans-serif]">
@@ -214,10 +217,28 @@ const DesktopCustomerAuth = ({
                 {/* Fish line watermark in bottom-right */}
                 <div className="absolute -bottom-6 -right-6 pointer-events-none select-none">
                     <FishWatermark />
-                </div>                {/* Top Right: Tagline */}
-                <div className="relative z-10 flex justify-end items-center text-xs text-stone-500 font-semibold gap-2">
-                    <span className="inline-block w-2 h-2 rounded-full bg-emerald-500"></span>
-                    Fast &amp; Secure Login
+                </div>
+                {/* Top Bar: Back button & Tagline */}
+                <div className="relative z-10 flex justify-between items-center text-xs text-stone-500 font-semibold gap-2">
+                    <button
+                        type="button"
+                        onClick={() => {
+                            if (window.history.length > 1) {
+                                navigate(-1);
+                            } else {
+                                navigate('/');
+                            }
+                        }}
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-stone-200 text-stone-700 hover:text-stone-900 hover:bg-stone-50 shadow-2xs transition-all active:scale-95 cursor-pointer text-xs font-semibold"
+                        aria-label="Go back"
+                    >
+                        <ChevronLeft size={16} strokeWidth={2.4} />
+                        <span>Back to Store</span>
+                    </button>
+                    <div className="flex items-center gap-2">
+                        <span className="inline-block w-2 h-2 rounded-full bg-emerald-500"></span>
+                        Fast &amp; Secure Login
+                    </div>
                 </div>
 
                 {/* Center Form Container */}

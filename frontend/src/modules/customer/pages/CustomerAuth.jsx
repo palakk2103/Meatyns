@@ -289,8 +289,22 @@ const CustomerAuth = () => {
                             </motion.div>
                         </AnimatePresence>
 
-                        {/* Top Branding Bar */}
-                        <div className="absolute top-8 left-0 w-full px-6 flex items-center justify-between">
+                        {/* Top Branding Bar with Back Button */}
+                        <div className="absolute top-8 left-0 w-full px-6 flex items-center justify-between z-20">
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    if (window.history.length > 1) {
+                                        navigate(-1);
+                                    } else {
+                                        navigate('/');
+                                    }
+                                }}
+                                aria-label="Go Back"
+                                className="w-9 h-9 rounded-full bg-black/25 backdrop-blur-md border border-white/20 flex items-center justify-center text-white active:scale-90 transition-all cursor-pointer shadow-sm hover:bg-black/40"
+                            >
+                                <ChevronLeft size={22} strokeWidth={2.4} />
+                            </button>
                             <img
                                 src="/meatyns_logo_white.png"
                                 alt={appName}

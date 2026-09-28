@@ -25,6 +25,7 @@ import {
   Eye,
   EyeOff,
   ShieldCheck,
+  ChevronLeft,
 } from "lucide-react";
 import { toast } from "sonner";
 import Lottie from "lottie-react";
@@ -688,8 +689,23 @@ const Auth = () => {
           <FishWatermark />
         </div>
 
-        {/* Top Right: Toggle link between Login and Signup */}
-        <div className="relative z-10 flex justify-end items-center text-xs lg:text-sm">
+        {/* Top Header: Back button & Toggle link between Login and Signup */}
+        <div className="relative z-10 flex justify-between items-center text-xs lg:text-sm">
+          <button
+            type="button"
+            onClick={() => {
+              if (window.history.length > 1) {
+                navigate(-1);
+              } else {
+                navigate('/');
+              }
+            }}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-stone-200 text-stone-700 hover:text-stone-900 hover:bg-stone-50 shadow-2xs transition-all active:scale-95 cursor-pointer text-xs font-semibold"
+            aria-label="Go back"
+          >
+            <ChevronLeft size={16} strokeWidth={2.4} />
+            <span>Back</span>
+          </button>
           {isLogin ? (
             <div className="text-stone-600">
               New seller?{" "}
