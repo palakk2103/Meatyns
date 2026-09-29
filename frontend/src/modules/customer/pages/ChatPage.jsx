@@ -396,7 +396,7 @@ const ChatPage = () => {
               <div className="absolute bottom-0 right-0 h-3 w-3 bg-brand-500 rounded-full border-2 border-white animate-pulse"></div>
             </div>
             <div>
-              <h1 className="text-base font-black text-slate-800 leading-none">
+              <h1 className="text-base font-anton font-normal tracking-wide uppercase text-slate-800 leading-none">
                 Support Chat
               </h1>
               <p className="text-[10px] text-brand-600 font-bold mt-1 uppercase tracking-wider flex items-center gap-1">

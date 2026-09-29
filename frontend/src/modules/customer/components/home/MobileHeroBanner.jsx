@@ -100,13 +100,7 @@ const MobileHeroBanner = ({ heroConfig }) => {
               </span>
 
               {/* Headline */}
-              <h2
-                className="text-[18px] sm:text-[21px] font-black leading-[1.14] tracking-tight font-serif"
-                style={{
-                  fontFamily:
-                    "'Playfair Display', 'Merriweather', 'Georgia', serif",
-                }}
-              >
+              <h2 className="text-[19px] sm:text-[22px] font-normal leading-[1.14] tracking-wide font-anton uppercase">
                 {currentBanner?.title ? (
                   <span className="text-[#111111] line-clamp-2">
                     {currentBanner.title}

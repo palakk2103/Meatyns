@@ -102,7 +102,7 @@ const DesktopCustomerAuth = ({
     const navigate = useNavigate();
 
     return (
-        <div className="hidden md:flex min-h-screen w-full bg-[#FAF7F2] font-['Outfit',_sans-serif]">
+        <div className="hidden md:flex min-h-screen w-full bg-[#FAF7F2] font-poppins">
             {/* ================================================================= */}
             {/* LEFT COLUMN: Deep Maroon Banner with Background Image             */}
             {/* ================================================================= */}
@@ -151,8 +151,7 @@ const DesktopCustomerAuth = ({
                 {/* Center Section: Headline & Value Badges */}
                 <div className="relative z-10 px-8 lg:px-12 xl:px-14 my-auto py-6">
                     <h1 
-                        className="text-3xl lg:text-4xl xl:text-5xl font-serif font-bold text-white leading-[1.18] tracking-tight drop-shadow-[0_3px_10px_rgba(0,0,0,0.85)]"
-                        style={{ fontFamily: "'Playfair Display', serif" }}
+                        className="text-3xl lg:text-4xl xl:text-5xl font-normal font-anton text-white leading-[1.18] tracking-wide drop-shadow-[0_3px_10px_rgba(0,0,0,0.85)] uppercase"
                     >
                         Freshness<br />
                         Delivered to<br />
@@ -251,7 +250,7 @@ const DesktopCustomerAuth = ({
                     >
                         {/* Heading */}
                         <div className="space-y-1.5 mb-8">
-                            <h2 className="text-2xl lg:text-3xl font-bold text-stone-900 tracking-tight font-serif">
+                            <h2 className="text-2xl lg:text-3xl font-normal font-anton text-stone-900 tracking-wide uppercase">
                                 {showOtp ? 'Enter Verification Code' : 'Login with Phone'}
                             </h2>
                             <p className="text-stone-500 text-sm">

@@ -187,7 +187,7 @@ const TopPicksSection = ({ products = [] }) => {
           <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#FDCE04]/20 flex items-center justify-center text-[#1A1A1A] font-bold">
             <span className="text-base sm:text-lg leading-none">★</span>
           </div>
-          <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-slate-900 tracking-tight">
+          <h2 className="text-lg sm:text-xl md:text-2xl font-normal font-anton tracking-wide text-slate-900 uppercase">
             Top Picks for You
           </h2>
         </div>

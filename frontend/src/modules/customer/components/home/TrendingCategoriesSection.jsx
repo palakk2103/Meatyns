@@ -67,7 +67,7 @@ const TrendingCategoriesSection = ({ categories = [] }) => {
           <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#FDCE04]/20 flex items-center justify-center text-[#1A1A1A]">
             <TrendingUp size={18} className="text-[#1A1A1A] sm:w-5 sm:h-5" />
           </div>
-          <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-slate-900 tracking-tight">
+          <h2 className="text-lg sm:text-xl md:text-2xl font-normal font-anton tracking-wide text-slate-900 uppercase">
             Trending Now
           </h2>
         </div>

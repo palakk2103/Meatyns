@@ -121,7 +121,9 @@ const MobileHeaderCategoryNav = ({
     }
     const targetId = cat._id || cat.id || cat.slug;
     if (targetId) {
-      navigate(`/category/${targetId}`);
+      navigate(`/category/${targetId}`, {
+        state: { categoryName: cat.name, isHeaderCategory: true },
+      });
     } else {
       navigate(`/search?q=${encodeURIComponent(cat.name)}`);
     }

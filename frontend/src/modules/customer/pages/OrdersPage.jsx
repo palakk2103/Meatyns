@@ -39,7 +39,7 @@ const OrdersPage = () => {
 
     if (loading) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-[#FAF6F0] font-outfit">
+            <div className="min-h-screen flex items-center justify-center bg-[#FAF6F0] font-poppins">
                 <div className="flex items-center gap-3 px-5 py-3.5 rounded-2xl bg-white shadow-sm border border-[#EBE3D5]">
                     <Loader2 className="animate-spin text-[#FDCE04]" size={22} />
                     <span className="text-sm font-semibold text-[#1A1A1A]">Loading your orders…</span>
@@ -49,7 +49,7 @@ const OrdersPage = () => {
     }
 
     return (
-        <div className="min-h-screen bg-[#FAF6F0] pb-24 font-outfit text-[#1A1A1A]">
+        <div className="min-h-screen bg-[#FAF6F0] pb-24 font-poppins text-[#1A1A1A]">
             {/* Top Golden Yellow App Header */}
             <header
                 className="sticky top-0 z-30 px-4 h-14 flex items-center gap-3.5 shadow-sm select-none"
@@ -63,7 +63,7 @@ const OrdersPage = () => {
                 >
                     <ChevronLeft size={24} strokeWidth={2.4} />
                 </button>
-                <h1 className="text-[17px] sm:text-lg font-bold text-[#1A1A1A] tracking-wide">
+                <h1 className="text-[17px] sm:text-lg font-normal font-anton tracking-wide text-[#1A1A1A] uppercase">
                     My Orders
                 </h1>
             </header>

@@ -275,7 +275,7 @@ const CategoriesPage = () => {
   }, [groups, searchQuery, selectedGroup]);
 
   return (
-    <div className="min-h-screen bg-[#FFF9F4] font-outfit text-[#1A1A1A] select-none">
+    <div className="min-h-screen bg-[#FFF9F4] font-poppins text-[#1A1A1A] select-none">
       {/* ──── MAIN CONTENT CONTAINER ──── */}
       <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 pt-5 sm:pt-7 pb-20 sm:pb-24">
         {/* ──── SECTION HEADER ──── */}
@@ -294,7 +294,7 @@ const CategoriesPage = () => {
               <CategoryGridIcon />
               <div className="w-[1.5px] h-5 sm:h-6 bg-[#CDB5AA]/70 rounded-full" />
               <div>
-                <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-900 tracking-tight leading-none">
+                <h1 className="text-xl sm:text-2xl lg:text-3xl font-normal font-anton tracking-wide text-slate-900 leading-none uppercase">
                   Meat &amp; Seafood Categories
                 </h1>
               </div>
@@ -412,7 +412,7 @@ const CategoriesPage = () => {
               {/* Group Heading */}
               <div className="flex items-center gap-2 mb-2.5 sm:mb-3">
                 <span className="w-2 h-2 rounded-full bg-[#C81017]"></span>
-                <h2 className="text-[16px] sm:text-lg font-bold text-slate-900 tracking-tight">
+                <h2 className="text-[17px] sm:text-lg font-normal font-anton tracking-wide text-slate-900 uppercase">
                   {group.title}
                 </h2>
                 <span className="text-[11px] font-semibold text-[#8C7A75]">

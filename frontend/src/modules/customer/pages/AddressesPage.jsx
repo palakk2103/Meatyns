@@ -306,7 +306,7 @@ const AddressesPage = () => {
                     >
                         <ChevronLeft size={22} className="text-slate-800" />
                     </button>
-                    <h1 className="text-xl font-semibold text-slate-900 tracking-tight">Saved Addresses</h1>
+                    <h1 className="text-xl font-anton font-normal tracking-wide uppercase text-slate-900">Saved Addresses</h1>
                 </div>
 
                 <div className="max-w-2xl mx-auto px-4 pt-1 relative z-20 space-y-4">
@@ -387,7 +387,7 @@ const AddressesPage = () => {
                         {/* 2. Middle Main Address Content */}
                         <div className="flex-1 min-w-0">
                             <div className="mb-6">
-                                <h1 className="text-2xl lg:text-[26px] font-bold text-slate-900 tracking-tight">
+                                <h1 className="text-2xl lg:text-[26px] font-anton font-normal tracking-wide uppercase text-slate-900">
                                     Delivery Address
                                 </h1>
                                 <p className="text-xs text-slate-500 mt-1">

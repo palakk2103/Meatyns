@@ -42,7 +42,7 @@ const LowestPriceSection = ({ products, onSeeAll }) => {
                 </span>
               </div>
               <h3
-                className="text-[16px] sm:text-lg md:text-xl font-black tracking-tight leading-none capitalize"
+                className="text-[17px] sm:text-lg md:text-xl font-normal font-anton tracking-wide leading-none uppercase"
                 style={{ color: "#1A1A1A" }}
               >
                 Top Picks{" "}

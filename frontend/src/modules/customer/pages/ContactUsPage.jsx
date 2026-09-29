@@ -73,7 +73,7 @@ const ContactUsPage = () => {
                         >
                             <ChevronLeft size={22} />
                         </button>
-                        <h1 className="text-lg font-bold text-slate-900 tracking-tight leading-none">
+                        <h1 className="text-lg font-normal font-anton tracking-wide text-slate-900 leading-none uppercase">
                             Contact Us
                         </h1>
                     </div>

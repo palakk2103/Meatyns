@@ -49,7 +49,7 @@ const QualityPolicyPage = () => {
                     <ChevronLeft size={24} className="text-slate-700" />
                 </button>
                 <div>
-                    <h1 className="text-lg font-black text-slate-900 leading-tight">Quality Policy</h1>
+                    <h1 className="text-lg font-normal font-anton tracking-wide text-slate-900 leading-tight uppercase">Quality Policy</h1>
                     <p className="text-[11px] font-semibold text-slate-400">Our Uncompromising Standards</p>
                 </div>
             </div>

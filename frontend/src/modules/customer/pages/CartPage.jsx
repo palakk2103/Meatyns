@@ -51,7 +51,7 @@ const CartPage = () => {
             {/* Mobile View */}
             <div className="md:hidden">
                 {cart.length === 0 ? (
-                    <div className="min-h-screen bg-white flex flex-col font-outfit">
+                    <div className="min-h-screen bg-white flex flex-col font-poppins">
                         {/* Top Header Bar */}
                         <header
                             className="sticky top-0 z-50 text-[#1A1A1A] px-4 h-14 flex items-center gap-3 shadow-sm select-none"
@@ -65,7 +65,7 @@ const CartPage = () => {
                             >
                                 <ArrowLeft size={22} strokeWidth={2.4} />
                             </button>
-                            <h1 className="text-[17px] font-bold text-[#1A1A1A] tracking-wide">
+                            <h1 className="text-[17px] font-normal font-anton tracking-wide text-[#1A1A1A] uppercase">
                                 My Cart
                             </h1>
                         </header>
@@ -104,7 +104,7 @@ const CartPage = () => {
                             >
                                 <ArrowLeft size={22} strokeWidth={2.4} />
                             </button>
-                            <h1 className="text-[17px] font-bold text-[#1A1A1A] tracking-wide">
+                            <h1 className="text-[17px] font-normal font-anton tracking-wide text-[#1A1A1A] uppercase">
                                 My Cart
                             </h1>
                         </header>
@@ -227,8 +227,8 @@ const CartPage = () => {
                                 <div className="space-y-4">
                                     {/* Cart Header: Your Cart (X Items) + Clear Cart */}
                                     <div className="flex items-center justify-between">
-                                        <h1 className="text-xl lg:text-2xl font-bold text-slate-900 tracking-tight">
-                                            Your Cart <span className="text-slate-500 text-base font-normal">({itemCount} {itemCount === 1 ? 'Item' : 'Items'})</span>
+                                        <h1 className="text-xl lg:text-2xl font-normal font-anton tracking-wide text-slate-900 uppercase">
+                                            Your Cart <span className="text-slate-500 text-base font-normal font-poppins">({itemCount} {itemCount === 1 ? 'Item' : 'Items'})</span>
                                         </h1>
                                         <button
                                             onClick={clearCart}

@@ -221,7 +221,7 @@ const WalletPage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-[#FAF6F0] pb-24 font-outfit text-[#1A1A1A] relative">
+        <div className="min-h-screen bg-[#FAF6F0] pb-24 font-poppins text-[#1A1A1A] relative">
             {/* Top Golden Yellow App Header */}
             <header
                 className="sticky top-0 z-30 px-4 h-14 flex items-center gap-3.5 shadow-sm select-none"
@@ -235,7 +235,7 @@ const WalletPage = () => {
                 >
                     <ChevronLeft size={24} strokeWidth={2.4} />
                 </button>
-                <h1 className="text-[17px] sm:text-lg font-bold text-[#1A1A1A] tracking-wide">
+                <h1 className="text-[17px] sm:text-lg font-normal font-anton tracking-wide text-[#1A1A1A] uppercase">
                     Wallet
                 </h1>
             </header>

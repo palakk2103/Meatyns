@@ -1043,7 +1043,7 @@ const CheckoutPage = () => {
   // ─── Empty cart state ────────────────────────────────────────────────────────
   if (cart.length === 0 && !showSuccess) {
     return (
-      <div className="min-h-screen bg-white flex flex-col font-outfit">
+      <div className="min-h-screen bg-white flex flex-col font-poppins">
         {/* Top Header Bar */}
         <header
           className="sticky top-0 z-50 text-[#1A1A1A] px-4 lg:px-8 h-14 lg:h-16 flex items-center justify-between shadow-sm select-none"
@@ -1066,7 +1066,7 @@ const CheckoutPage = () => {
               />
             </Link>
           </div>
-          <h1 className="text-[17px] sm:text-lg font-bold text-[#1A1A1A] tracking-wide">
+          <h1 className="text-[17px] sm:text-lg font-normal font-anton tracking-wide text-[#1A1A1A] uppercase">
             Checkout
           </h1>
           <div className="w-8" />
@@ -1124,7 +1124,7 @@ const CheckoutPage = () => {
                 <ChevronLeft size={28} className="text-[#1A1A1A]" />
               </button>
               <div className="flex flex-col items-center">
-                <h1 className="text-xl md:text-3xl font-[1000] text-[#1A1A1A] tracking-tight uppercase">Checkout</h1>
+                <h1 className="text-xl md:text-3xl font-normal font-anton tracking-wide text-[#1A1A1A] uppercase">Checkout</h1>
                 <div className="flex items-center gap-2 mt-1">
                   <span className="h-1.5 w-1.5 bg-[#1A1A1A] rounded-full animate-pulse" />
                   <p className="text-[#1A1A1A]/80 text-[10px] md:text-xs font-black tracking-[0.2em] uppercase">

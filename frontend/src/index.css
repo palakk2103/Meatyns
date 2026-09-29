@@ -95,7 +95,7 @@ body {
   color-scheme: only light;
   background-color: #FAF5EE;
   margin: 0;
-  font-family: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -104,6 +104,10 @@ body {
   overscroll-behavior-y: none; /* Prevent pull-to-refresh feel if not needed, or use bounce sparingly */
   -webkit-tap-highlight-color: transparent; /* Remove the gray tap highlight for a cleaner feel */
   touch-action: manipulation; /* Faster taps */
+}
+
+button, input, optgroup, select, textarea {
+  font-family: inherit;
 }
 
 /* Custom scrollbar */
@@ -140,6 +144,10 @@ body {
 }
 
 @theme inline {
+  --font-anton: 'Anton', Impact, 'Arial Black', sans-serif;
+  --font-poppins: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-sans: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-heading: 'Anton', Impact, 'Arial Black', sans-serif;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -239,8 +247,30 @@ body {
 }
 
 @layer utilities {
+  .font-anton {
+    font-family: 'Anton', Impact, 'Arial Black', sans-serif;
+  }
+
+  .font-poppins {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  .font-outfit {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  }
+
+  .display-heading,
+  .hero-heading,
+  .section-heading,
+  .main-heading {
+    font-family: 'Anton', Impact, 'Arial Black', sans-serif;
+    letter-spacing: 0.02em;
+  }
+
   .admin-h1 {
-    @apply text-2xl font-black tracking-tight text-slate-900;
+    font-family: 'Anton', Impact, 'Arial Black', sans-serif;
+    letter-spacing: 0.02em;
+    @apply text-2xl tracking-tight text-slate-900;
   }
 
   .admin-h2 {
@@ -386,9 +416,11 @@ body {
 
 /* Admin Panel Typography */
 .admin-h1 {
+  font-family: 'Anton', Impact, 'Arial Black', sans-serif;
+  letter-spacing: 0.02em;
   font-size: 1.25rem;
   line-height: 1.75rem;
-  font-weight: 700;
+  font-weight: 400;
 }
 
 .admin-h2 {

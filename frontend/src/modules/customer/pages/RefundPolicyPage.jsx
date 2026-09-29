@@ -25,7 +25,7 @@ const RefundPolicyPage = () => {
                 >
                     <ChevronLeft size={24} className="text-slate-600" />
                 </button>
-                <h1 className="text-lg font-black text-slate-800">Refund &amp; Replacement Policy</h1>
+                <h1 className="text-lg font-normal font-anton tracking-wide text-slate-800 uppercase">Refund &amp; Replacement Policy</h1>
             </div>
 
             <div className="p-4 sm:p-5 max-w-3xl mx-auto space-y-6">

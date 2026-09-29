@@ -22,7 +22,7 @@ const Modal = ({ isOpen, onClose, title, children, footer, size = 'md' }) => {
         <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
             <DialogContent className={cn("overflow-hidden p-0", sizes[size])}>
                 <DialogHeader className="px-6 pt-3 pb-2 border-b border-gray-100/50 bg-gray-50/10">
-                    <DialogTitle className="text-2xl font-semibold text-gray-900">{title}</DialogTitle>
+                    <DialogTitle className="text-2xl font-normal font-anton tracking-wide text-gray-900 uppercase">{title}</DialogTitle>
                     <DialogDescription className="sr-only">Modal content</DialogDescription>
                 </DialogHeader>
 

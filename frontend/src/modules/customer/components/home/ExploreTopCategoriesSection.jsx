@@ -155,7 +155,7 @@ const ExploreTopCategoriesSection = ({ categories = [] }) => {
           <div className="flex items-center gap-2 min-w-0">
             <CategoryGridIcon />
             <div className="w-[1.5px] h-4 bg-[#CDB5AA]/70 rounded-full shrink-0" />
-            <h2 className="text-[17px] sm:text-[20px] font-bold text-slate-900 tracking-tight leading-none truncate">
+            <h2 className="text-[17px] sm:text-[20px] font-normal font-anton tracking-wide text-slate-900 leading-none truncate uppercase">
               Explore Top Categories
             </h2>
           </div>

@@ -65,7 +65,7 @@ const WhatWeDeliverPage = () => {
                 >
                     <ChevronLeft size={22} className="text-slate-800" />
                 </button>
-                <h1 className="text-xl font-bold text-slate-900 tracking-tight">What We Deliver</h1>
+                <h1 className="text-xl font-anton font-normal tracking-wide uppercase text-slate-900">What We Deliver</h1>
             </div>
 
             <div className="px-4 pt-1 max-w-3xl mx-auto space-y-4">
@@ -74,7 +74,7 @@ const WhatWeDeliverPage = () => {
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-50 text-[#C81017] text-xs font-bold uppercase tracking-wider mb-3">
                         <span>Our Products</span>
                     </div>
-                    <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-snug">
+                    <h2 className="text-2xl sm:text-3xl font-anton font-normal tracking-wide uppercase text-slate-900 leading-snug">
                         Premium Fresh Meat, Delivered with Care 🥩
                     </h2>
                     <p className="mt-3 text-slate-600 text-base leading-relaxed font-medium">

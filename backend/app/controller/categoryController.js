@@ -541,13 +541,64 @@ export const deleteAllCategories = async (req, res) => {
     const type = req.query?.type || req.body?.type || "all";
     const parentId = req.query?.parentId || req.body?.parentId;
 
-    // Check if any products exist before allowing wholesale deletion
-    const totalLinked = await Product.countDocuments({});
+    // Collect all descendant category IDs for targeted categories
+    const collectDescendantIds = async (id) => {
+      let result = [id];
+      const children = await Category.find({ parentId: id }).select("_id").lean();
+      for (const child of children) {
+        const subIds = await collectDescendantIds(child._id);
+        result = result.concat(subIds);
+      }
+      return result;
+    };
+
+    let targetRootIds = [];
+    if (type === "header") {
+      const headers = await Category.find({ type: "header" }).select("_id").lean();
+      targetRootIds = headers.map((h) => h._id);
+    } else if (type === "category") {
+      const query = { type: "category" };
+      if (parentId && parentId !== "all" && mongoose.Types.ObjectId.isValid(parentId)) {
+        query.parentId = parentId;
+      }
+      const cats = await Category.find(query).select("_id").lean();
+      targetRootIds = cats.map((c) => c._id);
+    } else if (type === "subcategory") {
+      const query = { type: "subcategory" };
+      if (parentId && parentId !== "all" && mongoose.Types.ObjectId.isValid(parentId)) {
+        query.parentId = parentId;
+      }
+      const subs = await Category.find(query).select("_id").lean();
+      targetRootIds = subs.map((s) => s._id);
+    } else {
+      const all = await Category.find({}).select("_id").lean();
+      targetRootIds = all.map((c) => c._id);
+    }
+
+    let allTargetIds = [];
+    for (const rId of targetRootIds) {
+      const branchIds = await collectDescendantIds(rId);
+      allTargetIds = allTargetIds.concat(branchIds);
+    }
+
+    allTargetIds = [...new Set(allTargetIds.map((id) => id.toString()))].map(
+      (id) => new mongoose.Types.ObjectId(id)
+    );
+
+    // Check if any products are linked to the categories being deleted
+    const totalLinked = await Product.countDocuments({
+      $or: [
+        { categoryId: { $in: allTargetIds } },
+        { subcategoryId: { $in: allTargetIds } },
+        { headerId: { $in: allTargetIds } },
+      ],
+    });
+
     if (totalLinked > 0) {
       return handleResponse(
         res,
         400,
-        `Cannot delete categories: There are ${totalLinked} products in the database. Please reassign or remove products first to prevent orphaned records.`
+        `Cannot delete categories: There are ${totalLinked} products assigned to these categories. Please reassign or remove products first to prevent orphaned records.`
       );
     }
 
@@ -559,20 +610,8 @@ export const deleteAllCategories = async (req, res) => {
       await Category.findByIdAndDelete(id);
     };
 
-    if (type === "header") {
-      const headers = await Category.find({ type: "header" }).select("_id").lean();
-      for (const h of headers) {
-        await deleteWithChildren(h._id);
-      }
-    } else if (type === "category") {
-      const query = { type: "category" };
-      if (parentId && parentId !== "all" && mongoose.Types.ObjectId.isValid(parentId)) {
-        query.parentId = parentId;
-      }
-      const cats = await Category.find(query).select("_id").lean();
-      for (const c of cats) {
-        await deleteWithChildren(c._id);
-      }
+    if (type === "all") {
+      await Category.deleteMany({});
     } else if (type === "subcategory") {
       const query = { type: "subcategory" };
       if (parentId && parentId !== "all" && mongoose.Types.ObjectId.isValid(parentId)) {
@@ -580,7 +619,9 @@ export const deleteAllCategories = async (req, res) => {
       }
       await Category.deleteMany(query);
     } else {
-      await Category.deleteMany({});
+      for (const rId of targetRootIds) {
+        await deleteWithChildren(rId);
+      }
     }
 
     invalidate("cache:catalog:categories:*").catch((err) => {

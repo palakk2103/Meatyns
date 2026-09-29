@@ -183,7 +183,7 @@ const HotDealsSection = ({ products = [] }) => {
       <div className="flex items-center justify-between mb-3 sm:mb-4 px-1">
         <div className="flex items-center gap-2">
           <Flame size={20} className="fill-[#C81017] text-[#C81017] shrink-0" />
-          <h2 className="text-lg sm:text-xl md:text-2xl font-black text-[#111111] uppercase tracking-tight">
+          <h2 className="text-lg sm:text-xl md:text-2xl font-normal font-anton tracking-wide text-[#111111] uppercase">
             Hot Deals
           </h2>
           <div className="w-10 h-1 bg-[#FAB82C] rounded-full ml-1" />

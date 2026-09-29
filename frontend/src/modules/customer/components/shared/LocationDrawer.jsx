@@ -352,7 +352,7 @@ const LocationDrawer = ({ isOpen, onClose }) => {
             {/* Header */}
             <div className="sticky top-0 bg-[#F3F4F6] px-6 pt-6 pb-4 flex flex-col gap-4 z-20">
               <div className="flex items-center justify-between">
-                <h2 className="text-xl font-extrabold text-[#1A1A1A]">
+                <h2 className="text-xl font-anton font-normal tracking-wide uppercase text-[#1A1A1A]">
                   Select delivery location
                 </h2>
                 <button

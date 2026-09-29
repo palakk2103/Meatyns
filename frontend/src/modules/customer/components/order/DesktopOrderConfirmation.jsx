@@ -34,7 +34,7 @@ const DesktopOrderConfirmation = ({
   return (
     <div className="min-h-screen bg-[#FBF8F5] pb-16">
       <div className="pt-8 px-6 lg:px-12 max-w-5xl mx-auto">
-        <h1 className="text-xl font-bold text-slate-800 mb-6 tracking-tight">
+        <h1 className="text-xl font-anton font-normal tracking-wide uppercase text-slate-800 mb-6">
           Order Confirmation
         </h1>
 
@@ -48,7 +48,7 @@ const DesktopOrderConfirmation = ({
                 <Check size={36} strokeWidth={3} />
               </div>
 
-              <h2 className="text-xl lg:text-2xl font-black text-slate-900 tracking-tight mb-1.5">
+              <h2 className="text-xl lg:text-2xl font-anton font-normal tracking-wide uppercase text-slate-900 mb-1.5">
                 Order Placed Successfully!
               </h2>
 

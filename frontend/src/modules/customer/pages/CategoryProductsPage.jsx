@@ -18,6 +18,29 @@ import { useLocation as useAppLocation } from '../context/LocationContext';
 import { useSettings } from '@core/context/SettingsContext';
 import Lottie from 'lottie-react';
 
+const isMuttonOrChickenCategory = (catObj, paramId, stateName) => {
+    const text = [
+        catObj?.name,
+        catObj?.slug,
+        catObj?._id,
+        catObj?.id,
+        catObj?.parent?.name,
+        catObj?.parentId?.name,
+        paramId,
+        stateName
+    ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+
+    return (
+        text.includes("chicken") ||
+        text.includes("mutton") ||
+        text.includes("goat") ||
+        text.includes("lamb")
+    );
+};
+
 const CategoryProductsPage = () => {
     const { categoryName: catId } = useParams();
     const navigate = useNavigate();
@@ -35,6 +58,10 @@ const CategoryProductsPage = () => {
     const [isOutOfService, setIsOutOfService] = useState(false);
     const [isHeaderCategory, setIsHeaderCategory] = useState(false);
     const sidebarRef = React.useRef(null);
+
+    const isChickenOrMutton = React.useMemo(() => {
+        return isMuttonOrChickenCategory(category, catId, location.state?.categoryName);
+    }, [category, catId, location.state?.categoryName]);
 
     const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' ? window.innerWidth < 768 : false);
 
@@ -148,6 +175,26 @@ const CategoryProductsPage = () => {
             console.log(`[CategoryProductsPage] fetchData [seq=${seq}] matched Category:`, currentCat?.name, "Type:", categoryType);
 
             setIsHeaderCategory(categoryType === 'header');
+
+            if (currentCat) {
+                setCategory(currentCat);
+                const childrenToMap = categoryType === 'subcategory' ? (currentCat.siblings || []) : (currentCat.children || []);
+                const subs = childrenToMap.map(s => ({
+                    id: s._id,
+                    name: s.name,
+                    icon: s.image || 'https://cdn-icons-png.flaticon.com/128/2321/2321801.png'
+                }));
+                setSubCategories([{ id: 'all', name: 'All', icon: 'https://cdn-icons-png.flaticon.com/128/2321/2321831.png' }, ...subs]);
+            }
+
+            // Strictly check if category is Mutton or Chicken
+            const isTargetChickenOrMutton = isMuttonOrChickenCategory(currentCat, catId, location.state?.categoryName);
+            if (!isTargetChickenOrMutton) {
+                setProducts([]);
+                setIsOutOfService(false);
+                setIsLoading(false);
+                return;
+            }
 
             const productParams = {
                 lat: currentLocation?.latitude,
@@ -288,26 +335,60 @@ const CategoryProductsPage = () => {
                     >
                         <ChevronLeft size={24} className="text-gray-900" />
                     </button>
-                    <h1 className="text-[18px] md:text-xl font-bold text-gray-800 tracking-tight">
-                        {category?.name || catId}
+                    <h1 className="text-[18px] md:text-xl font-normal font-anton tracking-wide text-gray-800 uppercase">
+                        {category?.name || location.state?.categoryName || (catId ? (catId.charAt(0).toUpperCase() + catId.slice(1)) : "Category")}
                     </h1>
                 </div>
 
             </header>
 
             <div className="flex flex-1 relative items-start">
-                {(safeProducts.length === 0 && !isLoading) ? (
-                    <div className="w-full flex-1 py-20 px-8 flex flex-col items-center justify-center text-center">
-                        <div className="w-64 h-64 mb-6">
+                {!isChickenOrMutton ? (
+                    /* ──── COMING SOON: ALL HEADER CATEGORIES EXCEPT MUTTON & CHICKEN ──── */
+                    <div className="w-full flex-1 py-16 md:py-24 px-6 sm:px-8 flex flex-col items-center justify-center text-center">
+                        <div className="w-56 h-56 sm:w-64 sm:h-64 mb-6">
                             {noServiceData ? (
                                 <Lottie animationData={noServiceData} loop={true} />
                             ) : (
-                                <div className="w-64 h-64" />
+                                <div className="w-56 h-56 sm:w-64 sm:h-64 flex items-center justify-center text-6xl">
+                                    🚀
+                                </div>
                             )}
                         </div>
+                        <h3 className="text-3xl sm:text-4xl font-normal font-anton tracking-wide text-slate-800 mb-3 uppercase">
+                            Coming <span className="text-primary">Soon!</span>
+                        </h3>
+                        <p className="text-slate-500 font-bold text-sm sm:text-base max-w-[340px] mb-8 leading-relaxed">
+                            We are preparing fresh {category?.name || location.state?.categoryName || catId} cuts for you. Stay tuned, launching soon!
+                        </p>
+                        <div className="flex flex-wrap items-center justify-center gap-3">
+                            <button 
+                                onClick={() => navigate('/category/mutton')}
+                                className="px-8 py-3.5 bg-primary text-slate-950 rounded-2xl font-black text-sm uppercase tracking-wider hover:brightness-105 active:scale-95 transition-all shadow-lg cursor-pointer"
+                            >
+                                Explore Mutton
+                            </button>
+                            <button 
+                                onClick={() => navigate('/')}
+                                className="px-8 py-3.5 bg-slate-900 text-white rounded-2xl font-black text-sm uppercase tracking-wider hover:bg-slate-800 active:scale-95 transition-all shadow-lg cursor-pointer"
+                            >
+                                Back to Home
+                            </button>
+                        </div>
+                    </div>
+                ) : (safeProducts.length === 0 && !isLoading) ? (
+                    /* ──── STRICTLY FOR CHICKEN & MUTTON: NEVER SHOWS COMING SOON ──── */
+                    <div className="w-full flex-1 py-16 md:py-24 px-6 sm:px-8 flex flex-col items-center justify-center text-center">
                         {isOutOfService ? (
                             <>
-                                <h3 className="text-3xl font-[1000] text-slate-800 tracking-tighter mb-4 uppercase">
+                                <div className="w-56 h-56 sm:w-64 sm:h-64 mb-6">
+                                    {noServiceData ? (
+                                        <Lottie animationData={noServiceData} loop={true} />
+                                    ) : (
+                                        <div className="w-56 h-56 sm:w-64 sm:h-64" />
+                                    )}
+                                </div>
+                                <h3 className="text-3xl font-normal font-anton tracking-wide text-slate-800 mb-4 uppercase">
                                     Service <span className="text-primary">Unavailable</span>
                                 </h3>
                                 <p className="text-slate-500 font-bold text-sm max-w-[280px] mb-8 leading-relaxed">
@@ -318,25 +399,36 @@ const CategoryProductsPage = () => {
                                         navigate('/');
                                         toast.info("Please tap on the Location selector at the top of the page to choose a serviceable area.");
                                     }}
-                                    className="px-10 py-4 bg-slate-900 text-white rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-slate-800 active:scale-95 transition-all shadow-xl shadow-black/10"
+                                    className="px-10 py-4 bg-slate-900 text-white rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-slate-800 active:scale-95 transition-all shadow-xl shadow-black/10 cursor-pointer"
                                 >
                                     Change Location
                                 </button>
                             </>
                         ) : (
                             <>
-                                <h3 className="text-3xl font-[1000] text-slate-800 tracking-tighter mb-4 uppercase">
-                                    Coming <span className="text-primary">Soon!</span>
+                                <div className="w-20 h-20 rounded-full bg-amber-50 flex items-center justify-center text-4xl mb-4 border border-amber-200">
+                                    🍗
+                                </div>
+                                <h3 className="text-2xl sm:text-3xl font-normal font-anton tracking-wide text-slate-800 mb-3 uppercase">
+                                    Fresh Stock Arriving Shortly
                                 </h3>
-                                <p className="text-slate-500 font-bold text-sm max-w-[280px] mb-8 leading-relaxed">
-                                    We are stocking up on products for this category. Stay tuned!
+                                <p className="text-slate-500 font-semibold text-sm max-w-[360px] mb-8 leading-relaxed">
+                                    Our fresh {category?.name || location.state?.categoryName || "chicken"} cuts are currently being prepared by our master butchers with 100% quality standards. Please check back shortly or explore our tender Mutton cuts!
                                 </p>
-                                <button 
-                                    onClick={fetchData}
-                                    className="px-10 py-4 bg-slate-900 text-white rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-slate-800 active:scale-95 transition-all shadow-xl shadow-black/10"
-                                >
-                                    Try Refreshing
-                                </button>
+                                <div className="flex flex-wrap items-center justify-center gap-3">
+                                    <button 
+                                        onClick={fetchData}
+                                        className="px-8 py-3.5 bg-primary text-slate-950 rounded-2xl font-black text-sm uppercase tracking-wider hover:brightness-105 active:scale-95 transition-all shadow-lg cursor-pointer"
+                                    >
+                                        Try Refreshing
+                                    </button>
+                                    <button 
+                                        onClick={() => navigate('/category/mutton')}
+                                        className="px-8 py-3.5 bg-slate-900 text-white rounded-2xl font-black text-sm uppercase tracking-wider hover:bg-slate-800 active:scale-95 transition-all shadow-lg cursor-pointer"
+                                    >
+                                        Explore Mutton
+                                    </button>
+                                </div>
                             </>
                         )}
                     </div>

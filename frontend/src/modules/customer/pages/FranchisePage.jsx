@@ -170,7 +170,7 @@ const FranchisePage = () => {
                             <ChevronLeft size={22} />
                         </button>
                         <div>
-                            <h1 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight leading-none">
+                            <h1 className="text-base sm:text-lg font-anton font-normal tracking-wide uppercase text-slate-900 leading-none">
                                 Franchise Opportunities
                             </h1>
                             <p className="text-[11px] text-slate-500 font-medium mt-0.5">
@@ -203,7 +203,7 @@ const FranchisePage = () => {
                             <span>Franchise Opportunity • Maharashtra</span>
                         </div>
 
-                        <h2 className="text-2xl sm:text-4xl md:text-[40px] font-black tracking-tight leading-tight text-slate-900">
+                        <h2 className="text-2xl sm:text-4xl md:text-[40px] font-anton font-normal tracking-wide uppercase leading-tight text-slate-900">
                             Be a Part of Maharashtra’s Premium Meat Revolution!
                         </h2>
 

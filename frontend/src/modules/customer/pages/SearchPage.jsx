@@ -228,7 +228,7 @@ const SearchPage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-[#FFF9F4] font-outfit">
+        <div className="min-h-screen bg-[#FFF9F4] font-poppins">
             {/* Header / Search Input */}
             <div
                 className={cn(
@@ -417,8 +417,8 @@ const SearchPage = () => {
                     {query ? (
                         <section>
                             <div className="flex justify-between items-center mb-5 md:mb-6">
-                                <h2 className="text-xl md:text-2xl font-bold text-slate-800 tracking-tight font-serif">
-                                    Search Results for <span className="text-[#111111] font-extrabold underline decoration-[#FAB82C] decoration-4">"{query}"</span>
+                                <h2 className="text-xl md:text-2xl font-normal font-anton tracking-wide text-slate-800 uppercase">
+                                    Search Results for <span className="text-[#111111] underline decoration-[#FAB82C] decoration-4">"{query}"</span>
                                 </h2>
                                 <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">{results.length} found</span>
                             </div>
@@ -440,7 +440,7 @@ const SearchPage = () => {
                                             <div className="w-48 h-48 md:w-64 md:h-64" />
                                         )}
                                     </div>
-                                    <h3 className="text-xl md:text-2xl font-black text-slate-800 tracking-tight mb-2">No items found</h3>
+                                    <h3 className="text-xl md:text-2xl font-normal font-anton tracking-wide text-slate-800 mb-2 uppercase">No items found</h3>
                                     <p className="text-slate-500 font-medium max-w-xs text-sm">We couldn't find anything for "{query}". Try different keywords!</p>
                                 </div>
                             )}
@@ -480,7 +480,7 @@ const SearchPage = () => {
                             {/* 2. Lowest Price Ever Section */}
                             <section>
                                 <div className="flex justify-between items-center mb-5">
-                                    <h2 className="text-xl md:text-2xl font-bold text-slate-800 tracking-tight font-serif">Lowest Price Ever!</h2>
+                                    <h2 className="text-xl md:text-2xl font-normal font-anton tracking-wide text-slate-800 uppercase">Lowest Price Ever!</h2>
                                     <button 
                                         className="flex items-center gap-1 md:gap-1.5 px-3 py-1 md:px-4 md:py-1.5 bg-white border border-slate-200 hover:border-[#FAB82C] rounded-full text-xs md:text-sm font-bold text-[#111111] transition-all cursor-pointer" 
                                         onClick={() => navigate('/category/all')}

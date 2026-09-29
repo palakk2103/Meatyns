@@ -779,7 +779,7 @@ const OrderDetailPage = () => {
             <ChevronLeft size={24} className="text-slate-800" />
           </button>
           <div className="flex-1 text-center">
-            <h1 className="text-base font-bold text-slate-800">Order</h1>
+            <h1 className="text-base font-normal font-anton tracking-wide text-slate-800 uppercase">Order</h1>
             <p className="text-xs text-slate-500 font-medium">#{order.orderId.slice(-8)}</p>
           </div>
           <div className="w-10" />
@@ -1091,7 +1091,7 @@ const OrderDetailPage = () => {
               {/* Order Info & Status Badge Row */}
               <div className="flex items-center justify-between">
                 <div>
-                  <h1 className="text-xl lg:text-2xl font-black text-slate-900 tracking-tight">
+                  <h1 className="text-xl lg:text-2xl font-normal font-anton tracking-wide text-slate-900 uppercase">
                     Order #{order.orderId ? (order.orderId.startsWith('#') ? order.orderId : order.orderId.slice(-8).toUpperCase()) : "FK123456"}
                   </h1>
                   <p className="text-xs text-slate-500 mt-1 font-medium">

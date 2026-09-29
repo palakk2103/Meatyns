@@ -63,7 +63,7 @@ const PolicyPage = () => {
                         <ChevronLeft size={24} className="text-slate-700" />
                     </button>
                     <div>
-                        <h1 className="text-lg font-black text-slate-900 leading-tight">Policies & Guarantees</h1>
+                        <h1 className="text-lg font-normal font-anton tracking-wide text-slate-900 leading-tight uppercase">Policies &amp; Guarantees</h1>
                         <p className="text-[11px] font-semibold text-slate-400">Meatyns Standards & Customer Commitments</p>
                     </div>
                 </div>

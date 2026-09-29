@@ -4,11 +4,12 @@
 
 /* Typography Scale - Professional & Compact */
 .ds-h1 {
+  font-family: 'Anton', Impact, 'Arial Black', sans-serif;
   font-size: 1.25rem;
   line-height: 1.75rem;
-  font-weight: 700;
+  font-weight: 400;
   color: rgb(17 24 39);
-  letter-spacing: -0.025em;
+  letter-spacing: 0.02em;
 }
 
 .ds-h2 {

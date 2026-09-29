@@ -210,7 +210,7 @@ const CustomerAuth = () => {
             {/* ========================================================================= */}
             {/* MOBILE VIEW (< 768px): 100% UNTOUCHED ORIGINAL IMPLEMENTATION             */}
             {/* ========================================================================= */}
-            <div className="md:hidden min-h-screen w-full relative flex items-center justify-center font-['Outfit',_sans-serif] overflow-hidden">
+            <div className="md:hidden min-h-screen w-full relative flex items-center justify-center font-poppins overflow-hidden">
 
                 {/* Dynamic Atmospheric Background */}
             <div 
@@ -386,7 +386,7 @@ const CustomerAuth = () => {
                                     className="space-y-6 sm:space-y-5"
                                 >
                                     <div className="space-y-1.5 text-center">
-                                        <h3 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight">
+                                        <h3 className="text-xl sm:text-2xl font-normal font-anton text-gray-900 tracking-wide uppercase">
                                             Login with Phone
                                         </h3>
                                         <p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest leading-none">

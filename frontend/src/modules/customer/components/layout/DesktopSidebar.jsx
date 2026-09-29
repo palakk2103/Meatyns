@@ -248,7 +248,9 @@ const DesktopSidebar = ({ activeCategory, onCategorySelect, categories = [] }) =
     }
 
     if (targetId) {
-      navigate(`/category/${targetId}`);
+      navigate(`/category/${targetId}`, {
+        state: { categoryName: realCat?.name || cat.name, isHeaderCategory: true },
+      });
     } else {
       navigate(`/search?q=${encodeURIComponent(cat.name)}`);
     }

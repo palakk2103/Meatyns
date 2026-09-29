@@ -317,7 +317,7 @@ const OfferSections = ({ sections, noServiceData, allProducts = [] }) => {
                     <p className="text-[9px] sm:text-[10px] md:text-[11px] font-black uppercase tracking-wider text-[#E5A83B] leading-none mb-1 line-clamp-1">
                       {styleConfig.eyebrow}
                     </p>
-                    <h3 className="text-base sm:text-2xl md:text-3xl font-serif font-black tracking-tight leading-tight text-white drop-shadow-sm line-clamp-1">
+                    <h3 className="text-base sm:text-2xl md:text-3xl font-normal font-anton tracking-wide leading-tight text-white drop-shadow-sm line-clamp-1 uppercase">
                       {section.title}
                     </h3>
                     <p className="text-[10px] sm:text-xs font-medium text-white/70 mt-0.5 sm:mt-1 line-clamp-1">

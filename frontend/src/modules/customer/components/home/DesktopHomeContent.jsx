@@ -183,7 +183,7 @@ const DesktopHomeContent = ({ products = [], categories = [], heroConfig }) => {
                 </span>
 
                 {/* Main Headline */}
-                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-[#111111] uppercase leading-[1.12]">
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-normal font-anton tracking-wide text-[#111111] uppercase leading-[1.12]">
                   {currentHeroBanner?.title ? (
                     <span>{currentHeroBanner.title}</span>
                   ) : (

@@ -193,7 +193,7 @@ const OffersPage = () => {
           <ArrowLeft size={18} strokeWidth={2.4} />
         </button>
         <div>
-          <h1 className="text-2xl sm:text-3xl md:text-5xl font-black tracking-tight text-primary mb-1 sm:mb-1.5">
+          <h1 className="text-2xl sm:text-3xl md:text-5xl font-normal font-anton tracking-wide text-primary mb-1 sm:mb-1.5 uppercase">
             Best Offers for You
           </h1>
           <p className="text-gray-500 text-sm md:text-lg font-medium">

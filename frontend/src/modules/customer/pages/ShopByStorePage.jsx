@@ -79,7 +79,7 @@ const ShopByStorePage = () => {
           <p className="text-xs md:text-sm font-black uppercase tracking-[0.25em] text-primary/80 mb-2">
             Shop by store
           </p>
-          <h1 className="text-3xl md:text-5xl font-black tracking-tight text-slate-900 mb-3">
+          <h1 className="text-3xl md:text-5xl font-normal font-anton tracking-wide text-slate-900 mb-3 uppercase">
             Curated Aisles,{" "}
             <span className="text-primary">Just for You</span>
           </h1>

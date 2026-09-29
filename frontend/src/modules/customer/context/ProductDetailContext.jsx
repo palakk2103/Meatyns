@@ -27,7 +27,7 @@ export const ProductDetailProvider = ({ children }) => {
     };
 
     const value = useMemo(
-        () => ({ selectedProduct, isOpen, openProduct, closeProduct }),
+        () => ({ selectedProduct, isOpen, openProduct, closeProduct, setSelectedProduct }),
         [selectedProduct, isOpen]
     );
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { motion, AnimatePresence, useAnimation, useDragControls } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { X, ChevronDown, Share2, Heart, Search, Clock, Minus, Plus, ShoppingBag, Star, MessageSquare, ArrowLeft, ChevronRight } from 'lucide-react';
+import { X, ChevronDown, Share2, Heart, Search, Clock, Minus, Plus, ShoppingBag, Star, MessageSquare, ArrowLeft, ChevronRight, FileText } from 'lucide-react';
 import { useProductDetail } from '../../context/ProductDetailContext';
 import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
@@ -26,9 +26,10 @@ const parseWeightToGramsOrUnits = (name) => {
 };
 
 const getCalculatedVariantPrice = (product, variant) => {
-    if (!product || !variant) return 0;
+    if (!product) return 0;
+    if (!variant) return Number(product.salePrice || product.price || 0);
     const variantPrice = Number(variant.salePrice || variant.price || 0);
-    const baseProductPrice = Number(product.price || 0);
+    const baseProductPrice = Number(product.salePrice || product.price || 0);
     
     if (variantPrice > 0 && variantPrice !== baseProductPrice) {
         return variantPrice;
@@ -51,7 +52,8 @@ const getCalculatedVariantPrice = (product, variant) => {
 };
 
 const getCalculatedVariantOriginalPrice = (product, variant) => {
-    if (!product || !variant) return 0;
+    if (!product) return 0;
+    if (!variant) return Number(product.originalPrice || product.price || 0);
     const variantOriginalPrice = Number(variant.price || 0);
     const baseProductOriginalPrice = Number(product.originalPrice || product.price || 0);
     
@@ -76,7 +78,7 @@ const getCalculatedVariantOriginalPrice = (product, variant) => {
 };
 
 const ProductDetailSheet = () => {
-    const { selectedProduct, isOpen, closeProduct } = useProductDetail();
+    const { selectedProduct, isOpen, closeProduct, setSelectedProduct } = useProductDetail();
     const { cart, cartCount, addToCart, updateQuantity, removeFromCart } = useCart();
     const { toggleWishlist: toggleWishlistGlobal, isInWishlist } = useWishlist();
     const { showToast } = useToast();
@@ -121,19 +123,42 @@ const ProductDetailSheet = () => {
             ];
     }, [selectedProduct]);
 
-    // Update variant when product changes
+    // Update variant when product changes & auto-fetch full product details if description is missing
     useEffect(() => {
-        if (selectedProduct && selectedProduct.variants && selectedProduct.variants.length > 0) {
+        if (!selectedProduct) return;
+        setExpandedSections(['description']);
+
+        if (selectedProduct.variants && selectedProduct.variants.length > 0) {
             setSelectedVariant(selectedProduct.variants[0]);
         } else {
             setSelectedVariant(null);
         }
         setActiveImageIndex(0);
 
-        if (selectedProduct?.id) {
-            fetchReviews(selectedProduct.id);
+        const prodId = String(selectedProduct._id || selectedProduct.id || "").trim();
+        if (prodId) {
+            fetchReviews(prodId);
+
+            // Fetch full product details from backend to ensure description and attributes are fully populated
+            customerApi.getProductById(prodId)
+                .then((res) => {
+                    const full = res.data?.result || res.data?.product;
+                    if (full && setSelectedProduct) {
+                        setSelectedProduct((prev) => {
+                            if (!prev) return full;
+                            return {
+                                ...prev,
+                                ...full,
+                                description: full.description || prev.description,
+                                id: full._id || prev.id,
+                                _id: full._id || prev._id,
+                            };
+                        });
+                    }
+                })
+                .catch(() => {});
         }
-    }, [selectedProduct]);
+    }, [selectedProduct?._id, selectedProduct?.id]);
 
     const fetchReviews = async (productId) => {
         try {
@@ -296,6 +321,8 @@ const ProductDetailSheet = () => {
     if (!selectedProduct) return null;
 
     const cleanDesc = cleanDescription(selectedProduct?.description);
+    const displayDescription = cleanDesc || selectedProduct?.description || "Fresh and premium quality cuts prepared with 100% halal and safety standards.";
+    const isHtmlDesc = Boolean(typeof displayDescription === 'string' && /<[a-z][\s\S]*>/i.test(displayDescription));
 
     const AccordionItem = ({ title, children, id, icon }) => {
         const isOpen = expandedSections.includes(id);
@@ -514,7 +541,7 @@ const ProductDetailSheet = () => {
                                                 {selectedProduct.name}
                                             </h1>
                                             {selectedProduct.weight && (
-                                                <span className="text-[13px] text-gray-400 font-bold uppercase tracking-wider">{selectedProduct.weight}</span>
+                                                <span className="text-[12px] bg-slate-100 text-slate-700 font-bold px-2 py-0.5 rounded-md uppercase tracking-wider inline-block mb-1.5">{selectedProduct.weight}</span>
                                             )}
                                         </motion.div>
 
@@ -666,18 +693,22 @@ const ProductDetailSheet = () => {
                                         {/* Product Information Accordion (Desktop) */}
                                         <div className="mt-8 border-t border-slate-100">
                                             {/* Description */}
-                                            {cleanDesc && (
-                                                <AccordionItem 
-                                                    id="description" 
-                                                    title="Product Description" 
-                                                    icon={<Clock size={16} />}
-                                                >
+                                            <AccordionItem 
+                                                id="description" 
+                                                title="Product Description" 
+                                                icon={<FileText size={16} />}
+                                            >
+                                                {isHtmlDesc ? (
                                                     <div
-                                                        className="text-[13px] text-slate-500 font-medium leading-relaxed whitespace-pre-line"
-                                                        dangerouslySetInnerHTML={{ __html: cleanDesc }}
+                                                        className="text-[13px] text-slate-600 font-medium leading-relaxed whitespace-pre-line"
+                                                        dangerouslySetInnerHTML={{ __html: displayDescription }}
                                                     />
-                                                </AccordionItem>
-                                            )}
+                                                ) : (
+                                                    <div className="text-[13px] text-slate-600 font-medium leading-relaxed whitespace-pre-line">
+                                                        {displayDescription}
+                                                    </div>
+                                                )}
+                                            </AccordionItem>
 
                                             {/* Product Details */}
                                             <AccordionItem 
@@ -904,9 +935,14 @@ const ProductDetailSheet = () => {
                                     {selectedProduct.deliveryTime || "8 Mins"}
                                 </div>
 
-                                <h2 className="text-xl font-black text-[#1A1A1A] leading-tight mb-2">
+                                <h2 className="text-xl font-black text-[#1A1A1A] leading-tight mb-1">
                                     {selectedProduct.name}
                                 </h2>
+                                {selectedProduct.weight && (
+                                    <span className="text-[11px] bg-slate-100 text-slate-700 font-bold px-2 py-0.5 rounded-md uppercase tracking-wider inline-block mb-1.5">
+                                        {selectedProduct.weight}
+                                    </span>
+                                )}
 
                                 {/* Variants Selection (Mobile) */}
                                 {selectedProduct.variants && selectedProduct.variants.length > 0 && (
@@ -938,18 +974,22 @@ const ProductDetailSheet = () => {
                                 {/* Product Information Accordion (Mobile) */}
                                 <div className="mt-4 border-t border-slate-100">
                                     {/* Description */}
-                                    {cleanDesc && (
-                                        <AccordionItem 
-                                            id="description" 
-                                            title="Product Description" 
-                                            icon={<Clock size={18} strokeWidth={2.5} />}
-                                        >
+                                    <AccordionItem 
+                                        id="description" 
+                                        title="Product Description" 
+                                        icon={<FileText size={18} strokeWidth={2.5} />}
+                                    >
+                                        {isHtmlDesc ? (
                                             <div
-                                                className="text-sm text-slate-500 font-medium leading-relaxed whitespace-pre-line"
-                                                dangerouslySetInnerHTML={{ __html: cleanDesc }}
+                                                className="text-sm text-slate-600 font-medium leading-relaxed whitespace-pre-line"
+                                                dangerouslySetInnerHTML={{ __html: displayDescription }}
                                             />
-                                        </AccordionItem>
-                                    )}
+                                        ) : (
+                                            <div className="text-sm text-slate-600 font-medium leading-relaxed whitespace-pre-line">
+                                                {displayDescription}
+                                            </div>
+                                        )}
+                                    </AccordionItem>
 
                                     {/* Product Details */}
                                     <AccordionItem 

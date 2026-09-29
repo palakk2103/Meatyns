@@ -33,7 +33,7 @@ const CheckoutOrderSuccess = React.memo(function CheckoutOrderSuccess({ orderId,
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.2 }}
-              className="text-3xl font-black text-slate-800 mb-2">
+              className="text-3xl font-anton font-normal tracking-wide uppercase text-slate-800 mb-2">
               Order placed
             </motion.h2>
             <motion.p

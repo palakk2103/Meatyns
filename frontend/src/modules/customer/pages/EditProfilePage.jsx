@@ -92,7 +92,7 @@ const EditProfilePage = () => {
                 <Link to="/profile" className="p-2 -ml-2 rounded-full hover:bg-slate-100 transition-colors">
                     <ArrowLeft size={24} className="text-slate-600" />
                 </Link>
-                <h1 className="text-lg font-black text-slate-800">Edit Profile</h1>
+                <h1 className="text-lg font-anton font-normal tracking-wide uppercase text-slate-800">Edit Profile</h1>
             </div>
 
             <div className="max-w-xl mx-auto p-5">

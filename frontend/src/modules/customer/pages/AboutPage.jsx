@@ -25,7 +25,7 @@ const AboutPage = () => {
                 >
                     <ChevronLeft size={22} className="text-slate-800" />
                 </button>
-                <h1 className="text-xl font-bold text-slate-900 tracking-tight">About Us</h1>
+                <h1 className="text-xl font-normal font-anton tracking-wide text-slate-900 uppercase">About Us</h1>
             </div>
 
             <div className="px-4 pt-1 max-w-3xl mx-auto space-y-4">
@@ -35,7 +35,7 @@ const AboutPage = () => {
                         <div className="h-10 w-10 rounded-xl bg-red-50 flex items-center justify-center text-primary">
                             <Award size={22} className="text-[#C81017]" />
                         </div>
-                        <h2 className="text-xl font-bold tracking-tight text-slate-900">About Meatyns</h2>
+                        <h2 className="text-xl font-normal font-anton tracking-wide text-slate-900 uppercase">About Meatyns</h2>
                     </div>
                     <p className="text-slate-700 leading-relaxed text-base">
                         Meatyns is Maharashtra’s first premium meat brand specializing in goat, sheep, and lamb meat. Our goal is to revolutionize the meat industry with hygiene, freshness, and trust.

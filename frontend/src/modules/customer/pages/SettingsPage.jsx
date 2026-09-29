@@ -8,7 +8,7 @@ const SettingsPage = () => {
             <div className="bg-gradient-to-br from-primary to-[#149d29] px-5 pt-10 pb-20 relative z-10 rounded-b-[2.5rem] shadow-lg overflow-hidden">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-16 -mt-32 pointer-events-none" />
                 <div className="absolute bottom-0 left-0 w-32 h-32 bg-black/5 rounded-full blur-2xl -ml-10 -mb-10 pointer-events-none" />
-                <h1 className="text-3xl font-black text-white tracking-tight relative z-10">Settings</h1>
+                <h1 className="text-3xl font-anton font-normal tracking-wide uppercase text-white relative z-10">Settings</h1>
                 <p className="text-brand-50 text-sm font-medium mt-1 relative z-10">Configure your app preferences</p>
             </div>
 

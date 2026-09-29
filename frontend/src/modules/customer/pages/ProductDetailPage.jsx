@@ -149,7 +149,7 @@ const ProductDetailPage = () => {
                         <div className="w-64 h-64" />
                     )}
                 </div>
-                <h3 className="text-3xl font-[1000] text-slate-800 tracking-tighter mb-4 uppercase">
+                <h3 className="text-3xl font-anton font-normal tracking-wide mb-4 uppercase text-slate-800">
                     Item <span className="text-primary">Unavailable</span>
                 </h3>
                 <p className="text-slate-500 font-bold text-sm max-w-[280px] mb-8 leading-relaxed">

@@ -103,7 +103,7 @@ const SupportPage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-[#FFF9F4] pb-24 font-outfit">
+        <div className="min-h-screen bg-[#FFF9F4] pb-24 font-poppins">
             {/* ──── Sticky Header matching Home and Search page background color ──── */}
             <div
                 className="sticky top-0 z-30 bg-[#FDCE04] shadow-[0_4px_20px_rgba(0,0,0,0.08)] relative overflow-hidden"
@@ -217,7 +217,7 @@ const SupportPage = () => {
                                 <ChevronLeft size={22} className="text-[#1A1A1A]" />
                             </button>
                             <div>
-                                <h1 className="text-lg md:text-xl font-bold text-[#1A1A1A] tracking-tight leading-tight flex items-center gap-2">
+                                <h1 className="text-lg md:text-xl font-normal font-anton tracking-wide text-[#1A1A1A] leading-tight flex items-center gap-2 uppercase">
                                     <Headphones size={20} className="text-[#1A1A1A]" />
                                     Help & Support
                                 </h1>
