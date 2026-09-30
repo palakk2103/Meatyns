@@ -91,28 +91,44 @@ const ExperienceBannerCarousel = ({ section, items, fullWidth = false, slideGap 
             style={{ width: `${100 / totalItems}%` }}
           >
             {fullWidth ? (
-              <img
-                src={getBannerOptimizedSrc(banner.imageUrl)}
-                srcSet={
-                  isCloudinaryUrl(banner.imageUrl)
-                    ? buildCloudinarySrcSet(banner.imageUrl, [
-                        { w: 412, h: 190 },
-                        { w: 824, h: 380 },
-                        { w: 1248, h: 570 },
-                      ])
-                    : undefined
-                }
-                sizes="100vw"
-                alt={banner.title || section?.title || "Banner"}
-                className="w-full h-full object-cover object-center pointer-events-none"
-                width={412}
-                height={190}
-                loading={idx === 0 ? "eager" : "lazy"}
-                fetchPriority={idx === 0 ? "high" : "low"}
-                decoding="async"
-              />
+              <div className="relative w-full h-full">
+                <img
+                  src={getBannerOptimizedSrc(banner.imageUrl)}
+                  srcSet={
+                    isCloudinaryUrl(banner.imageUrl)
+                      ? buildCloudinarySrcSet(banner.imageUrl, [
+                          { w: 412, h: 190 },
+                          { w: 824, h: 380 },
+                          { w: 1248, h: 570 },
+                        ])
+                      : undefined
+                  }
+                  sizes="100vw"
+                  alt={banner.headline || banner.title || section?.title || "Banner"}
+                  className="w-full h-full object-cover object-center pointer-events-none"
+                  width={412}
+                  height={190}
+                  loading={idx === 0 ? "eager" : "lazy"}
+                  fetchPriority={idx === 0 ? "high" : "low"}
+                  decoding="async"
+                />
+                {Boolean(banner.headline || banner.title || banner.subheadline || banner.subtitle) && (
+                  <div className="absolute inset-0 flex flex-col justify-end p-4 md:p-6 text-white pointer-events-none">
+                    {(banner.headline || banner.title) && (
+                      <h3 className="text-base md:text-xl font-anton uppercase tracking-wide text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] line-clamp-1">
+                        {banner.headline || banner.title}
+                      </h3>
+                    )}
+                    {(banner.subheadline || banner.subtitle) && (
+                      <p className="text-[11px] md:text-xs text-amber-50/90 font-medium line-clamp-1 mt-0.5 drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">
+                        {banner.subheadline || banner.subtitle}
+                      </p>
+                    )}
+                  </div>
+                )}
+              </div>
             ) : (
-              <div className="h-full w-full max-w-[560px] overflow-hidden rounded-3xl bg-slate-100 shadow-[0_12px_30px_rgba(15,23,42,0.08)]">
+              <div className="relative h-full w-full max-w-[560px] overflow-hidden rounded-3xl bg-slate-100 shadow-[0_12px_30px_rgba(15,23,42,0.08)]">
                 <img
                   src={getBannerOptimizedSrc(banner.imageUrl)}
                   srcSet={
@@ -124,7 +140,7 @@ const ExperienceBannerCarousel = ({ section, items, fullWidth = false, slideGap 
                       : undefined
                   }
                   sizes="(max-width: 768px) 100vw, 560px"
-                  alt={banner.title || section?.title || "Banner"}
+                  alt={banner.headline || banner.title || section?.title || "Banner"}
                   className="w-full h-full object-cover object-center pointer-events-none"
                   width={560}
                   height={190}
@@ -132,6 +148,20 @@ const ExperienceBannerCarousel = ({ section, items, fullWidth = false, slideGap 
                   fetchPriority={idx === 0 ? "high" : "low"}
                   decoding="async"
                 />
+                {Boolean(banner.headline || banner.title || banner.subheadline || banner.subtitle) && (
+                  <div className="absolute inset-0 flex flex-col justify-end p-4 md:p-6 text-white pointer-events-none">
+                    {(banner.headline || banner.title) && (
+                      <h3 className="text-base md:text-xl font-anton uppercase tracking-wide text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] line-clamp-1">
+                        {banner.headline || banner.title}
+                      </h3>
+                    )}
+                    {(banner.subheadline || banner.subtitle) && (
+                      <p className="text-[11px] md:text-xs text-amber-50/90 font-medium line-clamp-1 mt-0.5 drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">
+                        {banner.subheadline || banner.subtitle}
+                      </p>
+                    )}
+                  </div>
+                )}
               </div>
             )}
           </div>

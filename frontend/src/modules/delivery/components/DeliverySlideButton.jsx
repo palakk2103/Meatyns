@@ -3,6 +3,10 @@ import { motion } from "framer-motion";
 import { ChevronRight, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { deliveryApi } from "../services/deliveryApi";
+import {
+  getCachedDeliveryPartnerLocation,
+  getCurrentPositionWithCache,
+} from "../utils/deliveryLastLocation";
 
 /**
  * DeliverySlideButton - A slide-to-confirm button for delivery actions
@@ -53,12 +57,31 @@ const DeliverySlideButton = ({
     setIsLoading(true);
 
     try {
+      let locationPayload = {};
+      const cached = getCachedDeliveryPartnerLocation(5 * 60 * 1000);
+      if (cached) {
+        locationPayload = { lat: cached.lat, lng: cached.lng };
+      }
+      try {
+        const loc = await new Promise((resolve, reject) => {
+          getCurrentPositionWithCache(resolve, reject, {
+            maxCacheAgeMs: 5 * 60 * 1000,
+            geoOptions: { timeout: 3000, maximumAge: 60000, enableHighAccuracy: false },
+          });
+        }).catch(() => null);
+        if (loc && typeof loc.lat === "number" && typeof loc.lng === "number") {
+          locationPayload = { lat: loc.lat, lng: loc.lng };
+        }
+      } catch {
+        /* ignore location fetch error and fallback to stored backend location */
+      }
+
       // Call appropriate endpoint based on flow type
       const response = isReturnDrop
-        ? await deliveryApi.requestReturnDropOtp(orderId, {})
+        ? await deliveryApi.requestReturnDropOtp(orderId, locationPayload)
         : isReturn
-          ? await deliveryApi.requestReturnOtp(orderId, {})
-          : await deliveryApi.requestDeliveryOtp(orderId, {});
+          ? await deliveryApi.requestReturnOtp(orderId, locationPayload)
+          : await deliveryApi.requestDeliveryOtp(orderId, locationPayload);
 
       // Handle success
       toast.success(response.data?.message || "OTP generated and sent to customer");

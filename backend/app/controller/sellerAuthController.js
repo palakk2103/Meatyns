@@ -371,6 +371,29 @@ export const verifySellerLoginOtp = async (req, res) => {
         }
         seller.loginOtp = undefined;
         seller.loginOtpExpiry = undefined;
+
+        const applicationStatus =
+            seller.applicationStatus || (seller.isVerified ? "approved" : "pending");
+        const isApproved =
+            seller.isVerified === true &&
+            seller.isActive === true &&
+            applicationStatus === "approved";
+
+        if (!isApproved) {
+            await seller.save();
+            const approvalMessage =
+                applicationStatus === "rejected"
+                    ? "Your seller application was rejected. Please contact support."
+                    : "Your seller account is pending admin approval.";
+
+            return handleResponse(res, 403, approvalMessage, {
+                applicationStatus,
+                isVerified: seller.isVerified === true,
+                isActive: seller.isActive === true,
+                rejectionReason: seller.rejectionReason || "",
+            });
+        }
+
         seller.lastLogin = new Date();
         await seller.save();
 

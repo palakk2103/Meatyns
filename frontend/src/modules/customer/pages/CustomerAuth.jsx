@@ -20,7 +20,8 @@ import {
     Mail,
     Lock,
     Eye,
-    EyeOff
+    EyeOff,
+    Sparkles
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { customerApi } from '../services/customerApi';
@@ -29,44 +30,48 @@ import DesktopCustomerAuth from '../components/auth/DesktopCustomerAuth';
 
 const CATEGORIES = [
     {
-        title: "Grocery",
-        icon: <ShoppingBasket size={28} />,
-        color: "#ecfeff",
-        ring: "var(--primary)",
-        text: "var(--brand-500)",
-        theme: "var(--primary)",
-        shadow: "rgba(97, 218, 251, 0.3)",
-        img: "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=600"
-    },
-    {
-        title: "Store",
-        icon: <Smartphone size={28} />,
-        color: "#f0f9ff",
-        ring: "var(--brand-400)",
-        text: "#0369a1",
-        theme: "var(--brand-500)",
-        shadow: "rgba(14, 165, 233, 0.3)",
-        img: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80&w=600"
-    },
-    {
-        title: "Food",
-        icon: <Utensils size={28} />,
-        color: "#f0fdfa",
-        ring: "#22d3ee",
-        text: "#0e7490",
-        theme: "var(--brand-500)",
-        shadow: "rgba(14, 165, 233, 0.3)",
-        img: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&q=80&w=600"
-    },
-    {
-        title: "Health",
+        title: "Fresh Mutton",
+        subtitle: "Farm-Fresh Goat & Lamb",
         icon: <ShieldCheck size={28} />,
-        color: "#eff6ff",
-        ring: "#60a5fa",
-        text: "#1d4ed8",
-        theme: "#3b82f6",
-        shadow: "rgba(59, 130, 246, 0.3)",
-        img: "https://images.unsplash.com/photo-1512678080530-7760d81faba6?q=80&w=1200&auto=format&fit=crop"
+        color: "#fef2f2",
+        ring: "#ef4444",
+        text: "#b91c1c",
+        theme: "#b91c1c",
+        shadow: "rgba(185, 28, 28, 0.3)",
+        img: "https://images.unsplash.com/photo-1603048588665-791ca8aea617?auto=format&fit=crop&q=80&w=800"
+    },
+    {
+        title: "Prime Cuts",
+        subtitle: "100% Chemical-Free & Halal",
+        icon: <ShoppingBag size={28} />,
+        color: "#fff7ed",
+        ring: "#f97316",
+        text: "#c2410c",
+        theme: "#c2410c",
+        shadow: "rgba(194, 65, 12, 0.3)",
+        img: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&q=80&w=800"
+    },
+    {
+        title: "Tender Lamb",
+        subtitle: "Hygienically Processed",
+        icon: <Utensils size={28} />,
+        color: "#fefce8",
+        ring: "#eab308",
+        text: "#a16207",
+        theme: "#b45309",
+        shadow: "rgba(180, 83, 9, 0.3)",
+        img: "https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&q=80&w=800"
+    },
+    {
+        title: "Farm To Table",
+        subtitle: "Delivered With Fresh Care",
+        icon: <ShieldCheck size={28} />,
+        color: "#fdf2f8",
+        ring: "#ec4899",
+        text: "#be185d",
+        theme: "#881337",
+        shadow: "rgba(136, 19, 55, 0.3)",
+        img: "https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&q=80&w=800"
     },
 ];
 
@@ -313,16 +318,22 @@ const CustomerAuth = () => {
                         </div>
 
                         {/* Centered App Message */}
-                        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-8 text-white pt-10 sm:pt-6">
+                        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-8 text-white pt-10 sm:pt-6 z-10 pointer-events-none">
                             <motion.h2
-                                key={carouselIndex}
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                className="text-2xl font-black tracking-tight leading-none mb-2"
+                                className="text-2xl sm:text-3xl font-black tracking-wider leading-none mb-1.5 drop-shadow-[0_2px_8px_rgba(0,0,0,0.7)] font-anton uppercase"
                             >
-                                {activeCategory.title.toUpperCase()} INSIDE
+                                MEATYNS INSIDE
                             </motion.h2>
-                            <p className="text-[10px] font-bold uppercase tracking-[4px] opacity-70">Everything delivered fast</p>
+                            <motion.p 
+                                key={carouselIndex}
+                                initial={{ opacity: 0, y: 4 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                className="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-[3px] text-amber-300 drop-shadow-md"
+                            >
+                                {activeCategory.subtitle || 'Farm-Fresh Goat & Lamb'}
+                            </motion.p>
                         </div>
 
                         {/* S-Curve Divider */}
@@ -429,6 +440,39 @@ const CustomerAuth = () => {
                                             <ChevronRight size={18} />
                                         </button>
                                     </form>
+
+                                    {/* Welcome Intro Section in Beautiful Lettering - Below Number Field */}
+                                    <div className="pt-4 border-t border-dashed border-stone-200/90 text-center space-y-2">
+                                        <div className="flex items-center justify-center gap-2">
+                                            <span className="w-8 h-[1px] bg-gradient-to-r from-transparent to-amber-400"></span>
+                                            <h4 
+                                                className="text-base sm:text-lg font-bold text-stone-900 tracking-wide"
+                                                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                                            >
+                                                Welcome to Meatyns
+                                            </h4>
+                                            <span className="w-8 h-[1px] bg-gradient-to-l from-transparent to-amber-400"></span>
+                                        </div>
+
+                                        <p 
+                                            className="text-[12px] sm:text-[13px] text-stone-600 leading-relaxed font-normal italic px-1"
+                                            style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                                        >
+                                            &ldquo;Where freshness meets authenticity. We bring you farm-fresh goat, sheep &amp; lamb meat &ndash; hygienically processed, chemical-free, and delivered with care. With premium cuts and farm-to-table delivery, we ensure your family enjoys healthy, flavorful meals every day.&rdquo;
+                                        </p>
+
+                                        <div className="pt-1 flex items-center justify-center gap-1.5 flex-wrap">
+                                            <span className="text-[9px] font-bold px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-900 border border-amber-200/70 uppercase tracking-wider">
+                                                Goat &bull; Sheep &bull; Lamb
+                                            </span>
+                                            <span className="text-[9px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200/70 uppercase tracking-wider">
+                                                100% Chemical-Free
+                                            </span>
+                                            <span className="text-[9px] font-bold px-2.5 py-0.5 rounded-full bg-red-50 text-red-800 border border-red-200/70 uppercase tracking-wider">
+                                                Farm to Table
+                                            </span>
+                                        </div>
+                                    </div>
 
                                     {/* Legal Agreement Footer */}
                                     <div className="pt-2 flex flex-col items-center gap-1">

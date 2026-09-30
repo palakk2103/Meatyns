@@ -3,6 +3,7 @@ import {
   HiOutlinePencilSquare,
   HiOutlinePhoto,
   HiOutlinePlus,
+  HiOutlineTrash,
   HiOutlineXMark,
 } from "react-icons/hi2";
 import { adminApi } from "../services/adminApi";
@@ -15,6 +16,8 @@ const emptyBannerItem = () => ({
   imageUrl: "",
   title: "",
   subtitle: "",
+  headline: "",
+  subheadline: "",
   linkType: "none",
   linkValue: "",
   isUploading: false,
@@ -112,7 +115,14 @@ export default function HeroCategoriesPerPage() {
       const catIds = result.categoryIds || [];
       setFormBanners(
         items.length
-          ? items.map((b) => ({ ...b, isUploading: false }))
+          ? items.map((b) => ({
+              ...b,
+              headline: b.headline || b.title || "",
+              subheadline: b.subheadline || b.subtitle || "",
+              title: b.title || b.headline || "",
+              subtitle: b.subtitle || b.subheadline || "",
+              isUploading: false,
+            }))
           : [emptyBannerItem()]
       );
       setFormCategoryIds(Array.isArray(catIds) ? catIds : []);
@@ -135,7 +145,16 @@ export default function HeroCategoriesPerPage() {
   };
 
   const removeBannerItem = (idx) => {
-    setFormBanners((prev) => prev.filter((_, i) => i !== idx));
+    setFormBanners((prev) => {
+      const next = prev.filter((_, i) => i !== idx);
+      return next.length > 0 ? next : [emptyBannerItem()];
+    });
+    showToast("Banner removed", "info");
+  };
+
+  const removeBannerImage = (idx) => {
+    updateBannerItem(idx, { imageUrl: "" });
+    showToast("Banner image removed", "info");
   };
 
   const handleBannerFileChange = async (idx, file) => {
@@ -163,14 +182,20 @@ export default function HeroCategoriesPerPage() {
   };
 
   const handleSave = async () => {
-    const items = formBanners.filter((b) => b.imageUrl).map((b) => ({
-      imageUrl: b.imageUrl,
-      title: b.title || "",
-      subtitle: b.subtitle || "",
-      linkType: b.linkType || "none",
-      linkValue: b.linkValue || "",
-      status: b.status || "active",
-    }));
+    const items = formBanners.filter((b) => b.imageUrl).map((b) => {
+      const headline = (b.headline !== undefined ? b.headline : b.title) || "";
+      const subheadline = (b.subheadline !== undefined ? b.subheadline : b.subtitle) || "";
+      return {
+        imageUrl: b.imageUrl,
+        title: headline,
+        headline: headline,
+        subtitle: subheadline,
+        subheadline: subheadline,
+        linkType: b.linkType || "none",
+        linkValue: b.linkValue || "",
+        status: b.status || "active",
+      };
+    });
 
     if (!editingRow) return;
     setSaving(true);
@@ -351,44 +376,69 @@ export default function HeroCategoriesPerPage() {
                               <HiOutlinePhoto className="h-6 w-6 text-slate-300" />
                             )}
                           </div>
-                          <div className="flex-1 min-w-0 space-y-1">
-                            <input
-                              type="file"
-                              accept="image/*"
-                              className="hidden"
-                              id={`hero-banner-file-${idx}`}
-                              onChange={(e) => handleBannerFileChange(idx, e.target.files?.[0])}
-                            />
-                            <label
-                              htmlFor={`hero-banner-file-${idx}`}
-                              className="inline-block px-2 py-1 rounded-lg bg-slate-100 text-[10px] font-bold text-slate-600 cursor-pointer hover:bg-slate-200"
-                            >
-                              {item.isUploading ? "Uploading…" : item.imageUrl ? "Change" : "Upload"}
-                            </label>
-                            <input
-                              value={item.title || ""}
-                              onChange={(e) => updateBannerItem(idx, { title: e.target.value })}
-                              className="w-full p-2 bg-slate-50 rounded-xl text-xs font-bold border-none outline-none"
-                              placeholder="Title (optional)"
-                            />
-                            <input
-                              value={item.subtitle || ""}
-                              onChange={(e) => updateBannerItem(idx, { subtitle: e.target.value })}
-                              className="w-full p-2 bg-slate-50 rounded-xl text-xs font-bold border-none outline-none"
-                              placeholder="Subtitle (optional)"
-                            />
+                          <div className="flex-1 min-w-0 space-y-2">
+                            <div className="flex items-center gap-2">
+                              <input
+                                type="file"
+                                accept="image/*"
+                                className="hidden"
+                                id={`hero-banner-file-${idx}`}
+                                onChange={(e) => handleBannerFileChange(idx, e.target.files?.[0])}
+                              />
+                              <label
+                                htmlFor={`hero-banner-file-${idx}`}
+                                className="inline-block px-2.5 py-1 rounded-lg bg-slate-900 text-[10px] font-bold text-white cursor-pointer hover:bg-slate-800 transition-colors"
+                              >
+                                {item.isUploading ? "Uploading…" : item.imageUrl ? "Change Image" : "Upload Banner"}
+                              </label>
+                              {item.imageUrl && (
+                                <>
+                                  <button
+                                    type="button"
+                                    onClick={() => removeBannerImage(idx)}
+                                    className="px-2 py-1 rounded-lg bg-rose-50 text-[10px] font-bold text-rose-600 hover:bg-rose-100 transition-colors cursor-pointer"
+                                  >
+                                    Remove Image
+                                  </button>
+                                  <span className="text-[10px] text-emerald-600 font-bold">✓ Ready</span>
+                                </>
+                              )}
+                            </div>
+                            <div className="space-y-1.5 pt-0.5">
+                              <div>
+                                <label className="text-[9px] font-black text-slate-500 uppercase tracking-wider block mb-0.5">
+                                  Banner Headline (Overlay Heading)
+                                </label>
+                                <input
+                                  value={item.headline ?? item.title ?? ""}
+                                  onChange={(e) => updateBannerItem(idx, { headline: e.target.value, title: e.target.value })}
+                                  className="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:bg-white focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all"
+                                  placeholder="e.g. Fresh Chicken & Meat"
+                                />
+                              </div>
+                              <div>
+                                <label className="text-[9px] font-black text-slate-500 uppercase tracking-wider block mb-0.5">
+                                  Banner Subheadline (Overlay Sub-text)
+                                </label>
+                                <input
+                                  value={item.subheadline ?? item.subtitle ?? ""}
+                                  onChange={(e) => updateBannerItem(idx, { subheadline: e.target.value, subtitle: e.target.value })}
+                                  className="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:bg-white focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all"
+                                  placeholder="e.g. 100% Farm Fresh Daily"
+                                />
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
-                      {formBanners.length > 1 && (
-                        <button
-                          type="button"
-                          onClick={() => removeBannerItem(idx)}
-                          className="p-2 text-slate-300 hover:text-rose-500 hover:bg-rose-50 rounded-xl transition-all"
-                        >
-                          <HiOutlineXMark className="w-4 h-4" />
-                        </button>
-                      )}
+                      <button
+                        type="button"
+                        onClick={() => removeBannerItem(idx)}
+                        title="Remove banner"
+                        className="p-2 text-slate-300 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-all shrink-0 cursor-pointer"
+                      >
+                        <HiOutlineTrash className="w-4 h-4" />
+                      </button>
                     </div>
                   </Card>
                 ))}

@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Product from "../models/product.js";
 import Seller from "../models/seller.js";
 import { getSellerCurrentOpenStatus } from "../services/storeStatusService.js";
@@ -364,7 +365,7 @@ export const getProducts = async (req, res) => {
       const [rawProducts, total] = await Promise.all([
         Product.find(finalQuery)
           .select(
-            "name slug description sku price salePrice stock brand weight mainImage galleryImages headerId categoryId subcategoryId sellerId status approvalStatus approvalRequestedAt approvalReviewedAt approvalReviewedBy approvalNote lastSubmittedByRole isFeatured variants createdAt",
+            "name slug metaTitle metaDescription seoKeywords description sku price salePrice stock brand weight mainImage galleryImages headerId categoryId subcategoryId sellerId status approvalStatus approvalRequestedAt approvalReviewedAt approvalReviewedBy approvalNote lastSubmittedByRole isFeatured variants createdAt",
           )
           // No .populate() — names resolved via cache-backed entityNameCache
           .sort(sortQuery)
@@ -515,7 +516,7 @@ export const getSellerProducts = async (req, res) => {
     ] = await Promise.all([
       Product.find(query)
         .select(
-          "name slug description sku price salePrice stock lowStockAlert brand weight mainImage galleryImages headerId categoryId subcategoryId sellerId status approvalStatus approvalRequestedAt approvalReviewedAt approvalReviewedBy approvalNote lastSubmittedByRole isFeatured variants createdAt",
+          "name slug metaTitle metaDescription seoKeywords description sku price salePrice stock lowStockAlert brand weight mainImage galleryImages headerId categoryId subcategoryId sellerId status approvalStatus approvalRequestedAt approvalReviewedAt approvalReviewedBy approvalNote lastSubmittedByRole isFeatured variants createdAt",
         )
         .populate("headerId", "name")
         .populate("categoryId", "name")
@@ -733,11 +734,44 @@ export const createProduct = async (req, res) => {
       return handleResponse(res, 400, "Product name is required");
     }
     
-    // Auto-generate slug
-    if (!productData.slug || productData.slug.trim() === "") {
+    // Auto-generate or sanitize slug
+    if (!productData.slug || String(productData.slug).trim() === "") {
       productData.slug = await generateUniqueSlug(productData.name);
     } else {
       productData.slug = await generateUniqueSlug(productData.slug);
+    }
+
+    productData.metaTitle =
+      typeof productData.metaTitle === "string"
+        ? productData.metaTitle.trim()
+        : "";
+
+    productData.metaDescription =
+      typeof productData.metaDescription === "string"
+        ? productData.metaDescription.trim()
+        : "";
+
+    // Parse and sanitize seoKeywords
+    if (typeof productData.seoKeywords === "string") {
+      try {
+        const parsed = JSON.parse(productData.seoKeywords);
+        productData.seoKeywords = Array.isArray(parsed)
+          ? parsed
+          : productData.seoKeywords.split(",");
+      } catch (e) {
+        productData.seoKeywords = productData.seoKeywords.split(",");
+      }
+    }
+    if (Array.isArray(productData.seoKeywords)) {
+      productData.seoKeywords = Array.from(
+        new Set(
+          productData.seoKeywords
+            .map((k) => (typeof k === "string" ? k.trim() : ""))
+            .filter((k) => k.length > 0)
+        )
+      );
+    } else {
+      productData.seoKeywords = [];
     }
 
     productData.description =
@@ -909,9 +943,51 @@ export const updateProduct = async (req, res) => {
       return handleResponse(res, 404, "Product not found or unauthorized");
     }
 
-    if (productData.slug !== undefined || productData.name) {
-      const slugInput = productData.slug || productData.name || product.slug || product.name;
+    if (productData.slug !== undefined && String(productData.slug).trim() !== "") {
+      productData.slug = await generateUniqueSlug(productData.slug, id);
+    } else if (!product.slug) {
+      const slugInput = productData.name || product.name || "product";
       productData.slug = await generateUniqueSlug(slugInput, id);
+    } else {
+      delete productData.slug;
+    }
+
+    if (productData.metaTitle !== undefined) {
+      productData.metaTitle =
+        typeof productData.metaTitle === "string"
+          ? productData.metaTitle.trim()
+          : "";
+    }
+
+    if (productData.metaDescription !== undefined) {
+      productData.metaDescription =
+        typeof productData.metaDescription === "string"
+          ? productData.metaDescription.trim()
+          : "";
+    }
+
+    if (productData.seoKeywords !== undefined) {
+      if (typeof productData.seoKeywords === "string") {
+        try {
+          const parsed = JSON.parse(productData.seoKeywords);
+          productData.seoKeywords = Array.isArray(parsed)
+            ? parsed
+            : productData.seoKeywords.split(",");
+        } catch (e) {
+          productData.seoKeywords = productData.seoKeywords.split(",");
+        }
+      }
+      if (Array.isArray(productData.seoKeywords)) {
+        productData.seoKeywords = Array.from(
+          new Set(
+            productData.seoKeywords
+              .map((k) => (typeof k === "string" ? k.trim() : ""))
+              .filter((k) => k.length > 0)
+          )
+        );
+      } else {
+        productData.seoKeywords = [];
+      }
     }
 
     if (productData.description !== undefined) {
@@ -984,6 +1060,8 @@ export const updateProduct = async (req, res) => {
     // Enqueue search indexing asynchronously
     await enqueueProductIndex(id);
     await invalidate(`cache:catalog:product:${id}`);
+    if (product?.slug) await invalidate(`cache:catalog:product:${product.slug}`);
+    if (updatedProduct?.slug) await invalidate(`cache:catalog:product:${updatedProduct.slug}`);
 
     try {
       await invalidate(buildKey("catalog", "productList", "*"));
@@ -1043,6 +1121,7 @@ export const deleteProduct = async (req, res) => {
     // Enqueue search index removal asynchronously
     await enqueueProductRemoval(id);
     await invalidate(`cache:catalog:product:${id}`);
+    if (product?.slug) await invalidate(`cache:catalog:product:${product.slug}`);
 
     try {
       await invalidate(buildKey("catalog", "productList", "*"));
@@ -1082,13 +1161,18 @@ export const getProductById = async (req, res) => {
       }
     }
 
+    const isObjectId = mongoose.Types.ObjectId.isValid(id) && String(new mongoose.Types.ObjectId(id)) === id;
+    const lookupQuery = isObjectId
+      ? { $or: [{ _id: id }, { slug: String(id).toLowerCase() }] }
+      : { slug: String(id).toLowerCase() };
+
     const cacheKey = buildKey("catalog", "product", id);
     const product = await getOrSet(
       cacheKey,
       async () =>
-        Product.findById(id)
+        Product.findOne(lookupQuery)
           .select(
-            "name slug description sku price salePrice stock lowStockAlert brand weight mainImage galleryImages headerId categoryId subcategoryId sellerId status approvalStatus approvalRequestedAt approvalReviewedAt approvalReviewedBy approvalNote lastSubmittedByRole isFeatured variants createdAt",
+            "name slug metaTitle metaDescription seoKeywords description sku price salePrice stock lowStockAlert brand weight mainImage galleryImages headerId categoryId subcategoryId sellerId status approvalStatus approvalRequestedAt approvalReviewedAt approvalReviewedBy approvalNote lastSubmittedByRole isFeatured variants createdAt",
           )
           .populate("headerId", "name")
           .populate("categoryId", "name")
@@ -1142,6 +1226,7 @@ export const getModerationProducts = async (req, res) => {
     const {
       approvalStatus = "all",
       status = "all",
+      seoStatus = "all",
       search = "",
       sellerId,
       category,
@@ -1189,6 +1274,8 @@ export const getModerationProducts = async (req, res) => {
           { name: safe },
           { slug: safe },
           { sku: safe },
+          { metaTitle: safe },
+          { seoKeywords: safe },
         ];
       }
     }
@@ -1197,6 +1284,28 @@ export const getModerationProducts = async (req, res) => {
     const approvalFilter = buildApprovalStatusFilter(approvalStatus);
     if (Object.keys(approvalFilter).length > 0) {
       moderatedQuery = { $and: [moderatedQuery, approvalFilter] };
+    }
+
+    const seoCompleteCondition = {
+      metaTitle: { $exists: true, $nin: [null, ""] },
+      metaDescription: { $exists: true, $nin: [null, ""] },
+      slug: { $exists: true, $nin: [null, ""] },
+    };
+    const seoIncompleteCondition = {
+      $or: [
+        { metaTitle: { $in: [null, ""] } },
+        { metaTitle: { $exists: false } },
+        { metaDescription: { $in: [null, ""] } },
+        { metaDescription: { $exists: false } },
+        { slug: { $in: [null, ""] } },
+        { slug: { $exists: false } },
+      ],
+    };
+
+    if (seoStatus === "complete") {
+      moderatedQuery = { $and: [moderatedQuery, seoCompleteCondition] };
+    } else if (seoStatus === "incomplete") {
+      moderatedQuery = { $and: [moderatedQuery, seoIncompleteCondition] };
     }
 
     const sortMap = {
@@ -1209,38 +1318,54 @@ export const getModerationProducts = async (req, res) => {
     };
     const sortQuery = sortMap[String(sort || "newest").toLowerCase()] || sortMap.newest;
 
-    const [items, total, allCount, pendingCount, approvedCount, rejectedCount] =
-      await Promise.all([
-        Product.find(moderatedQuery)
-          .select(
-            "name slug description sku price salePrice stock lowStockAlert brand weight mainImage galleryImages headerId categoryId subcategoryId sellerId status approvalStatus approvalRequestedAt approvalReviewedAt approvalReviewedBy approvalNote lastSubmittedByRole isFeatured variants createdAt",
-          )
-          .populate("headerId", "name")
-          .populate("categoryId", "name")
-          .populate("subcategoryId", "name")
-          .populate("sellerId", "shopName name")
-          .populate("approvalReviewedBy", "name email")
-          .sort(sortQuery)
-          .skip(skip)
-          .limit(limit)
-          .lean(),
-        Product.countDocuments(moderatedQuery),
-        Product.countDocuments(baseQuery),
-        Product.countDocuments({
-          ...baseQuery,
-          approvalStatus: PRODUCT_APPROVAL_STATUS.PENDING,
-        }),
-        Product.countDocuments({
-          $and: [
-            { ...baseQuery },
-            buildApprovalStatusFilter(PRODUCT_APPROVAL_STATUS.APPROVED),
-          ],
-        }),
-        Product.countDocuments({
-          ...baseQuery,
-          approvalStatus: PRODUCT_APPROVAL_STATUS.REJECTED,
-        }),
-      ]);
+    const [
+      items,
+      total,
+      allCount,
+      pendingCount,
+      approvedCount,
+      rejectedCount,
+      seoCompleteCount,
+      seoIncompleteCount,
+    ] = await Promise.all([
+      Product.find(moderatedQuery)
+        .select(
+          "name slug metaTitle metaDescription seoKeywords description sku price salePrice stock lowStockAlert brand weight mainImage galleryImages headerId categoryId subcategoryId sellerId status approvalStatus approvalRequestedAt approvalReviewedAt approvalReviewedBy approvalNote lastSubmittedByRole isFeatured variants createdAt",
+        )
+        .populate("headerId", "name")
+        .populate("categoryId", "name")
+        .populate("subcategoryId", "name")
+        .populate("sellerId", "shopName name")
+        .populate("approvalReviewedBy", "name email")
+        .sort(sortQuery)
+        .skip(skip)
+        .limit(limit)
+        .lean(),
+      Product.countDocuments(moderatedQuery),
+      Product.countDocuments(baseQuery),
+      Product.countDocuments({
+        ...baseQuery,
+        approvalStatus: PRODUCT_APPROVAL_STATUS.PENDING,
+      }),
+      Product.countDocuments({
+        $and: [
+          { ...baseQuery },
+          buildApprovalStatusFilter(PRODUCT_APPROVAL_STATUS.APPROVED),
+        ],
+      }),
+      Product.countDocuments({
+        ...baseQuery,
+        approvalStatus: PRODUCT_APPROVAL_STATUS.REJECTED,
+      }),
+      Product.countDocuments({
+        ...baseQuery,
+        ...seoCompleteCondition,
+      }),
+      Product.countDocuments({
+        ...baseQuery,
+        ...seoIncompleteCondition,
+      }),
+    ]);
 
     return handleResponse(res, 200, "Moderation products fetched", {
       items: normalizeProductListModeration(items),
@@ -1253,6 +1378,8 @@ export const getModerationProducts = async (req, res) => {
         pending: pendingCount,
         approved: approvedCount,
         rejected: rejectedCount,
+        seoComplete: seoCompleteCount,
+        seoIncomplete: seoIncompleteCount,
       },
     });
   } catch (error) {

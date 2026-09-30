@@ -443,6 +443,11 @@ const OrderDetails = () => {
           setStep(3);
           toast.success(`${currentStep.action} Confirmed!`);
         } else if (step === 3) {
+          try {
+            await deliveryApi.advanceDeliveryRiderUi(order.orderId);
+          } catch (e) {
+            console.warn("Could not sync rider step on server:", e);
+          }
           setStep(4);
           toast.success(`${currentStep.action} Confirmed!`);
         } else {

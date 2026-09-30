@@ -11,6 +11,7 @@ import { useLocation as useAppLocation } from '../context/LocationContext';
 import { applyCloudinaryTransform } from '@/core/utils/imageUtils';
 import { useSettings } from '@core/context/SettingsContext';
 import Lottie from 'lottie-react';
+import ProductSeo from '../components/seo/ProductSeo';
 
 const ProductDetailPage = () => {
     const { id } = useParams();
@@ -181,6 +182,7 @@ const ProductDetailPage = () => {
 
     return (
         <div className="relative z-10 py-6 md:py-8 w-full max-w-[1920px] mx-auto px-4 md:px-[50px] animate-in fade-in duration-700">
+            <ProductSeo product={product} reviews={reviews} />
             <Link to={-1} className="inline-flex items-center gap-2 text-slate-500 hover:text-primary font-bold mb-6 transition-colors group">
                 <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" /> Back
             </Link>

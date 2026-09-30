@@ -402,6 +402,21 @@ const Auth = () => {
       toast.success("Welcome back, Partner!");
       navigate("/seller");
     } catch (err) {
+      if (err.response?.status === 403) {
+        const applicationStatus =
+          err.response?.data?.result?.applicationStatus || "pending";
+        const rejectionReason =
+          err.response?.data?.result?.rejectionReason || "";
+        navigate("/seller/pending-approval", {
+          replace: true,
+          state: {
+            approvalRequired: true,
+            applicationStatus,
+            rejectionReason,
+          },
+        });
+        return;
+      }
       toast.error(err.response?.data?.message || "Invalid OTP");
     } finally {
       setIsLoading(false);

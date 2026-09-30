@@ -149,12 +149,13 @@ const SellerProfile = () => {
 
   const toggleStatus = async () => {
     try {
-      const newStatus = !profile.isActive;
-      await sellerApi.updateProfile({ isActive: newStatus });
-      setProfile((prev) => ({ ...prev, isActive: newStatus }));
-      toast.success(`Shop is now ${newStatus ? "Active" : "Inactive"}`);
+      const nextStatus = !profile?.isOnline;
+      const res = await sellerApi.toggleStoreStatus({ isOnline: nextStatus });
+      const updatedOnline = res.data?.result?.isOnline ?? nextStatus;
+      setProfile((prev) => ({ ...prev, isOnline: updatedOnline }));
+      toast.success(`Store is now ${updatedOnline ? "Online (Accepting Orders)" : "Offline"}`);
     } catch (error) {
-      toast.error("Failed to update shop status");
+      toast.error("Failed to update store status");
     }
   };
 
@@ -210,16 +211,16 @@ const SellerProfile = () => {
               <button
                 onClick={toggleStatus}
                 className={`group flex items-center gap-2 px-3 py-1 text-xs font-semibold uppercase tracking-wide rounded-full transition-all hover:scale-105 active:scale-95 ${
-                  profile?.isActive
+                  profile?.isOnline
                     ? "bg-emerald-100 text-emerald-700"
                     : "bg-rose-100 text-rose-700"
                 }`}>
                 <div
                   className={`w-2 h-2 rounded-full animate-pulse ${
-                    profile?.isActive ? "bg-emerald-200" : "bg-rose-200"
+                    profile?.isOnline ? "bg-emerald-500" : "bg-rose-500"
                   }`}
                 />
-                {profile?.isActive ? "Active" : "Inactive"}
+                {profile?.isOnline ? "Store Online" : "Store Offline"}
               </button>
             </div>
             <h1 className="text-2xl md:text-3xl font-bold text-slate-900 mb-1 break-words">

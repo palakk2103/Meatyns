@@ -23,6 +23,20 @@ const productSchema = new mongoose.Schema(
             type: String,
             trim: true,
         },
+        metaTitle: {
+            type: String,
+            trim: true,
+            default: "",
+        },
+        metaDescription: {
+            type: String,
+            trim: true,
+            default: "",
+        },
+        seoKeywords: [{
+            type: String,
+            trim: true,
+        }],
         price: {
             type: Number,
             required: true,

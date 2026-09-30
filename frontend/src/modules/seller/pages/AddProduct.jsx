@@ -14,6 +14,7 @@ import {
   HiOutlineTrash,
   HiOutlinePlus,
   HiOutlineSquaresPlus,
+  HiOutlineGlobeAlt,
 } from "react-icons/hi2";
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -26,6 +27,7 @@ import { clearAllCache, invalidateCache } from "@core/api/dedupe";
 const AddProduct = () => {
   const navigate = useNavigate();
   const [modalTab, setModalTab] = useState("general");
+  const [keywordInput, setKeywordInput] = useState("");
   const [isSaving, setIsSaving] = useState(false);
 
   const makeSku = (name, index = 1) => {
@@ -43,6 +45,9 @@ const AddProduct = () => {
   const [formData, setFormData] = useState({
     name: "",
     slug: "",
+    metaTitle: "",
+    metaDescription: "",
+    seoKeywords: [],
     sku: "",
     description: "",
     price: "",
@@ -144,7 +149,10 @@ const AddProduct = () => {
 
       // Basic fields
       data.append("name", formData.name);
-      data.append("slug", formData.slug);
+      data.append("slug", formData.slug || "");
+      data.append("metaTitle", formData.metaTitle || "");
+      data.append("metaDescription", formData.metaDescription || "");
+      data.append("seoKeywords", JSON.stringify(formData.seoKeywords || []));
       data.append("sku", formData.sku);
       data.append("description", formData.description);
       data.append("brand", formData.brand);
@@ -274,6 +282,7 @@ const AddProduct = () => {
             { id: "variants", label: "Item Variants", icon: HiOutlineSwatch },
             { id: "category", label: "Groups", icon: HiOutlineFolderOpen },
             { id: "media", label: "Photos", icon: HiOutlinePhoto },
+            { id: "seo", label: "SEO Settings", icon: HiOutlineGlobeAlt },
           ].map((tab) => (
             <button
               key={tab.id}
@@ -693,6 +702,205 @@ const AddProduct = () => {
                 Quick Tip: Using WebP format at 800x800px makes your store load
                 3x faster.
               </p>
+            </div>
+          )}
+
+          {modalTab === "seo" && (
+            <div className="space-y-6 animate-in fade-in slide-in-from-right-2 duration-300">
+              <div>
+                <h4 className="text-sm font-black text-slate-800 uppercase tracking-wider flex items-center gap-2">
+                  <HiOutlineGlobeAlt className="h-4 w-4 text-primary" />
+                  SEO Settings &amp; Metadata
+                </h4>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  Improve this product's visibility on Google search and social networks with tailored metadata.
+                </p>
+              </div>
+
+              {/* Google Snippet Live Preview */}
+              <div className="bg-slate-50 border border-slate-200 rounded-xl p-4">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Search Engine Preview</span>
+                  <span className="text-[10px] text-emerald-700 bg-emerald-50 border border-emerald-200 font-bold px-2 py-0.5 rounded-full">Google Result</span>
+                </div>
+                <div className="space-y-1 font-sans">
+                  <div className="flex items-center gap-1.5 text-xs text-slate-500">
+                    <span className="text-slate-400 text-[11px]">https://meatyns.com</span>
+                    <span className="text-slate-300">›</span>
+                    <span className="text-slate-500 font-medium">product</span>
+                    <span className="text-slate-300">›</span>
+                    <span className="text-slate-600 font-mono text-[11px]">{formData.slug || 'product-slug'}</span>
+                  </div>
+                  <h5 className="text-[16px] font-medium text-blue-700 hover:underline cursor-pointer leading-snug">
+                    {formData.metaTitle?.trim() || `${formData.name || 'Product Title'} | Meatyns`}
+                  </h5>
+                  <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">
+                    {formData.metaDescription?.trim() || formData.description || 'Buy fresh, hygienic products online with fast delivery on Meatyns.'}
+                  </p>
+                </div>
+              </div>              {/* Meta Title */}
+              <div className="space-y-1.5 flex flex-col">
+                <div className="flex items-center justify-between">
+                  <label className="text-[10px] sm:text-xs font-bold text-slate-600 uppercase tracking-widest ml-1">
+                    Meta Title <span className="text-slate-400 font-normal lowercase">(title tag)</span>
+                  </label>
+                  <span className={cn(
+                    "text-[10px] font-mono font-bold px-2 py-0.5 rounded-md",
+                    formData.metaTitle?.length >= 30 && formData.metaTitle?.length <= 60
+                      ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                      : formData.metaTitle?.length > 60
+                        ? "bg-amber-50 text-amber-700 border border-amber-200"
+                        : "bg-slate-100 text-slate-600"
+                  )}>
+                    {(formData.metaTitle || '').length} / 60 chars
+                  </span>
+                </div>
+                <input
+                  type="text"
+                  value={formData.metaTitle || ""}
+                  onChange={(e) => setFormData({ ...formData, metaTitle: e.target.value })}
+                  placeholder="Fresh Chicken Breast Online | Meatyns"
+                  className="w-full px-4 py-2.5 bg-slate-100 border-none rounded-md text-sm font-semibold outline-none ring-primary/5 focus:ring-2 transition-all"
+                />
+                <p className="text-[10px] text-slate-400 ml-1">
+                  Ideal length: 50–60 characters. If left empty, search engines default to the product title.
+                </p>
+              </div>
+
+              {/* Meta Description */}
+              <div className="space-y-1.5 flex flex-col">
+                <div className="flex items-center justify-between">
+                  <label className="text-[10px] sm:text-xs font-bold text-slate-600 uppercase tracking-widest ml-1">
+                    Meta Description
+                  </label>
+                  <span className={cn(
+                    "text-[10px] font-mono font-bold px-2 py-0.5 rounded-md",
+                    formData.metaDescription?.length >= 100 && formData.metaDescription?.length <= 160
+                      ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                      : formData.metaDescription?.length > 160
+                        ? "bg-amber-50 text-amber-700 border border-amber-200"
+                        : "bg-slate-100 text-slate-600"
+                  )}>
+                    {(formData.metaDescription || '').length} / 160 chars
+                  </span>
+                </div>
+                <textarea
+                  value={formData.metaDescription || ""}
+                  onChange={(e) => setFormData({ ...formData, metaDescription: e.target.value })}
+                  rows={3}
+                  placeholder="Buy fresh chicken breast online with fast delivery. Quality products at competitive prices."
+                  className="w-full px-4 py-3 bg-slate-100 border-none rounded-xl text-sm font-semibold outline-none ring-primary/5 focus:ring-2 resize-none"
+                />
+                <p className="text-[10px] text-slate-400 ml-1">
+                  Ideal length: 140–160 characters. A concise summary that entices customers to click from search results.
+                </p>
+              </div>
+
+              {/* SEO Slug */}
+              <div className="space-y-1.5 flex flex-col">
+                <label className="text-[10px] sm:text-xs font-bold text-slate-600 uppercase tracking-widest ml-1">
+                  SEO Slug <span className="text-slate-400 font-normal lowercase">(URL path)</span>
+                </label>
+                <div className="flex items-center bg-slate-100 rounded-md px-4 py-2.5">
+                  <span className="text-[11px] text-slate-400 font-bold mr-1">/product/</span>
+                  <input
+                    type="text"
+                    value={formData.slug || ""}
+                    onChange={(e) => setFormData({ ...formData, slug: e.target.value.toLowerCase().replace(/\s+/g, '-') })}
+                    placeholder="fresh-chicken-breast"
+                    className="flex-1 bg-transparent border-none text-sm text-slate-700 font-mono font-semibold outline-none"
+                  />
+                </div>
+                <p className="text-[10px] text-slate-400 ml-1">
+                  Used for SEO-friendly URLs. Clean, lowercase words separated with hyphens.
+                </p>
+              </div>
+
+              {/* SEO Keywords */}
+              <div className="space-y-1.5 flex flex-col">
+                <div className="flex items-center justify-between">
+                  <label className="text-[10px] sm:text-xs font-bold text-slate-600 uppercase tracking-widest ml-1">
+                    SEO Keywords <span className="text-slate-400 font-normal lowercase">(backlinks &amp; search catalog)</span>
+                  </label>
+                  <span className="text-[10px] font-mono font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">
+                    {(formData.seoKeywords || []).length} keywords
+                  </span>
+                </div>
+
+                <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-2.5">
+                  {/* Chips container */}
+                  <div className="flex flex-wrap gap-1.5 min-h-[32px] items-center">
+                    {(formData.seoKeywords || []).map((keyword, idx) => (
+                      <span
+                        key={`${keyword}-${idx}`}
+                        className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white border border-slate-200 shadow-xs text-xs font-semibold text-slate-700 rounded-lg group hover:border-rose-200 transition-all"
+                      >
+                        <span>{keyword}</span>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setFormData({
+                              ...formData,
+                              seoKeywords: (formData.seoKeywords || []).filter((_, i) => i !== idx)
+                            });
+                          }}
+                          className="text-slate-400 hover:text-rose-500 rounded-full transition-colors ml-0.5 text-sm leading-none"
+                          title="Remove keyword"
+                        >
+                          &times;
+                        </button>
+                      </span>
+                    ))}
+                    {(!formData.seoKeywords || formData.seoKeywords.length === 0) && (
+                      <span className="text-xs text-slate-400 italic">No keywords added yet.</span>
+                    )}
+                  </div>
+
+                  {/* Input row */}
+                  <div className="flex items-center gap-2 pt-1 border-t border-slate-200/60">
+                    <input
+                      type="text"
+                      value={keywordInput}
+                      onChange={(e) => setKeywordInput(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ',') {
+                          e.preventDefault();
+                          const val = keywordInput.trim().replace(/^,+|,+$/g, '');
+                          if (val && !(formData.seoKeywords || []).includes(val)) {
+                            setFormData({
+                              ...formData,
+                              seoKeywords: [...(formData.seoKeywords || []), val]
+                            });
+                            setKeywordInput('');
+                          }
+                        }
+                      }}
+                      placeholder="Enter SEO keyword and press Enter (e.g. fresh chicken)..."
+                      className="flex-1 bg-white ring-1 ring-slate-200 px-3 py-2 rounded-lg text-xs font-semibold text-slate-800 placeholder-slate-400 outline-none focus:ring-2 focus:ring-primary/20"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const val = keywordInput.trim().replace(/^,+|,+$/g, '');
+                        if (val && !(formData.seoKeywords || []).includes(val)) {
+                          setFormData({
+                            ...formData,
+                            seoKeywords: [...(formData.seoKeywords || []), val]
+                          });
+                          setKeywordInput('');
+                        }
+                      }}
+                      disabled={!keywordInput.trim()}
+                      className="text-xs font-bold text-white bg-slate-900 px-3.5 py-2 rounded-lg hover:bg-slate-800 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                    >
+                      Add
+                    </button>
+                  </div>
+                </div>
+                <p className="text-[10px] text-slate-400 ml-1">
+                  Stored per product in the backend. Type a keyword and press <kbd className="px-1.5 py-0.5 bg-slate-200 text-slate-700 rounded text-[9px] font-mono font-bold">Enter</kbd> or click <strong>Add</strong>.
+                </p>
+              </div>
             </div>
           )}
 

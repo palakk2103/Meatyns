@@ -9,6 +9,15 @@ const objectIdLike = trimmedString.min(8).max(64);
 
 export const createProductSchema = Joi.object({
   name: trimmedString.min(1).max(200).required(),
+  slug: trimmedString.max(250).allow("", null).optional(),
+  metaTitle: trimmedString.max(200).allow("", null).optional(),
+  metaDescription: trimmedString.max(2000).allow("", null).optional(),
+  seoKeywords: Joi.alternatives()
+    .try(
+      Joi.array().items(trimmedString.max(100)).max(50),
+      trimmedString
+    )
+    .optional(),
   description: trimmedString.max(5000).optional(),
   price: Joi.number().min(0).required(),
   salePrice: Joi.number().min(0).optional(),

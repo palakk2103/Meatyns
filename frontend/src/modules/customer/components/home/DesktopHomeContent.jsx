@@ -125,11 +125,13 @@ const DesktopHomeContent = ({ products = [], categories = [], heroConfig }) => {
     }
   };
 
+  const desktopHeadline = (currentHeroBanner?.headline || currentHeroBanner?.title || "").trim();
+  const desktopSubheadline = (currentHeroBanner?.subheadline || currentHeroBanner?.subtitle || "").trim();
+  const hasDesktopText = Boolean(desktopHeadline || desktopSubheadline);
   const isFullGraphicDesktopBanner =
     currentHeroBanner &&
     currentHeroBanner.imageUrl &&
-    !currentHeroBanner.title?.trim() &&
-    !currentHeroBanner.subtitle?.trim();
+    !hasDesktopText;
 
   return (
     <div className="w-full flex flex-col lg:flex-row gap-6 p-4 lg:p-6 select-none">
@@ -152,6 +154,49 @@ const DesktopHomeContent = ({ products = [], categories = [], heroConfig }) => {
                   e.currentTarget.src = "/banners/hero_platter_clean.jpg";
                 }}
               />
+            </div>
+          ) : currentHeroBanner?.imageUrl ? (
+            <div className="relative w-full h-full overflow-hidden flex items-center">
+              <img
+                src={currentHeroBanner.imageUrl}
+                alt={desktopHeadline || "Promotion Banner"}
+                className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none group-hover:scale-[1.01] transition-transform duration-700"
+                loading="eager"
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = "/banners/hero_platter_clean.jpg";
+                }}
+              />
+              {/* Text overlay over banner (no dark opacity layer) */}
+              <div className="relative z-10 max-w-lg p-8 lg:p-12 flex flex-col items-start gap-2.5">
+                <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#111111] bg-[#FAB82C] px-3.5 py-1 rounded-full shadow-xs">
+                  SPECIAL OFFER
+                </span>
+
+                {desktopHeadline && (
+                  <h2 className="text-3xl lg:text-4xl font-normal font-anton tracking-wide text-white uppercase leading-[1.12] drop-shadow-md">
+                    {desktopHeadline}
+                  </h2>
+                )}
+
+                <div className="w-12 h-1 bg-[#FAB82C] rounded-full my-0.5" />
+
+                {desktopSubheadline && (
+                  <p className="text-amber-50/90 text-sm font-semibold max-w-md leading-relaxed drop-shadow-sm">
+                    {desktopSubheadline}
+                  </p>
+                )}
+
+                <div className="pt-2">
+                  <button
+                    type="button"
+                    className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-[#FAB82C] hover:bg-[#F2B022] text-[#111111] text-xs font-black tracking-wide uppercase transition-all shadow-sm active:scale-95 cursor-pointer"
+                  >
+                    <span>SHOP NOW</span>
+                    <ChevronRight size={14} className="stroke-[3]" />
+                  </button>
+                </div>
+              </div>
             </div>
           ) : (
             <div className="w-full h-full p-6 sm:p-8 lg:p-10 flex flex-col justify-center">
@@ -179,13 +224,13 @@ const DesktopHomeContent = ({ products = [], categories = [], heroConfig }) => {
               <div className="relative z-10 max-w-sm sm:max-w-md lg:max-w-lg flex flex-col items-start gap-2">
                 {/* Tagline Pill */}
                 <span className="text-[10px] font-extrabold uppercase tracking-wider text-white bg-[#C81017] px-3 py-1 rounded-full shadow-xs">
-                  {currentHeroBanner?.subtitle || "PREMIUM QUALITY"}
+                  PREMIUM QUALITY
                 </span>
 
                 {/* Main Headline */}
                 <h2 className="text-2xl sm:text-3xl lg:text-4xl font-normal font-anton tracking-wide text-[#111111] uppercase leading-[1.12]">
-                  {currentHeroBanner?.title ? (
-                    <span>{currentHeroBanner.title}</span>
+                  {desktopHeadline ? (
+                    <span>{desktopHeadline}</span>
                   ) : (
                     <>
                       FRESH CHICKEN, MEAT &amp;
@@ -200,7 +245,7 @@ const DesktopHomeContent = ({ products = [], categories = [], heroConfig }) => {
 
                 {/* Subtitle */}
                 <p className="text-slate-600 text-xs sm:text-sm font-semibold max-w-md leading-relaxed">
-                  Farm fresh &bull; Hygienically packed &bull; Delivered to your doorstep
+                  {desktopSubheadline || "Farm fresh • Hygienically packed • Delivered to your doorstep"}
                 </p>
 
                 {/* 3 Value Props */}

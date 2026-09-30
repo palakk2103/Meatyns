@@ -158,9 +158,17 @@ const DesktopCustomerAuth = ({
                         <span className="text-[#E5A93C] drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">Your Door</span>
                     </h1>
 
-                    <p className="mt-4 text-white/95 text-sm lg:text-[15px] font-normal max-w-sm leading-relaxed drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)]">
-                        Premium quality meat, fish &amp; poultry &mdash; now just a click away.
-                    </p>
+                    {/* Welcome Introduction */}
+                    <div className="mt-5 p-4 rounded-2xl bg-black/35 backdrop-blur-md border border-white/20 max-w-md shadow-xl">
+                        <p className="text-white/95 text-xs lg:text-[13px] font-normal leading-relaxed drop-shadow-sm">
+                            <span className="font-bold text-[#E5A93C]">Welcome to Meatyns</span>, where freshness meets authenticity. We bring you farm-fresh goat, sheep &amp; lamb meat &ndash; hygienically processed, chemical-free, and delivered with care. With premium cuts and farm-to-table delivery, we ensure your family enjoys healthy, flavorful meals every day.
+                        </p>
+                        <div className="mt-3 flex items-center gap-2 flex-wrap text-[10px] font-bold">
+                            <span className="px-2.5 py-0.5 rounded-full bg-white/20 text-white border border-white/20">Goat, Sheep &amp; Lamb</span>
+                            <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/25 text-emerald-200 border border-emerald-400/30">100% Chemical-Free</span>
+                            <span className="px-2.5 py-0.5 rounded-full bg-[#E5A93C]/25 text-[#E5A93C] border border-[#E5A93C]/40">Farm to Table</span>
+                        </div>
+                    </div>
 
                     {/* 3 Value Badges in a horizontal row */}
                     <div className="mt-7 flex items-center gap-4 lg:gap-6 pt-1">
@@ -309,6 +317,39 @@ const DesktopCustomerAuth = ({
                                     <p className="text-[11px] text-stone-400 text-center pt-2 leading-relaxed">
                                         By continuing, you agree to Meatyns's Terms &amp; Conditions and Privacy Policy.
                                     </p>
+
+                                    {/* Welcome Intro Section in Beautiful Lettering - Below Number Field */}
+                                    <div className="pt-6 border-t border-dashed border-stone-200/90 text-center space-y-2 mt-6">
+                                        <div className="flex items-center justify-center gap-2">
+                                            <span className="w-8 h-[1px] bg-gradient-to-r from-transparent to-amber-400"></span>
+                                            <h4 
+                                                className="text-base lg:text-lg font-bold text-stone-900 tracking-wide"
+                                                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                                            >
+                                                Welcome to Meatyns
+                                            </h4>
+                                            <span className="w-8 h-[1px] bg-gradient-to-l from-transparent to-amber-400"></span>
+                                        </div>
+
+                                        <p 
+                                            className="text-[12px] lg:text-[13px] text-stone-600 leading-relaxed font-normal italic max-w-sm mx-auto px-2"
+                                            style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                                        >
+                                            &ldquo;Where freshness meets authenticity. We bring you farm-fresh goat, sheep &amp; lamb meat &ndash; hygienically processed, chemical-free, and delivered with care. With premium cuts and farm-to-table delivery, we ensure your family enjoys healthy, flavorful meals every day.&rdquo;
+                                        </p>
+
+                                        <div className="pt-1 flex items-center justify-center gap-2 flex-wrap">
+                                            <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-900 border border-amber-200/70 uppercase tracking-wider">
+                                                Goat &bull; Sheep &bull; Lamb
+                                            </span>
+                                            <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200/70 uppercase tracking-wider">
+                                                100% Chemical-Free
+                                            </span>
+                                            <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-red-50 text-red-800 border border-red-200/70 uppercase tracking-wider">
+                                                Farm to Table
+                                            </span>
+                                        </div>
+                                    </div>
                                 </motion.form>
                             ) : (
                                 <motion.div

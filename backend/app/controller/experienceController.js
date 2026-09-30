@@ -80,14 +80,20 @@ const validateAndNormalizeConfig = async (displayType, config = {}) => {
     normalized.banners = {
       items: items
         .filter((b) => b && b.imageUrl)
-        .map((b) => ({
-          imageUrl: b.imageUrl,
-          title: b.title,
-          subtitle: b.subtitle,
-          linkType: b.linkType || "none",
-          linkValue: b.linkValue || "",
-          status: b.status || "active",
-        })),
+        .map((b) => {
+          const headline = (b.headline !== undefined ? b.headline : b.title) || "";
+          const subheadline = (b.subheadline !== undefined ? b.subheadline : b.subtitle) || "";
+          return {
+            imageUrl: b.imageUrl,
+            title: headline,
+            headline: headline,
+            subtitle: subheadline,
+            subheadline: subheadline,
+            linkType: b.linkType || "none",
+            linkValue: b.linkValue || "",
+            status: b.status || "active",
+          };
+        }),
     };
     return normalized;
   }
@@ -511,14 +517,20 @@ export const upsertHeroConfig = async (req, res) => {
     const bannerItems = Array.isArray(banners?.items)
       ? banners.items
         .filter((b) => b && b.imageUrl)
-        .map((b) => ({
-          imageUrl: b.imageUrl,
-          title: b.title || "",
-          subtitle: b.subtitle || "",
-          linkType: b.linkType || "none",
-          linkValue: b.linkValue || "",
-          status: b.status || "active",
-        }))
+        .map((b) => {
+          const headline = (b.headline !== undefined ? b.headline : b.title) || "";
+          const subheadline = (b.subheadline !== undefined ? b.subheadline : b.subtitle) || "";
+          return {
+            imageUrl: b.imageUrl,
+            title: headline,
+            headline: headline,
+            subtitle: subheadline,
+            subheadline: subheadline,
+            linkType: b.linkType || "none",
+            linkValue: b.linkValue || "",
+            status: b.status || "active",
+          };
+        })
       : [];
 
     const ids = Array.isArray(categoryIds) ? categoryIds.filter(Boolean) : [];

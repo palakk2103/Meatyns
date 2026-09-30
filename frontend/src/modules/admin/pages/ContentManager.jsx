@@ -44,7 +44,7 @@ const ContentManager = () => {
         title: '',
         status: 'active',
         // banners
-        bannerItems: [{ imageUrl: '', title: '', subtitle: '', linkType: 'none', linkValue: '', isUploading: false }],
+        bannerItems: [{ imageUrl: '', title: '', subtitle: '', headline: '', subheadline: '', linkType: 'none', linkValue: '', isUploading: false }],
         // categories
         maxCategories: 4,
         categoryIds: [],
@@ -172,8 +172,15 @@ const ContentManager = () => {
             title: title || '',
             status: status || 'active',
             bannerItems: config.banners?.items?.length
-                ? config.banners.items.map(b => ({ ...b, isUploading: false }))
-                : [{ imageUrl: '', title: '', subtitle: '', linkType: 'none', linkValue: '', isUploading: false }],
+                ? config.banners.items.map(b => ({
+                    ...b,
+                    headline: b.headline || b.title || '',
+                    subheadline: b.subheadline || b.subtitle || '',
+                    title: b.title || b.headline || '',
+                    subtitle: b.subtitle || b.subheadline || '',
+                    isUploading: false
+                }))
+                : [{ imageUrl: '', title: '', subtitle: '', headline: '', subheadline: '', linkType: 'none', linkValue: '', isUploading: false }],
             maxCategories: config.categories?.maxItems || 4,
             categoryIds: config.categories?.categoryIds || [],
             categoryRows: config.categories?.rows || 1,
@@ -235,14 +242,20 @@ const ContentManager = () => {
                 return;
             }
             config = {
-                items: items.map(b => ({
-                    imageUrl: b.imageUrl,
-                    title: b.title,
-                    subtitle: b.subtitle,
-                    linkType: b.linkType || 'none',
-                    linkValue: b.linkValue || '',
-                    status: b.status || 'active',
-                })),
+                items: items.map(b => {
+                    const headline = (b.headline !== undefined ? b.headline : b.title) || '';
+                    const subheadline = (b.subheadline !== undefined ? b.subheadline : b.subtitle) || '';
+                    return {
+                        imageUrl: b.imageUrl,
+                        title: headline,
+                        headline: headline,
+                        subtitle: subheadline,
+                        subheadline: subheadline,
+                        linkType: b.linkType || 'none',
+                        linkValue: b.linkValue || '',
+                        status: b.status || 'active',
+                    };
+                }),
             };
         } else if (displayType === 'categories') {
             if (!formData.categoryIds?.length) {
@@ -358,10 +371,21 @@ const ContentManager = () => {
     };
 
     const removeBannerItem = (idx) => {
-        setFormData(prev => ({
-            ...prev,
-            bannerItems: prev.bannerItems.filter((_, i) => i !== idx),
-        }));
+        setFormData(prev => {
+            const nextItems = prev.bannerItems.filter((_, i) => i !== idx);
+            return {
+                ...prev,
+                bannerItems: nextItems.length > 0 
+                    ? nextItems 
+                    : [{ imageUrl: '', title: '', subtitle: '', headline: '', subheadline: '', linkType: 'none', linkValue: '', isUploading: false }],
+            };
+        });
+        showToast('Banner removed', 'info');
+    };
+
+    const removeBannerImage = (idx) => {
+        updateBannerItem(idx, { imageUrl: '' });
+        showToast('Banner image removed', 'info');
     };
 
     return (
@@ -629,15 +653,26 @@ const ContentManager = () => {
                                                                 handleBannerFileChange(idx, e.target.files?.[0])
                                                             }
                                                         />
-                                                        <button
-                                                            type="button"
-                                                            onClick={() =>
-                                                                bannerFileInputsRef.current[idx]?.click()
-                                                            }
-                                                            className="inline-flex items-center px-3 py-1.5 rounded-lg text-[11px] font-bold bg-slate-900 text-white hover:bg-slate-800 transition-colors"
-                                                        >
-                                                            {item.imageUrl ? 'Change image' : 'Choose image file'}
-                                                        </button>
+                                                        <div className="flex items-center gap-2">
+                                                            <button
+                                                                type="button"
+                                                                onClick={() =>
+                                                                    bannerFileInputsRef.current[idx]?.click()
+                                                                }
+                                                                className="inline-flex items-center px-3 py-1.5 rounded-lg text-[11px] font-bold bg-slate-900 text-white hover:bg-slate-800 transition-colors cursor-pointer"
+                                                            >
+                                                                {item.imageUrl ? 'Change image' : 'Choose image file'}
+                                                            </button>
+                                                            {item.imageUrl && (
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => removeBannerImage(idx)}
+                                                                    className="px-2.5 py-1 rounded-lg bg-rose-50 text-[10px] font-bold text-rose-600 hover:bg-rose-100 transition-colors cursor-pointer"
+                                                                >
+                                                                    Remove image
+                                                                </button>
+                                                            )}
+                                                        </div>
                                                         <p className="text-[10px] text-slate-400">
                                                             {item.isUploading
                                                                 ? 'Uploading...'
@@ -647,18 +682,30 @@ const ContentManager = () => {
                                                         </p>
                                                     </div>
                                                 </div>
-                                                <input
-                                                    value={item.title || ''}
-                                                    onChange={(e) => updateBannerItem(idx, { title: e.target.value })}
-                                                    className="w-full p-2.5 bg-slate-50 rounded-xl text-xs font-bold border-none outline-none"
-                                                    placeholder="Banner title (optional)"
-                                                />
-                                                <input
-                                                    value={item.subtitle || ''}
-                                                    onChange={(e) => updateBannerItem(idx, { subtitle: e.target.value })}
-                                                    className="w-full p-2.5 bg-slate-50 rounded-xl text-xs font-bold border-none outline-none"
-                                                    placeholder="Subtitle (optional)"
-                                                />
+                                                <div className="space-y-1.5 pt-0.5">
+                                                    <div>
+                                                        <label className="text-[9px] font-black text-slate-500 uppercase tracking-wider block mb-0.5">
+                                                            Banner Headline (Overlay Heading)
+                                                        </label>
+                                                        <input
+                                                            value={item.headline ?? item.title ?? ''}
+                                                            onChange={(e) => updateBannerItem(idx, { headline: e.target.value, title: e.target.value })}
+                                                            className="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:bg-white focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all"
+                                                            placeholder="Enter banner headline (e.g. Weekend Mega Sale)"
+                                                        />
+                                                    </div>
+                                                    <div>
+                                                        <label className="text-[9px] font-black text-slate-500 uppercase tracking-wider block mb-0.5">
+                                                            Banner Subheadline (Overlay Sub-text)
+                                                        </label>
+                                                        <input
+                                                            value={item.subheadline ?? item.subtitle ?? ''}
+                                                            onChange={(e) => updateBannerItem(idx, { subheadline: e.target.value, subtitle: e.target.value })}
+                                                            className="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:bg-white focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all"
+                                                            placeholder="Enter subheadline (e.g. Up to 30% OFF on all fresh cuts)"
+                                                        />
+                                                    </div>
+                                                </div>
                                                 <div className="grid grid-cols-2 gap-2">
                                                     <select
                                                         value={item.linkType || 'none'}
@@ -680,15 +727,14 @@ const ContentManager = () => {
                                                     />
                                                 </div>
                                             </div>
-                                            {formData.bannerItems.length > 1 && (
-                                                <button
-                                                    type="button"
-                                                    onClick={() => removeBannerItem(idx)}
-                                                    className="p-2 text-slate-300 hover:text-rose-500 hover:bg-rose-50 rounded-xl transition-all"
-                                                >
-                                                    <HiOutlineXMark className="h-4 w-4" />
-                                                </button>
-                                            )}
+                                            <button
+                                                type="button"
+                                                onClick={() => removeBannerItem(idx)}
+                                                title="Remove this banner"
+                                                className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-all shrink-0 cursor-pointer"
+                                            >
+                                                <HiOutlineTrash className="h-4 w-4" />
+                                            </button>
                                         </div>
                                     </Card>
                                 ))}

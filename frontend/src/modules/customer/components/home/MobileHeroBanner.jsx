@@ -43,11 +43,10 @@ const MobileHeroBanner = ({ heroConfig }) => {
     }
   };
 
-  const isFullGraphicBanner =
-    currentBanner &&
-    currentBanner.imageUrl &&
-    !currentBanner.title?.trim() &&
-    !currentBanner.subtitle?.trim();
+  const headline = (currentBanner?.headline || currentBanner?.title || "").trim();
+  const subheadline = (currentBanner?.subheadline || currentBanner?.subtitle || "").trim();
+  const hasText = Boolean(headline || subheadline);
+  const isFullGraphicBanner = currentBanner && currentBanner.imageUrl && !hasText;
 
   return (
     <div className="w-full px-1.5 sm:px-2.5 pt-0 pb-1.5 select-none">
@@ -61,7 +60,7 @@ const MobileHeroBanner = ({ heroConfig }) => {
         }}
       >
         {isFullGraphicBanner ? (
-          // Full Graphic Banner Image from Admin
+          // Full Graphic Banner Image from Admin (No text overlay)
           <img
             src={currentBanner.imageUrl}
             alt="Promotion Banner"
@@ -72,12 +71,55 @@ const MobileHeroBanner = ({ heroConfig }) => {
               e.currentTarget.src = "/banners/hero_platter_clean.jpg";
             }}
           />
-        ) : (
-          <>
-            {/* Background Image on Right */}
+        ) : currentBanner?.imageUrl ? (
+          // Custom Uploaded Banner Image WITH Headline/Subheadline Overlay
+          <div className="relative w-full h-full overflow-hidden flex items-center">
             <img
-              src={currentBanner?.imageUrl || "/banners/hero_platter_clean.jpg"}
-              alt={currentBanner?.title || "Fresh Meat & Seafood"}
+              src={currentBanner.imageUrl}
+              alt={headline || "Promotion Banner"}
+              className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none group-hover:scale-[1.02] transition-transform duration-700"
+              loading="eager"
+              onError={(e) => {
+                e.currentTarget.onerror = null;
+                e.currentTarget.src = "/banners/hero_platter_clean.jpg";
+              }}
+            />
+            {/* Banner Text Content Over Image (no dark opacity layer over the image) */}
+            <div className="relative z-10 w-[75%] sm:w-[65%] pl-4 sm:pl-5 pr-2 flex flex-col justify-center gap-1.5">
+              <span className="text-[8.5px] sm:text-[9.5px] font-black tracking-wider uppercase text-[#111111] bg-[#FAB82C] px-2.5 py-0.5 rounded-full w-fit shadow-xs">
+                SPECIAL OFFER
+              </span>
+
+              {headline && (
+                <h2 className="text-[19px] sm:text-[22px] font-normal leading-[1.14] tracking-wide font-anton uppercase text-white drop-shadow-md line-clamp-2">
+                  {headline}
+                </h2>
+              )}
+
+              {subheadline && (
+                <p className="text-[10px] sm:text-[11px] text-amber-50/95 font-medium leading-tight line-clamp-2 drop-shadow-sm">
+                  {subheadline}
+                </p>
+              )}
+
+              <div className="pt-0.5">
+                <button
+                  type="button"
+                  onClick={handleBannerClick}
+                  className="inline-flex items-center gap-1.5 px-4 py-1 sm:px-4.5 sm:py-1.5 rounded-full bg-[#FAB82C] hover:bg-[#F2B022] text-[#111111] text-[10px] sm:text-[11px] font-black tracking-wide uppercase transition-all active:scale-95 shadow-xs border-0 cursor-pointer"
+                >
+                  <span>SHOP NOW</span>
+                  <span className="text-xs font-bold">&rarr;</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        ) : (
+          // Fallback Platter Artwork when no banner image is uploaded
+          <>
+            <img
+              src="/banners/hero_platter_clean.jpg"
+              alt={headline || "Fresh Meat & Seafood"}
               className="absolute right-0 top-0 bottom-0 w-[55%] sm:w-[52%] h-full object-cover object-right pointer-events-none opacity-100 group-hover:scale-[1.02] transition-transform duration-700"
               style={{
                 maskImage:
@@ -86,24 +128,17 @@ const MobileHeroBanner = ({ heroConfig }) => {
                   "linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 8%, rgba(0,0,0,1) 100%)",
               }}
               loading="eager"
-              onError={(e) => {
-                e.currentTarget.onerror = null;
-                e.currentTarget.src = "/banners/hero_platter_clean.jpg";
-              }}
             />
 
-            {/* Banner Content (Left side) */}
             <div className="relative z-10 w-[58%] sm:w-[55%] pl-3.5 sm:pl-5 pr-1 flex flex-col justify-center gap-1.5 sm:gap-2">
-              {/* Eyebrow Label */}
               <span className="text-[8.5px] sm:text-[9.5px] font-black tracking-wider uppercase text-[#111111] bg-[#FAB82C] px-2.5 py-0.5 rounded-full w-fit shadow-2xs">
-                {currentBanner?.subtitle || "PREMIUM QUALITY"}
+                PREMIUM QUALITY
               </span>
 
-              {/* Headline */}
               <h2 className="text-[19px] sm:text-[22px] font-normal leading-[1.14] tracking-wide font-anton uppercase">
-                {currentBanner?.title ? (
+                {headline ? (
                   <span className="text-[#111111] line-clamp-2">
-                    {currentBanner.title}
+                    {headline}
                   </span>
                 ) : (
                   <>
@@ -114,12 +149,10 @@ const MobileHeroBanner = ({ heroConfig }) => {
                 )}
               </h2>
 
-              {/* Subtitle */}
               <p className="text-[9.5px] sm:text-[10.5px] text-slate-600 font-medium leading-tight line-clamp-2">
-                Farm fresh &bull; Hygienically packed &bull; 100% pure
+                {subheadline || "Farm fresh • Hygienically packed • 100% pure"}
               </p>
 
-              {/* Action Button */}
               <div className="pt-0.5">
                 <button
                   type="button"
