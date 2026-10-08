@@ -293,12 +293,16 @@ const Auth = () => {
     });
 
     try {
-      await sellerApi.sendVerificationOtp(getVerificationPayload(field));
+      const res = await sellerApi.sendVerificationOtp(getVerificationPayload(field));
       updateVerificationState(field, {
         isSending: false,
         isOtpVisible: true,
         status: "otp-sent",
       });
+      const mockOtp = res?.data?.result?.mockOtp || res?.data?.mockOtp;
+      if (mockOtp) {
+        toast.info(`Mock OTP: ${mockOtp}`, { duration: 10000 });
+      }
       toast.success(
         isEmailField
           ? "Verification OTP sent to your email."
