@@ -35,6 +35,12 @@ const VEHICLE_TYPES = [
   { value: "cycle", label: "Cycle" },
 ];
 
+const slideVariants = {
+  hidden: { opacity: 0, y: 10 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.25 } },
+  exit: { opacity: 0, y: -10, transition: { duration: 0.2 } },
+};
+
 const DeliveryAuth = () => {
   const navigate = useNavigate();
   const { settings } = useSettings();
@@ -299,7 +305,7 @@ const DeliveryAuth = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F0F4FF] flex flex-col items-center justify-center p-5 font-['Outfit',_sans-serif]">
+    <div className="min-h-screen bg-[#F0F4FF] flex flex-col items-center py-6 sm:py-10 px-4 font-['Outfit',_sans-serif] relative overflow-y-auto">
       {/* Background blobs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-32 -left-32 w-80 h-80 bg-brand-200/40 rounded-full blur-3xl" />
@@ -310,13 +316,13 @@ const DeliveryAuth = () => {
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="w-full max-w-[420px] relative z-10"
+        className="w-full max-w-[420px] relative z-10 my-auto"
       >
         {/* Card */}
-        <div className="bg-white rounded-[2.5rem] shadow-[0_24px_60px_rgba(99,102,241,0.1)] border border-brand-50 overflow-hidden flex flex-col max-h-[85vh]">
+        <div className="bg-white rounded-[2.5rem] shadow-[0_24px_60px_rgba(99,102,241,0.1)] border border-brand-50 overflow-hidden flex flex-col">
 
           {/* Header with Lottie */}
-          <div className="bg-gradient-to-br from-brand-50 to-purple-50 p-8 pt-10 flex flex-col items-center relative shrink-0">
+          <div className="bg-gradient-to-br from-brand-50 to-purple-50 px-6 pt-8 pb-5 flex flex-col items-center relative shrink-0">
             {/* Back Button */}
             <button
               type="button"
@@ -333,7 +339,7 @@ const DeliveryAuth = () => {
               <ChevronLeft className="w-5 h-5" />
             </button>
             <div className="z-10 mb-2">
-              <div className="w-20 h-20 rounded-2xl bg-white/90 backdrop-blur-sm border border-brand-100 shadow-sm flex items-center justify-center overflow-hidden p-2">
+              <div className="w-16 h-16 rounded-2xl bg-white/90 backdrop-blur-sm border border-brand-100 shadow-sm flex items-center justify-center overflow-hidden p-2">
                 {logoUrl ? (
                   <img
                     src={logoUrl}
@@ -345,7 +351,7 @@ const DeliveryAuth = () => {
                 )}
               </div>
             </div>
-            <div className="w-40 h-40 -mt-4">
+            <div className="w-32 h-32 -mt-3">
               <Lottie animationData={deliveryRiding} loop />
             </div>
             <AnimatePresence mode="wait">
@@ -354,7 +360,7 @@ const DeliveryAuth = () => {
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -8 }}
-                className="text-center mt-3"
+                className="text-center mt-2"
               >
                 <h1 className="text-2xl font-black text-gray-900">
                   {step === "otp"
@@ -363,7 +369,7 @@ const DeliveryAuth = () => {
                       ? "Partner Login"
                       : "Partner Registration"}
                 </h1>
-                <p className="text-gray-500 text-sm mt-1 max-w-[240px] mx-auto">
+                <p className="text-gray-500 text-xs sm:text-sm mt-1 max-w-[260px] mx-auto">
                   {step === "otp"
                     ? `Enter the 4-digit code sent to ${mode === "login" ? loginEmail : `+91 ${signupPhone}`}`
                     : mode === "login"
@@ -376,7 +382,7 @@ const DeliveryAuth = () => {
 
           {/* Tab Switch */}
           {step === "form" && (
-            <div className="flex mx-6 mt-6 bg-gray-100 rounded-2xl p-1 shrink-0">
+            <div className="flex mx-6 mt-4 bg-gray-100 rounded-2xl p-1 shrink-0">
               {["login", "signup"].map((m) => (
                 <button
                   key={m}
@@ -393,7 +399,7 @@ const DeliveryAuth = () => {
           )}
 
           {/* Form Body */}
-          <div className="p-6 pt-4 overflow-y-auto shrink-1">
+          <div className="p-6 pt-4">
             <AnimatePresence mode="wait">
               {step === "form" && (
                 <motion.div

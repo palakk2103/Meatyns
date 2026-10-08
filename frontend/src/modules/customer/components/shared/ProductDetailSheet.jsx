@@ -390,7 +390,11 @@ const ProductDetailSheet = () => {
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.96, y: 30 }}
                         transition={{ type: 'spring', damping: 28, stiffness: 380 }}
+                        data-lenis-prevent
+                        data-lenis-prevent-wheel
+                        data-lenis-prevent-touch
                         onWheel={(e) => {
+                            e.stopPropagation();
                             if (desktopRightScrollRef.current && !desktopRightScrollRef.current.contains(e.target)) {
                                 desktopRightScrollRef.current.scrollTop += e.deltaY;
                             }
@@ -398,10 +402,14 @@ const ProductDetailSheet = () => {
                         className="hidden md:flex fixed z-[230] top-[72px] bottom-[16px] left-[3%] right-[3%] lg:left-[6%] lg:right-[6%] xl:left-[12%] xl:right-[12%] max-h-[calc(100vh-88px)] bg-white rounded-3xl shadow-[0_40px_100px_rgba(0,0,0,0.25)] overflow-hidden touch-pan-y pointer-events-auto"
                     >
                         {/* Parent flex container that holds both sides together */}
-                        <div className="flex w-full h-full min-h-0 overflow-hidden">
+                        <div className="flex w-full h-full min-h-0 overflow-hidden" data-lenis-prevent data-lenis-prevent-wheel data-lenis-prevent-touch>
                                 {/* Left: Image Gallery — sticky h-full with wheel scroll forwarding */}
                                 <div 
+                                    data-lenis-prevent
+                                    data-lenis-prevent-wheel
+                                    data-lenis-prevent-touch
                                     onWheel={(e) => {
+                                        e.stopPropagation();
                                         if (desktopRightScrollRef.current) {
                                             desktopRightScrollRef.current.scrollTop += e.deltaY;
                                         }
@@ -509,7 +517,13 @@ const ProductDetailSheet = () => {
                                 {/* Right: Product Info (scrollable naturally) */}
                                 <div 
                                     ref={desktopRightScrollRef}
-                                    className="flex-1 flex flex-col bg-white h-full min-h-0 max-h-full overflow-y-auto overscroll-contain touch-pan-y pointer-events-auto select-text"
+                                    data-lenis-prevent
+                                    data-lenis-prevent-wheel
+                                    data-lenis-prevent-touch
+                                    onWheel={(e) => {
+                                        e.stopPropagation();
+                                    }}
+                                    className="flex-1 flex flex-col bg-white h-full min-h-0 overflow-y-auto overscroll-contain touch-pan-y pointer-events-auto select-text"
                                     style={{
                                         WebkitOverflowScrolling: 'touch',
                                         scrollbarWidth: 'thin',
@@ -807,6 +821,9 @@ const ProductDetailSheet = () => {
                     {/* MOBILE LAYOUT: Bottom sheet (hidden on desktop md+) */}
                     {/* ============================================================ */}
                     <motion.div
+                        data-lenis-prevent
+                        data-lenis-prevent-wheel
+                        data-lenis-prevent-touch
                         drag={isExpanded ? false : "y"}
                         dragConstraints={{ top: 0, bottom: 0 }}
                         dragElastic={0.7}
@@ -868,6 +885,9 @@ const ProductDetailSheet = () => {
 
                         {/* Scrollable Content */}
                         <div
+                            data-lenis-prevent
+                            data-lenis-prevent-wheel
+                            data-lenis-prevent-touch
                             className={cn(
                                 "flex-1 overflow-x-hidden no-scrollbar pb-24 bg-white",
                                 isExpanded ? "overflow-y-auto" : "overflow-y-hidden"

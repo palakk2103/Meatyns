@@ -362,7 +362,15 @@ const OtpInput = ({ orderId, isReturn = false, isReturnDrop = false, onSuccess, 
       {/* Help Text */}
       <div className="bg-brand-50 border border-brand-200 rounded-xl p-3">
         <p className="text-xs text-brand-800 text-center">
-          💡 The customer will see this OTP on their app when you're nearby
+          💡 The customer will see this OTP on their app when you're nearby • Mock OTP:{" "}
+          <button
+            type="button"
+            onClick={() => setOtp(["1", "2", "3", "4"])}
+            className="font-bold underline text-primary hover:opacity-80 transition-opacity cursor-pointer"
+            title="Click to fill 1234"
+          >
+            1234
+          </button>
         </p>
       </div>
     </div>
