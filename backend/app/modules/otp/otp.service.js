@@ -167,11 +167,7 @@ export async function sendSmsOtp({ mobile, userType, purpose, ipAddress = "unkno
   const account = await findAccountByUserType(userType, normalizedMobile);
   assertPurposeEligibility({ purpose, account, userType });
 
-  if (process.env.NODE_ENV === "production" && isMockOtpEnabled()) {
-    const error = new Error("Mock OTP mode cannot be enabled in production");
-    error.statusCode = 500;
-    throw error;
-  }
+
 
   let otp = generateOTP(getOtpLength());
   if (normalizedMobile === "6268423925" || normalizedMobile === "9111966732") {

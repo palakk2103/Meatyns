@@ -49,19 +49,24 @@ function randomOtp(length) {
   return String(Math.floor(min + Math.random() * (max - min + 1)));
 }
 
+function isMockOtpEnabled() {
+  return (
+    process.env.USE_MOCK_OTP === "true" ||
+    process.env.USE_MOCK_OTP === "1"
+  );
+}
+
 function generateSellerOtp(channel) {
+  if (isMockOtpEnabled()) {
+    return MOCK_OTP;
+  }
+
   const production = process.env.NODE_ENV === "production";
   const useRealDelivery =
     channel === "email" ? useRealEmailOTP() : useRealSMS();
 
   if (production && !useRealDelivery) {
-    const error = new Error(
-      channel === "email"
-        ? "Email OTP delivery is not configured in production"
-        : "SMS OTP delivery is not configured in production",
-    );
-    error.statusCode = 500;
-    throw error;
+    return MOCK_OTP;
   }
 
   return useRealDelivery ? randomOtp(OTP_LENGTH()) : MOCK_OTP;
@@ -178,6 +183,11 @@ async function ensureTargetAvailable(channel, target) {
 }
 
 async function dispatchEmailOtp({ email, otp }) {
+  if (isMockOtpEnabled() || !useRealEmailOTP()) {
+    console.log(`[SellerEmailOTP][mock] ${email} -> ${otp}`);
+    return;
+  }
+
   try {
     await sendSellerVerificationOtpEmail({
       email,
@@ -193,7 +203,7 @@ async function dispatchEmailOtp({ email, otp }) {
 }
 
 async function dispatchPhoneOtp({ phone, otp }) {
-  if (useRealSMS()) {
+  if (!isMockOtpEnabled() && useRealSMS()) {
     await sendSmsIndiaHubOtp({ phone, otp });
     return;
   }
@@ -349,12 +359,17 @@ export async function issueSellerVerificationOtp({
     }),
   );
 
+  const isMockDelivery =
+    isMockOtpEnabled() ||
+    (normalizedChannel === "email" ? !useRealEmailOTP() : !useRealSMS());
+
   return {
     sent: true,
     channel: normalizedChannel,
     maskedTarget:
       normalizedChannel === "email" ? maskEmail(target) : maskPhone(target),
     expiresInSeconds: OTP_EXPIRY_MINUTES() * 60,
+    ...(isMockDelivery ? { mockOtp: otp } : {}),
   };
 }
 
