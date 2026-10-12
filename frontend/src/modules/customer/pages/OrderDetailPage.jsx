@@ -456,6 +456,34 @@ const OrderDetailPage = () => {
   };
 
   const status = order ? getLegacyStatusFromOrder(order) : null;
+  const isDelivered =
+    status === "delivered" ||
+    String(order?.workflowStatus || "").toUpperCase() === "DELIVERED";
+  const isOutForDelivery =
+    !isDelivered &&
+    (status === "out_for_delivery" ||
+      String(order?.workflowStatus || "").toUpperCase() === "OUT_FOR_DELIVERY" ||
+      Boolean(order?.outForDeliveryAt) ||
+      Boolean(order?.pickupConfirmedAt));
+  const isPacked =
+    isDelivered ||
+    isOutForDelivery ||
+    Boolean(
+      order?.packedAt ||
+        order?.pickupReadyAt ||
+        status === "packed" ||
+        ["PICKUP_READY"].includes(
+          String(order?.workflowStatus || "").toUpperCase(),
+        ),
+    );
+
+  const formatOrderDateTime = (dateVal) => {
+    if (!dateVal) return "";
+    const d = new Date(dateVal);
+    if (isNaN(d.getTime())) return "";
+    return `${d.toLocaleDateString("en-IN", { day: "numeric", month: "short" })}, ${d.toLocaleTimeString("en-IN", { hour: "numeric", minute: "2-digit", hour12: true })}`;
+  };
+
   const isAwaitingOnlinePayment =
     Boolean(order) &&
     order.paymentMode === "ONLINE" &&
@@ -1099,14 +1127,56 @@ const OrderDetailPage = () => {
                   </p>
                 </div>
 
-                <div className="bg-[#E7F7ED] border border-[#C5EBD2] text-[#15803D] rounded-2xl px-4 py-2 text-right">
-                  <p className="text-xs font-bold leading-tight">
-                    {order.workflowStatus === 'DELIVERED' || order.status === 'delivered' ? 'Delivered' : 'Out for Delivery'}
-                  </p>
-                  <p className="text-[11px] text-[#15803D]/80 font-medium">
-                    {estimatedArrival?.arrivingInText ? `Expected in ${estimatedArrival.arrivingInText}` : 'Expected in 14 mins'}
-                  </p>
-                </div>
+                {(() => {
+                  if (status === 'cancelled' || order.workflowStatus === 'CANCELLED') {
+                    return (
+                      <div className="bg-rose-50 border border-rose-200 text-rose-700 rounded-2xl px-4 py-2 text-right">
+                        <p className="text-xs font-bold leading-tight">Order Cancelled</p>
+                        <p className="text-[11px] text-rose-600/80 font-medium">Cancelled</p>
+                      </div>
+                    );
+                  }
+                  if (isDelivered) {
+                    return (
+                      <div className="bg-[#E7F7ED] border border-[#C5EBD2] text-[#15803D] rounded-2xl px-4 py-2 text-right">
+                        <p className="text-xs font-bold leading-tight">Delivered</p>
+                        <p className="text-[11px] text-[#15803D]/80 font-medium">Delivered successfully</p>
+                      </div>
+                    );
+                  }
+                  if (isOutForDelivery) {
+                    return (
+                      <div className="bg-[#E7F7ED] border border-[#C5EBD2] text-[#15803D] rounded-2xl px-4 py-2 text-right">
+                        <p className="text-xs font-bold leading-tight">Out for Delivery</p>
+                        <p className="text-[11px] text-[#15803D]/80 font-medium">
+                          {estimatedArrival?.arrivingInText ? `Expected in ${estimatedArrival.arrivingInText}` : 'Expected in 14 mins'}
+                        </p>
+                      </div>
+                    );
+                  }
+                  if (isPacked) {
+                    return (
+                      <div className="bg-amber-50 border border-amber-200 text-amber-800 rounded-2xl px-4 py-2 text-right">
+                        <p className="text-xs font-bold leading-tight">Packed &amp; Ready</p>
+                        <p className="text-[11px] text-amber-700/80 font-medium">Waiting for pickup</p>
+                      </div>
+                    );
+                  }
+                  if (status === 'confirmed' || order.workflowStatus === 'SELLER_ACCEPTED' || order.workflowStatus === 'DELIVERY_SEARCH') {
+                    return (
+                      <div className="bg-blue-50 border border-blue-200 text-blue-800 rounded-2xl px-4 py-2 text-right">
+                        <p className="text-xs font-bold leading-tight">Order Confirmed</p>
+                        <p className="text-[11px] text-blue-700/80 font-medium">Preparing your items</p>
+                      </div>
+                    );
+                  }
+                  return (
+                    <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-2xl px-4 py-2 text-right">
+                      <p className="text-xs font-bold leading-tight">Order Placed</p>
+                      <p className="text-[11px] text-emerald-700/80 font-medium">Waiting for confirmation</p>
+                    </div>
+                  );
+                })()}
               </div>
 
               {/* Delivery Method Banner (Desktop) */}
@@ -1171,13 +1241,13 @@ const OrderDetailPage = () => {
                     <Check size={16} strokeWidth={3} />
                   </div>
                   {/* Vertical line connecting to Step 2 */}
-                  <div className="absolute left-3.5 top-7 w-[2px] h-12 bg-[#15803D]" />
+                  <div className={`absolute left-3.5 top-7 w-[2px] h-12 ${isPacked ? 'bg-[#15803D]' : 'bg-slate-200'}`} />
 
                   <div className="flex-1 flex items-center justify-between">
                     <div>
                       <h3 className="text-sm font-bold text-slate-900">Order Placed</h3>
                       <p className="text-xs text-slate-400 mt-0.5">
-                        {order.createdAt ? new Date(order.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) + ', ' + new Date(order.createdAt).toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit', hour12: true }) : "16 Sep, 11:24 AM"}
+                        {order.createdAt ? formatOrderDateTime(order.createdAt) : "Recently"}
                       </p>
                     </div>
                     <span className="text-xs font-semibold text-slate-400 lowercase">completed</span>
@@ -1187,30 +1257,34 @@ const OrderDetailPage = () => {
                 {/* Step 2: Packed & Ready */}
                 <div className="flex items-start gap-4 relative">
                   <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 z-10 ${
-                    status === 'placed' && !order.packedAt
-                      ? 'border-2 border-slate-300 bg-white text-slate-300'
-                      : 'bg-[#15803D] text-white'
+                    isPacked
+                      ? 'bg-[#15803D] text-white'
+                      : 'border-2 border-slate-300 bg-white text-slate-300'
                   }`}>
-                    {status === 'placed' && !order.packedAt ? (
-                      <span className="w-2 h-2 rounded-full bg-slate-300" />
-                    ) : (
+                    {isPacked ? (
                       <Check size={16} strokeWidth={3} />
+                    ) : (
+                      <span className="w-2 h-2 rounded-full bg-slate-300" />
                     )}
                   </div>
                   {/* Vertical line connecting to Step 3 */}
                   <div className={`absolute left-3.5 top-7 w-[2px] h-12 ${
-                    status === 'out_for_delivery' || status === 'delivered' ? 'bg-[#15803D]' : 'bg-slate-200'
+                    isOutForDelivery || isDelivered ? 'bg-[#15803D]' : 'bg-slate-200'
                   }`} />
 
                   <div className="flex-1 flex items-center justify-between">
                     <div>
                       <h3 className="text-sm font-bold text-slate-900">Packed &amp; Ready</h3>
                       <p className="text-xs text-slate-400 mt-0.5">
-                        {order.createdAt ? new Date(new Date(order.createdAt).getTime() + 24 * 60000).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) + ', ' + new Date(new Date(order.createdAt).getTime() + 24 * 60000).toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit', hour12: true }) : "16 Sep, 11:48 AM"}
+                        {order.packedAt
+                          ? formatOrderDateTime(order.packedAt)
+                          : isPacked
+                          ? "Completed"
+                          : "Pending"}
                       </p>
                     </div>
                     <span className="text-xs font-semibold text-slate-400 lowercase">
-                      {status === 'placed' && !order.packedAt ? 'pending' : 'completed'}
+                      {isPacked ? 'completed' : 'pending'}
                     </span>
                   </div>
                 </div>
@@ -1218,13 +1292,13 @@ const OrderDetailPage = () => {
                 {/* Step 3: Out for Delivery */}
                 <div className="flex items-start gap-4 relative">
                   <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 z-10 ${
-                    status === 'delivered'
+                    isDelivered
                       ? 'bg-[#15803D] text-white'
-                      : status === 'out_for_delivery'
+                      : isOutForDelivery
                       ? 'bg-[#15803D] text-white ring-4 ring-[#E7F7ED]'
                       : 'border-2 border-slate-300 bg-white'
                   }`}>
-                    {status === 'delivered' || status === 'out_for_delivery' ? (
+                    {isDelivered || isOutForDelivery ? (
                       <Check size={16} strokeWidth={3} />
                     ) : (
                       <span className="w-2 h-2 rounded-full bg-slate-300" />
@@ -1232,22 +1306,26 @@ const OrderDetailPage = () => {
                   </div>
                   {/* Vertical line connecting to Step 4 */}
                   <div className={`absolute left-3.5 top-7 w-[2px] h-12 ${
-                    status === 'delivered' ? 'bg-[#15803D]' : 'bg-slate-200'
+                    isDelivered ? 'bg-[#15803D]' : 'bg-slate-200'
                   }`} />
 
                   <div className="flex-1 flex items-center justify-between">
                     <div>
                       <h3 className="text-sm font-bold text-slate-900">Out for Delivery</h3>
                       <p className="text-xs text-slate-400 mt-0.5">
-                        {order.createdAt ? new Date(new Date(order.createdAt).getTime() + 41 * 60000).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }) + ', ' + new Date(new Date(order.createdAt).getTime() + 41 * 60000).toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit', hour12: true }) : "16 Sep, 12:05 PM"}
+                        {order.outForDeliveryAt
+                          ? formatOrderDateTime(order.outForDeliveryAt)
+                          : isOutForDelivery
+                          ? "In Transit"
+                          : "Pending"}
                       </p>
                     </div>
                     <span className={`text-xs font-semibold flex items-center gap-1 ${
-                      status === 'out_for_delivery' ? 'text-[#B45309] font-bold' : 'text-slate-400'
+                      isOutForDelivery ? 'text-[#B45309] font-bold' : 'text-slate-400 lowercase'
                     }`}>
-                      {status === 'out_for_delivery' ? (
+                      {isOutForDelivery ? (
                         <>Current <span className="w-1.5 h-1.5 rounded-full bg-[#FDCE04] animate-ping" /></>
-                      ) : status === 'delivered' ? 'completed' : 'pending'}
+                      ) : isDelivered ? 'completed' : 'pending'}
                     </span>
                   </div>
                 </div>
@@ -1255,11 +1333,11 @@ const OrderDetailPage = () => {
                 {/* Step 4: Delivered */}
                 <div className="flex items-start gap-4">
                   <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 z-10 ${
-                    status === 'delivered'
+                    isDelivered
                       ? 'bg-[#15803D] text-white'
                       : 'border-2 border-slate-300 bg-white'
                   }`}>
-                    {status === 'delivered' ? (
+                    {isDelivered ? (
                       <Check size={16} strokeWidth={3} />
                     ) : (
                       <span className="w-2.5 h-2.5 rounded-full border border-slate-300" />
@@ -1270,11 +1348,15 @@ const OrderDetailPage = () => {
                     <div>
                       <h3 className="text-sm font-bold text-slate-900">Delivered</h3>
                       <p className="text-xs text-slate-400 mt-0.5">
-                        {status === 'delivered' ? 'Delivered successfully' : 'Pending'}
+                        {order.deliveredAt
+                          ? formatOrderDateTime(order.deliveredAt)
+                          : isDelivered
+                          ? 'Delivered successfully'
+                          : 'Pending'}
                       </p>
                     </div>
                     <span className="text-xs font-semibold text-slate-400 lowercase">
-                      {status === 'delivered' ? 'completed' : 'pending'}
+                      {isDelivered ? 'completed' : 'pending'}
                     </span>
                   </div>
                 </div>
@@ -1283,52 +1365,106 @@ const OrderDetailPage = () => {
 
             {/* Right Column: Rider Details, Address & Guarantee */}
             <div className="col-span-5 xl:col-span-4 space-y-4 select-none">
-              {/* Rider Card */}
-              <div className="bg-white rounded-2xl p-6 border border-[#ede5df] shadow-xs text-center space-y-4">
-                <div className="w-16 h-16 mx-auto rounded-full bg-[#FFFBEB] flex items-center justify-center text-[#1A1A1A] border border-[#FDE68A]">
-                  <Bike size={32} strokeWidth={2} />
-                </div>
-                <div>
-                  <h3 className="text-base font-bold text-slate-900">
-                    Your order is on the way!
-                  </h3>
-                </div>
-
-                {/* Rider Info Row */}
-                <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100 text-left">
-                  <div className="w-10 h-10 rounded-full bg-slate-800 text-white flex items-center justify-center font-bold text-xs flex-shrink-0">
-                    <User size={18} />
+              {/* Rider / Order Status Card */}
+              {order.deliveryBoy ? (
+                <div className="bg-white rounded-2xl p-6 border border-[#ede5df] shadow-xs text-center space-y-4">
+                  <div className="w-16 h-16 mx-auto rounded-full bg-[#FFFBEB] flex items-center justify-center text-[#1A1A1A] border border-[#FDE68A]">
+                    <Bike size={32} strokeWidth={2} />
                   </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-xs font-bold text-slate-900 truncate">
-                      Rider: {order.deliveryBoy?.name || "Ramesh Kumar"}
-                    </p>
-                    <p className="text-[11px] text-slate-500">
-                      Vehicle: {order.deliveryBoy?.vehicleNumber || "MH12 AB 4587"}
+                  <div>
+                    <h3 className="text-base font-bold text-slate-900">
+                      {isDelivered
+                        ? "Delivered by Rider"
+                        : isOutForDelivery
+                        ? "Your order is on the way!"
+                        : "Delivery Partner Assigned"}
+                    </h3>
+                  </div>
+
+                  {/* Rider Info Row */}
+                  <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100 text-left">
+                    <div className="w-10 h-10 rounded-full bg-slate-800 text-white flex items-center justify-center font-bold text-xs flex-shrink-0">
+                      <User size={18} />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-xs font-bold text-slate-900 truncate">
+                        Rider: {order.deliveryBoy?.name || "Delivery Partner"}
+                      </p>
+                      {order.deliveryBoy?.vehicleNumber && (
+                        <p className="text-[11px] text-slate-500">
+                          Vehicle: {order.deliveryBoy.vehicleNumber}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Action Buttons: Call & WhatsApp */}
+                  {order.deliveryBoy?.phone && !isDelivered && (
+                    <div className="flex items-center gap-3 pt-1">
+                      <a
+                        href={`tel:${order.deliveryBoy.phone}`}
+                        className="flex-1 py-2.5 rounded-xl bg-[#FDCE04] hover:bg-[#E5B800] text-[#1A1A1A] font-extrabold text-xs flex items-center justify-center gap-2 transition-colors no-underline shadow-xs border border-[#E5B800]"
+                      >
+                        <Phone size={14} />
+                        <span>Call</span>
+                      </a>
+                      <a
+                        href={`https://wa.me/${String(order.deliveryBoy.phone).replace(/[^0-9]/g, "")}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex-1 py-2.5 rounded-xl border border-[#FDCE04] text-[#1A1A1A] hover:bg-[#FFFBEB] font-bold text-xs flex items-center justify-center gap-2 transition-colors no-underline"
+                      >
+                        <MessageSquare size={14} />
+                        <span>WhatsApp</span>
+                      </a>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="bg-white rounded-2xl p-6 border border-[#ede5df] shadow-xs text-center space-y-4">
+                  <div className="w-16 h-16 mx-auto rounded-full bg-emerald-50 flex items-center justify-center text-emerald-700 border border-emerald-200">
+                    <Package size={30} strokeWidth={2} />
+                  </div>
+                  <div>
+                    <h3 className="text-base font-bold text-slate-900">
+                      {isDelivered
+                        ? "Order Delivered"
+                        : isPacked
+                        ? "Looking for Rider"
+                        : status === "confirmed"
+                        ? "Preparing Your Order"
+                        : "Order Placed Successfully"}
+                    </h3>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      {isDelivered
+                        ? "Hope you loved your order!"
+                        : isPacked
+                        ? "Your order is packed. A delivery partner will be assigned shortly."
+                        : status === "confirmed"
+                        ? "The store is preparing and packing your items."
+                        : "The store will accept and prepare your items shortly."}
                     </p>
                   </div>
-                </div>
 
-                {/* Action Buttons: Call & WhatsApp */}
-                <div className="flex items-center gap-3 pt-1">
-                  <a
-                    href={`tel:${order.deliveryBoy?.phone || "9876543210"}`}
-                    className="flex-1 py-2.5 rounded-xl bg-[#FDCE04] hover:bg-[#E5B800] text-[#1A1A1A] font-extrabold text-xs flex items-center justify-center gap-2 transition-colors no-underline shadow-xs border border-[#E5B800]"
-                  >
-                    <Phone size={14} />
-                    <span>Call</span>
-                  </a>
-                  <a
-                    href={`https://wa.me/${(order.deliveryBoy?.phone || "919876543210").replace(/[^0-9]/g, "")}`}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex-1 py-2.5 rounded-xl border border-[#FDCE04] text-[#1A1A1A] hover:bg-[#FFFBEB] font-bold text-xs flex items-center justify-center gap-2 transition-colors no-underline"
-                  >
-                    <MessageSquare size={14} />
-                    <span>WhatsApp</span>
-                  </a>
+                  <div className="p-3 rounded-xl bg-slate-50 border border-slate-100 text-left flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center flex-shrink-0">
+                      <Clock size={16} />
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold text-slate-800">
+                        {isPacked
+                          ? "Ready for pickup"
+                          : status === "confirmed"
+                          ? "In preparation"
+                          : "Received by store"}
+                      </p>
+                      <p className="text-[11px] text-slate-400">
+                        {order.deliveryMethod === "EXPRESS" ? "⚡ Express Delivery" : "Standard Delivery"}
+                      </p>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Delivery Address Card */}
               <div className="bg-white rounded-2xl p-5 border border-[#ede5df] shadow-xs space-y-2">
@@ -1341,10 +1477,10 @@ const OrderDetailPage = () => {
                   </div>
                   <div className="space-y-0.5 min-w-0">
                     <p className="text-xs font-bold text-slate-900">
-                      {order.address?.name || "Palak Patel"}
+                      {order.address?.name || "Customer"}
                     </p>
                     <p className="text-xs text-slate-500 leading-relaxed">
-                      {order.address?.address || order.address?.fullAddress || "Room No. 204, Shree Residency, Near Vijay Nagar Square, Indore - 452010"}
+                      {order.address?.address || order.address?.fullAddress || order.address?.city || "Delivery address"}
                     </p>
                   </div>
                 </div>

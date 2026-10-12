@@ -178,13 +178,6 @@ const MainLocationHeader = ({
     return () => clearTimeout(timeout);
   }, [typingState, typingPhrases]);
 
-  // Handle manual scroll update for location drawer
-  useEffect(() => {
-    if (isLocationOpen) {
-      refreshLocation?.();
-    }
-  }, [isLocationOpen, refreshLocation]);
-
   // Responsive Hook: detect mobile vs desktop
   const [isMobile, setIsMobile] = useState(
     typeof window !== "undefined" ? window.innerWidth < 768 : false,
@@ -297,7 +290,6 @@ const MainLocationHeader = ({
                 data-lenis-prevent
                 data-lenis-prevent-touch
                 onClick={() => {
-                  refreshLocation?.();
                   setIsLocationOpen(true);
                 }}
                 className="flex items-center gap-2 text-left bg-transparent border-0 p-0 cursor-pointer text-[#111111] group hover:opacity-90 transition-opacity"
@@ -384,7 +376,6 @@ const MainLocationHeader = ({
                   data-lenis-prevent
                   data-lenis-prevent-touch
                   onClick={() => {
-                    refreshLocation?.();
                     setIsLocationOpen(true);
                   }}
                   className="flex items-center gap-1.5 text-left bg-transparent border-0 p-0 cursor-pointer group active:scale-95 transition-transform min-w-0 max-w-full text-[#111111]"

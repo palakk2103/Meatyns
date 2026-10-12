@@ -298,7 +298,6 @@ const SearchPage = () => {
                         <button
                             type="button"
                             onClick={() => {
-                                refreshLocation?.();
                                 setIsLocationOpen(true);
                             }}
                             className="flex items-center gap-2 text-left text-[#111111] bg-transparent border-0 p-0 cursor-pointer group hover:opacity-90 transition-opacity"

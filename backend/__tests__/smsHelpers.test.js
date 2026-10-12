@@ -31,4 +31,15 @@ describe("smsHelpers.js - buildMessage", () => {
     const msg = buildMessage("1122");
     expect(msg).toBe("Your code is 1122. Expires in 15 mins.");
   });
+
+  it("handles template with three generic placeholders and powered by", () => {
+    process.env.APP_NAME = "Meatyns";
+    process.env.SMS_INDIA_HUB_SENDER_ID = "BGADPL";
+    process.env.SMS_INDIA_HUB_TEMPLATE_TEXT =
+      "Welcome to ##var##, powered by ##var##. Your OTP for registration ##var##. This OTP is valid for 10 minutes. Please do not share it with anyone.BGADPL";
+    const msg = buildMessage("9988");
+    expect(msg).toBe(
+      "Welcome to Meatyns, powered by BGADPL. Your OTP for registration is 9988. This OTP is valid for 10 minutes. Please do not share it with anyone.BGADPL"
+    );
+  });
 });

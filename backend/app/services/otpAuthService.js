@@ -144,7 +144,8 @@ export async function issueCustomerOtp({
     throw err;
   }
 
-  let otp = "1234";
+  const realSms = useRealSMS();
+  const otp = realSms ? generateOTP() : "1234";
   customer.otpHash = hashOtp(phone, otp);
   customer.otpExpiresAt = new Date(now.getTime() + OTP_EXPIRY_MINUTES() * 60 * 1000);
   customer.otpFailedAttempts = 0;
@@ -158,7 +159,7 @@ export async function issueCustomerOtp({
 
   await customer.save();
 
-  if (useRealSMS()) {
+  if (realSms) {
     await dispatchCustomerOtpSms({ phone, otp });
     otpAuditLog("customer_otp_sms_dispatched", {
       phone: maskPhone(phone),
@@ -176,7 +177,10 @@ export async function issueCustomerOtp({
     });
   }
 
-  const response = { sent: true, phone, mockOtp: "1234" };
+  const response = { sent: true, phone };
+  if (!realSms) {
+    response.mockOtp = otp;
+  }
   return response;
 }
 
@@ -206,11 +210,12 @@ export async function verifyCustomerOtpCode({
     throw err;
   }
 
+  const realSms = useRealSMS();
   let customer = await Customer.findOne({ phone }).select(
     "+otpHash +otpExpiresAt +otpFailedAttempts +otpLockedUntil +otpSessionVersion +otp +otpExpiry",
   );
   if (!customer) {
-    if (code === "1234") {
+    if (!realSms && code === "1234") {
       customer = await Customer.create({
         name: "Customer",
         phone,
@@ -228,7 +233,7 @@ export async function verifyCustomerOtpCode({
 
   const now = new Date();
   if (customer.otpLockedUntil && customer.otpLockedUntil > now) {
-    if (code !== "1234") {
+    if (realSms || code !== "1234") {
       const err = new Error("Too many failed attempts. Please try again later.");
       err.statusCode = 423;
       throw err;
@@ -236,14 +241,14 @@ export async function verifyCustomerOtpCode({
   }
 
   if (!customer.otpHash || !customer.otpExpiresAt || customer.otpExpiresAt <= now) {
-    if (code !== "1234") {
+    if (realSms || code !== "1234") {
       const err = new Error("Invalid or expired OTP");
       err.statusCode = 400;
       throw err;
     }
   }
 
-  const isValid = code === "1234" || hashOtp(phone, code) === customer.otpHash;
+  const isValid = (!realSms && code === "1234") || hashOtp(phone, code) === customer.otpHash;
   if (!isValid) {
     customer.otpFailedAttempts = (customer.otpFailedAttempts || 0) + 1;
 

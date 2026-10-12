@@ -62,11 +62,17 @@ export function buildMessage(otp) {
     }
   });
 
+  const senderId = String(process.env.SMS_INDIA_HUB_SENDER_ID || "BGADPL").trim();
+
   let replacementOrder = [appName, String(otp), String(minutes)];
   if (placeholderCount === 1) {
     replacementOrder = [String(otp)];
   } else if (placeholderCount === 2) {
     replacementOrder = [String(otp), String(minutes)];
+  } else if (placeholderCount === 3 && template.toLowerCase().includes("powered by")) {
+    const poweredBy = String(process.env.SMS_INDIA_HUB_POWERED_BY || senderId || "BGADPL").trim();
+    const otpPart = template.toLowerCase().includes("registration is") ? String(otp) : `is ${otp}`;
+    replacementOrder = [appName, poweredBy, otpPart];
   }
 
   genericPlaceholders.forEach((placeholder) => {

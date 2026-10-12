@@ -94,19 +94,44 @@ export async function geocodeAddress(address, { country } = {}) {
     params.components = `country:${process.env.MAPS_DEFAULT_COUNTRY.trim().toUpperCase()}`;
   }
 
-  const resp = await client.geocode({ params, timeout: 10000 });
-  const status = resp.data?.status;
+  let first = null;
+  let loc = null;
 
-  if (status && status !== "OK") {
-    const msg = resp.data?.error_message || status;
-    const err = new Error(`Geocoding failed: ${msg}`);
-    err.statusCode = status === "ZERO_RESULTS" ? 404 : 502;
-    err.code = status;
-    throw err;
+  try {
+    const resp = await client.geocode({ params, timeout: 10000 });
+    const status = resp.data?.status;
+    if (status === "OK") {
+      first = resp.data?.results?.[0];
+      loc = first?.geometry?.location;
+    }
+  } catch {
+    // Google geocoding failed or denied
   }
 
-  const first = resp.data?.results?.[0];
-  const loc = first?.geometry?.location;
+  // Fallback to OpenStreetMap Nominatim
+  if (!loc || typeof loc.lat !== "number" || typeof loc.lng !== "number") {
+    try {
+      const osmRes = await fetch(
+        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(addr)}&format=json&countrycodes=in&limit=1`,
+        { headers: { Accept: "application/json", "User-Agent": "MeatynsApp/1.0" } }
+      );
+      if (osmRes.ok) {
+        const osmData = await osmRes.json();
+        if (Array.isArray(osmData) && osmData[0]) {
+          const item = osmData[0];
+          loc = { lat: parseFloat(item.lat), lng: parseFloat(item.lon) };
+          first = {
+            formatted_address: item.display_name,
+            place_id: `osm_${item.place_id || item.osm_id}`,
+            types: ["geocode"],
+          };
+        }
+      }
+    } catch {
+      // ignore fallback error
+    }
+  }
+
   if (!first || !loc || typeof loc.lat !== "number" || typeof loc.lng !== "number") {
     const err = new Error("Geocoding returned no coordinates");
     err.statusCode = 404;

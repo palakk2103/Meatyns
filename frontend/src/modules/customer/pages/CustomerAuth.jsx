@@ -124,21 +124,16 @@ const CustomerAuth = () => {
         const phoneToUse = `+91${rawDigits.slice(-10)}`;
         setIsLoading(true);
         try {
-            let res;
-            try {
-                res = await customerApi.sendLoginOtp({ phone: phoneToUse });
-            } catch (err) {
-                console.warn('API sendLoginOtp notice:', err?.message);
-            }
+            const res = await customerApi.sendLoginOtp({ phone: phoneToUse });
             setShowOtp(true);
             setTimer(30);
             toast.success('OTP sent to your phone!');
-            const mockOtp = res?.data?.result?.mockOtp || '1234';
-            toast.info(`Mock OTP: ${mockOtp}`, { duration: 10000 });
+            if (res?.data?.result?.mockOtp) {
+                toast.info(`Mock OTP: ${res.data.result.mockOtp}`, { duration: 10000 });
+            }
         } catch (error) {
-            setShowOtp(true);
-            setTimer(30);
-            toast.info('Mock OTP: 1234', { duration: 10000 });
+            const apiMessage = error?.response?.data?.message;
+            toast.error(apiMessage || 'Failed to send OTP. Please try again.');
         } finally {
             setIsLoading(false);
         }
@@ -161,40 +156,19 @@ const CustomerAuth = () => {
             const rawDigits = (formData.phone || '').replace(/\D/g, '');
             const phoneToUse = `+91${rawDigits.slice(-10)}`;
 
-            let loggedIn = false;
-            try {
-                const response = await customerApi.verifyOtp({
-                    phone: phoneToUse,
-                    otp: code,
-                    deviceId,
-                    fingerprint: {
-                        userAgent: navigator.userAgent,
-                        language: navigator.language,
-                        screenResolution: `${window.screen.width}x${window.screen.height}`,
-                    }
-                });
-                if (response?.data?.result) {
-                    const { token, customer } = response.data.result;
-                    login({ ...customer, token, role: 'customer' });
-                    loggedIn = true;
+            const response = await customerApi.verifyOtp({
+                phone: phoneToUse,
+                otp: code,
+                deviceId,
+                fingerprint: {
+                    userAgent: navigator.userAgent,
+                    language: navigator.language,
+                    screenResolution: `${window.screen.width}x${window.screen.height}`,
                 }
-            } catch (apiErr) {
-                if (code === '1234') {
-                    const fallbackCustomer = {
-                        _id: 'cust_' + Date.now(),
-                        name: 'Customer',
-                        phone: phoneToUse,
-                        role: 'customer',
-                        isVerified: true
-                    };
-                    login({ ...fallbackCustomer, token: 'mock_jwt_' + Date.now(), role: 'customer' });
-                    loggedIn = true;
-                } else {
-                    throw apiErr;
-                }
-            }
-
-            if (loggedIn) {
+            });
+            if (response?.data?.result) {
+                const { token, customer } = response.data.result;
+                login({ ...customer, token, role: 'customer' });
                 sessionStorage.removeItem('auth_phone');
                 sessionStorage.removeItem('auth_email');
                 sessionStorage.removeItem('auth_name');
@@ -204,7 +178,7 @@ const CustomerAuth = () => {
             }
         } catch (error) {
             const apiMessage = error?.response?.data?.message;
-            toast.error(apiMessage || 'Invalid OTP. Use mock code 1234');
+            toast.error(apiMessage || 'Invalid OTP');
         } finally {
             setIsLoading(false);
         }

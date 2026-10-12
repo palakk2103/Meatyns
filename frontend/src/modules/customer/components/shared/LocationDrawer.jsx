@@ -81,14 +81,27 @@ const LocationDrawer = ({ isOpen, onClose }) => {
     }
   }, []);
 
-  // Close drawer when location is successfully fetched
+  // Close drawer ONLY when user explicitly clicked "Use current location" and fetch succeeded
+  const userRequestedLocationRef = React.useRef(false);
   const prevFetching = React.useRef(isFetchingLocation);
   React.useEffect(() => {
-    if (prevFetching.current && !isFetchingLocation && !locationError) {
+    if (
+      userRequestedLocationRef.current &&
+      prevFetching.current &&
+      !isFetchingLocation &&
+      !locationError
+    ) {
+      userRequestedLocationRef.current = false;
       onClose();
     }
     prevFetching.current = isFetchingLocation;
   }, [isFetchingLocation, locationError, onClose]);
+
+  React.useEffect(() => {
+    if (!isOpen) {
+      userRequestedLocationRef.current = false;
+    }
+  }, [isOpen]);
 
   React.useEffect(() => {
     if (isOpen) return;
@@ -119,6 +132,7 @@ const LocationDrawer = ({ isOpen, onClose }) => {
   const handleSelectCurrentLocation = (e) => {
     e.preventDefault();
     e.stopPropagation();
+    userRequestedLocationRef.current = true;
     refreshLocation();
     // Keep drawer open so user sees "Detecting..."
   };
@@ -178,6 +192,33 @@ const LocationDrawer = ({ isOpen, onClose }) => {
 
   const handleSelectPlace = React.useCallback(
     (prediction) => {
+      // If prediction already has resolved coordinates (e.g. from Nominatim fallback)
+      if (
+        typeof prediction?.latitude === "number" &&
+        typeof prediction?.longitude === "number"
+      ) {
+        updateLocation(
+          {
+            name: prediction.description,
+            time: "12-15 mins",
+            city: prediction.city || currentLocation.city,
+            state: prediction.state || currentLocation.state,
+            pincode: prediction.pincode || currentLocation.pincode,
+            latitude: prediction.latitude,
+            longitude: prediction.longitude,
+          },
+          { persist: true, updateSavedHome: false },
+        );
+
+        setSearchQuery("");
+        setPlacePredictions([]);
+        setPlacesError("");
+        setIsSearchFocused(false);
+        resetAutocompleteSession();
+        onClose();
+        return;
+      }
+
       const geocoder = geocoderRef.current;
       if (!geocoder || !prediction?.place_id) return;
 
@@ -254,15 +295,79 @@ const LocationDrawer = ({ isOpen, onClose }) => {
     }
 
     const timer = setTimeout(async () => {
-      const ready = await initGooglePlaces();
-      if (!ready || !autocompleteServiceRef.current) return;
-
       const requestId = latestPlacesRequestRef.current + 1;
       latestPlacesRequestRef.current = requestId;
       const querySnapshot = query;
 
       setIsSearchingPlaces(true);
       setPlacesError("");
+
+      const fallbackToOsm = async () => {
+        try {
+          const osmRes = await fetch(
+            `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(querySnapshot)}&format=json&countrycodes=in&limit=${MAX_SUGGESTIONS}&addressdetails=1`,
+            { headers: { Accept: "application/json" } }
+          );
+          if (
+            requestId !== latestPlacesRequestRef.current ||
+            querySnapshot !== searchQuery.trim()
+          ) {
+            return;
+          }
+          if (osmRes.ok) {
+            const osmData = await osmRes.json();
+            if (Array.isArray(osmData) && osmData.length > 0) {
+              const formatted = osmData.map((item) => {
+                const addr = item.address || {};
+                const locality =
+                  addr.city ||
+                  addr.town ||
+                  addr.village ||
+                  addr.suburb ||
+                  addr.city_district;
+                return {
+                  place_id: `osm_${item.place_id || item.osm_id}`,
+                  description: item.display_name,
+                  structured_formatting: {
+                    main_text:
+                      item.name ||
+                      locality ||
+                      item.display_name.split(",")[0],
+                    secondary_text: item.display_name
+                      .split(",")
+                      .slice(1)
+                      .join(",")
+                      .trim(),
+                  },
+                  latitude: parseFloat(item.lat),
+                  longitude: parseFloat(item.lon),
+                  city: locality || currentLocation.city,
+                  state: addr.state || currentLocation.state,
+                  pincode: addr.postcode || currentLocation.pincode,
+                };
+              });
+              setPlacePredictions(formatted);
+              placesCacheRef.current.set(cacheKey, {
+                predictions: formatted,
+                expiresAt: Date.now() + CACHE_TTL_MS,
+              });
+              setIsSearchingPlaces(false);
+              setPlacesError("");
+              return;
+            }
+          }
+        } catch {
+          // ignore
+        }
+        setIsSearchingPlaces(false);
+        setPlacePredictions([]);
+      };
+
+      const ready = await initGooglePlaces();
+      if (!ready || !autocompleteServiceRef.current) {
+        await fallbackToOsm();
+        return;
+      }
 
       const request = {
         input: query,
@@ -280,7 +385,7 @@ const LocationDrawer = ({ isOpen, onClose }) => {
 
       autocompleteServiceRef.current.getPlacePredictions(
         request,
-        (predictions, status) => {
+        async (predictions, status) => {
           // Ignore stale responses from older keystrokes.
           if (
             requestId !== latestPlacesRequestRef.current ||
@@ -289,11 +394,13 @@ const LocationDrawer = ({ isOpen, onClose }) => {
             return;
           }
 
-          setIsSearchingPlaces(false);
-          if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-            const trimmedPredictions = Array.isArray(predictions)
-              ? predictions.slice(0, MAX_SUGGESTIONS)
-              : [];
+          if (
+            status === window.google.maps.places.PlacesServiceStatus.OK &&
+            Array.isArray(predictions) &&
+            predictions.length > 0
+          ) {
+            setIsSearchingPlaces(false);
+            const trimmedPredictions = predictions.slice(0, MAX_SUGGESTIONS);
             setPlacePredictions(trimmedPredictions);
             placesCacheRef.current.set(cacheKey, {
               predictions: trimmedPredictions,
@@ -301,14 +408,9 @@ const LocationDrawer = ({ isOpen, onClose }) => {
             });
             return;
           }
-          if (
-            status === window.google.maps.places.PlacesServiceStatus.ZERO_RESULTS
-          ) {
-            setPlacePredictions([]);
-            return;
-          }
-          setPlacePredictions([]);
-          setPlacesError("Google search is temporarily unavailable");
+
+          // If Google status is ZERO_RESULTS, REQUEST_DENIED or legacy error, fall back to OSM
+          await fallbackToOsm();
         },
       );
     }, SEARCH_DEBOUNCE_MS);
