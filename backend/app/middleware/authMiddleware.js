@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import handleResponse from "../utils/helper.js";
 import Seller from "../models/seller.js";
+import logger from "../services/logger.js";
 
 function extractJwtFromHeaders(req) {
   const authHeader = String(req.headers.authorization || "").trim();
@@ -36,11 +37,13 @@ export const verifyToken = (req, res, next) => {
       return handleResponse(res, 401, "Unauthorized, token missing");
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const secret = String(process.env.JWT_SECRET || "").trim();
+    const decoded = jwt.verify(token, secret);
 
     req.user = decoded; // { id, role }
     next();
   } catch (error) {
+    logger.warn(`verifyToken failed: ${error.name} - ${error.message}`);
     return handleResponse(res, 401, "Invalid or expired token");
   }
 };

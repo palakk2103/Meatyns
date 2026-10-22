@@ -608,7 +608,7 @@ export async function createPaymentOrderForOrderRef({
   return { payment, redirectUrl: initResult.redirectUrl, duplicate: false };
 }
 
-export async function verifyPhonePePaymentStatus({
+export async function verifyPaymentStatusInternal({
   merchantOrderId,
   userId,
   correlationId = null,
@@ -631,7 +631,7 @@ export async function verifyPhonePePaymentStatus({
   const statusResp = await provider.getPaymentStatus({ merchantOrderId });
   const nextStatus = provider.mapStatusToInternal(statusResp.state);
 
-  console.log("verifyPhonePePaymentStatus debugging:", {
+  logger.debug("verifyPaymentStatusInternal", {
     merchantOrderId,
     statusResp,
     nextStatus,
@@ -667,14 +667,17 @@ export async function verifyPhonePePaymentStatus({
   };
 }
 
-export async function processPhonePeWebhook({
+export const verifyPhonePePaymentStatus = verifyPaymentStatusInternal;
+
+export async function processPaymentWebhook({
   rawBody,
   authorization,
+  signature,
   correlationId = null,
 }) {
   const provider = getActivePaymentProvider();
 
-  const isValid = await provider.validateWebhook({ rawBody, authorization });
+  const isValid = await provider.validateWebhook({ rawBody, authorization, signature });
   if (!isValid) {
     const err = new Error("Invalid webhook signature");
     err.statusCode = 401;
@@ -705,17 +708,30 @@ export async function processPhonePeWebhook({
   }
 
   const merchantOrderId = decoded.merchantOrderId;
-  const payment = await Payment.findOne({ gatewayOrderId: merchantOrderId });
+  let payment = merchantOrderId ? await Payment.findOne({ gatewayOrderId: merchantOrderId }) : null;
+  if (!payment && decoded.transactionId) {
+    payment = await Payment.findOne({ gatewayPaymentId: decoded.transactionId });
+  }
+
   if (!payment) {
+    logger.warn("Webhook payment attempt not found", { merchantOrderId, transactionId: decoded.transactionId });
     return { accepted: true, ignored: true, reason: "Payment attempt not found" };
   }
 
   const nextStatus = provider.mapStatusToInternal(decoded.state);
+
+  if (decoded.refundId) {
+    payment.gatewayRefundId = decoded.refundId;
+    if (decoded.amount) {
+      payment.refundedAmount = Math.max(payment.refundedAmount || 0, decoded.amount / 100);
+    }
+  }
+
   await transitionPaymentState(payment, {
     nextStatus,
     source: PAYMENT_EVENT_SOURCE.WEBHOOK,
     reason: `${provider.providerName} webhook: ${decoded.state}`,
-    gatewayPaymentId: decoded.transactionId,
+    gatewayPaymentId: decoded.transactionId || payment.gatewayPaymentId,
     rawGatewayResponse: decoded.raw,
   });
 
@@ -746,9 +762,139 @@ export async function processPhonePeWebhook({
   };
 }
 
-// Placeholder for Razorpay compatibility if needed by other services
+export const processPhonePeWebhook = processPaymentWebhook;
+
+export async function initiateRazorpayRefund({
+  paymentId,
+  amount = null,
+  reason = "",
+  adminId = null,
+}) {
+  const lookup = mongoose.Types.ObjectId.isValid(paymentId)
+    ? { $or: [{ _id: paymentId }, { gatewayOrderId: paymentId }, { publicOrderId: paymentId }] }
+    : { $or: [{ gatewayOrderId: paymentId }, { publicOrderId: paymentId }] };
+
+  const payment = await Payment.findOne(lookup);
+  if (!payment) {
+    const err = new Error("Payment record not found");
+    err.statusCode = 404;
+    throw err;
+  }
+
+  if (payment.status !== PAYMENT_STATUS.CAPTURED && payment.status !== PAYMENT_STATUS.REFUNDED) {
+    const err = new Error(`Refund cannot be initiated for payment with status ${payment.status}. Only captured payments are refundable.`);
+    err.statusCode = 400;
+    throw err;
+  }
+
+  const alreadyRefundedPaise = Math.round((payment.refundedAmount || 0) * 100);
+  const maxRefundablePaise = payment.amount - alreadyRefundedPaise;
+
+  if (maxRefundablePaise <= 0) {
+    const err = new Error("This payment has already been fully refunded");
+    err.statusCode = 400;
+    throw err;
+  }
+
+  let refundPaise = maxRefundablePaise;
+  if (amount !== null && amount !== undefined && !isNaN(amount)) {
+    const requestedPaise = Math.round(Number(amount) * 100);
+    if (requestedPaise <= 0) {
+      const err = new Error("Refund amount must be greater than zero");
+      err.statusCode = 400;
+      throw err;
+    }
+    if (requestedPaise > maxRefundablePaise) {
+      const err = new Error(`Requested refund amount exceeds refundable balance of ₹${(maxRefundablePaise / 100).toFixed(2)}`);
+      err.statusCode = 400;
+      throw err;
+    }
+    refundPaise = requestedPaise;
+  }
+
+  const provider = getActivePaymentProvider();
+
+  let targetPaymentId = payment.gatewayPaymentId;
+  if (!targetPaymentId) {
+    try {
+      const statusCheck = await provider.getPaymentStatus({ merchantOrderId: payment.gatewayOrderId });
+      if (statusCheck?.transactionId) {
+        targetPaymentId = statusCheck.transactionId;
+        payment.gatewayPaymentId = targetPaymentId;
+        await payment.save();
+      }
+    } catch (statusErr) {
+      logger.warn("Could not retrieve gateway payment ID for refund", { error: statusErr.message });
+    }
+  }
+
+  if (!targetPaymentId) {
+    const err = new Error("Cannot issue refund: missing gateway transaction ID on payment record");
+    err.statusCode = 400;
+    throw err;
+  }
+
+  const receipt = `RFND-${payment.publicOrderId || payment._id}-${Date.now()}`.slice(0, 40);
+  const refundResult = await provider.initiateRefund({
+    paymentId: targetPaymentId,
+    amountPaise: refundPaise,
+    notes: {
+      reason: reason || "Admin initiated refund",
+      orderId: payment.publicOrderId || "",
+      adminId: String(adminId || ""),
+    },
+    receipt,
+  });
+
+  const newlyRefundedTotalPaise = alreadyRefundedPaise + refundPaise;
+  payment.refundedAmount = newlyRefundedTotalPaise / 100;
+  payment.gatewayRefundId = refundResult.refundId;
+
+  const isFullRefund = newlyRefundedTotalPaise >= payment.amount;
+
+  if (isFullRefund) {
+    await transitionPaymentState(payment, {
+      nextStatus: PAYMENT_STATUS.REFUNDED,
+      source: PAYMENT_EVENT_SOURCE.SYSTEM,
+      reason: reason || "Full refund completed via Razorpay",
+      gatewayPaymentId: targetPaymentId,
+      rawGatewayResponse: refundResult.raw,
+    });
+
+    await handleOrderSideEffectsFromPaymentStatus(
+      payment,
+      PAYMENT_STATUS.REFUNDED,
+      reason || "Refund issued",
+    );
+  } else {
+    payment.statusHistory.push({
+      fromStatus: payment.status,
+      toStatus: payment.status,
+      source: PAYMENT_EVENT_SOURCE.SYSTEM,
+      reason: `Partial refund of ₹${(refundPaise / 100).toFixed(2)} issued. Total refunded: ₹${payment.refundedAmount}`,
+      changedAt: new Date(),
+    });
+    await payment.save();
+  }
+
+  logger.info("razorpay_refund_initiated", {
+    paymentId: payment._id.toString(),
+    publicOrderId: payment.publicOrderId,
+    gatewayRefundId: refundResult.refundId,
+    refundAmount: refundPaise / 100,
+    isFullRefund,
+  });
+
+  return {
+    success: true,
+    refund: refundResult,
+    payment,
+    isFullRefund,
+  };
+}
+
 export async function verifyClientPaymentCallback(data) {
-    return verifyPhonePePaymentStatus({
+    return verifyPaymentStatusInternal({
         merchantOrderId: data.gatewayOrderId || data.merchantOrderId,
         userId: data.userId,
         correlationId: data.correlationId

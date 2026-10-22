@@ -51,6 +51,11 @@ import {
     processAdminFinancePayoutsController,
     updateDeliverySettingsController,
 } from "../controller/adminFinanceController.js";
+import {
+    getAdminPayments,
+    getAdminPaymentById,
+    refundPaymentAdmin,
+} from "../controller/paymentController.js";
 
 import { verifyToken, allowRoles } from "../middleware/authMiddleware.js";
 import {
@@ -206,6 +211,11 @@ router.get("/seller-withdrawals", verifyToken, allowRoles("admin"), getSellerWit
 router.get("/delivery-withdrawals", verifyToken, allowRoles("admin"), getDeliveryWithdrawals);
 router.get("/seller-transactions", verifyToken, allowRoles("admin"), getSellerTransactions);
 router.put("/withdrawals/:id", verifyToken, allowRoles("admin"), updateWithdrawalStatus);
+
+// Online Payment Gateway Management & Audit
+router.get("/payments", verifyToken, allowRoles("admin"), getAdminPayments);
+router.get("/payments/:id", verifyToken, allowRoles("admin"), getAdminPaymentById);
+router.post("/payments/:id/refund", verifyToken, allowRoles("admin"), refundPaymentAdmin);
 
 // Protected admin route example
 router.get(

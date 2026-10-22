@@ -1,4 +1,5 @@
 import { jest } from "@jest/globals";
+import { PaymentProviderPort } from "../app/services/payment/ports/paymentProviderPort.js";
 
 const mockOrderFindOne = jest.fn();
 const mockOrderFindById = jest.fn();
@@ -16,9 +17,31 @@ const mockHandleOnlineOrderFinance = jest.fn();
 const mockAfterPlaceOrderV2 = jest.fn();
 const mockReleaseReservedStockForOrder = jest.fn();
 
-const mockPhonePePay = jest.fn();
-const mockPhonePeGetOrderStatus = jest.fn();
-const mockPhonePeValidateCallback = jest.fn();
+const mockInitiatePayment = jest.fn();
+const mockGetPaymentStatus = jest.fn();
+const mockValidateWebhook = jest.fn();
+const mockDecodeWebhookPayload = jest.fn();
+
+class MockPaymentAdapter extends PaymentProviderPort {
+  get providerName() {
+    return "MOCK";
+  }
+  async initiatePayment(args) {
+    return mockInitiatePayment(args);
+  }
+  async getPaymentStatus(args) {
+    return mockGetPaymentStatus(args);
+  }
+  async validateWebhook(args) {
+    return mockValidateWebhook(args);
+  }
+  async decodeWebhookPayload(args) {
+    return mockDecodeWebhookPayload(args);
+  }
+  mapStatusToInternal(state) {
+    return state;
+  }
+}
 
 jest.unstable_mockModule("../app/models/order.js", () => ({
   default: {
@@ -56,62 +79,21 @@ jest.unstable_mockModule("../app/services/stockService.js", () => ({
   releaseReservedStockForOrder: mockReleaseReservedStockForOrder,
 }));
 
-jest.unstable_mockModule("@phonepe-pg/pg-sdk-node", () => ({
-  Env: {
-    PRODUCTION: "PRODUCTION",
-    SANDBOX: "SANDBOX",
-  },
-  StandardCheckoutClient: {
-    getInstance: jest.fn(() => ({
-      pay: mockPhonePePay,
-      getOrderStatus: mockPhonePeGetOrderStatus,
-      validateCallback: mockPhonePeValidateCallback,
-    })),
-  },
-  StandardCheckoutPayRequest: {
-    builder: jest.fn(() => {
-      const request = {};
-      return {
-        merchantOrderId(value) {
-          request.merchantOrderId = value;
-          return this;
-        },
-        amount(value) {
-          request.amount = value;
-          return this;
-        },
-        redirectUrl(value) {
-          request.redirectUrl = value;
-          return this;
-        },
-        build() {
-          return request;
-        },
-      };
-    }),
-  },
-}));
-
 const {
   createPaymentOrderForOrderRef,
-  processPhonePeWebhook,
+  processPaymentWebhook,
 } = await import("../app/services/paymentService.js");
 
 const { __setActivePaymentProviderForTests } = await import("../app/services/payment/providerRegistry.js");
-const { PhonePeAdapter } = await import("../app/services/payment/providers/phonepe.adapter.js");
 
 describe("Phase 0 payment hardening", () => {
   beforeAll(() => {
-    __setActivePaymentProviderForTests(new PhonePeAdapter(), "PHONEPE");
+    __setActivePaymentProviderForTests(new MockPaymentAdapter(), "MOCK");
   });
   beforeEach(() => {
     jest.clearAllMocks();
     process.env.RAZORPAY_KEY_ID = "rzp_test_key";
     process.env.RAZORPAY_KEY_SECRET = "rzp_test_secret";
-    process.env.RAZORPAY_WEBHOOK_SECRET = "rzp_wh_secret";
-    process.env.PHONEPE_CLIENT_ID = "phonepe-client";
-    process.env.PHONEPE_CLIENT_SECRET = "phonepe-secret";
-    process.env.PHONEPE_CLIENT_VERSION = "1";
     process.env.FRONTEND_URL = "https://frontend.test";
 
     mockPaymentFindOne.mockImplementation((query) => {
@@ -136,13 +118,13 @@ describe("Phase 0 payment hardening", () => {
       paymentBreakdown: { grandTotal: 499 },
     });
     mockPaymentCountDocuments.mockResolvedValue(0);
-    mockPhonePePay.mockResolvedValue({
+    mockInitiatePayment.mockResolvedValue({
       redirectUrl: "https://pay.test/checkout",
     });
     mockPaymentCreate.mockResolvedValue({
       _id: "payment-1",
       publicOrderId: "ORD-20260325-ABC123",
-      gatewayName: "RAZORPAY",
+      gatewayName: "MOCK",
       gatewayOrderId: "order_gateway_1",
       amount: 49900,
       currency: "INR",
@@ -160,9 +142,9 @@ describe("Phase 0 payment hardening", () => {
       correlationId: "corr-1",
     });
 
-    expect(mockPhonePePay).toHaveBeenCalledWith(
+    expect(mockInitiatePayment).toHaveBeenCalledWith(
       expect.objectContaining({
-        amount: 49900,
+        amountPaise: 49900,
       }),
     );
     expect(result.payment.amount).toBe(49900);
@@ -209,21 +191,18 @@ describe("Phase 0 payment hardening", () => {
   it("treats duplicate webhook event id as idempotent", async () => {
     mockWebhookEventCreate.mockRejectedValueOnce({ code: 11000 });
 
-    const callbackPayload = Buffer.from(
-      JSON.stringify({
-        state: "COMPLETED",
-        merchantOrderId: "gateway-order-1",
-        transactionId: "pay_1",
-      }),
-    ).toString("base64");
-
-    const payload = Buffer.from(JSON.stringify({ response: callbackPayload }));
-    mockPhonePeValidateCallback.mockResolvedValue(true);
-
-    const result = await processPhonePeWebhook({
-      rawBody: payload,
-      authorization: "phonepe-auth",
+    mockValidateWebhook.mockResolvedValue(true);
+    mockDecodeWebhookPayload.mockResolvedValue({
       eventId: "event-duplicate-1",
+      merchantOrderId: "gateway-order-1",
+      state: "CAPTURED",
+      transactionId: "pay_1",
+      raw: { test: true },
+    });
+
+    const result = await processPaymentWebhook({
+      rawBody: Buffer.from("{}"),
+      authorization: "mock-auth",
       correlationId: "corr-webhook",
     });
 

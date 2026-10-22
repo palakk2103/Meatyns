@@ -25,12 +25,14 @@ import {
     AlertCircle,
     Package,
     Navigation,
-    Store,
     Info,
-    MapPin
+    MapPin,
+    RotateCcw,
+    Loader2
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useToast } from '@shared/components/ui/Toast';
+import { adminFinanceApi } from '../services/api/financeApi';
 
 const OrderDetail = () => {
     const { orderId } = useParams();
@@ -39,7 +41,43 @@ const OrderDetail = () => {
     const { settings } = useSettings();
     const [order, setOrder] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [showRefundModal, setShowRefundModal] = useState(false);
+    const [refundAmount, setRefundAmount] = useState('');
+    const [refundReason, setRefundReason] = useState('');
+    const [isRefunding, setIsRefunding] = useState(false);
     const invoiceRef = useRef(null);
+
+    const handleOpenRefundModal = () => {
+        const grandTotal = order?.paymentBreakdown?.grandTotal ?? order?.pricing?.total ?? 0;
+        setRefundAmount(String(grandTotal));
+        setRefundReason("Admin processed refund");
+        setShowRefundModal(true);
+    };
+
+    const handleProcessRefund = async () => {
+        if (!refundAmount || isNaN(refundAmount) || Number(refundAmount) <= 0) {
+            showToast("Please enter a valid refund amount", "error");
+            return;
+        }
+        setIsRefunding(true);
+        try {
+            const res = await adminFinanceApi.refundPayment(order.orderId, {
+                amount: Number(refundAmount),
+                reason: refundReason.trim() || "Admin initiated refund",
+            });
+            if (res.data?.success) {
+                showToast("Razorpay refund initiated successfully!", "success");
+                setShowRefundModal(false);
+                fetchDetail();
+            } else {
+                showToast(res.data?.message || "Refund failed", "error");
+            }
+        } catch (err) {
+            showToast(err.response?.data?.message || err.message || "Failed to process refund", "error");
+        } finally {
+            setIsRefunding(false);
+        }
+    };
 
     const fetchDetail = async () => {
         setIsLoading(true);
@@ -443,26 +481,141 @@ const OrderDetail = () => {
                                 Payment Vector
                             </h4>
                         </div>
-                        <div className="p-4 space-y-6">
+                        <div className="p-4 space-y-4">
                             <div className="flex justify-between items-center bg-slate-50 p-4 rounded-2xl">
                                 <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Protocol Summary</span>
-                                <Badge className={cn("border-none text-[8px] font-black uppercase", order.payment?.status === 'completed' ? 'bg-brand-100 text-brand-700' : 'bg-amber-100 text-amber-700')}>
-                                    {order.payment?.status || 'PENDING'}
+                                <Badge className={cn("border-none text-[8px] font-black uppercase", (order.payment?.status === 'completed' || order.paymentStatus === 'PAID') ? 'bg-emerald-100 text-emerald-800' : order.paymentStatus === 'REFUNDED' ? 'bg-purple-100 text-purple-800' : 'bg-amber-100 text-amber-700')}>
+                                    {order.paymentStatus || order.payment?.status || 'PENDING'}
                                 </Badge>
+                            </div>
+                            <div className="flex items-center justify-between px-2">
+                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Payment Mode</span>
+                                <span className="text-[10px] font-black uppercase tracking-widest text-slate-900">
+                                    {order.paymentMode === 'ONLINE' ? 'Online (Razorpay)' : (order.paymentMode || order.payment?.method || 'Cash on Delivery')}
+                                </span>
                             </div>
                             <div className="flex items-center justify-between px-2">
                                 <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">TXN Hash</span>
                                 <div className="flex items-center gap-2">
-                                    <span className="text-[10px] font-black text-slate-700 truncate max-w-[100px]">{order.payment?.transactionId || 'N/A'}</span>
-                                    <button onClick={() => copyToClipboard(order.payment?.transactionId, 'Transaction ID')} className="p-1.5 hover:bg-slate-50 rounded-md text-slate-300"><Copy className="h-3 w-3" /></button>
+                                    <span className="text-[10px] font-black text-slate-700 truncate max-w-[130px]">{order.payment?.transactionId || order.paymentId || 'N/A'}</span>
+                                    {(order.payment?.transactionId || order.paymentId) && (
+                                        <button onClick={() => copyToClipboard(order.payment?.transactionId || order.paymentId, 'Transaction ID')} className="p-1.5 hover:bg-slate-50 rounded-md text-slate-300"><Copy className="h-3 w-3" /></button>
+                                    )}
                                 </div>
                             </div>
-                            <div className="flex items-center justify-between px-2">
-                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Gateway Method</span>
-                                <span className="text-[10px] font-black uppercase tracking-widest text-slate-900">{order.payment?.method || 'CASH'}</span>
-                            </div>
+                            {order.paymentMode === 'ONLINE' && (order.paymentStatus === 'PAID' || order.payment?.status === 'completed') && (
+                                <div className="pt-2">
+                                    <button
+                                        type="button"
+                                        onClick={handleOpenRefundModal}
+                                        className="w-full py-2.5 px-3 bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-black rounded-xl border border-rose-200 transition-all flex items-center justify-center gap-2"
+                                    >
+                                        <RotateCcw size={14} /> Initiate Razorpay Refund
+                                    </button>
+                                </div>
+                            )}
+                            {order.paymentStatus === 'REFUNDED' && (
+                                <div className="p-3 bg-purple-50 border border-purple-200 rounded-xl text-center">
+                                    <p className="text-xs font-black text-purple-900 uppercase tracking-wider">Refund Processed</p>
+                                    <p className="text-[11px] text-purple-700 mt-0.5">Payment returned to customer's source account</p>
+                                </div>
+                            )}
                         </div>
                     </Card>
+
+                    {/* Razorpay Refund Modal */}
+                    {showRefundModal && (
+                        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4">
+                            <div className="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl border border-slate-100 space-y-5 animate-in fade-in zoom-in-95 duration-200">
+                                <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-10 h-10 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center">
+                                            <RotateCcw size={18} />
+                                        </div>
+                                        <div>
+                                            <h3 className="text-base font-black text-slate-900">Initiate Razorpay Refund</h3>
+                                            <p className="text-xs text-slate-400">Order #{order.orderId}</p>
+                                        </div>
+                                    </div>
+                                    <button
+                                        onClick={() => !isRefunding && setShowRefundModal(false)}
+                                        className="text-slate-400 hover:text-slate-600 p-2"
+                                        disabled={isRefunding}
+                                    >
+                                        ✕
+                                    </button>
+                                </div>
+
+                                <div className="space-y-4">
+                                    <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-100 space-y-1 text-xs">
+                                        <div className="flex justify-between text-slate-500">
+                                            <span>Order Grand Total:</span>
+                                            <span className="font-bold text-slate-900">₹{order.paymentBreakdown?.grandTotal ?? order.pricing?.total ?? 0}</span>
+                                        </div>
+                                        <div className="flex justify-between text-slate-500">
+                                            <span>Gateway Provider:</span>
+                                            <span className="font-bold text-emerald-700">Razorpay</span>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1.5">
+                                            Refund Amount (₹)
+                                        </label>
+                                        <input
+                                            type="number"
+                                            step="0.01"
+                                            value={refundAmount}
+                                            onChange={(e) => setRefundAmount(e.target.value)}
+                                            className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm font-bold text-slate-800 outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500"
+                                            placeholder="Enter amount"
+                                            disabled={isRefunding}
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1.5">
+                                            Reason for Refund
+                                        </label>
+                                        <textarea
+                                            rows={2}
+                                            value={refundReason}
+                                            onChange={(e) => setRefundReason(e.target.value)}
+                                            className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-800 outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500"
+                                            placeholder="e.g. Order cancelled, item damaged, customer requested"
+                                            disabled={isRefunding}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="flex items-center gap-3 pt-2">
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowRefundModal(false)}
+                                        className="flex-1 py-2.5 rounded-xl text-xs font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 transition-colors"
+                                        disabled={isRefunding}
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={handleProcessRefund}
+                                        disabled={isRefunding}
+                                        className="flex-1 py-2.5 rounded-xl text-xs font-black text-white bg-rose-600 hover:bg-rose-700 transition-colors flex items-center justify-center gap-2 shadow-sm"
+                                    >
+                                        {isRefunding ? (
+                                            <>
+                                                <Loader2 size={14} className="animate-spin" />
+                                                Processing...
+                                            </>
+                                        ) : (
+                                            "Confirm Refund"
+                                        )}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
 
                     {/* Delivery Logistics */}
                     <Card className="border-none shadow-xl ring-1 ring-slate-100 bg-white rounded-xl p-6 text-left">

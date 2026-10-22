@@ -17,7 +17,7 @@ import {
 const generateToken = (customer) =>
     jwt.sign(
         { id: customer._id, role: "customer" },
-        process.env.JWT_SECRET,
+        String(process.env.JWT_SECRET || "").trim(),
         { expiresIn: "7d" }
     );
 

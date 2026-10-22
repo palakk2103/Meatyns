@@ -763,14 +763,70 @@ const OrderDetailPage = () => {
         Number(order.checkoutGroupSize || 1) > 1
           ? (order.checkoutGroupId || order.orderId)
           : order.orderId;
-      const response = await customerApi.createPaymentOrder({
+      const response = await customerApi.createRazorpayOrder({
         orderRef: paymentRef,
       });
-      if (response.data.success && response.data.result?.redirectUrl) {
-        window.location.href = response.data.result.redirectUrl;
-      } else {
+      if (!response.data.success || !response.data.result) {
         toast.error(response.data.message || "Failed to initiate payment");
+        return;
       }
+      const { key, orderId: rpOrderId, amount, currency } = response.data.result;
+
+      if (!window.Razorpay) {
+        await new Promise((resolve, reject) => {
+          const script = document.createElement("script");
+          script.src = "https://checkout.razorpay.com/v1/checkout.js";
+          script.async = true;
+          script.onload = resolve;
+          script.onerror = () => reject(new Error("Failed to load Razorpay SDK"));
+          document.body.appendChild(script);
+        });
+      }
+
+      const options = {
+        key: key || import.meta.env.VITE_RAZORPAY_KEY_ID || "",
+        amount: amount,
+        currency: currency || "INR",
+        name: "Meatyns",
+        description: `Order Payment for #${order.orderId}`,
+        order_id: rpOrderId,
+        handler: async function (resp) {
+          try {
+            toast.info("Verifying payment...");
+            const verifyRes = await customerApi.verifyRazorpayPayment({
+              razorpay_payment_id: resp.razorpay_payment_id,
+              razorpay_order_id: resp.razorpay_order_id,
+              razorpay_signature: resp.razorpay_signature,
+            });
+            if (verifyRes.data.success) {
+              toast.success("Payment successful!");
+              await fetchOrderDetails();
+            } else {
+              throw new Error(verifyRes.data.message || "Payment verification failed");
+            }
+          } catch (err) {
+            toast.error(err.message || "Payment verification failed");
+          }
+        },
+        prefill: {
+          name: order.deliveryAddress?.name || "",
+          contact: order.deliveryAddress?.phone || "",
+        },
+        theme: {
+          color: "#15803d",
+        },
+        modal: {
+          ondismiss: function () {
+            toast.warning("Payment cancelled.");
+          },
+        },
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.on("payment.failed", function (resp) {
+        toast.error(resp.error?.description || "Payment failed. Please try again.");
+      });
+      rzp.open();
     } catch (err) {
       console.error("[OrderDetailPage] Retry payment error:", err);
       toast.error(
@@ -1170,6 +1226,14 @@ const OrderDetailPage = () => {
                       </div>
                     );
                   }
+                  if (isAwaitingOnlinePayment) {
+                    return (
+                      <div className="bg-amber-50 border border-amber-300 text-amber-900 rounded-2xl px-4 py-2 text-right">
+                        <p className="text-xs font-bold leading-tight">Payment Pending</p>
+                        <p className="text-[11px] text-amber-700 font-medium">Complete payment to confirm</p>
+                      </div>
+                    );
+                  }
                   return (
                     <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-2xl px-4 py-2 text-right">
                       <p className="text-xs font-bold leading-tight">Order Placed</p>
@@ -1178,6 +1242,27 @@ const OrderDetailPage = () => {
                   );
                 })()}
               </div>
+
+              {/* Payment Pending Alert & Retry (Desktop) */}
+              {isAwaitingOnlinePayment && (
+                <div className="rounded-2xl p-5 border border-amber-200 bg-amber-50/70 shadow-xs flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-3.5">
+                    <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-900 flex items-center justify-center shrink-0">
+                      <CreditCard size={20} />
+                    </div>
+                    <div>
+                      <h4 className="font-extrabold text-amber-950 text-sm">Payment Pending</h4>
+                      <p className="text-xs text-amber-800 mt-0.5">Your order is created, but online payment has not been completed yet.</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={handleRetryPayment}
+                    className="bg-[#15803D] hover:bg-[#166534] text-white px-5 py-2.5 rounded-xl text-xs font-black shadow-sm transition-all active:scale-95 flex items-center gap-2 uppercase tracking-wide shrink-0"
+                  >
+                    Pay with Razorpay <ArrowRight size={14} />
+                  </button>
+                </div>
+              )}
 
               {/* Delivery Method Banner (Desktop) */}
               <div className="rounded-2xl p-4 border shadow-xs transition-all bg-white border-[#ede5df] flex items-center justify-between">

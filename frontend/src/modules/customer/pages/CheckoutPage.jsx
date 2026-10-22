@@ -44,7 +44,7 @@ import { useToast } from "@shared/components/ui/Toast";
 import { useSettings } from "@core/context/SettingsContext";
 import SlideToPay from "../components/shared/SlideToPay";
 import { getCachedGeocode, setCachedGeocode } from "@/core/utils/geocodeCache";
-import { getJSON, setJSON, STORAGE_KEYS } from "@core/utils/storage";
+import { getJSON, setJSON, rawRemove, STORAGE_KEYS } from "@core/utils/storage";
 import { createSocketTokenReader } from "@core/utils/authStorage";
 import {
   getOrderSocket,
@@ -145,7 +145,6 @@ const CheckoutPage = () => {
   const [isLoadingDeliverySlots, setIsLoadingDeliverySlots] = useState(false);
   const [deliverySlotError, setDeliverySlotError] = useState(null);
   const [selectedPayment, setSelectedPayment] = useState("cash");
-  const [desktopPaymentChoice, setDesktopPaymentChoice] = useState("upi");
   const [selectedTip, setSelectedTip] = useState(0);
   const [showAllCartItems, setShowAllCartItems] = useState(false);
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
@@ -796,6 +795,12 @@ const CheckoutPage = () => {
   }, [cartProductIdKey]);
 
   const handlePlaceOrder = async () => {
+    if (!isAuthenticated) {
+      showToast("Please log in to place your order.", "warning");
+      navigate("/login?redirect=/checkout");
+      return;
+    }
+
     if (deliveryMethod === "SCHEDULED" && !selectedSlot) {
       showToast("Please select a delivery date and time slot.", "warning");
       return;
@@ -947,33 +952,6 @@ const CheckoutPage = () => {
           }
         }
 
-        if ((selectedPayment === "phonepe" || selectedPayment === "online") && finalAmountToPay > 0) {
-          try {
-            const paymentRes = await customerApi.createPaymentOrder({
-              orderRef: paymentRef,
-              orderId: mainOrderId,
-            });
-            if (paymentRes.data.success && paymentRes.data.result?.redirectUrl) {
-              clearCart();
-              window.location.href = paymentRes.data.result.redirectUrl;
-              return;
-            } else {
-              throw new Error(
-                paymentRes.data.message || "Failed to initiate payment gateway"
-              );
-            }
-          } catch (payError) {
-            setIsPlacingOrder(false);
-            showToast(
-              payError.message ||
-                "Order created but payment gateway failed. Please pay from order details.",
-              "error"
-            );
-            navigate(`/orders/${mainOrderId}`);
-            return;
-          }
-        }
-
         // COD flow
         clearCart();
         showToast("Order placed — waiting for seller to accept.", "success");
@@ -994,6 +972,22 @@ const CheckoutPage = () => {
       }
     } catch (error) {
       setIsPlacingOrder(false);
+      const isAuthError =
+        error.response?.status === 401 ||
+        String(error.response?.data?.message || "").toLowerCase().includes("token") ||
+        String(error.response?.data?.message || "").toLowerCase().includes("unauthorized");
+
+      if (isAuthError) {
+        rawRemove(STORAGE_KEYS.AUTH_CUSTOMER);
+        rawRemove(STORAGE_KEYS.AUTH_LEGACY);
+        showToast(
+          "Your login session has expired. Please log in again to complete your order.",
+          "error"
+        );
+        navigate("/login?redirect=/checkout");
+        return;
+      }
+
       showToast(
         error.response?.data?.message ||
           "Failed to place order. Please try again.",
@@ -1369,104 +1363,72 @@ const CheckoutPage = () => {
                   3. Payment Method
                 </h2>
 
-                <div className="bg-white rounded-2xl p-5 border border-[#ede5df] shadow-xs space-y-4">
-                  {/* Option 1: UPI */}
-                  <label
-                    onClick={() => {
-                      setDesktopPaymentChoice("upi");
-                      setSelectedPayment("razorpay");
-                    }}
-                    className="flex items-center justify-between p-3.5 rounded-xl border border-slate-200/80 hover:bg-slate-50 cursor-pointer transition-colors"
-                  >
-                    <div className="flex items-center gap-3">
-                      <input
-                        type="radio"
-                        name="desktop_payment"
-                        checked={desktopPaymentChoice === "upi"}
-                        onChange={() => {}}
-                        className="accent-[#FDCE04] w-4 h-4 cursor-pointer"
-                      />
-                      <span className="text-xs font-bold text-slate-800">
-                        UPI (PhonePe / GPay / Paytm)
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="px-2 py-0.5 bg-blue-50 text-blue-700 font-black text-[10px] rounded">GPay</span>
-                      <span className="px-2 py-0.5 bg-purple-50 text-purple-700 font-black text-[10px] rounded">PhonePe</span>
-                      <span className="px-2 py-0.5 bg-sky-50 text-sky-700 font-black text-[10px] rounded">Paytm</span>
-                    </div>
-                  </label>
+                <div className="bg-white rounded-2xl p-5 border border-[#ede5df] shadow-xs space-y-3">
+                  {/* Option 1: Online Payment (Razorpay) */}
+                  {settings?.onlineEnabled !== false && (
+                    <label
+                      onClick={() => setSelectedPayment("razorpay")}
+                      className={`flex items-center justify-between p-3.5 rounded-xl border cursor-pointer transition-colors ${
+                        selectedPayment === "razorpay"
+                          ? "border-[#FDCE04] bg-[#FFFBEB]/70"
+                          : "border-slate-200/80 hover:bg-slate-50"
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <input
+                          type="radio"
+                          name="desktop_payment"
+                          checked={selectedPayment === "razorpay"}
+                          onChange={() => setSelectedPayment("razorpay")}
+                          className="accent-[#FDCE04] w-4 h-4 cursor-pointer"
+                        />
+                        <div>
+                          <span className="text-xs font-bold text-slate-800 block">
+                            Online Payment
+                          </span>
+                          <span className="text-[11px] text-slate-500 font-medium">
+                            UPI (GPay, PhonePe, Paytm), Cards & NetBanking
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="px-2 py-0.5 bg-blue-50 text-blue-700 font-black text-[10px] rounded">UPI</span>
+                        <span className="px-2 py-0.5 bg-blue-100 text-blue-900 font-bold text-[10px] rounded">Cards</span>
+                        <span className="px-2 py-0.5 bg-emerald-50 text-emerald-700 font-bold text-[10px] rounded">NetBanking</span>
+                      </div>
+                    </label>
+                  )}
 
-                  {/* Option 2: Cards */}
-                  <label
-                    onClick={() => {
-                      setDesktopPaymentChoice("card");
-                      setSelectedPayment("razorpay");
-                    }}
-                    className="flex items-center justify-between p-3.5 rounded-xl border border-slate-200/80 hover:bg-slate-50 cursor-pointer transition-colors"
-                  >
-                    <div className="flex items-center gap-3">
-                      <input
-                        type="radio"
-                        name="desktop_payment"
-                        checked={desktopPaymentChoice === "card"}
-                        onChange={() => {}}
-                        className="accent-[#FDCE04] w-4 h-4 cursor-pointer"
-                      />
-                      <span className="text-xs font-bold text-slate-800">
-                        Cards (Credit / Debit)
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="px-2 py-0.5 bg-blue-100 text-blue-900 font-bold text-[10px] rounded">VISA</span>
-                      <span className="px-2 py-0.5 bg-orange-100 text-orange-900 font-bold text-[10px] rounded">Mastercard</span>
-                    </div>
-                  </label>
-
-                  {/* Option 3: Net Banking */}
-                  <label
-                    onClick={() => {
-                      setDesktopPaymentChoice("netbanking");
-                      setSelectedPayment("razorpay");
-                    }}
-                    className="flex items-center justify-between p-3.5 rounded-xl border border-slate-200/80 hover:bg-slate-50 cursor-pointer transition-colors"
-                  >
-                    <div className="flex items-center gap-3">
-                      <input
-                        type="radio"
-                        name="desktop_payment"
-                        checked={desktopPaymentChoice === "netbanking"}
-                        onChange={() => {}}
-                        className="accent-[#FDCE04] w-4 h-4 cursor-pointer"
-                      />
-                      <span className="text-xs font-bold text-slate-800">
-                        Net Banking
-                      </span>
-                    </div>
-                  </label>
-
-                  {/* Option 4: Cash on Delivery */}
-                  <label
-                    onClick={() => {
-                      setDesktopPaymentChoice("cash");
-                      setSelectedPayment("cash");
-                    }}
-                    className="flex items-center justify-between p-3.5 rounded-xl border border-slate-200/80 hover:bg-slate-50 cursor-pointer transition-colors"
-                  >
-                    <div className="flex items-center gap-3">
-                      <input
-                        type="radio"
-                        name="desktop_payment"
-                        checked={desktopPaymentChoice === "cash"}
-                        onChange={() => {}}
-                        className="accent-[#FDCE04] w-4 h-4 cursor-pointer"
-                      />
-                      <span className="text-xs font-bold text-slate-800">
-                        Cash on Delivery
-                      </span>
-                    </div>
-                    <span className="px-2 py-0.5 bg-slate-900 text-white font-bold text-[10px] rounded">COD</span>
-                  </label>
+                  {/* Option 2: Cash on Delivery */}
+                  {settings?.codEnabled !== false && (
+                    <label
+                      onClick={() => setSelectedPayment("cash")}
+                      className={`flex items-center justify-between p-3.5 rounded-xl border cursor-pointer transition-colors ${
+                        selectedPayment === "cash"
+                          ? "border-[#FDCE04] bg-[#FFFBEB]/70"
+                          : "border-slate-200/80 hover:bg-slate-50"
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <input
+                          type="radio"
+                          name="desktop_payment"
+                          checked={selectedPayment === "cash"}
+                          onChange={() => setSelectedPayment("cash")}
+                          className="accent-[#FDCE04] w-4 h-4 cursor-pointer"
+                        />
+                        <div>
+                          <span className="text-xs font-bold text-slate-800 block">
+                            Cash on Delivery
+                          </span>
+                          <span className="text-[11px] text-slate-500 font-medium">
+                            Pay via Cash or UPI upon delivery
+                          </span>
+                        </div>
+                      </div>
+                      <span className="px-2 py-0.5 bg-slate-900 text-white font-bold text-[10px] rounded">COD</span>
+                    </label>
+                  )}
                 </div>
               </div>
 

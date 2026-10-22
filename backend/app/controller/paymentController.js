@@ -1,13 +1,15 @@
+import mongoose from "mongoose";
 import handleResponse from "../utils/helper.js";
 import {
   createPaymentOrderForOrderRef,
-  verifyPhonePePaymentStatus,
-  processPhonePeWebhook,
+  verifyPaymentStatusInternal,
   resolvePaymentTarget,
   validatePaymentEligibility,
   getPayableAmountPaise,
   transitionPaymentState,
   handleOrderSideEffectsFromPaymentStatus,
+  processPaymentWebhook,
+  initiateRazorpayRefund,
 } from "../services/paymentService.js";
 import {
   createPaymentOrderSchema,
@@ -19,18 +21,19 @@ import Razorpay from "razorpay";
 import crypto from "crypto";
 import Payment from "../models/payment.js";
 import { PAYMENT_STATUS, PAYMENT_GATEWAY, PAYMENT_EVENT_SOURCE } from "../constants/payment.js";
+import getPagination from "../utils/pagination.js";
 
 function resolvePaymentErrorMessage(error) {
   const directMessage = String(error?.message || "").trim();
   if (directMessage) return directMessage;
 
   const responseStatusText = String(error?.response?.statusText || "").trim();
-  if (responseStatusText) return `PhonePe gateway error: ${responseStatusText}`;
+  if (responseStatusText) return `Payment gateway error: ${responseStatusText}`;
 
   const causeCode = String(error?.cause?.code || error?.code || "").trim();
-  if (causeCode) return `PhonePe gateway request failed (${causeCode})`;
+  if (causeCode) return `Payment gateway request failed (${causeCode})`;
 
-  return "Unable to initiate payment with PhonePe right now";
+  return "Unable to initiate payment right now";
 }
 
 export const createPaymentOrder = async (req, res) => {
@@ -82,7 +85,7 @@ export const verifyPaymentStatus = async (req, res) => {
         return handleResponse(res, 400, "merchantOrderId is required");
     }
 
-    const verification = await verifyPhonePePaymentStatus({
+    const verification = await verifyPaymentStatusInternal({
       merchantOrderId,
       userId: req.user?.id,
       correlationId: req.correlationId || null,
@@ -97,48 +100,12 @@ export const verifyPaymentStatus = async (req, res) => {
   }
 };
 
-export const handlePhonePeWebhook = async (req, res) => {
-  try {
-    const authorization = req.headers["x-verify"] || req.headers["authorization"];
-    const rawBody = req.body;
-
-    if (!authorization) {
-        logger.warn("PhonePe webhook missing verification header", {
-          scope: "PaymentController.handlePhonePeWebhook",
-          correlationId: req.correlationId || null,
-          ip: req.ip,
-        });
-        return res.status(401).send("Unauthorized");
-    }
-
-    const result = await processPhonePeWebhook({
-      rawBody,
-      authorization,
-      correlationId: req.correlationId || null,
-    });
-
-    if (result.accepted) {
-      return res.status(200).send("OK");
-    }
-    
-    return res.status(400).send("Bad Request");
-  } catch (error) {
-    logger.error("PhonePe webhook processing failed", {
-      scope: "PaymentController.handlePhonePeWebhook",
-      correlationId: req.correlationId || null,
-      message: error?.message,
-      error,
-    });
-    return res.status(500).send("Internal Server Error");
-  }
-};
-
 export const getPaymentStatus = async (req, res) => {
     try {
         const { id } = req.params;
         const merchantOrderId = id;
     
-        const verification = await verifyPhonePePaymentStatus({
+        const verification = await verifyPaymentStatusInternal({
           merchantOrderId,
           userId: req.user?.id,
           correlationId: req.correlationId || null,
@@ -340,6 +307,197 @@ export const verifyRazorpayPayment = async (req, res) => {
       statusCode: error?.statusCode || 500,
     });
     return handleResponse(res, error.statusCode || 500, error.message || "Verification failed");
+  }
+};
+
+/**
+ * Handle incoming payment gateway webhooks (e.g. Razorpay).
+ * Public route with HMAC signature verification.
+ */
+export const handlePaymentWebhook = async (req, res) => {
+  try {
+    const rawBody = req.rawBody || req.body;
+    const signature = req.headers["x-razorpay-signature"];
+    const authorization = req.headers["authorization"];
+
+    const result = await processPaymentWebhook({
+      rawBody,
+      authorization,
+      signature,
+      correlationId: req.correlationId || null,
+    });
+
+    return handleResponse(res, 200, "Webhook processed successfully", result);
+  } catch (error) {
+    logger.error("handlePaymentWebhook failed", {
+      scope: "PaymentController.handlePaymentWebhook",
+      message: error?.message,
+      statusCode: error?.statusCode || 500,
+    });
+    return handleResponse(res, error.statusCode || 500, error.message || "Webhook processing failed");
+  }
+};
+
+/**
+ * Admin: list payment transactions with filtering and pagination.
+ */
+export const getAdminPayments = async (req, res) => {
+  try {
+    const { page, limit, skip } = getPagination(req, {
+      defaultLimit: 20,
+      maxLimit: 100,
+    });
+
+    const { status, search, gatewayName, paymentType, startDate, endDate } = req.query;
+
+    const query = {};
+
+    if (status && Object.values(PAYMENT_STATUS).includes(String(status).toUpperCase())) {
+      query.status = String(status).toUpperCase();
+    }
+
+    if (gatewayName) {
+      query.gatewayName = String(gatewayName).toUpperCase();
+    }
+
+    if (paymentType) {
+      query.paymentType = String(paymentType).toUpperCase();
+    }
+
+    if (search) {
+      const searchTrim = String(search).trim();
+      query.$or = [
+        { gatewayOrderId: { $regex: searchTrim, $options: "i" } },
+        { gatewayPaymentId: { $regex: searchTrim, $options: "i" } },
+        { publicOrderId: { $regex: searchTrim, $options: "i" } },
+        { checkoutGroupId: { $regex: searchTrim, $options: "i" } },
+      ];
+    }
+
+    if (startDate || endDate) {
+      query.createdAt = {};
+      if (startDate) {
+        query.createdAt.$gte = new Date(startDate);
+      }
+      if (endDate) {
+        const end = new Date(endDate);
+        end.setHours(23, 59, 59, 999);
+        query.createdAt.$lte = end;
+      }
+    }
+
+    const [payments, total] = await Promise.all([
+      Payment.find(query)
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .populate("customer", "name email phone")
+        .populate("order", "orderId status workflowStatus paymentStatus pricing")
+        .lean(),
+      Payment.countDocuments(query),
+    ]);
+
+    const sanitizedPayments = payments.map((p) => ({
+      _id: p._id,
+      publicOrderId: p.publicOrderId,
+      checkoutGroupId: p.checkoutGroupId,
+      order: p.order,
+      orderIds: p.orderIds,
+      customer: p.customer,
+      gatewayName: p.gatewayName,
+      gatewayOrderId: p.gatewayOrderId,
+      gatewayPaymentId: p.gatewayPaymentId,
+      gatewayRefundId: p.gatewayRefundId,
+      amount: p.amount ? p.amount / 100 : 0,
+      amountPaise: p.amount,
+      currency: p.currency,
+      status: p.status,
+      paymentType: p.paymentType,
+      attemptCount: p.attemptCount,
+      refundedAmount: p.refundedAmount || 0,
+      failureReason: p.failureReason,
+      capturedAt: p.capturedAt,
+      failedAt: p.failedAt,
+      refundedAt: p.refundedAt,
+      createdAt: p.createdAt,
+      statusHistory: p.statusHistory || [],
+    }));
+
+    return handleResponse(res, 200, "Payments fetched successfully", {
+      items: sanitizedPayments,
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit) || 1,
+    });
+  } catch (error) {
+    logger.error("getAdminPayments failed", {
+      scope: "PaymentController.getAdminPayments",
+      message: error?.message,
+    });
+    return handleResponse(res, error.statusCode || 500, error.message || "Failed to fetch payments");
+  }
+};
+
+/**
+ * Admin: get payment details by ID or gatewayOrderId.
+ */
+export const getAdminPaymentById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const lookup = mongoose.Types.ObjectId.isValid(id)
+      ? { $or: [{ _id: id }, { gatewayOrderId: id }, { gatewayPaymentId: id }] }
+      : { $or: [{ gatewayOrderId: id }, { gatewayPaymentId: id }, { publicOrderId: id }] };
+
+    const payment = await Payment.findOne(lookup)
+      .populate("customer", "name email phone")
+      .populate("order", "orderId status workflowStatus paymentStatus pricing items address")
+      .populate("orderIds", "orderId status workflowStatus paymentStatus pricing seller")
+      .lean();
+
+    if (!payment) {
+      return handleResponse(res, 404, "Payment record not found");
+    }
+
+    const sanitized = {
+      ...payment,
+      amountRupees: payment.amount ? payment.amount / 100 : 0,
+      gatewaySignature: undefined,
+    };
+
+    return handleResponse(res, 200, "Payment details fetched", sanitized);
+  } catch (error) {
+    logger.error("getAdminPaymentById failed", {
+      scope: "PaymentController.getAdminPaymentById",
+      message: error?.message,
+    });
+    return handleResponse(res, error.statusCode || 500, error.message || "Failed to fetch payment details");
+  }
+};
+
+/**
+ * Admin: initiate refund for a captured payment via Razorpay.
+ */
+export const refundPaymentAdmin = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { amount, reason } = req.body || {};
+
+    const result = await initiateRazorpayRefund({
+      paymentId: id,
+      amount: amount ? Number(amount) : null,
+      reason: reason || "Admin initiated refund",
+      adminId: req.user?.id,
+    });
+
+    return handleResponse(res, 200, "Refund initiated successfully", result);
+  } catch (error) {
+    logger.error("refundPaymentAdmin failed", {
+      scope: "PaymentController.refundPaymentAdmin",
+      message: error?.message,
+      statusCode: error?.statusCode || 500,
+    });
+    return handleResponse(res, error.statusCode || 500, error.message || "Refund initiation failed");
   }
 };
 

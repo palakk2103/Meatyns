@@ -84,6 +84,11 @@ const paymentSchema = new mongoose.Schema(
       default: null,
       index: true,
     },
+    gatewayRefundId: {
+      type: String,
+      default: null,
+      index: true,
+    },
     gatewaySignature: {
       type: String,
       default: null,

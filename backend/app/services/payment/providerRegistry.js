@@ -1,18 +1,12 @@
 /**
  * Payment provider registry.
  *
- * Selects the active payment provider adapter at runtime based on the
- * `PAYMENT_PROVIDER` environment variable. Defaults to PhonePe to match
- * the prior hardcoded behaviour exactly (rollback = no-op).
+ * Selects the active payment provider adapter at runtime. Defaults to Razorpay.
  *
  * Adding a new provider:
  *   1. Implement a class extending `PaymentProviderPort` in
  *      `./providers/<name>.adapter.js`.
- *   2. Register it in the switch below.
- *   3. Deploy with `PAYMENT_PROVIDER=<name>` to opt-in (default stays
- *      PhonePe so existing traffic continues unchanged).
- *
- * Rollback is a single env-var flip — no code change.
+ *   2. Register it in buildProvider.
  */
 
 import { RazorpayAdapter } from "./providers/razorpay.adapter.js";

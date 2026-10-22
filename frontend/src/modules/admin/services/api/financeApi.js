@@ -47,6 +47,14 @@ export const adminFinanceApi = {
     settleRiderCash: (data) => axiosInstance.post('/admin/settle-cash', data),
     getCashSettlementHistory: (params) =>
         axiosInstance.get('/admin/cash-history', { params }),
+
+    // Online Payment Gateway Management & Audit
+    getPayments: (params) =>
+        axiosInstance.get('/payments/admin', { params }),
+    getPaymentById: (id) =>
+        axiosInstance.get(`/payments/admin/${id}`),
+    refundPayment: (id, data) =>
+        axiosInstance.post(`/payments/admin/${id}/refund`, data),
 };
 
 export default adminFinanceApi;

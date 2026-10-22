@@ -205,12 +205,7 @@ const WalletPage = () => {
                     openRazorpayWalletModal(key, orderId, amount, currency);
                 }
             } else {
-                const redirectUrl = resultData?.redirectUrl;
-                if (redirectUrl) {
-                    window.location.href = redirectUrl;
-                } else {
-                    alert(res.data?.message || 'Failed to initiate recharge payment');
-                }
+                alert(res.data?.message || 'Payment provider not supported');
             }
         } catch (err) {
             console.error('Recharge error:', err);

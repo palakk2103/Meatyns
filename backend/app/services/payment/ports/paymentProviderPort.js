@@ -1,14 +1,14 @@
 /**
  * PaymentProviderPort
  *
- * Abstract contract that every payment provider adapter (PhonePe, Razorpay,
- * Stripe, etc.) must implement. Domain code in paymentService.js only ever
+ * Abstract contract that every payment provider adapter (Razorpay,
+ * etc.) must implement. Domain code in paymentService.js only ever
  * sees a provider through this interface — it never imports a vendor SDK
  * directly.
  *
  * Implementations live under `../providers/<name>.adapter.js` and are wired
  * in `../providerRegistry.js`. The active provider is selected at runtime
- * via `process.env.PAYMENT_PROVIDER` (default: "phonepe").
+ * via `process.env.PAYMENT_PROVIDER` (default: "razorpay").
  *
  * Methods must satisfy these contracts:
  *
@@ -29,7 +29,7 @@
  *    → one of the PAYMENT_STATUS constants (CAPTURED | FAILED | PENDING)
  *
  *  providerName
- *    → string (e.g. "phonepe"). Used for logging and DB labelling.
+ *    → string (e.g. "RAZORPAY"). Used for logging and DB labelling.
  */
 
 export class PaymentProviderPort {
@@ -51,6 +51,10 @@ export class PaymentProviderPort {
 
   async decodeWebhookPayload(_args) {
     throw new Error("decodeWebhookPayload must be implemented");
+  }
+
+  async initiateRefund(_args) {
+    throw new Error("initiateRefund must be implemented");
   }
 
   mapStatusToInternal(_gatewayState) {

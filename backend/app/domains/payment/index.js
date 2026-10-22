@@ -1,9 +1,9 @@
 /**
  * Payment domain barrel. See `app/domains/README.md`.
  *
- * The payment surface is the most domain-mature in the codebase: there is
- * already a provider-agnostic port, a provider registry, and a PhonePe
- * adapter (P3.1–P3.3). This barrel re-exports that surface as a single
+ * The payment surface is provider-agnostic: there is
+ * a provider port, a provider registry, and a Razorpay
+ * adapter. This barrel re-exports that surface as a single
  * import:
  *
  *   import { createPaymentOrderForOrderRef, getActivePaymentProvider } from "@/domains/payment";

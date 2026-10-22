@@ -11,11 +11,6 @@ import crypto from "crypto";
 
 export const createRechargeOrder = async (req, res) => {
   try {
-    console.log("createRechargeOrder config check:", {
-      clientId: process.env.PHONEPE_CLIENT_ID,
-      env: process.env.PHONEPE_ENV,
-      port: process.env.PORT,
-    });
     const { amount } = req.body || {};
     if (!amount || isNaN(amount) || Number(amount) < 1) {
       return handleResponse(res, 400, "Amount must be at least ₹1");
@@ -147,26 +142,5 @@ export const getWalletTransactions = async (req, res) => {
 };
 
 export const handleWalletWebhook = async (req, res) => {
-  try {
-    const { processPhonePeWebhook } = await import("../services/paymentService.js");
-    const authorization = req.headers["x-verify"] || req.headers["authorization"];
-    const rawBody = req.body;
-
-    if (!authorization) {
-      return res.status(401).send("Unauthorized");
-    }
-
-    const result = await processPhonePeWebhook({
-      rawBody,
-      authorization,
-      correlationId: req.correlationId || null,
-    });
-
-    if (result.accepted) {
-      return res.status(200).send("OK");
-    }
-    return res.status(400).send("Bad Request");
-  } catch (error) {
-    return res.status(500).send("Internal Server Error");
-  }
+  return res.status(200).send("OK");
 };
