@@ -47,7 +47,12 @@ export default function SeoHead() {
         metaKw.setAttribute('content', keywordsContent);
 
         // Update or create dynamic favicon
-        const faviconUrl = settings.faviconUrl || '';
+        const defaultFavicon = '/favicon-144x144.png';
+        const rawFaviconUrl = settings.faviconUrl || '';
+        // If the URL is the old distorted 303x128 screenshot or anitalogo, ignore and use the high-res square favicon
+        const isDistortedScreenshot = rawFaviconUrl.includes('i52aeavwi6hunlpzmqde') || rawFaviconUrl.includes('anitalogo');
+        const faviconUrl = (isDistortedScreenshot || !rawFaviconUrl) ? defaultFavicon : rawFaviconUrl;
+
         let linkFavicon = metaRefs.current.favicon;
         if (!linkFavicon) {
             linkFavicon = document.getElementById('dynamic-favicon');
@@ -55,7 +60,7 @@ export default function SeoHead() {
                 linkFavicon = document.createElement('link');
                 linkFavicon.id = 'dynamic-favicon';
                 linkFavicon.rel = 'icon';
-                linkFavicon.type = 'image/x-icon';
+                linkFavicon.type = 'image/png';
                 document.head.appendChild(linkFavicon);
                 metaRefs.current.favicon = linkFavicon;
             } else if (linkFavicon) {
@@ -63,7 +68,8 @@ export default function SeoHead() {
             }
         }
         if (linkFavicon) {
-            linkFavicon.href = faviconUrl || '/anitalogo.jpg';
+            linkFavicon.type = faviconUrl.endsWith('.ico') ? 'image/x-icon' : 'image/png';
+            linkFavicon.href = faviconUrl;
         }
 
         // Maintain theme-color for mobile status bar (defaults to Meatyns yellow)

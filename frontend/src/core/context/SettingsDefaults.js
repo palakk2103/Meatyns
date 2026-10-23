@@ -7,7 +7,7 @@ export const DEFAULT_SETTINGS = {
   currencyCode: "INR",
   timezone: "Asia/Kolkata",
   logoUrl: "",
-  faviconUrl: "",
+  faviconUrl: "/favicon-144x144.png",
   primaryColor: "#0284c7",
   secondaryColor: "#64748b",
   companyName: "Meatyns",
