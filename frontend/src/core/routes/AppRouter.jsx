@@ -13,6 +13,7 @@ import { CartAnimationProvider } from '../../modules/customer/context/CartAnimat
 import { ProductDetailProvider } from '../../modules/customer/context/ProductDetailContext';
 import { LocationProvider } from '../../modules/customer/context/LocationContext';
 import ScrollToTop from '../../modules/customer/components/shared/ScrollToTop';
+import MetaPixelTracker from '../meta/MetaPixelTracker';
 
 // Public Pages (lazy-loaded)
 const Auth = lazy(() => import('../../modules/seller/pages/Auth'));
@@ -81,6 +82,7 @@ const RootLayout = () => {
     return (
         <LocationProvider>
             <ScrollToTop />
+            <MetaPixelTracker />
             <Suspense fallback={<div className="flex h-screen items-center justify-center font-outfit">Loading...</div>}>
                 <Outlet />
             </Suspense>

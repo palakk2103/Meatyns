@@ -1,6 +1,7 @@
 import Admin from "../models/admin.js";
 import jwt from "jsonwebtoken";
 import handleResponse from "../utils/helper.js";
+import { getRolePermissions } from "../constants/rbac.js";
 import {
   bootstrapAdminSchema,
   loginAdminSchema,
@@ -19,7 +20,12 @@ function sanitizeAdmin(adminDoc) {
 
 const generateToken = (admin) =>
   jwt.sign(
-    { id: admin._id, role: "admin" },
+    {
+      id: admin._id,
+      role: "admin",
+      adminRole: admin.role || "super_admin",
+      permissions: admin.permissions?.length ? admin.permissions : getRolePermissions(admin.role || "super_admin"),
+    },
     process.env.JWT_SECRET,
     { expiresIn: "7d" },
   );
@@ -119,6 +125,10 @@ export const loginAdmin = async (req, res) => {
     const isMatch = await admin.comparePassword(payload.password);
     if (!isMatch) {
       return handleResponse(res, 401, "Invalid credentials");
+    }
+
+    if (admin.isActive === false) {
+      return handleResponse(res, 403, "Account is deactivated. Please contact Super Admin.");
     }
 
     admin.lastLogin = new Date();

@@ -20,6 +20,7 @@ import { orderMatchQueryFromRouteParam } from "../utils/orderLookup.js";
 import { verifyClientPaymentCallback } from "../services/paymentService.js";
 import { buildCheckoutPricingSnapshot } from "../services/checkoutPricingService.js";
 import { validateBody as validateWithJoi } from "../middleware/validate.js";
+import { trackServerPurchase } from "../services/meta/metaCapiService.js";
 
 export const previewCheckoutFinance = async (req, res) => {
   try {
@@ -105,6 +106,7 @@ export const createOrderWithFinancialSnapshot = async (req, res) => {
       // coupon engine fills the discount in via `couponCode`/`couponId`
       // instead.
       couponCode: validated.couponCode || null,
+      attribution: validated.attribution || req.body?.attribution || null,
     };
     const idempotencyKey = String(req.headers["idempotency-key"] || "").trim() || null;
 
@@ -113,6 +115,15 @@ export const createOrderWithFinancialSnapshot = async (req, res) => {
       payload,
       idempotencyKey,
     });
+
+    if (!placement.duplicate && payload.paymentMode === "COD") {
+      const ordersToTrack = Array.isArray(placement.orders) && placement.orders.length > 0
+        ? placement.orders
+        : [placement.order].filter(Boolean);
+      for (const ord of ordersToTrack) {
+        trackServerPurchase(ord, req.user, req);
+      }
+    }
 
     return handleResponse(
       res,

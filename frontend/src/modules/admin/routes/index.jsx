@@ -21,7 +21,10 @@ import {
   Terminal,
   Sparkles,
   User,
+  ShieldCheck,
+  Megaphone,
 } from "lucide-react";
+import { useAuth } from "@core/context/AuthContext";
 
 const Dashboard = React.lazy(() => import("../pages/Dashboard"));
 const CategoryManagement = React.lazy(
@@ -83,6 +86,9 @@ const NotificationComposer = React.lazy(
 const OffersManagement = React.lazy(
   () => import("../pages/OffersManagement"),
 );
+const FlashDealsManagement = React.lazy(
+  () => import("../pages/FlashDealsManagement"),
+);
 const OfferSectionsManagement = React.lazy(
   () => import("../pages/OfferSectionsManagement"),
 );
@@ -92,6 +98,7 @@ const ShopByStoreManagement = React.lazy(
 const AdminSettings = React.lazy(() => import("../pages/AdminSettings"));
 const EnvSettings = React.lazy(() => import("../pages/EnvSettings"));
 const AdminProfile = React.lazy(() => import("../pages/AdminProfile"));
+const MetaAdsManager = React.lazy(() => import("../pages/metaAds/MetaAdsManager"));
 
 const navItems = [
   {
@@ -105,6 +112,7 @@ const navItems = [
     label: "Categories",
     icon: Tag,
     color: "rose",
+    roles: ["super_admin", "admin", "inventory_manager"],
     children: [
       { label: "Category Management", path: "/admin/categories" },
       { label: "Category Hierarchy", path: "/admin/categories/hierarchy" },
@@ -113,12 +121,14 @@ const navItems = [
       { label: "Sub-Categories", path: "/admin/categories/sub" },
     ],
   },
-  { label: "Products", path: "/admin/products", icon: Box, color: "amber" },
+  { label: "Products", path: "/admin/products", icon: Box, color: "amber", roles: ["super_admin", "admin", "inventory_manager"] },
   {
     label: "Marketing Tools",
     icon: Sparkles,
     color: "amber",
+    roles: ["super_admin", "admin", "marketing_manager"],
     children: [
+      { label: "Flash Deals", path: "/admin/flash-deals" },
       { label: "Create Sections", path: "/admin/experience-studio" },
       { label: "Hero & categories per page", path: "/admin/hero-categories" },
       { label: "Send Notifications", path: "/admin/notifications" },
@@ -128,9 +138,24 @@ const navItems = [
     ],
   },
   {
+    label: "Marketing & Meta Ads",
+    icon: Megaphone,
+    color: "blue",
+    roles: ["super_admin", "admin", "marketing_manager"],
+    children: [
+      { label: "Overview", path: "/admin/meta-ads" },
+      { label: "Meta Account Connection", path: "/admin/meta-ads/connect" },
+      { label: "Campaigns", path: "/admin/meta-ads/campaigns" },
+      { label: "Performance Analytics", path: "/admin/meta-ads/analytics" },
+      { label: "Pixel and Conversion Tracking", path: "/admin/meta-ads/tracking" },
+      { label: "Integration Settings", path: "/admin/meta-ads/settings" },
+    ],
+  },
+  {
     label: "Customer Support",
     icon: Receipt,
     color: "emerald",
+    roles: ["super_admin", "admin", "order_manager"],
     children: [
       { label: "Help Tickets", path: "/admin/support-tickets" },
       { label: "Review Content", path: "/admin/moderation" },
@@ -140,6 +165,7 @@ const navItems = [
     label: "Sellers",
     icon: Building2,
     color: "blue",
+    roles: ["super_admin", "admin", "inventory_manager"],
     children: [
       { label: "Active Sellers", path: "/admin/sellers/active" },
       { label: "Waiting for Review", path: "/admin/sellers/pending" },
@@ -150,6 +176,7 @@ const navItems = [
     label: "Delivery Drivers",
     icon: Truck,
     color: "emerald",
+    roles: ["super_admin", "admin", "delivery_manager"],
     children: [
       { label: "Active Drivers", path: "/admin/delivery-boys/active" },
       { label: "Waiting for Review", path: "/admin/delivery-boys/pending" },
@@ -157,31 +184,35 @@ const navItems = [
       { label: "Send Money", path: "/admin/delivery-funds" },
     ],
   },
-  { label: "Wallet", path: "/admin/wallet", icon: Wallet, color: "violet" },
+  { label: "Wallet", path: "/admin/wallet", icon: Wallet, color: "violet", roles: ["super_admin", "admin"] },
   {
     label: "Money Requests",
     path: "/admin/withdrawals",
     icon: Banknote,
     color: "cyan",
+    roles: ["super_admin", "admin"],
   },
   {
     label: "Seller Payments",
     path: "/admin/seller-transactions",
     icon: Receipt,
     color: "orange",
+    roles: ["super_admin", "admin"],
   },
   {
     label: "Collect Cash",
     path: "/admin/cash-collection",
     icon: CircleDollarSign,
     color: "green",
+    roles: ["super_admin", "admin", "delivery_manager"],
   },
-  { label: "Customers", path: "/admin/customers", icon: Users, color: "sky" },
-  { label: "FAQs", path: "/admin/faqs", icon: HelpCircle, color: "pink" },
+  { label: "Customers", path: "/admin/customers", icon: Users, color: "sky", roles: ["super_admin", "admin", "order_manager"] },
+  { label: "FAQs", path: "/admin/faqs", icon: HelpCircle, color: "pink", roles: ["super_admin", "admin", "marketing_manager"] },
   {
     label: "Orders",
     icon: ClipboardList,
     color: "fuchsia",
+    roles: ["super_admin", "admin", "order_manager"],
     children: [
       { label: "All Orders", path: "/admin/orders/all" },
       { label: "New Orders", path: "/admin/orders/pending" },
@@ -198,15 +229,24 @@ const navItems = [
     path: "/admin/billing",
     icon: RotateCcw,
     color: "red",
+    roles: ["super_admin", "admin"],
   },
   {
     label: "Settings",
     path: "/admin/settings",
     icon: Settings,
     color: "slate",
+    roles: ["super_admin", "admin"],
+  },
+  {
+    label: "Platform Staff",
+    path: "/admin/users",
+    icon: ShieldCheck,
+    color: "indigo",
+    roles: ["super_admin", "admin"],
   },
   { label: "My Profile", path: "/admin/profile", icon: User, color: "indigo" },
-  { label: "System Settings", path: "/admin/env", icon: Terminal, color: "dark" },
+  { label: "System Settings", path: "/admin/env", icon: Terminal, color: "dark", roles: ["super_admin", "admin"] },
 ];
 
 const BillingCharges = React.lazy(() => import("../pages/BillingCharges"));
@@ -216,16 +256,28 @@ const AdminRoutes = () => {
     setActiveRole(ROLES.ADMIN);
   }, []);
 
+  const { user } = useAuth();
+  const currentRole = String(user?.adminRole || user?.role || "super_admin").toLowerCase();
+  const isSuper = currentRole === "super_admin" || currentRole === "admin";
+
   const { totalUnread } = useSupportUnread();
+
+  const visibleNavItems = React.useMemo(() => {
+    return navItems.filter((item) => {
+      if (!item.roles) return true;
+      if (isSuper) return true;
+      return item.roles.includes(currentRole);
+    });
+  }, [currentRole, isSuper]);
 
   const navItemsWithBadges = React.useMemo(() => {
     const count = Number.isFinite(totalUnread) ? totalUnread : 0;
-    if (count <= 0) return navItems;
-    return navItems.map((item) => {
+    if (count <= 0) return visibleNavItems;
+    return visibleNavItems.map((item) => {
       if (item?.label !== "Customer Support") return item;
       return { ...item, badgeCount: count };
     });
-  }, [totalUnread]);
+  }, [visibleNavItems, totalUnread]);
 
   return (
     <DashboardLayout navItems={navItemsWithBadges} title="Admin Center">
@@ -247,6 +299,7 @@ const AdminRoutes = () => {
         <Route path="/experience-studio" element={<ContentManager />} />
         <Route path="/hero-categories" element={<HeroCategoriesPerPage />} />
         <Route path="/notifications" element={<NotificationComposer />} />
+        <Route path="/flash-deals" element={<FlashDealsManagement />} />
         <Route path="/offers" element={<OffersManagement />} />
         <Route path="/offer-sections" element={<OfferSectionsManagement />} />
         <Route path="/shop-by-store" element={<ShopByStoreManagement />} />
@@ -273,6 +326,8 @@ const AdminRoutes = () => {
         <Route path="/billing" element={<BillingCharges />} />
         <Route path="/settings" element={<AdminSettings />} />
         <Route path="/env" element={<EnvSettings />} />
+        <Route path="/meta-ads" element={<MetaAdsManager />} />
+        <Route path="/meta-ads/:tab" element={<MetaAdsManager />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </DashboardLayout>

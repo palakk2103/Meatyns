@@ -22,6 +22,7 @@ import { emitNotificationEvent } from "../modules/notifications/notification.emi
 import { NOTIFICATION_EVENTS } from "../modules/notifications/notification.constants.js";
 import logger from "./logger.js";
 import { getActivePaymentProvider } from "./payment/providerRegistry.js";
+import { trackServerPurchase } from "./meta/metaCapiService.js";
 
 const MAX_MERCHANT_ORDER_ID_LENGTH = 63;
 
@@ -421,6 +422,8 @@ export async function handleOrderSideEffectsFromPaymentStatus(payment, nextStatu
         orderId: order.orderId,
         sellerId: order.seller,
       });
+
+      trackServerPurchase(order, { _id: order.customer }, null);
     }
     await updateCheckoutGroupPaymentStatus(payment.checkoutGroupId, nextStatus);
     return;

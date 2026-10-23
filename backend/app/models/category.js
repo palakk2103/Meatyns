@@ -94,6 +94,28 @@ const categorySchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    metaTitle: {
+      type: String,
+      trim: true,
+      default: "",
+      maxlength: 100,
+    },
+    metaDescription: {
+      type: String,
+      trim: true,
+      default: "",
+      maxlength: 300,
+    },
+    canonicalUrl: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    ogImage: {
+      type: String,
+      trim: true,
+      default: "",
+    },
   },
   {
     timestamps: true,

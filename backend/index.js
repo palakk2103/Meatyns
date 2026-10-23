@@ -45,6 +45,11 @@ import {
   getFirebaseTrackingCleanupJobInterval,
   isFirebaseTrackingCleanupJobEnabled,
 } from "./app/jobs/firebaseTrackingCleanupJob.js";
+import {
+  getAbandonedCartJobHandler,
+  getAbandonedCartJobInterval,
+  isAbandonedCartJobEnabled,
+} from "./app/jobs/abandonedCartJob.js";
 import logger from "./app/services/logger.js";
 import { stopScheduledJobs } from "./app/services/distributedScheduler.js";
 
@@ -347,6 +352,15 @@ async function startScheduler() {
     );
   }
 
+  // Abandoned-cart reminder automation job — scans inactive carts and sends recovery push
+  if (isAbandonedCartJobEnabled()) {
+    registerScheduledJob(
+      'abandonedCartJob',
+      getAbandonedCartJobInterval(),
+      getAbandonedCartJobHandler()
+    );
+  }
+
   // Start all registered jobs
   await startScheduledJobs();
   registerSchedulerStopper(stopScheduledJobs);
@@ -355,6 +369,7 @@ async function startScheduler() {
   if (isPayoutBatchJobEnabled()) scheduledJobs.push('payoutBatchJob');
   if (isWalletLedgerVerifierEnabled()) scheduledJobs.push('walletLedgerVerifierJob');
   if (isFirebaseTrackingCleanupJobEnabled()) scheduledJobs.push('firebaseTrackingCleanupJob');
+  if (isAbandonedCartJobEnabled()) scheduledJobs.push('abandonedCartJob');
   logger.info('Scheduler started', {
     jobs: scheduledJobs,
     role: getProcessRole()

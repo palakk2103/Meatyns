@@ -64,7 +64,9 @@ const CustomerDetail = () => {
 
     // Form states
     const [notifMessage, setNotifMessage] = useState('');
-    const [notes, setNotes] = useState('Prefer morning deliveries. Use the building entrance on the north side.');
+    const [crmNotesList, setCrmNotesList] = useState([]);
+    const [newNote, setNewNote] = useState('');
+    const [isSavingNote, setIsSavingNote] = useState(false);
 
     const [customer, setCustomer] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -102,6 +104,9 @@ const CustomerDetail = () => {
                     const customerData = data.result;
                     setCustomer(customerData);
                     setOrders(customerData.recentOrders || []);
+                    if (Array.isArray(customerData.crmNotes)) {
+                        setCrmNotesList(customerData.crmNotes);
+                    }
                     setEditForm({
                         name: customerData.name,
                         email: customerData.email,
@@ -221,8 +226,33 @@ const CustomerDetail = () => {
         showToast(`Account successfully ${newStatus === 'restricted' ? 'restricted' : 'activated'}`, newStatus === 'restricted' ? 'warning' : 'success');
     };
 
-    const handleSaveNotes = () => {
-        showToast('Internal CRM notes updated', 'info');
+    const handleSaveNotes = async () => {
+        const trimmed = newNote.trim();
+        if (!trimmed) {
+            showToast('Please enter a note before saving', 'warning');
+            return;
+        }
+        try {
+            setIsSavingNote(true);
+            const { data } = await adminApi.addCustomerNote(id, { note: trimmed });
+            if (data.success) {
+                const added = data.result?.note;
+                if (added) {
+                    setCrmNotesList((prev) => [added, ...prev]);
+                } else if (Array.isArray(data.result?.crmNotes)) {
+                    setCrmNotesList(data.result.crmNotes);
+                }
+                setNewNote('');
+                showToast('Internal CRM note saved to database', 'success');
+            } else {
+                showToast(data.message || 'Failed to save note', 'error');
+            }
+        } catch (err) {
+            console.error('Error saving note:', err);
+            showToast(err.response?.data?.message || err.message || 'Failed to save note', 'error');
+        } finally {
+            setIsSavingNote(false);
+        }
     };
 
     const handleExportCSV = () => {
@@ -574,21 +604,78 @@ const CustomerDetail = () => {
                 {/* Sidebar Notes */}
                 <div className="space-y-6">
                     <Card className="border-none shadow-xl ring-1 ring-slate-100 bg-white rounded-xl p-4">
-                        <h4 className="text-xs font-black text-slate-900 uppercase tracking-widest mb-6 flex items-center gap-2">
-                            <MessageSquare className="h-4 w-4 text-brand-500" />
-                            Internal Notes
-                        </h4>
-                        <textarea
-                            value={notes}
-                            onChange={(e) => setNotes(e.target.value)}
-                            className="w-full bg-slate-50 p-6 rounded-2xl min-h-[140px] text-sm font-bold text-slate-600 leading-relaxed italic border border-slate-100 outline-none focus:bg-white focus:ring-2 focus:ring-brand-500/10 transition-all"
-                        />
-                        <button
-                            onClick={handleSaveNotes}
-                            className="w-full mt-6 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all"
-                        >
-                            UPDATE NOTES
-                        </button>
+                        <div className="flex items-center justify-between mb-4">
+                            <h4 className="text-xs font-black text-slate-900 uppercase tracking-widest flex items-center gap-2">
+                                <MessageSquare className="h-4 w-4 text-brand-500" />
+                                Internal CRM Notes
+                            </h4>
+                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">
+                                {crmNotesList.length} {crmNotesList.length === 1 ? 'note' : 'notes'}
+                            </span>
+                        </div>
+
+                        {/* Recent Notes Timeline */}
+                        <div className="space-y-3 mb-4 max-h-56 overflow-y-auto pr-1">
+                            {crmNotesList.length === 0 ? (
+                                <p className="text-xs text-slate-400 italic p-3 text-center bg-slate-50 rounded-xl">
+                                    No staff notes recorded yet for this customer.
+                                </p>
+                            ) : (
+                                crmNotesList.map((n, idx) => (
+                                    <div
+                                        key={n._id || idx}
+                                        className="p-3 rounded-xl bg-slate-50 border border-slate-100 space-y-1.5 text-left"
+                                    >
+                                        <p className="text-xs font-medium text-slate-700 leading-relaxed whitespace-pre-wrap">
+                                            {n.note}
+                                        </p>
+                                        <div className="flex items-center justify-between text-[10px] text-slate-400 font-semibold pt-1 border-t border-slate-100/60">
+                                            <span>
+                                                {n.authorName || 'Staff'} {n.authorRole ? `(${n.authorRole})` : ''}
+                                            </span>
+                                            <span>
+                                                {n.createdAt ? new Date(n.createdAt).toLocaleDateString('en-IN', {
+                                                    day: '2-digit',
+                                                    month: 'short',
+                                                    year: 'numeric',
+                                                    hour: '2-digit',
+                                                    minute: '2-digit'
+                                                }) : ''}
+                                            </span>
+                                        </div>
+                                    </div>
+                                ))
+                            )}
+                        </div>
+
+                        {/* Add Note Section */}
+                        <div className="space-y-2">
+                            <textarea
+                                value={newNote}
+                                onChange={(e) => setNewNote(e.target.value)}
+                                maxLength={2000}
+                                placeholder="Add customer preference, delivery instruction, or internal context..."
+                                className="w-full bg-slate-50 p-3 rounded-xl min-h-[90px] text-xs font-medium text-slate-700 leading-relaxed border border-slate-100 outline-none focus:bg-white focus:ring-2 focus:ring-brand-500/20 transition-all placeholder:text-slate-400"
+                            />
+                            <div className="flex items-center justify-between text-[10px] text-slate-400 px-1">
+                                <span>Staff only (not visible to customer)</span>
+                                <span>{newNote.length}/2000</span>
+                            </div>
+                            <button
+                                onClick={handleSaveNotes}
+                                disabled={isSavingNote || !newNote.trim()}
+                                className="w-full py-2.5 bg-black hover:bg-slate-800 disabled:opacity-50 text-white rounded-xl text-[10px] font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 cursor-pointer"
+                            >
+                                {isSavingNote ? (
+                                    <>
+                                        <RotateCw className="h-3.5 w-3.5 animate-spin" />
+                                        <span>SAVING NOTE...</span>
+                                    </>
+                                ) : (
+                                    <span>ADD CRM NOTE</span>
+                                )}
+                            </button>
+                        </div>
                     </Card>
 
                     <Card className="border-none shadow-xl ring-1 ring-slate-100 bg-slate-900 rounded-xl p-4 text-white">

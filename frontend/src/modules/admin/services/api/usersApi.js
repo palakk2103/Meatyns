@@ -10,6 +10,8 @@ export const adminUsersApi = {
 
     getUsers: (params) => axiosInstance.get('/admin/users', { params }),
     getUserById: (id) => axiosInstance.get(`/admin/users/${id}`),
+    getCustomerNotes: (id) => axiosInstance.get(`/admin/users/${id}/notes`),
+    addCustomerNote: (id, data) => axiosInstance.post(`/admin/users/${id}/notes`, data),
 
     getUserWallet: (id) => axiosInstance.get(`/admin/users/${id}/wallet`),
     getUserWalletHistory: (id, params) => axiosInstance.get(`/admin/users/${id}/wallet/history`, { params }),
@@ -26,6 +28,17 @@ export const adminUsersApi = {
     approveSeller: (id) => axiosInstance.patch(`/admin/sellers/approve/${id}`),
     rejectSeller: (id, data) =>
         axiosInstance.delete(`/admin/sellers/reject/${id}`, { data }),
+
+    // Customer Segments & Abandoned Carts
+    getCustomerSegments: () => axiosInstance.get('/admin/segments'),
+    getSegmentCustomers: (key, params) => axiosInstance.get(`/admin/segments/${key}/customers`, { params }),
+    getAbandonedCarts: (params) => axiosInstance.get('/admin/abandoned-carts', { params }),
+
+    // Staff & RBAC endpoints
+    getStaff: () => axiosInstance.get('/admin/staff'),
+    createStaff: (data) => axiosInstance.post('/admin/staff', data),
+    updateStaffRole: (id, data) => axiosInstance.patch(`/admin/staff/${id}/role`, data),
+    toggleStaffStatus: (id, data) => axiosInstance.patch(`/admin/staff/${id}/status`, data),
 };
 
 export default adminUsersApi;

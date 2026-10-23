@@ -35,7 +35,7 @@ const orderSchema = new mongoose.Schema(
         quantity: {
           type: Number,
           required: true,
-          min: 1,
+          min: 0.01,
         },
         price: {
           type: Number,
@@ -43,6 +43,14 @@ const orderSchema = new mongoose.Schema(
         },
         variantSlot: String,
         image: String,
+        unit: {
+          type: String,
+          default: null,
+        },
+        unitValue: {
+          type: Number,
+          default: null,
+        },
       },
     ],
     address: {
@@ -574,6 +582,24 @@ const orderSchema = new mongoose.Schema(
     otpValidationLocation: {
       lat: Number,
       lng: Number,
+    },
+    attribution: {
+      source: {
+        type: String,
+        default: null,
+        index: true,
+      },
+      utmSource: { type: String, default: null },
+      utmMedium: { type: String, default: null },
+      utmCampaign: { type: String, default: null },
+      utmContent: { type: String, default: null },
+      utmTerm: { type: String, default: null },
+      fbclid: { type: String, default: null },
+      fbc: { type: String, default: null },
+      fbp: { type: String, default: null },
+      landingUrl: { type: String, default: null },
+      referrer: { type: String, default: null },
+      attributedAt: { type: Date, default: null },
     },
   },
   { timestamps: true },

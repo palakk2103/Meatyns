@@ -22,7 +22,19 @@ export const createProductSchema = Joi.object({
   price: Joi.number().min(0).required(),
   salePrice: Joi.number().min(0).optional(),
   stock: Joi.number().integer().min(0).required(),
-  unit: trimmedString.optional(),
+  unit: trimmedString.valid("g", "kg", "pc", "pack", "box", "packet", "unit", "", null).optional(),
+  unitValue: Joi.number().min(0.01).optional(),
+  orderIncrement: Joi.number().min(0.01).optional(),
+  minOrderQty: Joi.number().min(0.01).optional(),
+  maxOrderQty: Joi.number().min(0.01).allow(null).optional(),
+  isScheduled: Joi.boolean().optional(),
+  scheduleDays: Joi.array().items(
+    trimmedString.valid("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday")
+  ).optional(),
+  availableFromTime: trimmedString.pattern(/^([01]\d|2[0-3]):[0-5]\d$/).allow("", null).optional(),
+  availableToTime: trimmedString.pattern(/^([01]\d|2[0-3]):[0-5]\d$/).allow("", null).optional(),
+  scheduleStartDate: Joi.date().iso().allow("", null).optional(),
+  scheduleEndDate: Joi.date().iso().allow("", null).optional(),
   category: objectIdLike.required(),
   subCategory: objectIdLike.optional(),
   mainImage: trimmedString.uri().optional(),
@@ -39,6 +51,10 @@ export const createProductSchema = Joi.object({
     )
     .optional(),
   brand: trimmedString.max(100).optional(),
+  cutType: trimmedString.max(100).allow("", null).optional(),
+  boneType: trimmedString.valid("bone_in", "boneless", "not_applicable", "", null).optional(),
+  skinType: trimmedString.valid("skin_on", "skinless", "not_applicable", "", null).optional(),
+  freshness: trimmedString.valid("fresh", "chilled", "frozen", "not_applicable", "", null).optional(),
   tags: Joi.array().items(trimmedString.max(50)).max(20).optional(),
 }).unknown(true); // images may arrive via multer in a different field
 

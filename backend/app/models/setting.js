@@ -137,6 +137,16 @@ const settingSchema = new mongoose.Schema(
             default: 30,
             min: 0,
         },
+        freeDeliveryThreshold: {
+            type: Number,
+            default: 499,
+            min: 0,
+        },
+        minimumOrderValue: {
+            type: Number,
+            default: 0,
+            min: 0,
+        },
         handlingFeeStrategy: {
             type: String,
             enum: ALL_HANDLING_FEE_STRATEGIES,
@@ -163,6 +173,21 @@ const settingSchema = new mongoose.Schema(
                 type: Boolean,
                 default: false,
             },
+        },
+        abandonedCartIntervalMinutes: {
+            type: Number,
+            default: 60,
+            min: 5,
+        },
+        abandonedCartMaxReminders: {
+            type: Number,
+            default: 2,
+            min: 1,
+            max: 5,
+        },
+        abandonedCartEnabled: {
+            type: Boolean,
+            default: true,
         },
     },
     {

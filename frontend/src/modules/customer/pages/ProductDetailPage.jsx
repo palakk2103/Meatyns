@@ -12,6 +12,7 @@ import { applyCloudinaryTransform } from '@/core/utils/imageUtils';
 import { useSettings } from '@core/context/SettingsContext';
 import Lottie from 'lottie-react';
 import ProductSeo from '../components/seo/ProductSeo';
+import { trackViewContent } from '@/core/meta/pixelService';
 
 const ProductDetailPage = () => {
     const { id } = useParams();
@@ -61,6 +62,7 @@ const ProductDetailPage = () => {
                     images: [p.mainImage, ...(p.galleryImages || [])].filter(Boolean)
                 };
                 setProduct(formatted);
+                trackViewContent(formatted);
                 setActiveImage(formatted.images[0] || 'https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=600&auto=format&fit=crop');
                 fetchReviews();
             }
@@ -255,16 +257,55 @@ const ProductDetailPage = () => {
                         </p>
                     </div>
 
-                        <div className="flex items-center gap-2 text-emerald-600 bg-emerald-50 px-3 py-1.5 rounded-xl text-xs font-bold w-fit mb-6">
-                            <span className="flex items-center gap-1.5">
-                                <Clock size={14} /> Delivered in 10-15 mins
-                            </span>
+                        <div className="flex flex-wrap items-center gap-3 mb-4">
+                            <div className="flex items-center gap-2 text-emerald-600 bg-emerald-50 px-3 py-1.5 rounded-xl text-xs font-bold w-fit">
+                                <span className="flex items-center gap-1.5">
+                                    <Clock size={14} /> Delivered in 10-15 mins
+                                </span>
+                            </div>
+                            {product.isScheduled && (
+                                <div className="flex items-center gap-2 text-amber-800 bg-amber-50 border border-amber-200 px-3 py-1.5 rounded-xl text-xs font-bold w-fit">
+                                    <Clock size={14} className="text-amber-600" />
+                                    <span>
+                                        Available: {product.availableFromTime && product.availableToTime ? `${product.availableFromTime} – ${product.availableToTime}` : "Scheduled"}
+                                        {Array.isArray(product.scheduleDays) && product.scheduleDays.length > 0 ? ` (${product.scheduleDays.join(', ')})` : ""}
+                                    </span>
+                                </div>
+                            )}
                         </div>
+
+                    {/* Structured Meat Attributes (if present) */}
+                    {(product.cutType || product.boneType || product.skinType || product.freshness) && (
+                        <div className="flex flex-wrap gap-2 mb-6">
+                            {product.cutType && (
+                                <span className="inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-bold bg-amber-50 text-amber-900 border border-amber-200">
+                                    Cut: {product.cutType.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                                </span>
+                            )}
+                            {product.boneType && product.boneType !== 'not_applicable' && (
+                                <span className="inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-bold bg-rose-50 text-rose-900 border border-rose-200">
+                                    {product.boneType === 'bone_in' ? 'Bone-In' : 'Boneless'}
+                                </span>
+                            )}
+                            {product.skinType && product.skinType !== 'not_applicable' && (
+                                <span className="inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-bold bg-blue-50 text-blue-900 border border-blue-200">
+                                    {product.skinType === 'skin_on' ? 'Skin-On' : 'Skinless'}
+                                </span>
+                            )}
+                            {product.freshness && product.freshness !== 'not_applicable' && (
+                                <span className="inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-50 text-emerald-900 border border-emerald-200">
+                                    {product.freshness.charAt(0).toUpperCase() + product.freshness.slice(1)}
+                                </span>
+                            )}
+                        </div>
+                    )}
 
                     <div className="grid grid-cols-3 gap-4">
                         <div className="bg-white p-4 rounded-2xl border border-slate-100 text-center shadow-sm">
-                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Weight</p>
-                            <p className="text-sm font-black text-slate-800">{product.weight || 'N/A'}</p>
+                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Unit / Measure</p>
+                            <p className="text-sm font-black text-slate-800">
+                                {product.unit && product.unitValue ? `${product.unitValue} ${product.unit}` : (product.weight || 'N/A')}
+                            </p>
                         </div>
                         <div className="bg-white p-4 rounded-2xl border border-slate-100 text-center shadow-sm">
                             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Stock</p>

@@ -31,14 +31,29 @@ const cartSchema = new mongoose.Schema(
                 quantity: {
                     type: Number,
                     required: true,
-                    min: 1,
+                    min: 0.01,
                     default: 1,
                 },
             },
         ],
+        reminderCount: {
+            type: Number,
+            default: 0,
+            min: 0,
+        },
+        lastReminderSentAt: {
+            type: Date,
+            default: null,
+        },
+        abandonedNotified: {
+            type: Boolean,
+            default: false,
+        },
     },
     { timestamps: true }
 );
+
+cartSchema.index({ "items.0": 1, updatedAt: 1, reminderCount: 1 });
 
 const Cart = mongoose.model("Cart", cartSchema);
 export default Cart;

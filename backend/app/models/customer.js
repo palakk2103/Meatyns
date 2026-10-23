@@ -131,6 +131,37 @@ const userSchema = new mongoose.Schema(
             default: true,
         },
 
+        crmNotes: {
+            type: [
+                {
+                    note: {
+                        type: String,
+                        required: true,
+                        maxlength: 2000,
+                        trim: true,
+                    },
+                    authorId: {
+                        type: mongoose.Schema.Types.ObjectId,
+                        ref: "Admin",
+                    },
+                    authorName: {
+                        type: String,
+                        default: "Staff",
+                    },
+                    authorRole: {
+                        type: String,
+                        default: "admin",
+                    },
+                    createdAt: {
+                        type: Date,
+                        default: Date.now,
+                    },
+                },
+            ],
+            select: false,
+            default: [],
+        },
+
         lastLogin: Date,
     },
     {

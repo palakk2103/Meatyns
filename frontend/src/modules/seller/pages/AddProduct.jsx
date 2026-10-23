@@ -61,6 +61,10 @@ const AddProduct = () => {
     tags: "",
     weight: "",
     brand: "",
+    cutType: "",
+    boneType: "",
+    skinType: "",
+    freshness: "",
     mainImage: null,
     galleryImages: [],
     variants: [
@@ -157,6 +161,10 @@ const AddProduct = () => {
       data.append("description", formData.description);
       data.append("brand", formData.brand);
       data.append("weight", formData.weight);
+      data.append("cutType", formData.cutType || "");
+      data.append("boneType", formData.boneType || "");
+      data.append("skinType", formData.skinType || "");
+      data.append("freshness", formData.freshness || "");
       data.append("status", formData.status);
 
       // Map top-level price/stock from first variant for indexing/listing
@@ -391,6 +399,73 @@ const AddProduct = () => {
                     className="w-full px-4 py-2.5 bg-slate-100 border-none rounded-md text-sm font-mono font-bold outline-none ring-primary/5 focus:ring-2 transition-all"
                     placeholder="AUTO-GENERATED"
                   />
+                </div>
+              </div>
+
+              {/* Meat & Preparation Attributes (Optional) */}
+              <div className="p-4 bg-slate-50 border border-slate-100 rounded-xl space-y-4">
+                <h4 className="text-[10px] font-black text-slate-700 uppercase tracking-widest flex items-center gap-2">
+                  Meat & Preparation Attributes (Optional)
+                </h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="space-y-1 flex flex-col">
+                    <label className="text-[10px] font-bold text-slate-600 uppercase tracking-widest ml-1">Cut Type</label>
+                    <select
+                      value={formData.cutType}
+                      onChange={(e) => setFormData({ ...formData, cutType: e.target.value })}
+                      className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs font-semibold outline-none focus:ring-2 focus:ring-primary/20"
+                    >
+                      <option value="">None / General</option>
+                      <option value="biryani_cut">Biryani Cut</option>
+                      <option value="curry_cut">Curry Cut</option>
+                      <option value="boneless_cubes">Boneless Cubes</option>
+                      <option value="whole">Whole</option>
+                      <option value="steaks">Steaks</option>
+                      <option value="fillet">Fillet</option>
+                      <option value="mince_keema">Mince / Keema</option>
+                      <option value="chops">Chops</option>
+                      <option value="drumstick">Drumstick</option>
+                      <option value="wings">Wings</option>
+                      <option value="custom">Custom Cut</option>
+                    </select>
+                  </div>
+                  <div className="space-y-1 flex flex-col">
+                    <label className="text-[10px] font-bold text-slate-600 uppercase tracking-widest ml-1">Bone Type</label>
+                    <select
+                      value={formData.boneType}
+                      onChange={(e) => setFormData({ ...formData, boneType: e.target.value })}
+                      className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs font-semibold outline-none focus:ring-2 focus:ring-primary/20"
+                    >
+                      <option value="">Not Applicable</option>
+                      <option value="bone_in">Bone-In</option>
+                      <option value="boneless">Boneless</option>
+                    </select>
+                  </div>
+                  <div className="space-y-1 flex flex-col">
+                    <label className="text-[10px] font-bold text-slate-600 uppercase tracking-widest ml-1">Skin Type</label>
+                    <select
+                      value={formData.skinType}
+                      onChange={(e) => setFormData({ ...formData, skinType: e.target.value })}
+                      className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs font-semibold outline-none focus:ring-2 focus:ring-primary/20"
+                    >
+                      <option value="">Not Applicable</option>
+                      <option value="skin_on">Skin-On</option>
+                      <option value="skinless">Skinless</option>
+                    </select>
+                  </div>
+                  <div className="space-y-1 flex flex-col">
+                    <label className="text-[10px] font-bold text-slate-600 uppercase tracking-widest ml-1">Freshness</label>
+                    <select
+                      value={formData.freshness}
+                      onChange={(e) => setFormData({ ...formData, freshness: e.target.value })}
+                      className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs font-semibold outline-none focus:ring-2 focus:ring-primary/20"
+                    >
+                      <option value="">Not Applicable</option>
+                      <option value="fresh">Fresh</option>
+                      <option value="chilled">Chilled</option>
+                      <option value="frozen">Frozen</option>
+                    </select>
+                  </div>
                 </div>
               </div>
             </div>

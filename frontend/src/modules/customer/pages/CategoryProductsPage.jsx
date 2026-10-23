@@ -13,6 +13,7 @@ import ProductDetailSheet from '../components/shared/ProductDetailSheet';
 import { useProductDetail } from '../context/ProductDetailContext';
 import { customerApi } from '../services/customerApi';
 import MiniCart from '../components/shared/MiniCart';
+import CategorySeo from '../components/seo/CategorySeo';
 import SectionRenderer from "../components/experience/SectionRenderer";
 import { useLocation as useAppLocation } from '../context/LocationContext';
 import { useSettings } from '@core/context/SettingsContext';
@@ -323,6 +324,7 @@ const CategoryProductsPage = () => {
 
     return (
         <div className="flex flex-col min-h-screen bg-white w-full max-w-full md:max-w-7xl lg:max-w-[1440px] mx-auto relative font-sans">
+            <CategorySeo category={category} />
             {/* Header */}
             <header className={cn(
                 "sticky top-0 z-50 bg-white border-b border-gray-50 px-4 py-4 flex items-center justify-between",

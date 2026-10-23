@@ -78,6 +78,8 @@ function mapOrderItemsForPersistence(hydratedItems = []) {
     price: item.price,
     variantSlot: String(item.variantSku || item.variantSlot || "").trim() || undefined,
     image: item.image || "",
+    unit: item.unit || undefined,
+    unitValue: item.unitValue || undefined,
   }));
 }
 
@@ -545,6 +547,20 @@ export async function placeOrderAtomic({
         },
         coupon: persistedCouponId,
         ...(persistedCouponSnapshot ? { couponSnapshot: persistedCouponSnapshot } : {}),
+        attribution: normalizedPayload.attribution ? {
+          source: normalizedPayload.attribution.source || (normalizedPayload.attribution.fbclid || String(normalizedPayload.attribution.utmSource || "").match(/facebook|meta|instagram|fb|ig/i) ? "meta" : "direct"),
+          utmSource: normalizedPayload.attribution.utmSource || null,
+          utmMedium: normalizedPayload.attribution.utmMedium || null,
+          utmCampaign: normalizedPayload.attribution.utmCampaign || null,
+          utmContent: normalizedPayload.attribution.utmContent || null,
+          utmTerm: normalizedPayload.attribution.utmTerm || null,
+          fbclid: normalizedPayload.attribution.fbclid || null,
+          fbc: normalizedPayload.attribution.fbc || null,
+          fbp: normalizedPayload.attribution.fbp || null,
+          landingUrl: normalizedPayload.attribution.landingUrl || null,
+          referrer: normalizedPayload.attribution.referrer || null,
+          attributedAt: new Date(),
+        } : { source: "direct", attributedAt: new Date() },
         status: "pending",
         orderStatus: "pending",
         deliveryMethod: normalizedPayload.deliveryMethod || "NORMAL",

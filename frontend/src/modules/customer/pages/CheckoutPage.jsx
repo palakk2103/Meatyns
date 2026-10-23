@@ -45,6 +45,8 @@ import { useSettings } from "@core/context/SettingsContext";
 import SlideToPay from "../components/shared/SlideToPay";
 import { getCachedGeocode, setCachedGeocode } from "@/core/utils/geocodeCache";
 import { getJSON, setJSON, rawRemove, STORAGE_KEYS } from "@core/utils/storage";
+import { trackInitiateCheckout, trackPurchase } from "@/core/meta/pixelService";
+import { getStoredAttribution } from "@/core/meta/attribution";
 import { createSocketTokenReader } from "@core/utils/authStorage";
 import {
   getOrderSocket,
@@ -199,6 +201,14 @@ const CheckoutPage = () => {
         .catch(() => {});
     }
   }, [cart.length === 0]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const initiateTrackedRef = useRef(false);
+  useEffect(() => {
+    if (cart.length > 0 && !initiateTrackedRef.current) {
+      initiateTrackedRef.current = true;
+      trackInitiateCheckout(cart, finalAmountToPay);
+    }
+  }, [cart.length, finalAmountToPay]);
 
   const paymentMethods = [
     ...(settings?.onlineEnabled === false
@@ -830,6 +840,7 @@ const CheckoutPage = () => {
           price: item.price,
           image: item.image,
         })),
+        attribution: getStoredAttribution(),
       };
 
       const response = await customerApi.createOrder(orderData);
@@ -899,6 +910,10 @@ const CheckoutPage = () => {
                     showToast("Order placed successfully!", "success");
                     setOrderId(mainOrderId);
                     setShowSuccess(true);
+                    trackPurchase(
+                      mainOrder || { orderId: mainOrderId, pricing: { total: finalAmountToPay }, items: cart },
+                      `purchase_${mainOrderId}`
+                    );
                     
                     if (postOrderNavigateRef.current) {
                       clearTimeout(postOrderNavigateRef.current);
@@ -957,6 +972,10 @@ const CheckoutPage = () => {
         showToast("Order placed — waiting for seller to accept.", "success");
         setOrderId(mainOrderId);
         setShowSuccess(true);
+        trackPurchase(
+          mainOrder || { orderId: mainOrderId, pricing: { total: finalAmountToPay }, items: cart },
+          `purchase_${mainOrderId}`
+        );
 
         if (postOrderNavigateRef.current) {
           clearTimeout(postOrderNavigateRef.current);

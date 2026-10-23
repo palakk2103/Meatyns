@@ -71,6 +71,7 @@ export const createFinanceOrderSchema = checkoutPreviewSchema.keys({
   items: Joi.array().items(orderItemSchema).min(1).optional(),
   paymentMode: Joi.string().valid("ONLINE", "COD").required(),
   walletAmount: Joi.number().min(0).default(0),
+  attribution: Joi.object().unknown(true).optional(),
 });
 
 export const verifyOnlinePaymentSchema = Joi.object({
@@ -130,6 +131,8 @@ export const updateDeliverySettingsSchema = Joi.object({
   deliveryPartnerRatePerKm: Joi.number().min(0).optional(),
   fleetCommissionRatePerKm: Joi.number().min(0).optional(),
   fixedDeliveryFee: Joi.number().min(0).optional(),
+  freeDeliveryThreshold: Joi.number().min(0).optional(),
+  minimumOrderValue: Joi.number().min(0).optional(),
   handlingFeeStrategy: Joi.string()
     .valid("highest_category_fee", "sum_of_category_fees", "max_single_fee", "per_item_fee")
     .optional(),
@@ -146,6 +149,8 @@ export const updateDeliverySettingsSchema = Joi.object({
   "deliveryPartnerRatePerKm",
   "fleetCommissionRatePerKm",
   "fixedDeliveryFee",
+  "freeDeliveryThreshold",
+  "minimumOrderValue",
   "handlingFeeStrategy",
   "codEnabled",
   "onlineEnabled",

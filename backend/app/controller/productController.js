@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import Product from "../models/product.js";
+import Category from "../models/category.js";
 import Seller from "../models/seller.js";
 import { getSellerCurrentOpenStatus } from "../services/storeStatusService.js";
 import { handleResponse } from "../utils/helper.js";
@@ -134,6 +135,93 @@ function applyMediaFields(productData, existingProduct = null) {
     productData.galleryImages = existingProduct.galleryImages;
   }
 }
+
+function normalizeMeatAttributes(productData) {
+  if (productData.cutType !== undefined) {
+    productData.cutType = String(productData.cutType || "").trim() || null;
+  }
+  if (productData.boneType !== undefined) {
+    const val = String(productData.boneType || "").trim();
+    productData.boneType = ["bone_in", "boneless", "not_applicable"].includes(val) ? val : null;
+  }
+  if (productData.skinType !== undefined) {
+    const val = String(productData.skinType || "").trim();
+    productData.skinType = ["skin_on", "skinless", "not_applicable"].includes(val) ? val : null;
+  }
+  if (productData.freshness !== undefined) {
+    const val = String(productData.freshness || "").trim();
+    productData.freshness = ["fresh", "chilled", "frozen", "not_applicable"].includes(val) ? val : null;
+  }
+}
+
+function normalizeProductUnitsAndScheduling(productData) {
+  if (productData.unit !== undefined) {
+    const rawUnit = String(productData.unit || "").trim().toLowerCase();
+    const unitMap = { packet: "pack", unit: "pc", pcs: "pc", pieces: "pc", packs: "pack", boxes: "box", grams: "g", kilograms: "kg" };
+    const mapped = unitMap[rawUnit] || rawUnit;
+    productData.unit = ["g", "kg", "pc", "pack", "box"].includes(mapped) ? mapped : "pack";
+  }
+  if (productData.unitValue !== undefined) {
+    const val = Number(productData.unitValue);
+    productData.unitValue = Number.isFinite(val) && val > 0 ? val : 1;
+  }
+  if (productData.orderIncrement !== undefined) {
+    const inc = Number(productData.orderIncrement);
+    productData.orderIncrement = Number.isFinite(inc) && inc > 0 ? inc : 1;
+  }
+  if (productData.minOrderQty !== undefined) {
+    const minQ = Number(productData.minOrderQty);
+    productData.minOrderQty = Number.isFinite(minQ) && minQ > 0 ? minQ : 1;
+  }
+  if (productData.maxOrderQty !== undefined) {
+    const maxQ = Number(productData.maxOrderQty);
+    productData.maxOrderQty = Number.isFinite(maxQ) && maxQ > 0 ? maxQ : null;
+  }
+  if (productData.isScheduled !== undefined) {
+    productData.isScheduled = Boolean(productData.isScheduled === true || productData.isScheduled === "true");
+  }
+  if (productData.scheduleDays !== undefined) {
+    let days = productData.scheduleDays;
+    if (typeof days === "string") {
+      try { days = JSON.parse(days); } catch { days = days.split(",").map(d => d.trim()); }
+    }
+    const validDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    productData.scheduleDays = Array.isArray(days) ? days.filter(d => validDays.includes(d)) : [];
+  }
+  if (productData.availableFromTime !== undefined) {
+    productData.availableFromTime = String(productData.availableFromTime || "").trim() || null;
+  }
+  if (productData.availableToTime !== undefined) {
+    productData.availableToTime = String(productData.availableToTime || "").trim() || null;
+  }
+  if (productData.scheduleStartDate !== undefined) {
+    productData.scheduleStartDate = productData.scheduleStartDate ? new Date(productData.scheduleStartDate) : null;
+  }
+  if (productData.scheduleEndDate !== undefined) {
+    productData.scheduleEndDate = productData.scheduleEndDate ? new Date(productData.scheduleEndDate) : null;
+  }
+}
+
+async function validateCategoryHierarchy({ headerId, categoryId, subcategoryId }) {
+  if (categoryId && mongoose.Types.ObjectId.isValid(categoryId)) {
+    const cat = await Category.findById(categoryId).select("_id parentId status type").lean();
+    if (!cat) return { valid: false, message: "Category not found" };
+    if (headerId && cat.parentId && mongoose.Types.ObjectId.isValid(headerId) && String(cat.parentId) !== String(headerId)) {
+      return { valid: false, message: "Selected category does not belong to the selected header" };
+    }
+  }
+  if (subcategoryId && mongoose.Types.ObjectId.isValid(subcategoryId)) {
+    const sub = await Category.findById(subcategoryId).select("_id parentId status type").lean();
+    if (!sub) return { valid: false, message: "Subcategory not found" };
+    if (categoryId && sub.parentId && mongoose.Types.ObjectId.isValid(categoryId) && String(sub.parentId) !== String(categoryId)) {
+      return { valid: false, message: "Selected subcategory does not belong to the selected category" };
+    }
+  }
+  return { valid: true };
+}
+
+
+
 
 async function handleBase64Images(productData) {
   if (productData.mainImage && String(productData.mainImage).startsWith("data:image/")) {
@@ -788,6 +876,19 @@ export const createProduct = async (req, res) => {
 
     applyMediaFields(productData);
     await handleBase64Images(productData);
+    normalizeMeatAttributes(productData);
+    normalizeProductUnitsAndScheduling(productData);
+
+    if (productData.categoryId || productData.subcategoryId) {
+      const hierarchyCheck = await validateCategoryHierarchy({
+        headerId: productData.headerId,
+        categoryId: productData.categoryId,
+        subcategoryId: productData.subcategoryId,
+      });
+      if (!hierarchyCheck.valid) {
+        return handleResponse(res, 400, hierarchyCheck.message);
+      }
+    }
 
     // Handle tags if string
     if (typeof productData.tags === "string") {
@@ -1008,6 +1109,19 @@ export const updateProduct = async (req, res) => {
 
     applyMediaFields(productData, product);
     await handleBase64Images(productData);
+    normalizeMeatAttributes(productData);
+    normalizeProductUnitsAndScheduling(productData);
+
+    if (productData.categoryId || productData.subcategoryId) {
+      const hierarchyCheck = await validateCategoryHierarchy({
+        headerId: productData.headerId || product.headerId,
+        categoryId: productData.categoryId || product.categoryId,
+        subcategoryId: productData.subcategoryId || product.subcategoryId,
+      });
+      if (!hierarchyCheck.valid) {
+        return handleResponse(res, 400, hierarchyCheck.message);
+      }
+    }
 
     if (typeof productData.tags === "string") {
       productData.tags = productData.tags.split(",").map((tag) => tag.trim());

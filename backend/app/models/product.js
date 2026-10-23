@@ -64,6 +64,74 @@ const productSchema = new mongoose.Schema(
             type: String,
             trim: true,
         },
+        unit: {
+            type: String,
+            enum: ["g", "kg", "pc", "pack", "box"],
+            default: "pack",
+        },
+        unitValue: {
+            type: Number,
+            default: 1,
+            min: 0.01,
+        },
+        orderIncrement: {
+            type: Number,
+            default: 1,
+            min: 0.01,
+        },
+        minOrderQty: {
+            type: Number,
+            default: 1,
+            min: 0.01,
+        },
+        maxOrderQty: {
+            type: Number,
+            default: null,
+        },
+        isScheduled: {
+            type: Boolean,
+            default: false,
+        },
+        scheduleDays: [{
+            type: String,
+            enum: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+        }],
+        availableFromTime: {
+            type: String,
+            default: null,
+        },
+        availableToTime: {
+            type: String,
+            default: null,
+        },
+        scheduleStartDate: {
+            type: Date,
+            default: null,
+        },
+        scheduleEndDate: {
+            type: Date,
+            default: null,
+        },
+        cutType: {
+            type: String,
+            trim: true,
+            default: null,
+        },
+        boneType: {
+            type: String,
+            enum: ["bone_in", "boneless", "not_applicable", null],
+            default: null,
+        },
+        skinType: {
+            type: String,
+            enum: ["skin_on", "skinless", "not_applicable", null],
+            default: null,
+        },
+        freshness: {
+            type: String,
+            enum: ["fresh", "chilled", "frozen", "not_applicable", null],
+            default: null,
+        },
         tags: [{
             type: String,
             trim: true,

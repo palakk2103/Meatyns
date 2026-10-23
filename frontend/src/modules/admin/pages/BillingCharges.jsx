@@ -23,7 +23,8 @@ const BillingCharges = () => {
 
     const [config, setConfig] = useState({
         platformFee: 0,
-        freeDeliveryThreshold: 0,
+        freeDeliveryThreshold: 499,
+        minimumOrderValue: 0,
         baseCharge: 30,
         riderBasePayout: 30,
         baseDistance: 0.5,
@@ -58,6 +59,8 @@ const BillingCharges = () => {
                         extraPerKm: s.incrementalKmSurcharge ?? prev.extraPerKm,
                         deliveryPartnerRatePerKm: s.deliveryPartnerRatePerKm ?? s.fleetCommissionRatePerKm ?? prev.deliveryPartnerRatePerKm,
                         fixedCharge: s.fixedDeliveryFee ?? s.customerBaseDeliveryFee ?? prev.fixedCharge,
+                        freeDeliveryThreshold: s.freeDeliveryThreshold ?? prev.freeDeliveryThreshold,
+                        minimumOrderValue: s.minimumOrderValue ?? prev.minimumOrderValue,
                         handlingFeeStrategy: s.handlingFeeStrategy ?? prev.handlingFeeStrategy,
                         codEnabled: s.codEnabled ?? prev.codEnabled,
                         onlineEnabled: s.onlineEnabled ?? prev.onlineEnabled,
@@ -87,6 +90,8 @@ const BillingCharges = () => {
                     deliveryPartnerRatePerKm: config.deliveryPartnerRatePerKm,
                     fleetCommissionRatePerKm: config.deliveryPartnerRatePerKm,
                     fixedDeliveryFee: config.fixedCharge,
+                    freeDeliveryThreshold: Number(config.freeDeliveryThreshold) || 0,
+                    minimumOrderValue: Number(config.minimumOrderValue) || 0,
                     handlingFeeStrategy: config.handlingFeeStrategy,
                     codEnabled: config.codEnabled,
                     onlineEnabled: config.onlineEnabled,
@@ -186,6 +191,23 @@ const BillingCharges = () => {
                                     />
                                 </div>
                                 <p className="text-[10px] font-bold text-slate-400 italic">Orders above this amount will have free delivery.</p>
+                            </div>
+                            <div className="space-y-3 md:col-span-2">
+                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                                    Minimum Order Value (₹)
+                                    <Info className="h-3 w-3 opacity-50" />
+                                </label>
+                                <div className="relative group">
+                                    <span className="absolute left-5 top-1/2 -translate-y-1/2 font-bold text-slate-300 group-focus-within:text-red-500 transition-colors">₹</span>
+                                    <input
+                                        type="number"
+                                        value={config.minimumOrderValue}
+                                        onChange={(e) => handleInputChange('minimumOrderValue', e.target.value)}
+                                        className="w-full pl-10 pr-5 py-4 bg-slate-50 border-none rounded-2xl text-base font-black text-slate-900 outline-none focus:ring-2 focus:ring-red-500/10 transition-all"
+                                        placeholder="0 for no minimum"
+                                    />
+                                </div>
+                                <p className="text-[10px] font-bold text-slate-400 italic">Customers cannot checkout if their cart is below this amount. Set to 0 to disable.</p>
                             </div>
                         </div>
                     </Card>

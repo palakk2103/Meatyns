@@ -146,9 +146,10 @@ export const customerApi = {
   // Offer sections (category → products, banner + side image)
   getOfferSections: (params) => getWithDedupe("/offer-sections", params),
 
-  // Coupons
+  // Coupons & Deals
   validateCoupon: (data) => axiosInstance.post("/coupons/validate", data),
   getActiveCoupons: () => getWithDedupe("/coupons", { status: "active" }),
+  getActiveFlashDeal: () => getWithDedupe("/flash-deals/active", {}, { ttl: 10000 }),
 
   // Maps (server-side geocoding)
   geocodeAddress: (address, params = {}) =>

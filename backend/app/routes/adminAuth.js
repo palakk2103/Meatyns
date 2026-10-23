@@ -33,6 +33,8 @@ import {
     getCashSettlementHistory,
     getUsers,
     getUserById,
+    getCustomerNotes,
+    addCustomerNote,
     getSellers,
     getSellerLocations,
     getPlatformSettings,
@@ -40,7 +42,11 @@ import {
     getUserWalletDetails,
     getUserWalletHistoryController,
     addCoinsController,
-    removeCoinsController
+    removeCoinsController,
+    getStaffList,
+    createStaffMember,
+    updateStaffRole,
+    toggleStaffStatus,
 } from "../controller/adminController.js";
 import {
     exportAdminFinanceStatementController,
@@ -56,8 +62,24 @@ import {
     getAdminPaymentById,
     refundPaymentAdmin,
 } from "../controller/paymentController.js";
+import { getAdminAbandonedCarts } from "../controller/cartController.js";
+import {
+    getSegmentsOverview,
+    getSegmentCustomerList,
+} from "../controller/admin/customerSegmentController.js";
+import {
+    getAdminInventory,
+    adjustAdminStock,
+    getAdminStockHistory,
+} from "../controller/admin/inventoryAdminController.js";
 
-import { verifyToken, allowRoles } from "../middleware/authMiddleware.js";
+import {
+    verifyToken,
+    allowRoles,
+    requireAdminPermission,
+    requireSuperAdmin,
+} from "../middleware/authMiddleware.js";
+import { ADMIN_PERMISSIONS } from "../constants/rbac.js";
 import {
     adminBootstrapRateLimiter,
     authRouteRateLimiter,
@@ -155,11 +177,32 @@ router.put(
 router.put(
     "/settings/platform",
     verifyToken,
-    allowRoles("admin"),
+    requireSuperAdmin,
     updatePlatformSettings
 );
+
+// Internal staff & RBAC management (Super Admin only)
+router.get("/staff", verifyToken, requireSuperAdmin, getStaffList);
+router.post("/staff", verifyToken, requireSuperAdmin, createStaffMember);
+router.patch("/staff/:id/role", verifyToken, requireSuperAdmin, updateStaffRole);
+router.patch("/staff/:id/status", verifyToken, requireSuperAdmin, toggleStaffStatus);
+
 router.get("/users", verifyToken, allowRoles("admin"), getUsers);
 router.get("/users/:id", verifyToken, allowRoles("admin"), getUserById);
+router.get(
+    "/users/:id/notes",
+    verifyToken,
+    allowRoles("admin"),
+    requireAdminPermission(ADMIN_PERMISSIONS.CRM_NOTES_MANAGE),
+    getCustomerNotes
+);
+router.post(
+    "/users/:id/notes",
+    verifyToken,
+    allowRoles("admin"),
+    requireAdminPermission(ADMIN_PERMISSIONS.CRM_NOTES_MANAGE),
+    addCustomerNote
+);
 router.get("/users/:id/wallet", verifyToken, allowRoles("admin"), getUserWalletDetails);
 router.get("/users/:id/wallet/history", verifyToken, allowRoles("admin"), getUserWalletHistoryController);
 router.post("/wallet/add-coins", verifyToken, allowRoles("admin"), addCoinsController);
@@ -216,6 +259,48 @@ router.put("/withdrawals/:id", verifyToken, allowRoles("admin"), updateWithdrawa
 router.get("/payments", verifyToken, allowRoles("admin"), getAdminPayments);
 router.get("/payments/:id", verifyToken, allowRoles("admin"), getAdminPaymentById);
 router.post("/payments/:id/refund", verifyToken, allowRoles("admin"), refundPaymentAdmin);
+
+// Abandoned Cart Analytics & Recovery Oversight
+router.get(
+    "/abandoned-carts",
+    verifyToken,
+    requireAdminPermission(ADMIN_PERMISSIONS.MARKETING_VIEW),
+    getAdminAbandonedCarts
+);
+
+// Customer Behavioral Segmentation
+router.get(
+    "/segments",
+    verifyToken,
+    requireAdminPermission(ADMIN_PERMISSIONS.CUSTOMERS_VIEW),
+    getSegmentsOverview
+);
+router.get(
+    "/segments/:key/customers",
+    verifyToken,
+    requireAdminPermission(ADMIN_PERMISSIONS.CUSTOMERS_VIEW),
+    getSegmentCustomerList
+);
+
+// Store-Wise Inventory & Stock Audit
+router.get(
+    "/inventory",
+    verifyToken,
+    requireAdminPermission(ADMIN_PERMISSIONS.PRODUCTS_VIEW),
+    getAdminInventory
+);
+router.post(
+    "/inventory/adjust",
+    verifyToken,
+    requireAdminPermission(ADMIN_PERMISSIONS.STOCK_MANAGE),
+    adjustAdminStock
+);
+router.get(
+    "/inventory/history",
+    verifyToken,
+    requireAdminPermission(ADMIN_PERMISSIONS.STOCK_MANAGE),
+    getAdminStockHistory
+);
 
 // Protected admin route example
 router.get(

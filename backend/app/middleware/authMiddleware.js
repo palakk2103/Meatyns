@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import handleResponse from "../utils/helper.js";
 import Seller from "../models/seller.js";
 import logger from "../services/logger.js";
+import { hasAdminPermission, isSuperAdmin } from "../constants/rbac.js";
 
 function extractJwtFromHeaders(req) {
   const authHeader = String(req.headers.authorization || "").trim();
@@ -77,11 +78,46 @@ export const optionalVerifyToken = (req, res, next) => {
 ================================ */
 export const allowRoles = (...roles) => {
   return (req, res, next) => {
-    if (!roles.includes(req.user.role)) {
+    if (!req.user || !roles.includes(req.user.role)) {
       return handleResponse(res, 403, "Access denied");
     }
     next();
   };
+};
+
+/* ===============================
+   Admin Permission & Role Guards
+================================ */
+export const requireAdminPermission = (...permissions) => {
+  return (req, res, next) => {
+    if (!req.user || req.user.role !== "admin") {
+      return handleResponse(res, 403, "Access denied: Admin authorization required");
+    }
+
+    const hasAccess = permissions.some((perm) => hasAdminPermission(req.user, perm));
+    if (!hasAccess) {
+      return handleResponse(
+        res,
+        403,
+        `Access denied: Missing required permission [${permissions.join(", ")}]`,
+      );
+    }
+
+    next();
+  };
+};
+
+export const requireSuperAdmin = (req, res, next) => {
+  if (!req.user || req.user.role !== "admin") {
+    return handleResponse(res, 403, "Access denied: Admin authorization required");
+  }
+
+  const role = req.user.adminRole || req.user.role;
+  if (!isSuperAdmin(role)) {
+    return handleResponse(res, 403, "Access denied: Super Admin authorization required");
+  }
+
+  next();
 };
 
 /* ===============================

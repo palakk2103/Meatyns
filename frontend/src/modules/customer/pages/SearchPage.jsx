@@ -13,6 +13,7 @@ import { useLocation as useAppLocation } from '../context/LocationContext';
 import { useCart } from '../context/CartContext';
 import { getJSON, setJSON, STORAGE_KEYS } from '@core/utils/storage';
 import Lottie from 'lottie-react';
+import { trackSearch } from '@/core/meta/pixelService';
 
 const SearchPage = () => {
     const navigate = useNavigate();
@@ -122,6 +123,7 @@ const SearchPage = () => {
                 };
                 if (trimmedQuery) {
                     params.search = trimmedQuery;
+                    trackSearch(trimmedQuery);
                 }
                 if (
                     Number.isFinite(currentLocation?.latitude) &&

@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import Product from "../../models/product.js";
 import Category from "../../models/category.js";
+import FlashDeal from "../../models/flashDeal.js";
 import {
   PRODUCT_APPROVAL_STATUS,
   resolveProductApprovalStatus,
@@ -21,6 +22,7 @@ import {
   roundCurrency,
 } from "../../utils/money.js";
 import { getOrCreateFinanceSettings } from "./financeSettingsService.js";
+import { evaluateProductAvailability } from "../productSchedulingService.js";
 
 function parseWeightToGramsOrUnits(name) {
   if (!name) return { value: 1, unit: "unit" };
@@ -43,7 +45,7 @@ function toObjectIdString(value) {
 function normalizeLineQuantity(quantity) {
   const q = Number(quantity || 0);
   if (!Number.isFinite(q) || q <= 0) return 1;
-  return Math.floor(q);
+  return Number(q.toFixed(3));
 }
 
 function normalizeLinePrice(value) {
@@ -334,10 +336,57 @@ export async function hydrateOrderItems(
     .filter(Boolean);
 
   const productQuery = Product.find({ _id: { $in: productIds } })
-    .select("_id name salePrice price mainImage headerId categoryId sellerId status approvalStatus variants")
+    .select(
+      "_id name salePrice price mainImage headerId categoryId subcategoryId sellerId status approvalStatus variants unit unitValue orderIncrement minOrderQty maxOrderQty isScheduled scheduleDays availableFromTime availableToTime scheduleStartDate scheduleEndDate"
+    )
     .lean();
   if (session) productQuery.session(session);
   const products = await productQuery;
+
+  // Verify that parent categories for these products are active
+  const categoryIdsToCheck = Array.from(
+    new Set(
+      products
+        .flatMap((p) => [p.headerId, p.categoryId, p.subcategoryId])
+        .filter((id) => id && mongoose.Types.ObjectId.isValid(id))
+        .map((id) => String(id))
+    )
+  );
+  let inactiveCategoryIds = new Set();
+  if (categoryIdsToCheck.length > 0) {
+    const categoriesFound = await Category.find({ _id: { $in: categoryIdsToCheck } })
+      .select("_id status name")
+      .lean();
+    for (const c of categoriesFound) {
+      if (c.status === "inactive") {
+        inactiveCategoryIds.add(String(c._id));
+      }
+    }
+  }
+
+  const validProductObjIds = productIds
+    .filter((id) => mongoose.Types.ObjectId.isValid(id))
+    .map((id) => new mongoose.Types.ObjectId(String(id)));
+
+  const now = new Date();
+  const dealQuery = FlashDeal.find({
+    status: "active",
+    startTime: { $lte: now },
+    endTime: { $gt: now },
+    "products.productId": { $in: validProductObjIds },
+  }).lean();
+  if (session) dealQuery.session(session);
+  const activeDeals = await dealQuery;
+
+  const dealProductMap = new Map();
+  for (const deal of activeDeals || []) {
+    for (const dp of deal.products || []) {
+      const pIdStr = String(dp.productId);
+      if (!dealProductMap.has(pIdStr)) {
+        dealProductMap.set(pIdStr, dp);
+      }
+    }
+  }
 
   const productMap = new Map(products.map((product) => [String(product._id), product]));
 
@@ -352,6 +401,26 @@ export async function hydrateOrderItems(
     }
     if (resolveProductApprovalStatus(product) !== PRODUCT_APPROVAL_STATUS.APPROVED) {
       throw new Error(`Product is not approved for purchase: ${product.name}`);
+    }
+
+    const pHeader = String(product.headerId || "");
+    const pCat = String(product.categoryId || "");
+    const pSub = String(product.subcategoryId || "");
+    if (
+      (pHeader && inactiveCategoryIds.has(pHeader)) ||
+      (pCat && inactiveCategoryIds.has(pCat)) ||
+      (pSub && inactiveCategoryIds.has(pSub))
+    ) {
+      const err = new Error(`Product "${product.name}" belongs to an inactive category and is unavailable for purchase`);
+      err.statusCode = 400;
+      throw err;
+    }
+
+    const scheduleCheck = evaluateProductAvailability(product);
+    if (!scheduleCheck.isAvailable) {
+      const err = new Error(`Product "${product.name}" is currently unavailable: ${scheduleCheck.message}`);
+      err.statusCode = 400;
+      throw err;
     }
 
     const rawVariantSku = String(item.variantSku || item.variantSlot || "").trim();
@@ -401,9 +470,19 @@ export async function hydrateOrderItems(
       }
     }
 
-    const serverUnitPrice = normalizeLinePrice(
+    const standardUnitPrice = normalizeLinePrice(
       salePrice > 0 && salePrice < price ? salePrice : price
     );
+    let serverUnitPrice = standardUnitPrice;
+    const activeDealItem = dealProductMap.get(productId);
+    if (
+      activeDealItem &&
+      Number(activeDealItem.flashPrice) > 0 &&
+      Number(activeDealItem.flashPrice) < serverUnitPrice
+    ) {
+      serverUnitPrice = normalizeLinePrice(activeDealItem.flashPrice);
+    }
+
     const inferredUnitPrice = enforceServerPricing
       ? serverUnitPrice
       : normalizeLinePrice(item.price) || serverUnitPrice;
@@ -427,6 +506,8 @@ export async function hydrateOrderItems(
       sellerId: String(product.sellerId || ""),
       variantSku: rawVariantSku || "",
       variantName: resolvedVariant ? String(resolvedVariant?.name || "").trim() : "",
+      unit: product.unit || "pack",
+      unitValue: product.unitValue || 1,
     };
   });
 }

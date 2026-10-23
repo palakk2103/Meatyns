@@ -14,6 +14,8 @@ import {
   hydrateOrderItems,
 } from "./finance/pricingService.js";
 import { computeOrderDiscount } from "./finance/couponService.js";
+import { getOrCreateFinanceSettings } from "./finance/financeSettingsService.js";
+import { validateCustomerDealLimit } from "./flashDealService.js";
 
 function normalizeLocation(location = null) {
   const lat = Number(location?.lat);
@@ -295,7 +297,7 @@ function applyGlobalHandlingFeeToSellerBreakdowns(
 // and `platformLogisticsMargin`. Runs AFTER handling-fee allocation
 // (so `grossTotal` exists) and BEFORE tip/wallet allocation (so they
 // allocate against the post-rebate grandTotal).
-function applyFreeDeliveryToSellerBreakdowns(sellerBreakdownEntries = []) {
+export function applyFreeDeliveryToSellerBreakdowns(sellerBreakdownEntries = []) {
   for (const entry of sellerBreakdownEntries) {
     const breakdown = entry?.breakdown;
     if (!breakdown) continue;
@@ -412,6 +414,17 @@ export async function buildCheckoutPricingSnapshot({
     throw err;
   }
 
+  if (customerId) {
+    for (const item of hydratedItems) {
+      await validateCustomerDealLimit({
+        customerId,
+        productId: item.productId,
+        requestedQty: item.quantity,
+        session,
+      });
+    }
+  }
+
   // Audit Phase 5 (C-2): when the flag is ON, route discount through
   // the centralized engine. The client-supplied `discountTotal` is
   // discarded in favour of the server-computed amount so customers
@@ -454,6 +467,19 @@ export async function buildCheckoutPricingSnapshot({
     totalSubtotal += subtotal;
   }
 
+  const financeSettings = await getOrCreateFinanceSettings({ session });
+
+  if (
+    financeSettings.minimumOrderValue > 0 &&
+    totalSubtotal < financeSettings.minimumOrderValue
+  ) {
+    const err = new Error(
+      `Minimum order value is ₹${financeSettings.minimumOrderValue}. Please add more items to proceed.`,
+    );
+    err.statusCode = 400;
+    throw err;
+  }
+
   for (const sellerId of sellerIds) {
     const sellerItems = itemsBySeller.get(sellerId) || [];
     const distanceKm = await computeDistanceKmForSeller({
@@ -487,11 +513,15 @@ export async function buildCheckoutPricingSnapshot({
   }
 
   applyGlobalHandlingFeeToSellerBreakdowns(sellerBreakdownEntries, globalHandling);
-  // Audit Phase 5 (H-6): free-delivery rebate must run AFTER handling
+  // Audit Phase 5 (H-6) & Stage 3: free-delivery rebate must run AFTER handling
   // (so `grossTotal` is final on the delivery axis) and BEFORE tip /
   // wallet allocation (so they clamp against the post-rebate grandTotal,
   // matching the frontend math).
-  if (applyFreeDelivery) {
+  const qualifiesForPlatformFreeDelivery =
+    financeSettings.freeDeliveryThreshold > 0 &&
+    totalSubtotal >= financeSettings.freeDeliveryThreshold;
+
+  if (applyFreeDelivery || qualifiesForPlatformFreeDelivery) {
     applyFreeDeliveryToSellerBreakdowns(sellerBreakdownEntries);
   }
   allocateCheckoutTipToSellerBreakdowns(sellerBreakdownEntries, tipAmount);
@@ -514,6 +544,9 @@ export async function buildCheckoutPricingSnapshot({
   const aggregateBreakdown = buildAggregateBreakdown(
     sellerBreakdownEntries.map((entry) => entry.breakdown),
   );
+  aggregateBreakdown.freeDeliveryThreshold = financeSettings.freeDeliveryThreshold;
+  aggregateBreakdown.minimumOrderValue = financeSettings.minimumOrderValue;
+  aggregateBreakdown.isFreeDeliveryApplied = Boolean(applyFreeDelivery || qualifiesForPlatformFreeDelivery);
 
   return {
     hydratedItems,

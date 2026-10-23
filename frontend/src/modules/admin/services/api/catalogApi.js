@@ -31,6 +31,11 @@ export const adminCatalogApi = {
     updateProduct: (id, formData) =>
         axiosInstance.put(`/products/${id}`, formData),
     deleteProduct: (id) => axiosInstance.delete(`/products/${id}`),
+
+    // Store-Wise Inventory & Stock Audit
+    getInventory: (params) => axiosInstance.get('/admin/inventory', { params }),
+    adjustStock: (data) => axiosInstance.post('/admin/inventory/adjust', data),
+    getStockHistory: (params) => axiosInstance.get('/admin/inventory/history', { params }),
 };
 
 export default adminCatalogApi;

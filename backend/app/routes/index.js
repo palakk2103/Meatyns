@@ -23,6 +23,9 @@ import healthRoute from "./healthRoutes.js";
 import metricsRoute from "./metricsRoutes.js";
 import authOtpRoute from "../modules/otp/otp.routes.js";
 import walletRoute from "./walletRoutes.js";
+import flashDealRoute from "./flashDealRoutes.js";
+import metaRoute from "./metaRoutes.js";
+import posIntegrationRoute from "./posIntegrationRoutes.js";
 
 import express from "express";
 
@@ -63,6 +66,7 @@ const setupRoutes = (app) => {
     router.use("/", experienceRoute);
     router.use("/", offerRoute);
     router.use("/", couponRoute);
+    router.use("/", flashDealRoute);
     router.use("/notifications", notificationRoute);
     router.use("/auth/otp", authOtpRoute);
     router.use("/push", pushRoute);
@@ -70,6 +74,10 @@ const setupRoutes = (app) => {
     router.use("/reviews", reviewRoute);
     router.use("/admin/faqs", faqRoute);
     router.use("/public/faqs", faqRoute); // For public access without admin prefix
+    router.use("/admin/meta", metaRoute);
+    router.use("/meta", metaRoute);
+    router.use("/v1/integrations/pos", posIntegrationRoute);
+    router.use("/integrations/pos", posIntegrationRoute);
 
     app.use("/api", router);
 }

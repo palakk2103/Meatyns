@@ -95,6 +95,7 @@ export async function getUserByIdData(id) {
           ],
         },
         addresses: { $ifNull: ["$addresses", []] },
+        crmNotes: { $ifNull: ["$crmNotes", []] },
       },
     },
   ]);

@@ -23,12 +23,14 @@ import {
     HiOutlineSquaresPlus,
     HiOutlineGlobeAlt,
     HiOutlineSparkles,
-    HiOutlineEye
+    HiOutlineEye,
+    HiOutlineClock
 } from 'react-icons/hi2';
 import Modal from '@shared/components/ui/Modal';
 import Pagination from '@shared/components/ui/Pagination';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
+import { StoreInventoryView } from './components/StoreInventoryView';
 
 const ProductManagement = () => {
     const [products, setProducts] = useState([]);
@@ -80,7 +82,17 @@ const ProductManagement = () => {
         salePrice: '',
         stock: '',
         lowStockAlert: 5,
-        unit: 'packet',
+        unit: 'pack',
+        unitValue: 1,
+        orderIncrement: 1,
+        minOrderQty: 1,
+        maxOrderQty: '',
+        isScheduled: false,
+        scheduleDays: [],
+        availableFromTime: '',
+        availableToTime: '',
+        scheduleStartDate: '',
+        scheduleEndDate: '',
         header: '',
         categoryId: '',
         subcategoryId: '',
@@ -89,6 +101,10 @@ const ProductManagement = () => {
         tags: '',
         weight: '',
         brand: '',
+        cutType: '',
+        boneType: '',
+        skinType: '',
+        freshness: '',
         mainImage: null,
         galleryImages: [],
         variants: [
@@ -178,7 +194,19 @@ const ProductManagement = () => {
             data.append('salePrice', Number(formData.salePrice) || 0);
             data.append('stock', Number(formData.stock));
             data.append('lowStockAlert', Number(formData.lowStockAlert) || 5);
-            data.append('unit', formData.unit);
+            data.append('unit', formData.unit || 'pack');
+            data.append('unitValue', Number(formData.unitValue) || 1);
+            data.append('orderIncrement', Number(formData.orderIncrement) || 1);
+            data.append('minOrderQty', Number(formData.minOrderQty) || 1);
+            if (formData.maxOrderQty) {
+                data.append('maxOrderQty', Number(formData.maxOrderQty));
+            }
+            data.append('isScheduled', Boolean(formData.isScheduled));
+            data.append('scheduleDays', JSON.stringify(formData.scheduleDays || []));
+            data.append('availableFromTime', formData.availableFromTime || '');
+            data.append('availableToTime', formData.availableToTime || '');
+            if (formData.scheduleStartDate) data.append('scheduleStartDate', formData.scheduleStartDate);
+            if (formData.scheduleEndDate) data.append('scheduleEndDate', formData.scheduleEndDate);
             data.append('headerId', formData.header || formData.categoryId);
             data.append('categoryId', formData.categoryId || formData.header);
             data.append('subcategoryId', formData.subcategoryId);
@@ -186,6 +214,10 @@ const ProductManagement = () => {
             data.append('isFeatured', formData.isFeatured);
             data.append('brand', formData.brand);
             data.append('weight', formData.weight);
+            data.append('cutType', formData.cutType || '');
+            data.append('boneType', formData.boneType || '');
+            data.append('skinType', formData.skinType || '');
+            data.append('freshness', formData.freshness || '');
             data.append('tags', formData.tags);
             data.append('variants', JSON.stringify(formData.variants));
 
@@ -317,7 +349,17 @@ const ProductManagement = () => {
                 salePrice: item.salePrice || item.discountPrice || '',
                 stock: item.stock || '',
                 lowStockAlert: item.lowStockAlert || 5,
-                unit: item.unit || 'packet',
+                unit: item.unit || 'pack',
+                unitValue: item.unitValue || 1,
+                orderIncrement: item.orderIncrement || 1,
+                minOrderQty: item.minOrderQty || 1,
+                maxOrderQty: item.maxOrderQty || '',
+                isScheduled: item.isScheduled || false,
+                scheduleDays: Array.isArray(item.scheduleDays) ? item.scheduleDays : [],
+                availableFromTime: item.availableFromTime || '',
+                availableToTime: item.availableToTime || '',
+                scheduleStartDate: item.scheduleStartDate ? String(item.scheduleStartDate).slice(0, 10) : '',
+                scheduleEndDate: item.scheduleEndDate ? String(item.scheduleEndDate).slice(0, 10) : '',
                 header: item.headerId?._id || item.headerId || '',
                 categoryId: item.categoryId?._id || item.categoryId || '',
                 subcategoryId: item.subcategoryId?._id || item.subcategoryId || '',
@@ -326,6 +368,10 @@ const ProductManagement = () => {
                 tags: Array.isArray(item.tags) ? item.tags.join(', ') : item.tags || '',
                 weight: item.weight || '',
                 brand: item.brand || '',
+                cutType: item.cutType || '',
+                boneType: item.boneType || '',
+                skinType: item.skinType || '',
+                freshness: item.freshness || '',
                 mainImage: item.mainImage || null,
                 galleryImages: item.galleryImages || item.images || [],
                 variants: (item.variants && item.variants.length > 0) ? item.variants.map(v => ({ ...v, id: v._id || Date.now() })) : [
@@ -343,9 +389,13 @@ const ProductManagement = () => {
         } else {
             setFormData({
                 name: '', slug: '', sku: '', metaTitle: '', metaDescription: '', seoKeywords: [], description: '', price: '',
-                salePrice: '', stock: '', lowStockAlert: 5, unit: 'packet',
+                salePrice: '', stock: '', lowStockAlert: 5, unit: 'pack',
+                unitValue: 1, orderIncrement: 1, minOrderQty: 1, maxOrderQty: '',
+                isScheduled: false, scheduleDays: [], availableFromTime: '', availableToTime: '',
+                scheduleStartDate: '', scheduleEndDate: '',
                 header: '', categoryId: '', subcategoryId: '', status: 'active',
                 isFeatured: false, tags: '', weight: '', brand: '',
+                cutType: '', boneType: '', skinType: '', freshness: '',
                 mainImage: null, galleryImages: [],
                 variants: [
                     { id: Date.now(), name: 'Default', price: '', salePrice: '', stock: '', sku: '' }
@@ -476,8 +526,28 @@ const ProductManagement = () => {
                             </span>
                         )}
                     </button>
+                    <button
+                        type="button"
+                        onClick={() => {
+                            setViewMode('inventory');
+                        }}
+                        className={cn(
+                            "flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all",
+                            viewMode === 'inventory'
+                                ? "bg-white text-emerald-800 shadow-sm ring-1 ring-emerald-200"
+                                : "text-slate-500 hover:text-slate-800"
+                        )}
+                    >
+                        <HiOutlineArchiveBox className="h-4 w-4 text-emerald-600" />
+                        <span>Store Stock & Inventory</span>
+                    </button>
                 </div>
             </div>
+
+            {viewMode === 'inventory' ? (
+                <StoreInventoryView />
+            ) : (
+                <>
 
             {/* Quick Stats */}
             {viewMode === 'seo' ? (
@@ -1045,6 +1115,7 @@ const ProductManagement = () => {
                                 <div className="lg:w-1/4 bg-slate-50/50 border-r border-slate-100 p-4 space-y-1 overflow-y-auto overscroll-contain scrollbar-hide min-h-0">
                                     {[
                                         { id: 'general', label: 'General Info', icon: HiOutlineTag },
+                                        { id: 'scheduling', label: 'Units & Scheduling', icon: HiOutlineClock },
                                         { id: 'variants', label: 'Item Variants', icon: HiOutlineSwatch },
                                         { id: 'category', label: 'Groups', icon: HiOutlineFolderOpen },
                                         { id: 'media', label: 'Photos', icon: HiOutlinePhoto },
@@ -1145,6 +1216,73 @@ const ProductManagement = () => {
                                                         className="w-full px-4 py-2.5 bg-slate-100 border-none rounded-xl text-sm font-mono font-bold outline-none ring-primary/5 focus:ring-2"
                                                         placeholder="AUTO-GENERATED"
                                                     />
+                                                </div>
+                                            </div>
+
+                                            {/* Meat & Preparation Attributes (Optional) */}
+                                            <div className="p-4 bg-slate-50 border border-slate-100 rounded-2xl space-y-4">
+                                                <h4 className="text-[10px] font-black text-slate-700 uppercase tracking-widest flex items-center gap-2">
+                                                    Meat & Preparation Attributes (Optional)
+                                                </h4>
+                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                    <div className="space-y-1 flex flex-col">
+                                                        <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest ml-1">Cut Type</label>
+                                                        <select
+                                                            value={formData.cutType}
+                                                            onChange={(e) => setFormData({ ...formData, cutType: e.target.value })}
+                                                            className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:ring-2 focus:ring-primary/20"
+                                                        >
+                                                            <option value="">None / General</option>
+                                                            <option value="biryani_cut">Biryani Cut</option>
+                                                            <option value="curry_cut">Curry Cut</option>
+                                                            <option value="boneless_cubes">Boneless Cubes</option>
+                                                            <option value="whole">Whole</option>
+                                                            <option value="steaks">Steaks</option>
+                                                            <option value="fillet">Fillet</option>
+                                                            <option value="mince_keema">Mince / Keema</option>
+                                                            <option value="chops">Chops</option>
+                                                            <option value="drumstick">Drumstick</option>
+                                                            <option value="wings">Wings</option>
+                                                            <option value="custom">Custom Cut</option>
+                                                        </select>
+                                                    </div>
+                                                    <div className="space-y-1 flex flex-col">
+                                                        <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest ml-1">Bone Type</label>
+                                                        <select
+                                                            value={formData.boneType}
+                                                            onChange={(e) => setFormData({ ...formData, boneType: e.target.value })}
+                                                            className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:ring-2 focus:ring-primary/20"
+                                                        >
+                                                            <option value="">Not Applicable</option>
+                                                            <option value="bone_in">Bone-In</option>
+                                                            <option value="boneless">Boneless</option>
+                                                        </select>
+                                                    </div>
+                                                    <div className="space-y-1 flex flex-col">
+                                                        <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest ml-1">Skin Type</label>
+                                                        <select
+                                                            value={formData.skinType}
+                                                            onChange={(e) => setFormData({ ...formData, skinType: e.target.value })}
+                                                            className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:ring-2 focus:ring-primary/20"
+                                                        >
+                                                            <option value="">Not Applicable</option>
+                                                            <option value="skin_on">Skin-On</option>
+                                                            <option value="skinless">Skinless</option>
+                                                        </select>
+                                                    </div>
+                                                    <div className="space-y-1 flex flex-col">
+                                                        <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest ml-1">Freshness / Temperature</label>
+                                                        <select
+                                                            value={formData.freshness}
+                                                            onChange={(e) => setFormData({ ...formData, freshness: e.target.value })}
+                                                            className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:ring-2 focus:ring-primary/20"
+                                                        >
+                                                            <option value="">Not Applicable</option>
+                                                            <option value="fresh">Fresh</option>
+                                                            <option value="chilled">Chilled</option>
+                                                            <option value="frozen">Frozen</option>
+                                                        </select>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -1613,6 +1751,180 @@ const ProductManagement = () => {
                                             </div>
                                         </div>
                                     )}
+
+                                    {modalTab === 'scheduling' && (
+                                        <div className="ds-section-spacing animate-in fade-in slide-in-from-right-2 duration-300 space-y-6">
+                                            {/* Units & Measurement Card */}
+                                            <div className="p-4 bg-slate-50 border border-slate-100 rounded-2xl space-y-4">
+                                                <h4 className="text-[10px] font-black text-slate-700 uppercase tracking-widest flex items-center gap-2">
+                                                    Flexible Units & Increments
+                                                </h4>
+                                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                                    <div className="space-y-1 flex flex-col">
+                                                        <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest ml-1">Selling Unit</label>
+                                                        <select
+                                                            value={formData.unit}
+                                                            onChange={(e) => setFormData({ ...formData, unit: e.target.value })}
+                                                            className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:ring-2 focus:ring-primary/20"
+                                                        >
+                                                            <option value="pack">Pack / Packet</option>
+                                                            <option value="pc">Piece (pc)</option>
+                                                            <option value="kg">Kilogram (kg)</option>
+                                                            <option value="g">Gram (g)</option>
+                                                            <option value="box">Box</option>
+                                                        </select>
+                                                    </div>
+                                                    <div className="space-y-1 flex flex-col">
+                                                        <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest ml-1">Unit Value / Measure</label>
+                                                        <input
+                                                            type="number"
+                                                            step="0.01"
+                                                            min="0.01"
+                                                            value={formData.unitValue}
+                                                            onChange={(e) => setFormData({ ...formData, unitValue: e.target.value })}
+                                                            className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:ring-2 focus:ring-primary/20"
+                                                            placeholder="e.g. 1 or 500"
+                                                        />
+                                                    </div>
+                                                    <div className="space-y-1 flex flex-col">
+                                                        <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest ml-1">Order Step / Increment</label>
+                                                        <input
+                                                            type="number"
+                                                            step="0.01"
+                                                            min="0.01"
+                                                            value={formData.orderIncrement}
+                                                            onChange={(e) => setFormData({ ...formData, orderIncrement: e.target.value })}
+                                                            className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:ring-2 focus:ring-primary/20"
+                                                            placeholder="e.g. 1 or 0.25"
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+                                                    <div className="space-y-1 flex flex-col">
+                                                        <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest ml-1">Min Order Quantity</label>
+                                                        <input
+                                                            type="number"
+                                                            step="0.01"
+                                                            min="0.01"
+                                                            value={formData.minOrderQty}
+                                                            onChange={(e) => setFormData({ ...formData, minOrderQty: e.target.value })}
+                                                            className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:ring-2 focus:ring-primary/20"
+                                                            placeholder="e.g. 1"
+                                                        />
+                                                    </div>
+                                                    <div className="space-y-1 flex flex-col">
+                                                        <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest ml-1">Max Order Quantity (Cap)</label>
+                                                        <input
+                                                            type="number"
+                                                            step="1"
+                                                            min="1"
+                                                            value={formData.maxOrderQty}
+                                                            onChange={(e) => setFormData({ ...formData, maxOrderQty: e.target.value })}
+                                                            className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:ring-2 focus:ring-primary/20"
+                                                            placeholder="Optional cap (e.g. 10)"
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {/* Availability Scheduling Card */}
+                                            <div className="p-4 bg-slate-50 border border-slate-100 rounded-2xl space-y-4">
+                                                <div className="flex items-center justify-between">
+                                                    <h4 className="text-[10px] font-black text-slate-700 uppercase tracking-widest flex items-center gap-2">
+                                                        Product Availability Scheduling
+                                                    </h4>
+                                                    <label className="flex items-center gap-2 cursor-pointer text-xs font-bold text-primary">
+                                                        <input
+                                                            type="checkbox"
+                                                            checked={formData.isScheduled}
+                                                            onChange={(e) => setFormData({ ...formData, isScheduled: e.target.checked })}
+                                                            className="rounded border-slate-300 text-primary focus:ring-primary h-4 w-4"
+                                                        />
+                                                        <span>Enable Schedule Rules</span>
+                                                    </label>
+                                                </div>
+
+                                                {formData.isScheduled && (
+                                                    <div className="space-y-4 pt-2 border-t border-slate-200/60">
+                                                        {/* Daily selling window */}
+                                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                                            <div className="space-y-1 flex flex-col">
+                                                                <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest ml-1">Daily Available From (HH:mm)</label>
+                                                                <input
+                                                                    type="time"
+                                                                    value={formData.availableFromTime}
+                                                                    onChange={(e) => setFormData({ ...formData, availableFromTime: e.target.value })}
+                                                                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:ring-2 focus:ring-primary/20"
+                                                                />
+                                                            </div>
+                                                            <div className="space-y-1 flex flex-col">
+                                                                <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest ml-1">Daily Available To (HH:mm)</label>
+                                                                <input
+                                                                    type="time"
+                                                                    value={formData.availableToTime}
+                                                                    onChange={(e) => setFormData({ ...formData, availableToTime: e.target.value })}
+                                                                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:ring-2 focus:ring-primary/20"
+                                                                />
+                                                            </div>
+                                                        </div>
+
+                                                        {/* Allowed Days of Week */}
+                                                        <div className="space-y-1.5 flex flex-col">
+                                                            <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest ml-1">Selling Days of Week</label>
+                                                            <div className="flex flex-wrap gap-2">
+                                                                {["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"].map((day) => {
+                                                                    const isSelected = (formData.scheduleDays || []).includes(day);
+                                                                    return (
+                                                                        <button
+                                                                            key={day}
+                                                                            type="button"
+                                                                            onClick={() => {
+                                                                                const current = formData.scheduleDays || [];
+                                                                                const next = isSelected
+                                                                                    ? current.filter((d) => d !== day)
+                                                                                    : [...current, day];
+                                                                                setFormData({ ...formData, scheduleDays: next });
+                                                                            }}
+                                                                            className={cn(
+                                                                                "px-3 py-1.5 rounded-xl text-xs font-bold border transition-all",
+                                                                                isSelected
+                                                                                    ? "bg-primary text-white border-primary shadow-xs"
+                                                                                    : "bg-white text-slate-600 border-slate-200 hover:bg-slate-100"
+                                                                            )}
+                                                                        >
+                                                                            {day.slice(0, 3)}
+                                                                        </button>
+                                                                    );
+                                                                })}
+                                                            </div>
+                                                        </div>
+
+                                                        {/* Date range bounds (optional seasonal/event window) */}
+                                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+                                                            <div className="space-y-1 flex flex-col">
+                                                                <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest ml-1">Start Date (Optional)</label>
+                                                                <input
+                                                                    type="date"
+                                                                    value={formData.scheduleStartDate}
+                                                                    onChange={(e) => setFormData({ ...formData, scheduleStartDate: e.target.value })}
+                                                                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:ring-2 focus:ring-primary/20"
+                                                                />
+                                                            </div>
+                                                            <div className="space-y-1 flex flex-col">
+                                                                <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest ml-1">End Date (Optional)</label>
+                                                                <input
+                                                                    type="date"
+                                                                    value={formData.scheduleEndDate}
+                                                                    onChange={(e) => setFormData({ ...formData, scheduleEndDate: e.target.value })}
+                                                                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:ring-2 focus:ring-primary/20"
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 
@@ -1808,7 +2120,8 @@ const ProductManagement = () => {
                     </div>
                 </div>
             </Modal>
-
+                </>
+            )}
         </div>
     );
 };

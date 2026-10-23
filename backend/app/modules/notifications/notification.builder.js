@@ -374,6 +374,16 @@ function eventDefinition(eventType) {
           return `Only ${currentStock} left for ${itemLabel}. Restock soon.`;
         },
       };
+    case NOTIFICATION_EVENTS.ABANDONED_CART_REMINDER:
+      return {
+        role: NOTIFICATION_ROLES.CUSTOMER,
+        recipientIds: (payload) =>
+          normalizeIdList(payload.customerId || payload.userId),
+        title: (payload) => payload.title || "Items waiting in your cart 🛒",
+        body: (payload) =>
+          payload.message ||
+          "You left fresh meat cuts in your cart! Complete your order before items run out of stock.",
+      };
     default:
       return null;
   }
@@ -406,6 +416,17 @@ function eventData(eventType, payload = {}, role) {
       eventType,
       ticketId,
       link,
+      ...(payload.data || {}),
+    };
+  }
+
+  if (eventType === NOTIFICATION_EVENTS.ABANDONED_CART_REMINDER) {
+    const baseUrl = getFrontendBaseUrl();
+    return {
+      eventType,
+      link: `${baseUrl}/cart`,
+      cartId: String(payload.cartId || "").trim() || undefined,
+      itemCount: Number(payload.itemCount || 0),
       ...(payload.data || {}),
     };
   }

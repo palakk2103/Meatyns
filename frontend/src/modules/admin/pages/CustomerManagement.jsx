@@ -32,22 +32,47 @@ const CustomerManagement = () => {
     const [pageSize, setPageSize] = useState(25);
     const [total, setTotal] = useState(0);
     const [loading, setLoading] = useState(true);
+    const [selectedSegment, setSelectedSegment] = useState('all');
+    const [segments, setSegments] = useState([]);
+
+    useEffect(() => {
+        async function loadSegments() {
+            try {
+                const res = await adminApi.getCustomerSegments();
+                if (res.data?.success) {
+                    setSegments(res.data.result?.segments || []);
+                }
+            } catch {
+                // Ignore silent segment load error
+            }
+        }
+        loadSegments();
+    }, []);
 
     useEffect(() => {
         const timer = setTimeout(() => {
             fetchCustomers(1);
-        }, 500);
+        }, 300);
         return () => clearTimeout(timer);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [pageSize, searchTerm, filterStatus]);
+    }, [pageSize, searchTerm, filterStatus, selectedSegment]);
+
     const fetchCustomers = async (requestedPage = 1) => {
         try {
             setLoading(true);
             const params = { page: requestedPage, limit: pageSize };
             if (searchTerm.trim()) params.search = searchTerm.trim();
             if (filterStatus !== 'all') params.status = filterStatus;
-            const { data } = await adminApi.getUsers(params);
-            if (data.success) {
+
+            let res;
+            if (selectedSegment && selectedSegment !== 'all') {
+                res = await adminApi.getSegmentCustomers(selectedSegment, params);
+            } else {
+                res = await adminApi.getUsers(params);
+            }
+
+            const data = res.data;
+            if (data?.success) {
                 const payload = data.result || {};
                 const list = Array.isArray(payload.items) ? payload.items : (data.results || []);
                 setCustomers(list);
@@ -166,6 +191,45 @@ const CustomerManagement = () => {
                     color="text-brand-600"
                     bg="bg-brand-50"
                 />
+            </div>
+
+            {/* Behavioral Customer Segments Bar */}
+            <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+                <button
+                    onClick={() => setSelectedSegment('all')}
+                    className={cn(
+                        "px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-2",
+                        selectedSegment === 'all'
+                            ? "bg-slate-900 text-white shadow-md shadow-slate-900/10"
+                            : "bg-white text-slate-600 hover:bg-slate-50 border border-slate-200"
+                    )}
+                >
+                    <span>All Customers</span>
+                    <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-slate-800 text-slate-200">
+                        {stats.total}
+                    </span>
+                </button>
+                {segments.map((seg) => (
+                    <button
+                        key={seg.key}
+                        onClick={() => setSelectedSegment(seg.key)}
+                        title={seg.description}
+                        className={cn(
+                            "px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-2",
+                            selectedSegment === seg.key
+                                ? "bg-primary text-primary-foreground shadow-md shadow-primary/20"
+                                : "bg-white text-slate-600 hover:bg-slate-50 border border-slate-200"
+                        )}
+                    >
+                        <span>{seg.name}</span>
+                        <span className={cn(
+                            "text-[10px] px-1.5 py-0.5 rounded-full font-black",
+                            selectedSegment === seg.key ? "bg-white/20 text-white" : "bg-slate-100 text-slate-700"
+                        )}>
+                            {seg.count}
+                        </span>
+                    </button>
+                ))}
             </div>
 
             {/* Filter & Search Bar */}

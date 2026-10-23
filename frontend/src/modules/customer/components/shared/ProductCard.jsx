@@ -75,6 +75,38 @@ const ProductCard = React.memo(
     const isWishlisted = isInWishlist(productId);
     const isStoreClosed = product?.isStoreOpen === false || product?.sellerId?.isStoreOpen === false;
 
+    const isScheduleClosed = React.useMemo(() => {
+      if (!product?.isScheduled) return false;
+      if (product.availableFromTime && product.availableToTime) {
+        try {
+          const now = new Date();
+          const formatter = new Intl.DateTimeFormat("en-US", {
+            timeZone: "Asia/Kolkata",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
+          });
+          const parts = formatter.formatToParts(now);
+          let h = "00", m = "00";
+          for (const p of parts) {
+            if (p.type === "hour") h = p.value;
+            if (p.type === "minute") m = p.value;
+          }
+          if (h === "24") h = "00";
+          const current = `${h.padStart(2, "0")}:${m.padStart(2, "0")}`;
+          const start = String(product.availableFromTime).trim();
+          const end = String(product.availableToTime).trim();
+          if (start <= end) {
+            return current < start || current > end;
+          }
+          return current < start && current > end;
+        } catch {
+          return false;
+        }
+      }
+      return false;
+    }, [product?.isScheduled, product?.availableFromTime, product?.availableToTime]);
+
     const handleProductClick = React.useCallback(
       (e) => {
         if (openProduct) {
@@ -212,9 +244,20 @@ const ProductCard = React.memo(
               <h4 className="font-bold text-slate-800 text-[11px] sm:text-xs leading-snug line-clamp-1 group-hover:text-amber-800 transition-colors">
                 {product.name}
               </h4>
-              <p className="text-[9px] sm:text-[10px] text-slate-400 font-medium mt-0.5">
-                {product.weight || "500 g"}
-              </p>
+              <div className="flex items-center gap-1.5 flex-wrap mt-0.5">
+                <p className="text-[9px] sm:text-[10px] text-slate-500 font-medium">
+                  {product.unit && product.unitValue
+                    ? `${product.unitValue} ${product.unit}`
+                    : (product.weight || "500 g")}
+                </p>
+                {product.isScheduled && (
+                  <span className="text-[8px] sm:text-[9px] px-1 py-0.2 bg-amber-50 text-amber-700 border border-amber-200 rounded font-semibold leading-tight">
+                    {product.availableFromTime && product.availableToTime
+                      ? `${product.availableFromTime}-${product.availableToTime}`
+                      : "Scheduled"}
+                  </span>
+                )}
+              </div>
             </div>
 
             <div className="mt-auto">
@@ -249,6 +292,18 @@ const ProductCard = React.memo(
                   className="w-full h-6.5 sm:h-8 py-0.5 sm:py-1 px-2 sm:px-3 rounded-lg sm:rounded-xl bg-slate-100 text-slate-400 text-[10px] sm:text-xs font-semibold cursor-not-allowed border-0"
                 >
                   Store Closed
+                </button>
+              ) : isScheduleClosed ? (
+                <button
+                  disabled
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    showToast(`Product available only between ${product.availableFromTime} and ${product.availableToTime}`);
+                  }}
+                  className="w-full h-6.5 sm:h-8 py-0.5 sm:py-1 px-1.5 sm:px-2 rounded-lg sm:rounded-xl bg-amber-50 text-amber-700 text-[9.5px] sm:text-[11px] font-semibold cursor-not-allowed border border-amber-200"
+                >
+                  {product.availableFromTime ? `Opens ${product.availableFromTime}` : "Unavailable"}
                 </button>
               ) : quantity > 0 ? (
                 <div

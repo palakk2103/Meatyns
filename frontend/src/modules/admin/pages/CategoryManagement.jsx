@@ -59,6 +59,9 @@ const CategoryManagement = () => {
     displayOrder: 1,
     status: "active",
     type: "header",
+    metaTitle: "",
+    metaDescription: "",
+    canonicalUrl: "",
   });
   const [catImageFile, setCatImageFile] = useState(null);
   const [catImagePreview, setCatImagePreview] = useState(null);
@@ -74,6 +77,9 @@ const CategoryManagement = () => {
     status: "active",
     type: "category",
     parentId: "",
+    metaTitle: "",
+    metaDescription: "",
+    canonicalUrl: "",
   });
   const [subImageFile, setSubImageFile] = useState(null);
   const [subImagePreview, setSubImagePreview] = useState(null);
@@ -228,6 +234,9 @@ const CategoryManagement = () => {
         displayOrder: cat.displayOrder ?? 1,
         status: cat.status || "active",
         type: "header",
+        metaTitle: cat.metaTitle || "",
+        metaDescription: cat.metaDescription || "",
+        canonicalUrl: cat.canonicalUrl || "",
       });
       setCatImagePreview(cat.image || null);
       setCatImageFile(null);
@@ -241,6 +250,9 @@ const CategoryManagement = () => {
         displayOrder: nextOrder,
         status: "active",
         type: "header",
+        metaTitle: "",
+        metaDescription: "",
+        canonicalUrl: "",
       });
       setCatImagePreview(null);
       setCatImageFile(null);
@@ -260,6 +272,9 @@ const CategoryManagement = () => {
         status: sub.status || "active",
         type: "category",
         parentId: String(sub.parentId?._id || sub.parentId || parentCategory?._id || ""),
+        metaTitle: sub.metaTitle || "",
+        metaDescription: sub.metaDescription || "",
+        canonicalUrl: sub.canonicalUrl || "",
       });
       setSubImagePreview(sub.image || null);
       setSubImageFile(null);
@@ -276,6 +291,9 @@ const CategoryManagement = () => {
         status: "active",
         type: "category",
         parentId: pId,
+        metaTitle: "",
+        metaDescription: "",
+        canonicalUrl: "",
       });
       setSubImagePreview(null);
       setSubImageFile(null);
@@ -299,6 +317,9 @@ const CategoryManagement = () => {
       data.append("displayOrder", Number(catFormData.displayOrder) || 0);
       data.append("status", catFormData.status);
       data.append("type", "header");
+      data.append("metaTitle", catFormData.metaTitle?.trim() || "");
+      data.append("metaDescription", catFormData.metaDescription?.trim() || "");
+      data.append("canonicalUrl", catFormData.canonicalUrl?.trim() || "");
 
       if (catImageFile) {
         const compressed = await compressImage(catImageFile);
@@ -344,6 +365,9 @@ const CategoryManagement = () => {
       data.append("status", subFormData.status);
       data.append("type", "category");
       data.append("parentId", subFormData.parentId);
+      data.append("metaTitle", subFormData.metaTitle?.trim() || "");
+      data.append("metaDescription", subFormData.metaDescription?.trim() || "");
+      data.append("canonicalUrl", subFormData.canonicalUrl?.trim() || "");
 
       if (subImageFile) {
         const compressed = await compressImage(subImageFile);
@@ -1030,6 +1054,52 @@ const CategoryManagement = () => {
                   </div>
                 </div>
 
+                {/* SEO Settings */}
+                <div className="pt-3 border-t border-slate-100 space-y-3">
+                  <div className="flex items-center space-x-1.5">
+                    <Sparkles className="h-3.5 w-3.5 text-rose-500" />
+                    <span className="text-xs font-bold text-slate-800 uppercase tracking-wider">SEO Metadata</span>
+                  </div>
+                  <div className="space-y-1">
+                    <div className="flex justify-between items-center">
+                      <label className="text-[11px] font-bold text-slate-600">Meta Title</label>
+                      <span className="text-[10px] text-slate-400">{(catFormData.metaTitle || '').length}/70</span>
+                    </div>
+                    <input
+                      type="text"
+                      maxLength={70}
+                      value={catFormData.metaTitle}
+                      onChange={(e) => setCatFormData({ ...catFormData, metaTitle: e.target.value })}
+                      placeholder="e.g. Fresh Chicken Online - Cut to Order | Meatyns"
+                      className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none focus:bg-white focus:border-rose-500"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <div className="flex justify-between items-center">
+                      <label className="text-[11px] font-bold text-slate-600">Meta Description</label>
+                      <span className="text-[10px] text-slate-400">{(catFormData.metaDescription || '').length}/160</span>
+                    </div>
+                    <textarea
+                      rows={2}
+                      maxLength={160}
+                      value={catFormData.metaDescription}
+                      onChange={(e) => setCatFormData({ ...catFormData, metaDescription: e.target.value })}
+                      placeholder="e.g. Order fresh antibiotic-free chicken cuts online in 10-15 minutes from Meatyns."
+                      className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none focus:bg-white focus:border-rose-500 resize-none"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[11px] font-bold text-slate-600">Canonical URL (Optional)</label>
+                    <input
+                      type="text"
+                      value={catFormData.canonicalUrl}
+                      onChange={(e) => setCatFormData({ ...catFormData, canonicalUrl: e.target.value })}
+                      placeholder="e.g. https://meatyns.com/category/chicken"
+                      className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono font-medium outline-none focus:bg-white focus:border-rose-500"
+                    />
+                  </div>
+                </div>
+
                 <div className="pt-4 border-t border-slate-100 flex items-center justify-end space-x-2">
                   <button
                     type="button"
@@ -1234,6 +1304,52 @@ const CategoryManagement = () => {
                         className="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-[11px] font-medium outline-none focus:bg-white"
                       />
                     </div>
+                  </div>
+                </div>
+
+                {/* SEO Settings */}
+                <div className="pt-3 border-t border-slate-100 space-y-3">
+                  <div className="flex items-center space-x-1.5">
+                    <Sparkles className="h-3.5 w-3.5 text-amber-500" />
+                    <span className="text-xs font-bold text-slate-800 uppercase tracking-wider">SEO Metadata</span>
+                  </div>
+                  <div className="space-y-1">
+                    <div className="flex justify-between items-center">
+                      <label className="text-[11px] font-bold text-slate-600">Meta Title</label>
+                      <span className="text-[10px] text-slate-400">{(subFormData.metaTitle || '').length}/70</span>
+                    </div>
+                    <input
+                      type="text"
+                      maxLength={70}
+                      value={subFormData.metaTitle}
+                      onChange={(e) => setSubFormData({ ...subFormData, metaTitle: e.target.value })}
+                      placeholder="e.g. Chicken Curry Cut Online | Meatyns"
+                      className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none focus:bg-white focus:border-amber-500"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <div className="flex justify-between items-center">
+                      <label className="text-[11px] font-bold text-slate-600">Meta Description</label>
+                      <span className="text-[10px] text-slate-400">{(subFormData.metaDescription || '').length}/160</span>
+                    </div>
+                    <textarea
+                      rows={2}
+                      maxLength={160}
+                      value={subFormData.metaDescription}
+                      onChange={(e) => setSubFormData({ ...subFormData, metaDescription: e.target.value })}
+                      placeholder="e.g. Buy juicy curry cut chicken pieces online. Hand-trimmed and delivered in minutes."
+                      className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium outline-none focus:bg-white focus:border-amber-500 resize-none"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[11px] font-bold text-slate-600">Canonical URL (Optional)</label>
+                    <input
+                      type="text"
+                      value={subFormData.canonicalUrl}
+                      onChange={(e) => setSubFormData({ ...subFormData, canonicalUrl: e.target.value })}
+                      placeholder="e.g. https://meatyns.com/category/chicken-curry-cut"
+                      className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono font-medium outline-none focus:bg-white focus:border-amber-500"
+                    />
                   </div>
                 </div>
 

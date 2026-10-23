@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect, useMemo, useRef 
 import { customerApi } from "../services/customerApi";
 import { useAuth } from "../../../core/context/AuthContext";
 import { getJSON, setJSON, remove as removeStorage, STORAGE_KEYS } from "@core/utils/storage";
+import { trackAddToCart } from "@/core/meta/pixelService";
 
 const CartContext = createContext();
 
@@ -164,6 +165,7 @@ export const CartProvider = ({ children }) => {
     const variantSku = String(product?.variantSku || product?.variantName || "").trim();
     const id = String(product?.id || product?._id || "").trim();
     if (!id) return;
+    trackAddToCart(product);
     const key = `${id}::${variantSku || ""}`;
     const { price, salePrice, variantName } = resolveVariantPricing(product, variantSku);
 
