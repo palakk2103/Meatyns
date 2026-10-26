@@ -138,14 +138,16 @@ async function validateDependencies() {
       result.errors.push('JWT_SECRET must be at least 32 characters in production');
     }
 
-    // Ensure mock OTP is NEVER enabled in production
+    // Allow mock OTP in production when explicitly enabled (e.g., Apple App Store review / demo testing)
     if (
       process.env.USE_MOCK_OTP === 'true' ||
       process.env.USE_MOCK_OTP === '1' ||
       process.env.ALLOW_MOCK_DELIVERY_OTP === 'true'
     ) {
-      result.valid = false;
-      result.errors.push('USE_MOCK_OTP and ALLOW_MOCK_DELIVERY_OTP cannot be enabled in production');
+      result.checks.mockOtp = {
+        status: 'WARN',
+        message: 'USE_MOCK_OTP / ALLOW_MOCK_DELIVERY_OTP is enabled in production (App Store Review / Demo mode active)',
+      };
     }
 
     // Ensure CORS origins do not contain wildcard in production

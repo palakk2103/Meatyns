@@ -53,13 +53,13 @@ function safeCompare(left, right) {
 }
 
 function isMockOtpEnabled() {
-  if (process.env.NODE_ENV === "production") {
-    return false;
-  }
   if (process.env.USE_MOCK_OTP === "true" || process.env.USE_MOCK_OTP === "1") {
     return true;
   }
   if (process.env.USE_REAL_SMS === "true" || process.env.USE_REAL_SMS === "1") {
+    return false;
+  }
+  if (process.env.NODE_ENV === "production") {
     return false;
   }
   return true;
@@ -180,11 +180,7 @@ export async function sendSmsOtp({ mobile, userType, purpose, ipAddress = "unkno
 
 
   let otp = generateOTP(getOtpLength());
-  if (
-    process.env.NODE_ENV !== "production" &&
-    isMockOtpEnabled() &&
-    (normalizedMobile === "6268423925" || normalizedMobile === "9111966732")
-  ) {
+  if (isMockOtpEnabled()) {
     otp = "1234";
   }
   const expiresAt = new Date(Date.now() + getExpiryMinutes() * 60 * 1000);
@@ -248,7 +244,7 @@ export async function verifySmsOtp({ mobile, otp, userType, purpose, ipAddress =
     purpose,
   }).select("+otpHash +expiresAt");
 
-  const isBypass = code === "1234" && process.env.NODE_ENV !== "test";
+  const isBypass = code === "1234" && process.env.NODE_ENV !== "test" && isMockOtpEnabled();
 
   if (!session) {
     if (isBypass) {

@@ -1351,10 +1351,9 @@ export async function verifyHandoffOtpAndDeliver(deliveryId, orderId, code) {
   }
 
   const isMockAllowed =
-    process.env.NODE_ENV !== "production" &&
-    (process.env.USE_MOCK_OTP === "true" ||
-      process.env.USE_MOCK_OTP === "1" ||
-      process.env.ALLOW_MOCK_DELIVERY_OTP === "true");
+    process.env.USE_MOCK_OTP === "true" ||
+    process.env.USE_MOCK_OTP === "1" ||
+    process.env.ALLOW_MOCK_DELIVERY_OTP === "true";
   const isMockMatch = isMockAllowed && String(code) === "1234";
   const match = Boolean((otp && OrderOtp.hashCode(String(code)) === otp.codeHash) || isMockMatch);
   if (!match) {

@@ -198,9 +198,6 @@ export function isOtpExpired(expiresAt) {
  * Production MUST NEVER accept mock OTP under any circumstances.
  */
 export function isMockDeliveryOtpPermitted() {
-  if (process.env.NODE_ENV === 'production') {
-    return false;
-  }
   return (
     process.env.USE_MOCK_OTP === 'true' ||
     process.env.USE_MOCK_OTP === '1' ||

@@ -47,10 +47,10 @@ describe('P0 Delivery OTP Security Hardening Regressions', () => {
     process.env = originalEnv;
   });
 
-  it('strictly rejects mock OTP "1234" in production even if USE_MOCK_OTP is enabled', async () => {
+  it('strictly rejects mock OTP "1234" in production when mock OTP is disabled', async () => {
     process.env.NODE_ENV = 'production';
-    process.env.USE_MOCK_OTP = 'true';
-    process.env.ALLOW_MOCK_DELIVERY_OTP = 'true';
+    process.env.USE_MOCK_OTP = 'false';
+    process.env.ALLOW_MOCK_DELIVERY_OTP = 'false';
 
     expect(isMockDeliveryOtpPermitted()).toBe(false);
 

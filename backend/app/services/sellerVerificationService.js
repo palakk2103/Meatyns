@@ -57,9 +57,6 @@ function randomOtp(length) {
 }
 
 function isMockOtpEnabled() {
-  if (process.env.NODE_ENV === "production") {
-    return false;
-  }
   return (
     process.env.USE_MOCK_OTP === "true" ||
     process.env.USE_MOCK_OTP === "1"

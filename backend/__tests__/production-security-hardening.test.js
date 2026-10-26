@@ -15,27 +15,32 @@ describe("Sprint 1: Production Security Hardening & Secret Safeguards", () => {
   });
 
   describe("OTP Production Restrictions", () => {
-    it("strictly rejects mock OTP in production even if USE_MOCK_OTP is enabled", () => {
+    it("strictly rejects mock OTP in production when USE_MOCK_OTP is false", () => {
       process.env.NODE_ENV = "production";
-      process.env.USE_MOCK_OTP = "true";
-      expect(isMockOtpPermitted()).toBe(false);
-
-      process.env.USE_MOCK_OTP = "1";
+      process.env.USE_MOCK_OTP = "false";
       expect(isMockOtpPermitted()).toBe(false);
     });
 
-    it("enforces real SMS in production regardless of USE_MOCK_OTP flag", () => {
+    it("enforces real SMS in production when USE_MOCK_OTP is false", () => {
       process.env.NODE_ENV = "production";
-      process.env.USE_MOCK_OTP = "true";
+      process.env.USE_MOCK_OTP = "false";
       expect(useRealSMS()).toBe(true);
     });
 
-    it("generates random numeric OTP in production, never static mock '1234'", () => {
+    it("generates random numeric OTP in production when USE_MOCK_OTP is false", () => {
       process.env.NODE_ENV = "production";
-      process.env.USE_MOCK_OTP = "true";
+      process.env.USE_MOCK_OTP = "false";
       const generated = generateOTP();
       expect(generated).toMatch(/^\d{4}$/);
       expect(isMockOtpPermitted()).toBe(false);
+    });
+
+    it("permits mock OTP in production when USE_MOCK_OTP is explicitly enabled (App Store review)", () => {
+      process.env.NODE_ENV = "production";
+      process.env.USE_MOCK_OTP = "true";
+      expect(isMockOtpPermitted()).toBe(true);
+      expect(useRealSMS()).toBe(false);
+      expect(generateOTP()).toBe("1234");
     });
   });
 
@@ -60,15 +65,14 @@ describe("Sprint 1: Production Security Hardening & Secret Safeguards", () => {
       expect(res.errors.some(e => e.includes("at least 32 characters in production"))).toBe(true);
     });
 
-    it("fails validation if USE_MOCK_OTP is enabled in production", async () => {
+    it("warns but does not fail fatal validation if USE_MOCK_OTP is enabled in production (App Store review)", async () => {
       process.env.NODE_ENV = "production";
       process.env.MONGO_URI = "mongodb://localhost:27017/test";
       process.env.JWT_SECRET = "a-very-long-production-cryptographic-secret-key-32chars";
       process.env.USE_MOCK_OTP = "true";
-
       const res = await validateDependencies();
-      expect(res.valid).toBe(false);
-      expect(res.errors.some(e => e.includes("USE_MOCK_OTP and ALLOW_MOCK_DELIVERY_OTP cannot be enabled in production"))).toBe(true);
+      expect(res.checks.mockOtp.status).toBe("WARN");
+      expect(res.errors.some(e => e.includes("USE_MOCK_OTP and ALLOW_MOCK_DELIVERY_OTP cannot be enabled in production"))).toBe(false);
     });
 
     it("fails validation if CORS_ALLOWED_ORIGINS contains wildcard in production", async () => {

@@ -1,9 +1,6 @@
 const MOCK_OTP = "1234";
 
 export const isMockOtpPermitted = () => {
-  if (process.env.NODE_ENV === "production") {
-    return false;
-  }
   return (
     process.env.USE_MOCK_OTP === "true" ||
     process.env.USE_MOCK_OTP === "1"
@@ -11,14 +8,14 @@ export const isMockOtpPermitted = () => {
 };
 
 export const useRealSMS = () => {
-  if (process.env.NODE_ENV === "production") {
-    return true;
-  }
   if (
     process.env.USE_MOCK_OTP === "true" ||
     process.env.USE_MOCK_OTP === "1"
   ) {
     return false;
+  }
+  if (process.env.NODE_ENV === "production") {
+    return true;
   }
   return process.env.USE_REAL_SMS === "true" || process.env.USE_REAL_SMS === "1";
 };

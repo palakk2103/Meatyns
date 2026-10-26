@@ -4,14 +4,14 @@ import logger from "./logger.js";
 let cachedTransporter = null;
 
 export function useRealEmailOTP() {
-  if (process.env.NODE_ENV === "production") {
-    return true;
-  }
   if (
     process.env.USE_MOCK_OTP === "true" ||
     process.env.USE_MOCK_OTP === "1"
   ) {
     return false;
+  }
+  if (process.env.NODE_ENV === "production") {
+    return true;
   }
   return (
     process.env.USE_REAL_EMAIL_OTP === "true" ||
