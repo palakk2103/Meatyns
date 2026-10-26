@@ -20,6 +20,8 @@ const emptyBannerItem = () => ({
   subheadline: "",
   linkType: "none",
   linkValue: "",
+  validFrom: null,
+  validTo: null,
   isUploading: false,
 });
 
@@ -182,6 +184,13 @@ export default function HeroCategoriesPerPage() {
   };
 
   const handleSave = async () => {
+    for (const b of formBanners) {
+      if (b.validFrom && b.validTo && new Date(b.validFrom) > new Date(b.validTo)) {
+        showToast("Banner active start date cannot be after expiry date", "warning");
+        return;
+      }
+    }
+
     const items = formBanners.filter((b) => b.imageUrl).map((b) => {
       const headline = (b.headline !== undefined ? b.headline : b.title) || "";
       const subheadline = (b.subheadline !== undefined ? b.subheadline : b.subtitle) || "";
@@ -194,6 +203,8 @@ export default function HeroCategoriesPerPage() {
         linkType: b.linkType || "none",
         linkValue: b.linkValue || "",
         status: b.status || "active",
+        validFrom: b.validFrom || null,
+        validTo: b.validTo || null,
       };
     });
 
@@ -426,6 +437,30 @@ export default function HeroCategoriesPerPage() {
                                   className="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-900 focus:bg-white focus:border-primary focus:ring-1 focus:ring-primary/20 outline-none transition-all"
                                   placeholder="e.g. 100% Farm Fresh Daily"
                                 />
+                              </div>
+                              <div className="grid grid-cols-2 gap-2 pt-1">
+                                <div>
+                                  <label className="text-[9px] font-black text-slate-500 uppercase tracking-wider block mb-0.5">
+                                    Active From (Optional)
+                                  </label>
+                                  <input
+                                    type="datetime-local"
+                                    value={item.validFrom ? new Date(item.validFrom).toISOString().slice(0, 16) : ""}
+                                    onChange={(e) => updateBannerItem(idx, { validFrom: e.target.value ? new Date(e.target.value).toISOString() : null })}
+                                    className="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 outline-none"
+                                  />
+                                </div>
+                                <div>
+                                  <label className="text-[9px] font-black text-slate-500 uppercase tracking-wider block mb-0.5">
+                                    Active Until (Optional)
+                                  </label>
+                                  <input
+                                    type="datetime-local"
+                                    value={item.validTo ? new Date(item.validTo).toISOString().slice(0, 16) : ""}
+                                    onChange={(e) => updateBannerItem(idx, { validTo: e.target.value ? new Date(e.target.value).toISOString() : null })}
+                                    className="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 outline-none"
+                                  />
+                                </div>
                               </div>
                             </div>
                           </div>

@@ -6,13 +6,182 @@ import Product from "../../models/product.js";
 
 const DASHBOARD_CATEGORY_COLORS = ["#4f46e5", "#10b981", "#f59e0b", "#ef4444"];
 
+export function getIstStartAndEndOfDay(targetDate = new Date()) {
+  const formatter = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Kolkata",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
+  const dateStr = formatter.format(targetDate);
+  const startOfDay = new Date(`${dateStr}T00:00:00.000+05:30`);
+  const endOfDay = new Date(`${dateStr}T23:59:59.999+05:30`);
+  return { startOfDay, endOfDay, dateStr };
+}
+
+export async function getTodayKpis(referenceDate = new Date()) {
+  const { startOfDay, endOfDay, dateStr } = getIstStartAndEndOfDay(referenceDate);
+
+  try {
+    const results = await Order.aggregate([
+      {
+        $match: {
+          createdAt: { $gte: startOfDay, $lte: endOfDay },
+        },
+      },
+      {
+        $facet: {
+          grossMetrics: [
+            {
+              $match: {
+                status: { $ne: "cancelled" },
+                paymentStatus: { $nin: ["FAILED", "REFUNDED"] },
+                "payment.status": { $nin: ["failed", "refunded"] },
+              },
+            },
+            {
+              $group: {
+                _id: null,
+                grossSales: { $sum: { $ifNull: ["$pricing.total", 0] } },
+                uniqueCheckouts: {
+                  $addToSet: { $ifNull: ["$checkoutGroupId", "$_id"] },
+                },
+                totalSubOrders: { $sum: 1 },
+              },
+            },
+            {
+              $project: {
+                _id: 0,
+                grossSales: 1,
+                checkoutCount: { $size: "$uniqueCheckouts" },
+                subOrderCount: "$totalSubOrders",
+              },
+            },
+          ],
+          deliveredMetrics: [
+            {
+              $match: {
+                status: "delivered",
+                paymentStatus: { $nin: ["FAILED", "REFUNDED"] },
+                "payment.status": { $nin: ["failed", "refunded"] },
+              },
+            },
+            {
+              $group: {
+                _id: null,
+                netSales: { $sum: { $ifNull: ["$pricing.total", 0] } },
+                deliveredCheckouts: {
+                  $addToSet: { $ifNull: ["$checkoutGroupId", "$_id"] },
+                },
+                deliveredSubOrders: { $sum: 1 },
+              },
+            },
+            {
+              $project: {
+                _id: 0,
+                netSales: 1,
+                deliveredCount: { $size: "$deliveredCheckouts" },
+                deliveredSubOrders: "$deliveredSubOrders",
+              },
+            },
+          ],
+          inTransitMetrics: [
+            {
+              $match: {
+                status: { $in: ["pending", "confirmed", "packed", "out_for_delivery"] },
+                paymentStatus: { $nin: ["FAILED", "REFUNDED"] },
+                "payment.status": { $nin: ["failed", "refunded"] },
+              },
+            },
+            {
+              $group: {
+                _id: null,
+                inTransitCheckouts: {
+                  $addToSet: { $ifNull: ["$checkoutGroupId", "$_id"] },
+                },
+                inTransitSubOrders: { $sum: 1 },
+              },
+            },
+            {
+              $project: {
+                _id: 0,
+                inTransitCount: { $size: "$inTransitCheckouts" },
+                inTransitSubOrders: "$inTransitSubOrders",
+              },
+            },
+          ],
+          cancelledMetrics: [
+            {
+              $match: {
+                $or: [
+                  { status: "cancelled" },
+                  { paymentStatus: { $in: ["FAILED", "REFUNDED"] } },
+                  { "payment.status": { $in: ["failed", "refunded"] } },
+                ],
+              },
+            },
+            {
+              $group: {
+                _id: null,
+                cancelledCheckouts: {
+                  $addToSet: { $ifNull: ["$checkoutGroupId", "$_id"] },
+                },
+                cancelledSubOrders: { $sum: 1 },
+              },
+            },
+            {
+              $project: {
+                _id: 0,
+                cancelledCount: { $size: "$cancelledCheckouts" },
+                cancelledSubOrders: "$cancelledSubOrders",
+              },
+            },
+          ],
+        },
+      },
+    ]);
+
+    const raw = results[0] || {};
+    const gross = raw.grossMetrics?.[0] || { grossSales: 0, checkoutCount: 0, subOrderCount: 0 };
+    const delivered = raw.deliveredMetrics?.[0] || { netSales: 0, deliveredCount: 0, deliveredSubOrders: 0 };
+    const inTransit = raw.inTransitMetrics?.[0] || { inTransitCount: 0, inTransitSubOrders: 0 };
+    const cancelled = raw.cancelledMetrics?.[0] || { cancelledCount: 0, cancelledSubOrders: 0 };
+
+    return {
+      date: dateStr,
+      timezone: "Asia/Kolkata (IST)",
+      grossSales: Math.round(gross.grossSales * 100) / 100,
+      netDeliveredSales: Math.round(delivered.netSales * 100) / 100,
+      ordersCount: gross.checkoutCount,
+      deliveredOrdersCount: delivered.deliveredCount,
+      inTransitOrdersCount: inTransit.inTransitCount,
+      cancelledOrdersCount: cancelled.cancelledCount,
+      subOrdersCount: gross.subOrderCount,
+    };
+  } catch (error) {
+    console.error("Error computing Today KPIs:", error);
+    return {
+      date: dateStr,
+      timezone: "Asia/Kolkata (IST)",
+      grossSales: 0,
+      netDeliveredSales: 0,
+      ordersCount: 0,
+      deliveredOrdersCount: 0,
+      inTransitOrdersCount: 0,
+      cancelledOrdersCount: 0,
+      subOrdersCount: 0,
+    };
+  }
+}
+
 export async function getAdminDashboardStats() {
-  const [totalCustomers, totalSellers, totalRiders, totalOrders] =
+  const [totalCustomers, totalSellers, totalRiders, totalOrders, todayKpis] =
     await Promise.all([
       User.countDocuments({ role: "user" }),
       Seller.countDocuments(),
       Delivery.countDocuments(),
       Order.countDocuments(),
+      getTodayKpis(),
     ]);
 
   const totalUsers = totalCustomers + totalSellers + totalRiders;
@@ -109,6 +278,7 @@ export async function getAdminDashboardStats() {
   ]);
 
   return {
+    today: todayKpis,
     overview: {
       totalUsers,
       activeSellers,

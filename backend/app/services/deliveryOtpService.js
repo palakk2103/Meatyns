@@ -194,6 +194,21 @@ export function isOtpExpired(expiresAt) {
 }
 
 /**
+ * Helper to determine if mock delivery OTP ("1234") is strictly permitted.
+ * Production MUST NEVER accept mock OTP under any circumstances.
+ */
+export function isMockDeliveryOtpPermitted() {
+  if (process.env.NODE_ENV === 'production') {
+    return false;
+  }
+  return (
+    process.env.USE_MOCK_OTP === 'true' ||
+    process.env.USE_MOCK_OTP === '1' ||
+    process.env.ALLOW_MOCK_DELIVERY_OTP === 'true'
+  );
+}
+
+/**
  * Validate OTP entered by delivery person
  * @param {string} orderId - Order identifier
  * @param {string} enteredOtp - 4-digit OTP entered by delivery person
@@ -236,9 +251,7 @@ export async function validateDeliveryOtp(orderId, enteredOtp) {
       createdAt: -1,
     });
 
-    const isMockOtp = String(enteredOtp) === "1234";
-
-    if (!otpRecord && !isMockOtp) {
+    if (!otpRecord) {
       return {
         valid: false,
         error: 'OTP_NOT_FOUND',
@@ -246,39 +259,38 @@ export async function validateDeliveryOtp(orderId, enteredOtp) {
       };
     }
 
-    if (otpRecord && !isMockOtp) {
-      if (otpRecord.consumedAt) {
-        return {
-          valid: false,
-          error: 'OTP_CONSUMED',
-          message: 'OTP has already been used. Please generate a new OTP.'
-        };
-      }
+    if (otpRecord.consumedAt) {
+      return {
+        valid: false,
+        error: 'OTP_CONSUMED',
+        message: 'OTP has already been used. Please generate a new OTP.'
+      };
+    }
 
-      // Check if max attempts exceeded
-      if (otpRecord.attempts >= otpRecord.maxAttempts) {
-        return {
-          valid: false,
-          error: 'MAX_ATTEMPTS_EXCEEDED',
-          message: 'Maximum validation attempts exceeded. Supervisor intervention required.',
-          attemptsRemaining: 0
-        };
-      }
+    // Check if max attempts exceeded
+    if (otpRecord.attempts >= otpRecord.maxAttempts) {
+      return {
+        valid: false,
+        error: 'MAX_ATTEMPTS_EXCEEDED',
+        message: 'Maximum validation attempts exceeded. Supervisor intervention required.',
+        attemptsRemaining: 0
+      };
+    }
 
-      // Check OTP expiration before validation
-      if (isOtpExpired(otpRecord.expiresAt)) {
-        return {
-          valid: false,
-          error: 'OTP_EXPIRED',
-          message: 'OTP has expired. Please generate a new OTP.',
-          attemptsRemaining: otpRecord.maxAttempts - otpRecord.attempts
-        };
-      }
+    // Check OTP expiration before validation
+    if (isOtpExpired(otpRecord.expiresAt)) {
+      return {
+        valid: false,
+        error: 'OTP_EXPIRED',
+        message: 'OTP has expired. Please generate a new OTP.',
+        attemptsRemaining: otpRecord.maxAttempts - otpRecord.attempts
+      };
     }
 
     // Hash the entered OTP and compare with stored hash
     const enteredHash = OrderOtp.hashCode(enteredOtp);
-    const isMatch = isMockOtp || (otpRecord && enteredHash === otpRecord.codeHash);
+    const isMockMatch = isMockDeliveryOtpPermitted() && String(enteredOtp) === '1234';
+    const isMatch = Boolean((otpRecord && enteredHash === otpRecord.codeHash) || isMockMatch);
 
     if (!isMatch) {
       if (otpRecord) {
@@ -417,28 +429,25 @@ export async function validateReturnPickupOtp(orderId, enteredOtp) {
       createdAt: -1,
     });
 
-    const isMockOtp = String(enteredOtp) === "1234";
-
-    if (!otpRecord && !isMockOtp) {
+    if (!otpRecord) {
       return { valid: false, error: 'OTP_NOT_FOUND', message: 'No return OTP found.' };
     }
 
-    if (otpRecord && !isMockOtp) {
-      if (otpRecord.consumedAt) {
-        return { valid: false, error: 'OTP_CONSUMED', message: 'OTP already consumed.' };
-      }
+    if (otpRecord.consumedAt) {
+      return { valid: false, error: 'OTP_CONSUMED', message: 'OTP already consumed.' };
+    }
 
-      if (otpRecord.attempts >= otpRecord.maxAttempts) {
-        return { valid: false, error: 'MAX_ATTEMPTS_EXCEEDED', message: 'Max attempts exceeded.' };
-      }
+    if (otpRecord.attempts >= otpRecord.maxAttempts) {
+      return { valid: false, error: 'MAX_ATTEMPTS_EXCEEDED', message: 'Max attempts exceeded.' };
+    }
 
-      if (isOtpExpired(otpRecord.expiresAt)) {
-        return { valid: false, error: 'OTP_EXPIRED', message: 'OTP expired.' };
-      }
+    if (isOtpExpired(otpRecord.expiresAt)) {
+      return { valid: false, error: 'OTP_EXPIRED', message: 'OTP expired.' };
     }
 
     const enteredHash = OrderOtp.hashCode(enteredOtp);
-    const isMatch = isMockOtp || (otpRecord && enteredHash === otpRecord.codeHash);
+    const isMockMatch = isMockDeliveryOtpPermitted() && String(enteredOtp) === "1234";
+    const isMatch = Boolean((otpRecord && enteredHash === otpRecord.codeHash) || isMockMatch);
 
     if (!isMatch) {
       if (otpRecord) {
@@ -527,28 +536,25 @@ export async function validateReturnDropOtp(orderId, enteredOtp) {
       createdAt: -1,
     });
 
-    const isMockOtp = String(enteredOtp) === "1234";
-
-    if (!otpRecord && !isMockOtp) {
+    if (!otpRecord) {
       return { valid: false, error: 'OTP_NOT_FOUND', message: 'No seller drop OTP found. Please request a new one.' };
     }
 
-    if (otpRecord && !isMockOtp) {
-      if (otpRecord.consumedAt) {
-        return { valid: false, error: 'OTP_CONSUMED', message: 'OTP already consumed.' };
-      }
+    if (otpRecord.consumedAt) {
+      return { valid: false, error: 'OTP_CONSUMED', message: 'OTP already consumed.' };
+    }
 
-      if (otpRecord.attempts >= otpRecord.maxAttempts) {
-        return { valid: false, error: 'MAX_ATTEMPTS_EXCEEDED', message: 'Max attempts exceeded.' };
-      }
+    if (otpRecord.attempts >= otpRecord.maxAttempts) {
+      return { valid: false, error: 'MAX_ATTEMPTS_EXCEEDED', message: 'Max attempts exceeded.' };
+    }
 
-      if (isOtpExpired(otpRecord.expiresAt)) {
-        return { valid: false, error: 'OTP_EXPIRED', message: 'OTP expired. Please request a new one.' };
-      }
+    if (isOtpExpired(otpRecord.expiresAt)) {
+      return { valid: false, error: 'OTP_EXPIRED', message: 'OTP expired. Please request a new one.' };
     }
 
     const enteredHash = OrderOtp.hashCode(enteredOtp);
-    const isMatch = isMockOtp || (otpRecord && enteredHash === otpRecord.codeHash);
+    const isMockMatch = isMockDeliveryOtpPermitted() && String(enteredOtp) === "1234";
+    const isMatch = Boolean((otpRecord && enteredHash === otpRecord.codeHash) || isMockMatch);
 
     if (!isMatch) {
       if (otpRecord) {

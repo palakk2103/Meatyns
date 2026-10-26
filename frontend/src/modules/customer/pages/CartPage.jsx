@@ -23,7 +23,7 @@ import FishEmptyCartIllustration from '../components/shared/FishEmptyCartIllustr
 
 const CartPage = () => {
     const navigate = useNavigate();
-    const { cart, removeFromCart, updateQuantity, cartTotal, clearCart } = useCart();
+    const { cart, removeFromCart, updateQuantity, cartTotal, clearCart, resolveItemEffectivePrice } = useCart();
     const { settings } = useSettings();
     const { showToast } = useToast();
     const itemCount = cart.reduce((count, item) => count + item.quantity, 0);
@@ -89,21 +89,26 @@ const CartPage = () => {
                         </header>
 
                         {/* Center Content */}
-                        <div className="flex-1 flex flex-col items-center justify-center px-6 py-10 text-center -mt-6 sm:-mt-10">
-                            <div className="mb-6">
-                                <FishEmptyCartIllustration />
+                        <div className="flex-1 flex flex-col items-center justify-center px-6 py-10 text-center -mt-4 sm:-mt-6">
+                            <div className="w-48 sm:w-56 h-56 sm:h-64 mb-4 flex items-center justify-center">
+                                <img
+                                    src="/mascot/chef_mascot.png"
+                                    alt="Meatyns Chef Mascot"
+                                    className="max-h-full max-w-full object-contain drop-shadow-[0_12px_24px_rgba(0,0,0,0.12)] hover:scale-105 transition-transform duration-300"
+                                    loading="eager"
+                                />
                             </div>
-                            <h2 className="text-[17.5px] sm:text-[20px] font-bold text-[#2D3748] tracking-tight mb-1">
-                                Ohhh... Your cart is empty
+                            <h2 className="text-[20px] sm:text-[22px] font-normal font-anton uppercase tracking-wide text-slate-800 mb-1.5">
+                                Your cart is empty!
                             </h2>
-                            <p className="text-xs sm:text-[13.5px] text-[#94A3B8] font-normal mb-8">
-                                but it doesn&apos;t have to be.
+                            <p className="text-xs sm:text-[13px] text-slate-500 font-medium max-w-xs mb-6 leading-relaxed">
+                                Looks like you haven&apos;t added anything yet. Let&apos;s fill it with some fresh and healthy meat.
                             </p>
                             <Link
                                 to="/"
-                                className="inline-flex items-center justify-center px-10 py-3 sm:px-12 sm:py-3.5 text-[#1A1A1A] font-extrabold text-xs sm:text-sm uppercase tracking-wider rounded-full shadow-md bg-[#FDCE04] hover:bg-[#E5B800] active:scale-95 transition-all select-none"
+                                className="inline-flex items-center justify-center px-8 py-3 sm:px-10 sm:py-3.5 text-white font-black text-xs sm:text-sm uppercase tracking-wider rounded-full shadow-md bg-[#C81017] hover:bg-[#A30D13] active:scale-95 transition-all select-none"
                             >
-                                SHOP NOW
+                                Explore Products
                             </Link>
                         </div>
                     </div>
@@ -168,9 +173,21 @@ const CartPage = () => {
                                                         </button>
                                                     </div>
                                                     <div className="mt-3 flex items-center justify-between">
-                                                        <div className="text-lg font-black text-slate-900">
-                                                            ₹{item.price * item.quantity}
-                                                        </div>
+                                                        {(() => {
+                                                            const effective = resolveItemEffectivePrice ? resolveItemEffectivePrice(item, item.quantity) : { unitPrice: item.price, appliedTier: null };
+                                                            return (
+                                                                <div className="flex flex-col">
+                                                                    <div className="text-lg font-black text-slate-900">
+                                                                        ₹{effective.unitPrice * item.quantity}
+                                                                    </div>
+                                                                    {effective.appliedTier && (
+                                                                        <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded w-fit">
+                                                                            {effective.appliedTier.discountPercentage ? `${effective.appliedTier.discountPercentage}% Tier Discount` : 'Volume Discount'}
+                                                                        </span>
+                                                                    )}
+                                                                </div>
+                                                            );
+                                                        })()}
                                                         <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5">
                                                             <button
                                                                 onClick={() => updateQuantity(item.id, -1, item.variantSku)}
@@ -253,17 +270,24 @@ const CartPage = () => {
                         {/* 2. Middle Cart Content */}
                         <div className="flex-1 min-w-0">
                             {cart.length === 0 ? (
-                                <div className="bg-white rounded-2xl p-12 border border-[#ede5df] shadow-xs text-center">
-                                    <div className="w-20 h-20 mx-auto rounded-full bg-[#FFFBEB] border border-[#FDE68A] flex items-center justify-center text-[#1A1A1A] mb-4">
-                                        <ShoppingBag size={32} />
+                                <div className="bg-white rounded-2xl p-10 lg:p-12 border border-[#ede5df] shadow-xs text-center flex flex-col items-center">
+                                    <div className="w-48 h-56 mb-4 flex items-center justify-center">
+                                        <img
+                                            src="/mascot/chef_mascot.png"
+                                            alt="Meatyns Chef Mascot"
+                                            className="max-h-full max-w-full object-contain drop-shadow-[0_12px_24px_rgba(0,0,0,0.14)]"
+                                            loading="eager"
+                                        />
                                     </div>
-                                    <h2 className="text-xl font-bold text-slate-900 mb-1">Your cart is empty</h2>
-                                    <p className="text-xs text-slate-500 mb-6 max-w-sm mx-auto">Explore our fresh meat, poultry, and seafood selections and add your favorites to cart.</p>
+                                    <h2 className="text-2xl font-normal font-anton uppercase tracking-wide text-slate-900 mb-1.5">Your cart is empty!</h2>
+                                    <p className="text-xs sm:text-sm text-slate-500 mb-6 max-w-md mx-auto leading-relaxed">
+                                        Looks like you haven&apos;t added anything yet. Let&apos;s fill it with fresh chicken, mutton, seafood, and healthy cuts.
+                                    </p>
                                     <Link
                                         to="/"
-                                        className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#FDCE04] hover:bg-[#E5B800] text-[#1A1A1A] text-xs font-extrabold border border-[#E5B800] transition-colors"
+                                        className="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-[#C81017] hover:bg-[#A30D13] text-white text-xs font-black uppercase tracking-wider shadow-sm transition-all active:scale-95"
                                     >
-                                        Start Shopping &rarr;
+                                        Explore Products &rarr;
                                     </Link>
                                 </div>
                             ) : (
@@ -304,17 +328,29 @@ const CartPage = () => {
                                                         <p className="text-xs text-slate-500">
                                                             {item.weight || item.netWeight || '500 g'}
                                                         </p>
-                                                        <div className="flex items-center gap-2 pt-0.5">
-                                                            <span className="text-base font-bold text-slate-900">
-                                                                ₹{item.price}
-                                                            </span>
-                                                            <span className="text-xs text-slate-400 line-through">
-                                                                ₹{Math.round(item.price * 1.2)}
-                                                            </span>
-                                                            <span className="bg-[#E7F7ED] text-[#15803D] text-[10px] font-bold px-2 py-0.5 rounded-md">
-                                                                Fresh
-                                                            </span>
-                                                        </div>
+                                                        {(() => {
+                                                            const effective = resolveItemEffectivePrice ? resolveItemEffectivePrice(item, item.quantity) : { unitPrice: item.price, appliedTier: null };
+                                                            return (
+                                                                <div className="flex items-center gap-2 pt-0.5">
+                                                                    <span className="text-base font-bold text-slate-900">
+                                                                        ₹{effective.unitPrice}
+                                                                    </span>
+                                                                    {effective.unitPrice < (item.salePrice || item.price) && (
+                                                                        <span className="text-xs text-slate-400 line-through">
+                                                                            ₹{item.salePrice || item.price}
+                                                                        </span>
+                                                                    )}
+                                                                    {effective.appliedTier && (
+                                                                        <span className="bg-emerald-50 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded-md">
+                                                                            {effective.appliedTier.discountPercentage ? `${effective.appliedTier.discountPercentage}% Tier Off` : 'Volume Discount'}
+                                                                        </span>
+                                                                    )}
+                                                                    <span className="bg-[#E7F7ED] text-[#15803D] text-[10px] font-bold px-2 py-0.5 rounded-md">
+                                                                        Fresh
+                                                                    </span>
+                                                                </div>
+                                                            );
+                                                        })()}
                                                     </div>
                                                 </div>
 

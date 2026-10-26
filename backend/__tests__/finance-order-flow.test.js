@@ -53,21 +53,44 @@ function makeOrder(overrides = {}) {
   };
 }
 
+class MockObjectId {
+  constructor(value) {
+    this.value = value;
+  }
+  toString() {
+    return String(this.value);
+  }
+  static isValid(value) {
+    return typeof value === "string" && value.length > 0;
+  }
+}
+
+const SchemaMock = function () {
+  this.methods = {};
+  this.statics = {};
+};
+SchemaMock.Types = {
+  ObjectId: MockObjectId,
+  Mixed: class {},
+};
+SchemaMock.prototype.index = jest.fn().mockReturnThis();
+SchemaMock.prototype.pre = jest.fn().mockReturnThis();
+SchemaMock.prototype.post = jest.fn().mockReturnThis();
+SchemaMock.prototype.virtual = jest.fn().mockReturnValue({ get: jest.fn(), set: jest.fn() });
+SchemaMock.prototype.set = jest.fn().mockReturnThis();
+SchemaMock.prototype.get = jest.fn();
+SchemaMock.prototype.plugin = jest.fn().mockReturnThis();
+SchemaMock.prototype.method = jest.fn().mockReturnThis();
+SchemaMock.prototype.static = jest.fn().mockReturnThis();
+
 jest.unstable_mockModule("mongoose", () => ({
   default: {
     startSession: mockStartSession,
+    Schema: SchemaMock,
+    model: jest.fn().mockImplementation(() => ({})),
+    models: {},
     Types: {
-      ObjectId: class MockObjectId {
-        constructor(value) {
-          this.value = value;
-        }
-        toString() {
-          return String(this.value);
-        }
-        static isValid(value) {
-          return typeof value === "string" && value.length > 0;
-        }
-      },
+      ObjectId: MockObjectId,
     },
   },
 }));

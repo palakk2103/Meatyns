@@ -51,6 +51,8 @@ const CategoryProductsPage = () => {
     const initialSubcategoryId = location.state?.activeSubcategoryId || 'all';
     const { isOpen: isProductDetailOpen } = useProductDetail();
     const [selectedSubCategory, setSelectedSubCategory] = useState(initialSubcategoryId);
+    const [selectedCutFilter, setSelectedCutFilter] = useState('all');
+    const [selectedBoneFilter, setSelectedBoneFilter] = useState('all');
     const [category, setCategory] = useState(null);
     const [subCategories, setSubCategories] = useState([{ id: 'all', name: 'All', icon: 'https://cdn-icons-png.flaticon.com/128/2321/2321831.png' }]);
     const [products, setProducts] = useState([]);
@@ -282,36 +284,60 @@ const CategoryProductsPage = () => {
     const safeProducts = Array.isArray(products) ? products : [];
 
     const filteredProducts = safeProducts.filter(p => {
-        if (!selectedSubCategory || selectedSubCategory === 'all') return true;
+        if (selectedSubCategory && selectedSubCategory !== 'all') {
+            const targetId = String(selectedSubCategory).trim();
+            const pSubId = String(p.subcategoryId?._id || p.subcategoryId || '').trim();
+            const pCatId = String(p.categoryId?._id || p.categoryId || '').trim();
 
-        const targetId = String(selectedSubCategory).trim();
-        const pSubId = String(p.subcategoryId?._id || p.subcategoryId || '').trim();
-        const pCatId = String(p.categoryId?._id || p.categoryId || '').trim();
-
-        // 1. Direct match with subcategoryId (standard 2-tier subcategory mapping)
-        if (pSubId && pSubId === targetId) return true;
-
-        // 2. Direct match with categoryId (fallback if product was assigned via categoryId)
-        if (pCatId && pCatId === targetId) return true;
-
-        // 3. Fallback matching against active subCategories item name/slug
-        const activeSub = subCategories.find(s => String(s.id).trim() === targetId);
-        if (activeSub) {
-            const activeName = String(activeSub.name || '').toLowerCase().trim();
-            const pSubName = String(p.subcategoryId?.name || p.subCategory || '').toLowerCase().trim();
-            if (pSubName && (pSubName === activeName || activeName.includes(pSubName) || pSubName.includes(activeName))) {
-                return true;
+            let matchesSub = false;
+            if (pSubId && pSubId === targetId) matchesSub = true;
+            else if (pCatId && pCatId === targetId) matchesSub = true;
+            else {
+                const activeSub = subCategories.find(s => String(s.id).trim() === targetId);
+                if (activeSub) {
+                    const activeName = String(activeSub.name || '').toLowerCase().trim();
+                    const pSubName = String(p.subcategoryId?.name || p.subCategory || '').toLowerCase().trim();
+                    if (pSubName && (pSubName === activeName || activeName.includes(pSubName) || pSubName.includes(activeName))) {
+                        matchesSub = true;
+                    } else {
+                        const pTitle = String(p.name || '').toLowerCase();
+                        const keyword = activeName.replace(/chicken|mutton|fish|prawns?|eggs?/gi, '').trim();
+                        if (keyword.length >= 3 && pTitle.includes(keyword)) {
+                            matchesSub = true;
+                        }
+                    }
+                }
             }
+            if (!matchesSub) return false;
+        }
 
-            // Keyword match in product title (e.g. "drumstick", "curry cut", "breast")
-            const pTitle = String(p.name || '').toLowerCase();
-            const keyword = activeName.replace(/chicken|mutton|fish|prawns?|eggs?/gi, '').trim();
-            if (keyword.length >= 3 && pTitle.includes(keyword)) {
-                return true;
+        // Cut Type Facet Filter
+        if (selectedCutFilter && selectedCutFilter !== 'all') {
+            const cutVal = String(p.cutType || '').toLowerCase().trim();
+            const titleLower = String(p.name || '').toLowerCase();
+            const cutMatch = cutVal === selectedCutFilter ||
+                (selectedCutFilter === 'curry_cut' && (cutVal.includes('curry') || titleLower.includes('curry cut') || titleLower.includes('curry'))) ||
+                (selectedCutFilter === 'biryani_cut' && (cutVal.includes('biryani') || titleLower.includes('biryani cut') || titleLower.includes('biryani'))) ||
+                (selectedCutFilter === 'boneless_cubes' && (cutVal.includes('boneless') || titleLower.includes('boneless'))) ||
+                (selectedCutFilter === 'fillets' && (cutVal.includes('fillet') || titleLower.includes('fillet'))) ||
+                (selectedCutFilter === 'minced' && (cutVal.includes('mince') || titleLower.includes('keema') || titleLower.includes('mince')));
+            if (!cutMatch) return false;
+        }
+
+        // Bone Type Facet Filter
+        if (selectedBoneFilter && selectedBoneFilter !== 'all') {
+            const boneVal = String(p.boneType || '').toLowerCase().trim();
+            const titleLower = String(p.name || '').toLowerCase();
+            if (selectedBoneFilter === 'boneless') {
+                const isBoneless = boneVal === 'boneless' || titleLower.includes('boneless') || String(p.cutType || '').includes('boneless');
+                if (!isBoneless) return false;
+            } else if (selectedBoneFilter === 'bone_in') {
+                const isBoneIn = boneVal === 'bone_in' || titleLower.includes('with bone') || titleLower.includes('bone-in') || (!titleLower.includes('boneless') && boneVal !== 'boneless');
+                if (!isBoneIn) return false;
             }
         }
 
-        return false;
+        return true;
     });
 
     const productsById = React.useMemo(() => {
@@ -476,6 +502,69 @@ const CategoryProductsPage = () => {
 
                         {/* Content */}
                         <main className="flex-1 p-2 sm:p-4 md:p-6 pb-28 bg-white space-y-4 overflow-x-hidden min-h-[calc(100vh-60px)]">
+                            {/* Meat Cut & Boneless Facet Filter Pills */}
+                            <div className="flex items-center gap-2 overflow-x-auto pb-1 hide-scrollbar select-none">
+                                <button
+                                    type="button"
+                                    onClick={() => { setSelectedCutFilter('all'); setSelectedBoneFilter('all'); }}
+                                    className={cn(
+                                        "px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all border cursor-pointer",
+                                        selectedCutFilter === 'all' && selectedBoneFilter === 'all'
+                                            ? "bg-[#1A1A1A] text-white border-[#1A1A1A] shadow-xs"
+                                            : "bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100"
+                                    )}
+                                >
+                                    All Cuts
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => setSelectedCutFilter(prev => prev === 'curry_cut' ? 'all' : 'curry_cut')}
+                                    className={cn(
+                                        "px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all border cursor-pointer",
+                                        selectedCutFilter === 'curry_cut'
+                                            ? "bg-[#FDCE04] text-[#1A1A1A] border-[#FDCE04] shadow-xs"
+                                            : "bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100"
+                                    )}
+                                >
+                                    🍲 Curry Cut
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => setSelectedCutFilter(prev => prev === 'biryani_cut' ? 'all' : 'biryani_cut')}
+                                    className={cn(
+                                        "px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all border cursor-pointer",
+                                        selectedCutFilter === 'biryani_cut'
+                                            ? "bg-[#FDCE04] text-[#1A1A1A] border-[#FDCE04] shadow-xs"
+                                            : "bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100"
+                                    )}
+                                >
+                                    🍚 Biryani Cut
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => setSelectedBoneFilter(prev => prev === 'boneless' ? 'all' : 'boneless')}
+                                    className={cn(
+                                        "px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all border cursor-pointer",
+                                        selectedBoneFilter === 'boneless'
+                                            ? "bg-[#FDCE04] text-[#1A1A1A] border-[#FDCE04] shadow-xs"
+                                            : "bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100"
+                                    )}
+                                >
+                                    ✨ Boneless
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => setSelectedBoneFilter(prev => prev === 'bone_in' ? 'all' : 'bone_in')}
+                                    className={cn(
+                                        "px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all border cursor-pointer",
+                                        selectedBoneFilter === 'bone_in'
+                                            ? "bg-[#FDCE04] text-[#1A1A1A] border-[#FDCE04] shadow-xs"
+                                            : "bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100"
+                                    )}
+                                >
+                                    🍖 Bone-In
+                                </button>
+                            </div>
                             {filteredProducts.length > 0 ? (
                                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-2.5 sm:gap-3.5 md:gap-4">
                                     {filteredProducts.map((product) => (

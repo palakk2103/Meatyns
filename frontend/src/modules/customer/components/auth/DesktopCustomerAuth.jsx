@@ -367,6 +367,9 @@ const DesktopCustomerAuth = ({
                                             <div>
                                                 <p className="text-xs font-bold text-stone-800">Verification Code</p>
                                                 <p className="text-[11px] text-stone-500">Sent to +91 {formData.phone}</p>
+                                                <p className="text-[11px] font-bold text-emerald-600 mt-0.5">
+                                                    Mock OTP: <span className="underline cursor-pointer tracking-wider hover:text-emerald-700" onClick={() => setFormData(prev => ({ ...prev, otp: '1234' }))}>1234 (Click to fill)</span>
+                                                </p>
                                             </div>
                                         </div>
                                         <button

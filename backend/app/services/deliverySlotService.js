@@ -7,6 +7,9 @@ import {
   DELIVERY_METHODS,
   DELIVERY_SLOT_CONFIG,
 } from "../constants/deliverySlots.js";
+import { getOrCreateFinanceSettings } from "./finance/financeSettingsService.js";
+import { calculateCustomerDeliveryFee } from "./finance/pricingService.js";
+import { resolveDeliveryZoneForLocation } from "./deliveryZoneService.js";
 import logger from "./logger.js";
 
 const DAYS_OF_WEEK = [
@@ -131,11 +134,17 @@ export function getDistanceKm(customerLocation, seller) {
 /**
  * Generate 7 days starting from today in local time
  */
-export function getAvailableDates(now = new Date()) {
+/**
+ * Generate advance dates starting from today in local time
+ */
+export function getAvailableDates(now = new Date(), maxDays = null) {
   const dates = [];
   const tzOffset = 5.5 * 60 * 60 * 1000;
+  const totalDays = Number.isFinite(Number(maxDays)) && Number(maxDays) > 0
+    ? Number(maxDays)
+    : DELIVERY_SLOT_CONFIG.MAXIMUM_ADVANCE_DAYS;
 
-  for (let i = 0; i < DELIVERY_SLOT_CONFIG.MAXIMUM_ADVANCE_DAYS; i++) {
+  for (let i = 0; i < totalDays; i++) {
     const dayDate = new Date(now.getTime() + i * 24 * 60 * 60 * 1000 + tzOffset);
     const year = dayDate.getUTCFullYear();
     const monthIndex = dayDate.getUTCMonth();
@@ -161,19 +170,27 @@ export function getAvailableDates(now = new Date()) {
 }
 
 /**
- * Generate 1-hour slots for a specific date and seller, checking operating hours and capacity
+ * Generate slots for a specific date and seller, checking operating hours, admin overrides, and capacity
  */
 export async function getSlotsForDate({
   seller,
   dateISO,
   isToday = false,
   now = new Date(),
+  advanceConfig = {},
+  slotOverrides = [],
 }) {
   const targetDate = new Date(`${dateISO}T00:00:00.000Z`);
   const dayName = DAYS_OF_WEEK[targetDate.getUTCDay()];
 
-  let openTimeStr = DELIVERY_SLOT_CONFIG.DEFAULT_STORE_OPEN_TIME;
-  let closeTimeStr = DELIVERY_SLOT_CONFIG.DEFAULT_STORE_CLOSE_TIME;
+  // Check configured operating days
+  const operatingDays = advanceConfig.operatingDays;
+  if (Array.isArray(operatingDays) && operatingDays.length > 0 && !operatingDays.includes(dayName)) {
+    return [];
+  }
+
+  let openTimeStr = advanceConfig.openTime || DELIVERY_SLOT_CONFIG.DEFAULT_STORE_OPEN_TIME;
+  let closeTimeStr = advanceConfig.closeTime || DELIVERY_SLOT_CONFIG.DEFAULT_STORE_CLOSE_TIME;
   let isStoreOpenOnDay = true;
 
   if (
@@ -198,9 +215,11 @@ export async function getSlotsForDate({
 
   const openMinutes = timeStrToMinutes(openTimeStr);
   const closeMinutes = timeStrToMinutes(closeTimeStr);
-  const slotDuration = DELIVERY_SLOT_CONFIG.SLOT_DURATION_MINUTES;
+  const slotDuration = Number(advanceConfig.slotDurationMinutes) || DELIVERY_SLOT_CONFIG.SLOT_DURATION_MINUTES;
   const currentMinutes = getCurrentLocalMinutes(now);
-  const minAdvanceMinutes = DELIVERY_SLOT_CONFIG.MINIMUM_ADVANCE_MINUTES;
+  const minAdvanceMinutes = advanceConfig.minAdvanceMinutes != null
+    ? Number(advanceConfig.minAdvanceMinutes)
+    : DELIVERY_SLOT_CONFIG.MINIMUM_ADVANCE_MINUTES;
 
   const rawSlots = [];
   for (let m = openMinutes; m + slotDuration <= closeMinutes; m += slotDuration) {
@@ -259,12 +278,23 @@ export async function getSlotsForDate({
     countMap.set(item._id, item.totalOrders);
   }
 
-  const maxCapacity = DELIVERY_SLOT_CONFIG.DEFAULT_MAX_ORDERS_PER_SLOT;
+  const defaultCapacity = Number(advanceConfig.maxOrdersPerSlot) || DELIVERY_SLOT_CONFIG.DEFAULT_MAX_ORDERS_PER_SLOT;
 
   return rawSlots.map((slot) => {
     const booked = countMap.get(slot.startTime) || 0;
-    const isFull = booked >= maxCapacity;
-    const available = !slot.isPast && !isFull;
+
+    // Check specific slot overrides (by slotId or startTime)
+    const override = (slotOverrides || []).find(
+      (o) => o.slotId === slot.slotId || (o.startTime === slot.startTime && (!o.date || o.date === slot.date))
+    );
+
+    const slotCapacity = override?.capacity != null && Number.isFinite(Number(override.capacity))
+      ? Number(override.capacity)
+      : defaultCapacity;
+
+    const isManuallyDisabled = override?.enabled === false;
+    const isFull = booked >= slotCapacity;
+    const available = !slot.isPast && !isFull && !isManuallyDisabled;
 
     return {
       slotId: slot.slotId,
@@ -275,6 +305,8 @@ export async function getSlotsForDate({
       available,
       isFull,
       isPast: slot.isPast,
+      isManuallyDisabled,
+      capacity: slotCapacity,
       bookedCount: booked,
     };
   });
@@ -290,6 +322,13 @@ export async function getDeliveryOptionsAndSlots({
   sellerId = null,
   selectedDate = null,
 }) {
+  const financeSettings = await getOrCreateFinanceSettings();
+  const deliveryConfig = financeSettings?.deliveryConfig || {};
+  const expressConfig = deliveryConfig?.express || {};
+  const normalConfig = deliveryConfig?.normal || {};
+  const advanceConfig = deliveryConfig?.advance || {};
+  const slotOverrides = deliveryConfig?.slotOverrides || [];
+
   const loc = customerLocation || address?.location || null;
   const sellers = await resolveSellersForCheckout({ sellerId, items });
   const primarySeller = sellers[0] || null;
@@ -302,8 +341,25 @@ export async function getDeliveryOptionsAndSlots({
   let isServiceable = true;
   let distanceKm = 2.0;
   let unserviceableReason = null;
+  let matchedZone = null;
 
-  if (primarySeller) {
+  if (loc?.lat && loc?.lng) {
+    const zoneResolution = await resolveDeliveryZoneForLocation(loc);
+    if (!zoneResolution.isServiceable) {
+      isServiceable = false;
+      unserviceableReason = zoneResolution.reason || "Address is outside our serviceable delivery zones.";
+    } else {
+      matchedZone = zoneResolution.zone;
+      if (primarySeller) {
+        distanceKm = getDistanceKm(loc, primarySeller);
+        const radius = Number(primarySeller.serviceRadius || 10);
+        if (zoneResolution.fallbackToRadius && distanceKm > radius) {
+          isServiceable = false;
+          unserviceableReason = `Address is outside store service radius (${distanceKm}km vs max ${radius}km).`;
+        }
+      }
+    }
+  } else if (primarySeller) {
     distanceKm = getDistanceKm(loc, primarySeller);
     const radius = Number(primarySeller.serviceRadius || 10);
     if (loc?.lat && loc?.lng && distanceKm > radius) {
@@ -311,6 +367,11 @@ export async function getDeliveryOptionsAndSlots({
       unserviceableReason = `Address is outside store service radius (${distanceKm}km vs max ${radius}km).`;
     }
   }
+
+  // Calculate pricing for each delivery method with matchedZone
+  const expressPricing = calculateCustomerDeliveryFee(distanceKm, financeSettings, { deliveryMethod: DELIVERY_METHODS.EXPRESS, zone: matchedZone });
+  const normalPricing = calculateCustomerDeliveryFee(distanceKm, financeSettings, { deliveryMethod: DELIVERY_METHODS.NORMAL, zone: matchedZone });
+  const advancePricing = calculateCustomerDeliveryFee(distanceKm, financeSettings, { deliveryMethod: DELIVERY_METHODS.SCHEDULED, zone: matchedZone });
 
   // 2. Express Delivery Calculation
   const isCurrentlyOpen = primarySeller
@@ -321,45 +382,70 @@ export async function getDeliveryOptionsAndSlots({
     DELIVERY_SLOT_CONFIG.EXPRESS_BASE_PREP_MINUTES +
       distanceKm * DELIVERY_SLOT_CONFIG.EXPRESS_TRAVEL_MINUTES_PER_KM
   );
-  const expressEtaLabel = `${Math.max(15, dynamicEtaMins - 5)}–${dynamicEtaMins + 5} mins`;
+  const minEta = Math.max(expressConfig.estimatedMinMinutes || 15, dynamicEtaMins - 5);
+  const maxEta = Math.max(expressConfig.estimatedMaxMinutes || 30, dynamicEtaMins + 5);
+  const expressEtaLabel = `${minEta}–${maxEta} mins`;
+
+  const isExpressEnabled = expressConfig.enabled !== false && (matchedZone ? matchedZone.expressAvailable !== false : true);
+  const expressAvailable = isServiceable && (expressConfig.operatingHoursOnly ? isCurrentlyOpen : true) && isExpressEnabled;
 
   const expressOption = {
     method: DELIVERY_METHODS.EXPRESS,
     title: "Express Delivery",
     tagline: "Deliver as soon as possible",
-    available: isServiceable && isCurrentlyOpen,
+    available: expressAvailable,
+    enabled: isExpressEnabled,
     estimatedMinutes: dynamicEtaMins,
     estimatedLabel: expressEtaLabel,
-    disabledReason: !isServiceable
+    deliveryFee: expressPricing.deliveryFeeCharged,
+    baseDeliveryFee: expressPricing.standardNormalFee,
+    surcharge: expressPricing.expressSurcharge,
+    disabledReason: !isExpressEnabled
+      ? "Express delivery is currently disabled."
+      : !isServiceable
       ? unserviceableReason
-      : !isCurrentlyOpen
+      : !isCurrentlyOpen && expressConfig.operatingHoursOnly
       ? "Store is currently closed for Express delivery."
       : null,
   };
 
   // 3. Normal Delivery Calculation
+  const isNormalEnabled = normalConfig.enabled !== false;
+  const normalAvailable = isServiceable && isNormalEnabled;
+
   const normalOption = {
     method: DELIVERY_METHODS.NORMAL,
     title: "Normal Delivery",
     tagline: "Delivery within 1–2 hours",
-    available: isServiceable,
-    estimatedLabel: "1–2 hours",
-    minMinutes: DELIVERY_SLOT_CONFIG.NORMAL_MIN_MINUTES,
-    maxMinutes: DELIVERY_SLOT_CONFIG.NORMAL_MAX_MINUTES,
-    disabledReason: !isServiceable ? unserviceableReason : null,
+    available: normalAvailable,
+    enabled: isNormalEnabled,
+    estimatedLabel: normalConfig.estimatedLabel || "1–2 hours",
+    minMinutes: normalConfig.minMinutes || DELIVERY_SLOT_CONFIG.NORMAL_MIN_MINUTES,
+    maxMinutes: normalConfig.maxMinutes || DELIVERY_SLOT_CONFIG.NORMAL_MAX_MINUTES,
+    deliveryFee: normalPricing.deliveryFeeCharged,
+    disabledReason: !isNormalEnabled
+      ? "Normal delivery is currently disabled."
+      : !isServiceable
+      ? unserviceableReason
+      : null,
   };
 
   // 4. Scheduled Delivery Dates & Slots
-  const availableDates = getAvailableDates(now);
+  const isAdvanceEnabled = advanceConfig.enabled !== false;
+  const availableDates = isAdvanceEnabled
+    ? getAvailableDates(now, advanceConfig.maxAdvanceDays)
+    : [];
   const isTargetToday = activeDate === todayISO;
 
   let slots = [];
-  if (primarySeller && isServiceable) {
+  if (primarySeller && isServiceable && isAdvanceEnabled) {
     slots = await getSlotsForDate({
       seller: primarySeller,
       dateISO: activeDate,
       isToday: isTargetToday,
       now,
+      advanceConfig,
+      slotOverrides,
     });
   }
 
@@ -367,13 +453,28 @@ export async function getDeliveryOptionsAndSlots({
     method: DELIVERY_METHODS.SCHEDULED,
     title: "Schedule Delivery",
     tagline: "Choose date and time slot",
-    available: isServiceable,
-    disabledReason: !isServiceable ? unserviceableReason : null,
+    available: isServiceable && isAdvanceEnabled,
+    enabled: isAdvanceEnabled,
+    deliveryFee: advancePricing.deliveryFeeCharged,
+    maxAdvanceDays: advanceConfig.maxAdvanceDays || 7,
+    disabledReason: !isAdvanceEnabled
+      ? "Advance scheduled booking is currently disabled."
+      : !isServiceable
+      ? unserviceableReason
+      : null,
   };
 
   return {
     isServiceable,
+    unserviceableReason,
     distanceKm,
+    matchedZone: matchedZone ? {
+      id: matchedZone._id,
+      name: matchedZone.name,
+      priority: matchedZone.priority,
+      deliveryFee: matchedZone.deliveryFee,
+      surcharge: matchedZone.surcharge,
+    } : null,
     deliveryOptions: {
       [DELIVERY_METHODS.EXPRESS]: expressOption,
       [DELIVERY_METHODS.NORMAL]: normalOption,
@@ -399,6 +500,15 @@ export async function verifySlotAvailabilityBeforePlacement({
     return { ok: true };
   }
 
+  const financeSettings = await getOrCreateFinanceSettings({ session });
+  const advanceConfig = financeSettings?.deliveryConfig?.advance || {};
+  if (advanceConfig.enabled === false) {
+    return {
+      ok: false,
+      reason: "Advance scheduled delivery is currently disabled.",
+    };
+  }
+
   if (!scheduledDate || !scheduledStartTime) {
     return {
       ok: false,
@@ -416,16 +526,37 @@ export async function verifySlotAvailabilityBeforePlacement({
     };
   }
 
+  const minAdvanceMinutes = advanceConfig.minAdvanceMinutes != null
+    ? Number(advanceConfig.minAdvanceMinutes)
+    : DELIVERY_SLOT_CONFIG.MINIMUM_ADVANCE_MINUTES;
+
   if (scheduledDate === todayISO) {
     const currentMinutes = getCurrentLocalMinutes(now);
     const slotMinutes = timeStrToMinutes(scheduledStartTime);
-    if (slotMinutes < currentMinutes + DELIVERY_SLOT_CONFIG.MINIMUM_ADVANCE_MINUTES) {
+    if (slotMinutes < currentMinutes + minAdvanceMinutes) {
       return {
         ok: false,
         reason: "The selected time slot has passed. Please select another slot.",
       };
     }
   }
+
+  // Check manual slot overrides
+  const slotOverrides = financeSettings?.deliveryConfig?.slotOverrides || [];
+  const override = slotOverrides.find(
+    (o) => o.startTime === scheduledStartTime && (!o.date || o.date === scheduledDate)
+  );
+
+  if (override?.enabled === false) {
+    return {
+      ok: false,
+      reason: "This delivery slot is currently disabled. Please select another slot.",
+    };
+  }
+
+  const maxCapacity = override?.capacity != null && Number.isFinite(Number(override.capacity))
+    ? Number(override.capacity)
+    : (Number(advanceConfig.maxOrdersPerSlot) || DELIVERY_SLOT_CONFIG.DEFAULT_MAX_ORDERS_PER_SLOT);
 
   // Check capacity
   const query = Order.countDocuments({
@@ -437,7 +568,7 @@ export async function verifySlotAvailabilityBeforePlacement({
   if (session) query.session(session);
 
   const activeCount = await query;
-  if (activeCount >= DELIVERY_SLOT_CONFIG.DEFAULT_MAX_ORDERS_PER_SLOT) {
+  if (activeCount >= maxCapacity) {
     return {
       ok: false,
       reason: "This delivery slot is no longer available. Please select another slot.",

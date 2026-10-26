@@ -21,6 +21,10 @@ const ApplicationPending = lazy(() => import('../../modules/seller/pages/Applica
 const AdminAuth = lazy(() => import('../../modules/admin/pages/AdminAuth'));
 const DeliveryAuth = lazy(() => import('../../modules/delivery/pages/DeliveryAuth'));
 const CustomerAuth = lazy(() => import('../../modules/customer/pages/CustomerAuth'));
+const SellerPrivacyPage = lazy(() => import('../../modules/seller/pages/SellerPrivacyPage'));
+const SellerSupportPage = lazy(() => import('../../modules/seller/pages/SellerSupportPage'));
+const DeliveryPrivacyPage = lazy(() => import('../../modules/delivery/pages/DeliveryPrivacyPage'));
+const DeliverySupportPage = lazy(() => import('../../modules/delivery/pages/DeliverySupportPage'));
 
 // Customer Pages (lazy-loaded)
 const Home = lazy(() => import('../../modules/customer/pages/Home'));
@@ -55,6 +59,11 @@ const PaymentStatusPage = lazy(() => import('../../modules/customer/pages/Paymen
 const SearchPage = lazy(() => import('../../modules/customer/pages/SearchPage'));
 const WalletPage = lazy(() => import('../../modules/customer/pages/WalletPage'));
 const CartPage = lazy(() => import('../../modules/customer/pages/CartPage'));
+const SubscriptionsPage = lazy(() => import('../../modules/customer/pages/SubscriptionsPage'));
+const ReferralsPage = lazy(() => import('../../modules/customer/pages/ReferralsPage'));
+const RecipesPage = lazy(() => import('../../modules/customer/pages/RecipesPage'));
+const RecipeDetailPage = lazy(() => import('../../modules/customer/pages/RecipeDetailPage'));
+const CombosPage = lazy(() => import('../../modules/customer/pages/CombosPage'));
 
 // Lazy load heavy modules
 const SellerModule = lazy(() => import('../../modules/seller/routes/index'));
@@ -136,12 +145,28 @@ const AppRouter = () => {
                     element: <ApplicationPending />,
                 },
                 {
+                    path: 'seller/privacy',
+                    element: <SellerPrivacyPage />,
+                },
+                {
+                    path: 'seller/support',
+                    element: <SellerSupportPage />,
+                },
+                {
                     path: 'admin/auth',
                     element: <AdminAuth />,
                 },
                 {
                     path: 'delivery/auth',
                     element: <DeliveryAuth />,
+                },
+                {
+                    path: 'delivery/privacy',
+                    element: <DeliveryPrivacyPage />,
+                },
+                {
+                    path: 'delivery/support',
+                    element: <DeliverySupportPage />,
                 },
                 {
                     path: 'seller/*',
@@ -209,7 +234,7 @@ const AppRouter = () => {
                         { path: 'transactions', element: <ProtectedRoute><OrderTransactionsPage /></ProtectedRoute> },
                         { path: 'addresses', element: <ProtectedRoute><AddressesPage /></ProtectedRoute> },
                         { path: 'settings', element: <ProtectedRoute><SettingsPage /></ProtectedRoute> },
-                        { path: 'support', element: <ProtectedRoute><SupportPage /></ProtectedRoute> },
+                        { path: 'support', element: <SupportPage /> },
                         { path: 'chat', element: <ProtectedRoute><ChatPage /></ProtectedRoute> },
                         { path: 'cart', element: <CartPage /> },
                         { path: 'checkout', element: <ProtectedRoute><CheckoutPage /></ProtectedRoute> },
@@ -217,6 +242,11 @@ const AppRouter = () => {
                         { path: 'profile', element: <ProtectedRoute><ProfilePage /></ProtectedRoute> },
                         { path: 'profile/edit', element: <ProtectedRoute><EditProfilePage /></ProtectedRoute> },
                         { path: 'wallet', element: <ProtectedRoute><WalletPage /></ProtectedRoute> },
+                        { path: 'subscriptions', element: <ProtectedRoute><SubscriptionsPage /></ProtectedRoute> },
+                        { path: 'referrals', element: <ProtectedRoute><ReferralsPage /></ProtectedRoute> },
+                        { path: 'recipes', element: <RecipesPage /> },
+                        { path: 'recipes/:id', element: <RecipeDetailPage /> },
+                        { path: 'combos', element: <CombosPage /> },
                         { path: 'search', element: <SearchPage /> },
                     ]
                 },

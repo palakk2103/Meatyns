@@ -54,15 +54,33 @@ OrderMock.find = mockOrderFind;
 OrderMock.findOne = jest.fn();
 
 jest.unstable_mockModule("mongoose", () => {
-  const Schema = function () {};
-  Schema.prototype.index = jest.fn();
-  Schema.prototype.pre = jest.fn();
-  Schema.Types = { ObjectId: "ObjectId" };
+  const Schema = function () {
+    this.methods = {};
+    this.statics = {};
+  };
+  Schema.prototype.index = jest.fn().mockReturnThis();
+  Schema.prototype.pre = jest.fn().mockReturnThis();
+  Schema.prototype.post = jest.fn().mockReturnThis();
+  Schema.prototype.virtual = jest.fn().mockReturnValue({ get: jest.fn(), set: jest.fn() });
+  Schema.prototype.set = jest.fn().mockReturnThis();
+  Schema.prototype.get = jest.fn();
+  Schema.prototype.plugin = jest.fn().mockReturnThis();
+  Schema.prototype.method = jest.fn().mockReturnThis();
+  Schema.prototype.static = jest.fn().mockReturnThis();
+  Schema.Types = { ObjectId: "ObjectId", Mixed: class {} };
   return {
     default: {
       startSession: mockStartSession,
       Schema,
-      model: jest.fn(),
+      model: jest.fn().mockImplementation(() => ({})),
+      models: {},
+      Types: {
+        ObjectId: class MockObjectId {
+          constructor(val) { this.val = val; }
+          toString() { return String(this.val); }
+          static isValid(val) { return typeof val === "string" && val.length > 0; }
+        },
+      },
     },
   };
 });

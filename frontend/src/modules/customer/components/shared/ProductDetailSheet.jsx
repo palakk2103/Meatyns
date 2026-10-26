@@ -634,6 +634,39 @@ const ProductDetailSheet = () => {
                                             </div>
                                         </motion.div>
 
+                                        {/* Buy More Save More Volume Pricing */}
+                                        {(() => {
+                                            const tiers = Array.isArray(selectedVariant?.tieredPricing) && selectedVariant.tieredPricing.length > 0
+                                                ? selectedVariant.tieredPricing
+                                                : (Array.isArray(selectedProduct.tieredPricing) ? selectedProduct.tieredPricing : []);
+                                            if (!tiers.length) return null;
+                                            return (
+                                                <div className="bg-amber-50/70 border border-amber-200/80 rounded-2xl p-3 space-y-2">
+                                                    <span className="text-amber-900 text-[11px] font-black uppercase tracking-wider block">
+                                                        ⚡ Buy More, Save More (Volume Pricing)
+                                                    </span>
+                                                    <div className="grid grid-cols-2 gap-2">
+                                                        {tiers.map((t, idx) => {
+                                                            const effectiveUnit = Number(t.fixedUnitPrice) > 0
+                                                                ? Number(t.fixedUnitPrice)
+                                                                : Math.round(activePrice * (1 - (Number(t.discountPercentage) || 0) / 100));
+                                                            return (
+                                                                <div key={idx} className="bg-white rounded-xl p-2 border border-amber-200 text-center shadow-xs">
+                                                                    <p className="text-[11px] font-black text-slate-800">Buy {t.minQty}+ units</p>
+                                                                    <p className="text-xs font-black text-primary">₹{effectiveUnit} <span className="text-[9px] font-normal text-slate-400">/unit</span></p>
+                                                                    {Number(t.discountPercentage) > 0 && (
+                                                                        <span className="inline-block bg-emerald-100 text-emerald-800 text-[9px] font-bold px-1.5 py-0.2 rounded-full">
+                                                                            Save {t.discountPercentage}%
+                                                                        </span>
+                                                                    )}
+                                                                </div>
+                                                            );
+                                                        })}
+                                                    </div>
+                                                </div>
+                                            );
+                                        })()}
+
                                         {/* View Cart */}
                                         {cartCount > 0 && (
                                             <motion.div

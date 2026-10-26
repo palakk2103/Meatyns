@@ -47,8 +47,11 @@ async function raceWithTimeout(promise, timeoutMs, timeoutMessage) {
   ]);
 }
 
-async function scheduleSellerTimeout(orderId) {
-  const delay = DEFAULT_SELLER_TIMEOUT_MS();
+async function scheduleSellerTimeout(orderId, customDelayMs) {
+  let delay = Number(customDelayMs);
+  if (!Number.isFinite(delay) || delay <= 0) {
+    delay = DEFAULT_SELLER_TIMEOUT_MS();
+  }
   const addPromise = sellerTimeoutQueue
     .add(
       JOB_NAMES.SELLER_TIMEOUT,

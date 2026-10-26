@@ -3,6 +3,8 @@ import { jest } from "@jest/globals";
 const mockProductFind = jest.fn();
 const mockCategoryFind = jest.fn();
 const mockGetOrCreateFinanceSettings = jest.fn();
+const mockFlashDealFind = jest.fn();
+const mockSellerFindById = jest.fn();
 
 function createQueryChain(result) {
   return {
@@ -10,6 +12,30 @@ function createQueryChain(result) {
     lean: jest.fn().mockResolvedValue(result),
   };
 }
+
+function createFlashDealQueryChain(result = []) {
+  const chain = {
+    session: jest.fn().mockReturnThis(),
+    then: (resolve, reject) => Promise.resolve(result).then(resolve, reject),
+  };
+  return {
+    lean: jest.fn().mockReturnValue(chain),
+    session: jest.fn().mockReturnThis(),
+    then: (resolve, reject) => Promise.resolve(result).then(resolve, reject),
+  };
+}
+
+jest.unstable_mockModule("../app/models/flashDeal.js", () => ({
+  default: {
+    find: mockFlashDealFind,
+  },
+}));
+
+jest.unstable_mockModule("../app/models/seller.js", () => ({
+  default: {
+    findById: mockSellerFindById,
+  },
+}));
 
 jest.unstable_mockModule("../app/models/product.js", () => ({
   default: {
@@ -34,6 +60,19 @@ const { buildCheckoutPricingSnapshot } = await import(
 describe("checkout pricing snapshot handling fee", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockFlashDealFind.mockReturnValue(createFlashDealQueryChain([]));
+    mockSellerFindById.mockReturnValue({
+      select: jest.fn().mockReturnThis(),
+      session: jest.fn().mockReturnThis(),
+      lean: jest.fn().mockResolvedValue({
+        _id: "seller-id",
+        shopName: "Meat Store",
+        isOnline: true,
+        isActive: true,
+        applicationStatus: "approved",
+        isManualOverride: true,
+      }),
+    });
   });
 
   it("charges only the highest header-category handling fee once across a multi-seller checkout", async () => {

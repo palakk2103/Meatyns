@@ -24,8 +24,8 @@ import { bullJobScheduler } from "./bullJobScheduler.js";
 
 export const jobScheduler = bullJobScheduler;
 
-export const scheduleSellerTimeout = (orderId) =>
-  jobScheduler.scheduleSellerTimeout(orderId);
+export const scheduleSellerTimeout = (orderId, delayMs) =>
+  jobScheduler.scheduleSellerTimeout(orderId, delayMs);
 
 export const removeSellerTimeout = (orderId) =>
   jobScheduler.removeSellerTimeout(orderId);

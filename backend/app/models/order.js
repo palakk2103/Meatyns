@@ -1,6 +1,10 @@
 import mongoose from "mongoose";
 import { WORKFLOW_STATUS } from "../constants/orderWorkflow.js";
 import {
+  ITEM_FULFILLMENT_STATUS,
+  ITEM_REFUND_STATUS,
+} from "../constants/orderItemStatus.js";
+import {
   ALL_ORDER_PAYMENT_STATUSES,
   ALL_ORDER_SETTLEMENT_STATUSES,
   ALL_PAYMENT_MODES,
@@ -50,6 +54,49 @@ const orderSchema = new mongoose.Schema(
         unitValue: {
           type: Number,
           default: null,
+        },
+        status: {
+          type: String,
+          enum: Object.values(ITEM_FULFILLMENT_STATUS),
+          default: ITEM_FULFILLMENT_STATUS.AVAILABLE,
+        },
+        unavailableReason: {
+          type: String,
+          default: null,
+        },
+        markedUnavailableAt: {
+          type: Date,
+          default: null,
+        },
+        markedUnavailableBy: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+          default: null,
+        },
+        refundStatus: {
+          type: String,
+          enum: Object.values(ITEM_REFUND_STATUS),
+          default: ITEM_REFUND_STATUS.NONE,
+        },
+        refundAmount: {
+          type: Number,
+          default: 0,
+        },
+        refundId: {
+          type: String,
+          default: null,
+        },
+        refundReason: {
+          type: String,
+          default: null,
+        },
+        refundedAt: {
+          type: Date,
+          default: null,
+        },
+        stockReleased: {
+          type: Boolean,
+          default: false,
         },
       },
     ],
@@ -348,6 +395,10 @@ const orderSchema = new mongoose.Schema(
       type: Number,
       default: 1,
     },
+    sellerAcceptanceTimeoutMs: {
+      type: Number,
+      default: null,
+    },
     sellerPendingExpiresAt: Date,
     deliverySearchExpiresAt: Date,
     sellerAcceptedAt: Date,
@@ -425,6 +476,43 @@ const orderSchema = new mongoose.Schema(
       enum: ["customer", "seller", "admin", "system"],
     },
     cancelReason: String,
+    partialFulfillment: {
+      hasUnavailableItems: {
+        type: Boolean,
+        default: false,
+      },
+      refundTotal: {
+        type: Number,
+        default: 0,
+      },
+      refundStatus: {
+        type: String,
+        enum: ["NONE", "PARTIAL_REFUND_PENDING", "PARTIAL_REFUNDED", "FAILED"],
+        default: "NONE",
+      },
+      auditHistory: [
+        {
+          itemIndex: Number,
+          productId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Product",
+          },
+          productName: String,
+          action: String,
+          reason: String,
+          actorId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+          },
+          actorRole: String,
+          refundAmount: Number,
+          timestamp: {
+            type: Date,
+            default: Date.now,
+          },
+        },
+      ],
+    },
     deviceType: {
       type: String,
       enum: ["Mobile", "Desktop", "Tablet"],
@@ -633,7 +721,6 @@ orderSchema.index({ deliveryMethod: 1, scheduledDate: 1, workflowStatus: 1 });
 orderSchema.index(
   { "placement.idempotencyKeyExpiry": 1 },
   { 
-    expireAfterSeconds: 0,
     partialFilterExpression: { "placement.idempotencyKeyExpiry": { $type: "date" } }
   }
 );

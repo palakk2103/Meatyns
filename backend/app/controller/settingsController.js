@@ -51,7 +51,11 @@ const ALLOWED_KEYS = [
   "codEnabled",
   "onlineEnabled",
   "lowStockAlertsEnabled",
+  "sellerAcceptanceTimeoutMs",
+  "sellerAcceptanceTimeoutSeconds",
   "productApproval",
+  "loyalty",
+  "referral",
 ];
 
 function flattenForMongoSet(prefix, value, target) {
@@ -131,6 +135,20 @@ const updateSettingsSchema = Joi.object({
     sellerCreateRequiresApproval: Joi.boolean(),
     sellerEditRequiresApproval: Joi.boolean(),
   }).unknown(false),
+  loyalty: Joi.object({
+    enabled: Joi.boolean(),
+    pointsPer100Rupees: Joi.number().min(0),
+    maxRedemptionPercentage: Joi.number().min(1).max(100),
+    minOrderAmountToEarn: Joi.number().min(0),
+  }).unknown(false),
+  referral: Joi.object({
+    enabled: Joi.boolean(),
+    referrerRewardAmount: Joi.number().min(0),
+    refereeRewardAmount: Joi.number().min(0),
+    minOrderAmountToQualify: Joi.number().min(0),
+  }).unknown(false),
+  sellerAcceptanceTimeoutMs: Joi.number().integer().min(10000).max(1800000),
+  sellerAcceptanceTimeoutSeconds: Joi.number().integer().min(10).max(1800),
 }).unknown(false);
 
 /**
@@ -151,7 +169,7 @@ export const getPublicSettings = async (req, res) => {
       async () => {
         const existing = await Setting.findOne(filter)
           .select(
-            "appName supportEmail supportPhone currencySymbol currencyCode timezone logoUrl faviconUrl primaryColor secondaryColor returnDeliveryCommission deliveryPricingMode pricingMode customerBaseDeliveryFee riderBasePayout baseDeliveryCharge baseDistanceCapacityKm incrementalKmSurcharge deliveryPartnerRatePerKm fleetCommissionRatePerKm fixedDeliveryFee freeDeliveryThreshold minimumOrderValue handlingFeeStrategy codEnabled onlineEnabled lowStockAlertsEnabled productApproval createdAt",
+            "appName supportEmail supportPhone currencySymbol currencyCode timezone logoUrl faviconUrl primaryColor secondaryColor companyName taxId address facebook twitter instagram linkedin youtube playStoreLink appStoreLink metaTitle metaDescription metaKeywords keywords returnDeliveryCommission sellerAcceptanceTimeoutMs deliveryPricingMode pricingMode customerBaseDeliveryFee riderBasePayout baseDeliveryCharge baseDistanceCapacityKm incrementalKmSurcharge deliveryPartnerRatePerKm fleetCommissionRatePerKm fixedDeliveryFee freeDeliveryThreshold minimumOrderValue handlingFeeStrategy codEnabled onlineEnabled lowStockAlertsEnabled productApproval loyalty referral createdAt",
           )
           .lean();
         return existing || null;
@@ -197,6 +215,11 @@ export const updateSettings = async (req, res) => {
         error.details.map((d) => d.message).join("; "),
       );
     }
+    if (value.sellerAcceptanceTimeoutSeconds !== undefined && value.sellerAcceptanceTimeoutMs === undefined) {
+      value.sellerAcceptanceTimeoutMs = value.sellerAcceptanceTimeoutSeconds * 1000;
+    }
+    delete value.sellerAcceptanceTimeoutSeconds;
+
     const tenantId = req.tenantId ?? null;
     const filter = tenantId
       ? { tenantId }

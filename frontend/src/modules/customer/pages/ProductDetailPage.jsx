@@ -300,7 +300,38 @@ const ProductDetailPage = () => {
                         </div>
                     )}
 
-                    <div className="grid grid-cols-3 gap-4">
+                    {/* Buy More, Save More Tiered Volume Pricing Chips */}
+                    {Array.isArray(product.tieredPricing) && product.tieredPricing.length > 0 && (
+                        <div className="bg-amber-50/70 border border-amber-200 rounded-2xl p-4 mb-4">
+                            <div className="flex items-center gap-2 mb-2">
+                                <span className="text-amber-900 text-xs font-black uppercase tracking-wider">
+                                    ⚡ Buy More, Save More (Volume Pricing)
+                                </span>
+                            </div>
+                            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                                {product.tieredPricing.map((tier, idx) => {
+                                    const effectiveUnit = Number(tier.fixedUnitPrice) > 0
+                                        ? Number(tier.fixedUnitPrice)
+                                        : Math.round((Number(product.salePrice) || Number(product.price)) * (1 - (Number(tier.discountPercentage) || 0) / 100));
+                                    return (
+                                        <div key={idx} className="bg-white rounded-xl p-2.5 border border-amber-200 text-center shadow-xs">
+                                            <p className="text-[11px] font-black text-slate-800">Buy {tier.minQty}+ units</p>
+                                            <p className="text-sm font-black text-primary">
+                                                ₹{effectiveUnit} <span className="text-[10px] font-normal text-slate-400">/unit</span>
+                                            </p>
+                                            {Number(tier.discountPercentage) > 0 && (
+                                                <span className="inline-block mt-1 bg-emerald-100 text-emerald-800 text-[9px] font-bold px-1.5 py-0.5 rounded-full">
+                                                    Save {tier.discountPercentage}%
+                                                </span>
+                                            )}
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    )}
+
+                    <div className="grid grid-cols-3 gap-4 mb-6">
                         <div className="bg-white p-4 rounded-2xl border border-slate-100 text-center shadow-sm">
                             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Unit / Measure</p>
                             <p className="text-sm font-black text-slate-800">
@@ -315,6 +346,50 @@ const ProductDetailPage = () => {
                             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Brand</p>
                             <p className="text-sm font-black text-slate-800">{product.brand || 'Premium'}</p>
                         </div>
+                    </div>
+
+                    {/* Add to Cart / Quantity Controls */}
+                    <div className="flex flex-wrap items-center gap-4 pt-4 border-t border-slate-100">
+                        {quantity > 0 ? (
+                            <div className="flex items-center gap-3 bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-lg">
+                                <button
+                                    type="button"
+                                    onClick={() => updateQuantity(product.id, -1)}
+                                    className="w-8 h-8 flex items-center justify-center rounded-xl bg-slate-800 hover:bg-slate-700 active:scale-95 transition-all text-white font-bold cursor-pointer"
+                                    aria-label="Decrease quantity"
+                                >
+                                    <Minus size={16} />
+                                </button>
+                                <span className="font-black text-base px-2">{quantity} in cart</span>
+                                <button
+                                    type="button"
+                                    onClick={() => updateQuantity(product.id, 1)}
+                                    className="w-8 h-8 flex items-center justify-center rounded-xl bg-slate-800 hover:bg-slate-700 active:scale-95 transition-all text-white font-bold cursor-pointer"
+                                    aria-label="Increase quantity"
+                                >
+                                    <Plus size={16} />
+                                </button>
+                            </div>
+                        ) : (
+                            <button
+                                type="button"
+                                disabled={product.stock <= 0}
+                                onClick={() => {
+                                    addToCart(product);
+                                    showToast(`${product.name} added to cart`, 'success');
+                                }}
+                                className="flex-1 max-w-xs h-14 bg-primary hover:brightness-105 active:scale-95 text-slate-950 font-black rounded-2xl shadow-xl shadow-primary/20 flex items-center justify-center gap-2 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                <Plus size={18} strokeWidth={3} /> ADD TO CART
+                            </button>
+                        )}
+                        <button
+                            type="button"
+                            onClick={() => navigate('/cart')}
+                            className="h-14 px-6 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold rounded-2xl flex items-center justify-center gap-2 transition-all cursor-pointer"
+                        >
+                            View Cart
+                        </button>
                     </div>
                 </div>
             </div>

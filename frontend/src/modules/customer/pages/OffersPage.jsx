@@ -169,6 +169,17 @@ const OffersPage = () => {
     .filter((o) => o.status === "active")
     .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 
+  const [categoryFilter, setCategoryFilter] = useState("all");
+
+  const filteredDeals = useMemo(() => {
+    if (categoryFilter === "all") return hotDeals;
+    return hotDeals.filter((p) => {
+      const name = (p.name || "").toLowerCase();
+      const cat = (p.category?.name || p.category || "").toLowerCase();
+      return name.includes(categoryFilter) || cat.includes(categoryFilter);
+    });
+  }, [hotDeals, categoryFilter]);
+
   return (
     <div className="relative z-10 w-full max-w-[1920px] mx-auto px-4 md:px-[50px] pt-4 sm:pt-6 md:pt-8 pb-8 md:py-8">
       {/* Top Header */}
@@ -176,7 +187,7 @@ const OffersPage = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="mb-6 sm:mb-8 text-left flex items-center gap-3.5"
+        className="mb-4 sm:mb-6 text-left flex items-center gap-3.5"
       >
         <button
           type="button"
@@ -194,16 +205,84 @@ const OffersPage = () => {
         </button>
         <div>
           <h1 className="text-2xl sm:text-3xl md:text-5xl font-normal font-anton tracking-wide text-primary mb-1 sm:mb-1.5 uppercase">
-            Best Offers for You
+            Special Offers &amp; Deals
           </h1>
           <p className="text-gray-500 text-sm md:text-lg font-medium">
-            Grab these exclusive deals before they expire!
+            Grab these exclusive discounts curated daily for you!
           </p>
         </div>
       </motion.div>
 
+      {/* ─── Hero Mascot Offers Banner (matching reference mockup screen 5) ─── */}
+      <div className="relative w-full rounded-2xl md:rounded-3xl overflow-hidden mb-6 sm:mb-8 shadow-sm border border-red-900/10 bg-gradient-to-r from-[#8B0000] via-[#C81017] to-[#7A0000] text-white">
+        <div className="absolute inset-0 opacity-15 pointer-events-none bg-[radial-gradient(circle_at_30%_50%,_rgba(255,255,255,0.4),_transparent_60%)]" />
+
+        <div className="relative z-10 px-5 py-6 sm:px-8 sm:py-8 lg:px-12 flex items-center justify-between min-h-[160px] sm:min-h-[190px]">
+          {/* Left Text & CTA */}
+          <div className="max-w-[62%] sm:max-w-md space-y-2 sm:space-y-3">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FAB82C] text-[#111111] text-[10px] sm:text-xs font-black uppercase tracking-wider shadow-xs">
+              <Sparkles size={13} className="text-[#111111]" /> Weekend Special Deals!
+            </div>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-normal font-anton tracking-wide uppercase leading-tight drop-shadow-md">
+              Fresh Meat <br className="hidden sm:inline" />
+              <span className="text-[#FAB82C]">Best Prices</span>
+            </h2>
+            <p className="text-xs sm:text-sm text-red-100 font-medium">
+              Up to 20% OFF on fresh cuts • 100% Hygienic
+            </p>
+            <div className="pt-1">
+              <button
+                type="button"
+                onClick={() => {
+                  const target = document.getElementById("hot-deals-grid");
+                  target?.scrollIntoView({ behavior: "smooth" });
+                }}
+                className="inline-flex items-center gap-1.5 px-4 py-1.5 sm:px-5 sm:py-2 rounded-full bg-[#FAB82C] hover:bg-[#F2B022] text-[#111111] text-xs font-black uppercase tracking-wide transition-all active:scale-95 shadow-sm cursor-pointer border-0"
+              >
+                <span>Shop Now</span>
+                <ArrowRight size={14} className="stroke-[3]" />
+              </button>
+            </div>
+          </div>
+
+          {/* Right Mascot Illustration */}
+          <div className="relative flex-1 flex justify-end items-end h-[160px] sm:h-[190px] pointer-events-none">
+            <img
+              src="/mascot/chef_mascot.png"
+              alt="Meatyns Chef Mascot"
+              className="h-[105%] max-h-[220px] w-auto object-contain drop-shadow-[0_8px_20px_rgba(0,0,0,0.35)] -mb-1"
+              loading="eager"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Category filter pills (matching mockup screen 5: All Offers, Chicken, Fish, Mutton, Eggs) */}
+      <div className="flex items-center gap-2 overflow-x-auto no-scrollbar mb-6 pb-1">
+        {[
+          { id: "all", label: "All Offers" },
+          { id: "chicken", label: "Chicken" },
+          { id: "fish", label: "Fish & Seafood" },
+          { id: "mutton", label: "Mutton" },
+          { id: "egg", label: "Eggs" },
+        ].map((cat) => (
+          <button
+            key={cat.id}
+            type="button"
+            onClick={() => setCategoryFilter(cat.id)}
+            className={`px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
+              categoryFilter === cat.id
+                ? "bg-[#C81017] text-white shadow-xs"
+                : "bg-white text-slate-700 border border-slate-200 hover:bg-slate-100"
+            }`}
+          >
+            {cat.label}
+          </button>
+        ))}
+      </div>
+
       {/* ─── Hot Deals Product Cards Section ────────────────────────── */}
-      <div className="mb-14">
+      <div id="hot-deals-grid" className="mb-14">
         <div className="flex items-center justify-between mb-4 px-1">
           <div className="flex items-center gap-2 sm:gap-2.5">
             <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#EF131F]/10 flex items-center justify-center text-[#EF131F]">
@@ -217,13 +296,13 @@ const OffersPage = () => {
           </div>
 
           <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-[#FFFBEB] text-[#1A1A1A] border border-[#FDE68A]">
-            <Sparkles size={13} className="text-[#B45309]" /> {hotDeals.length} Deals Active
+            <Sparkles size={13} className="text-[#B45309]" /> {filteredDeals.length} Deals Active
           </span>
         </div>
 
         {/* Responsive Grid for Hot Deals Cards */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 min-[1800px]:grid-cols-8 gap-2.5 sm:gap-3.5 md:gap-4">
-          {hotDeals.map((product) => {
+          {filteredDeals.map((product) => {
             const isWishlisted = isInWishlist(product.id || product._id);
             const quantity = getQuantity(product);
 

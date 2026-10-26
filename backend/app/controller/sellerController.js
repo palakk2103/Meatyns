@@ -1,4 +1,6 @@
 import Seller from "../models/seller.js";
+import Order from "../models/order.js";
+import Product from "../models/product.js";
 import Transaction from "../models/transaction.js";
 import { handleResponse, calculateDistance } from "../utils/helper.js";
 import mongoose from "mongoose";
@@ -287,4 +289,49 @@ export const updateStoreHours = async (req, res) => {
     return handleResponse(res, 500, error.message);
   }
 };
+
+/* ===============================
+   DELETE SELLER ACCOUNT
+================================ */
+export const deleteSellerAccount = async (req, res) => {
+  try {
+    const sellerId = req.user?.id;
+    if (!sellerId) {
+      return handleResponse(res, 401, "Unauthorized");
+    }
+
+    const seller = await Seller.findById(sellerId);
+    if (!seller) {
+      return handleResponse(res, 404, "Seller not found");
+    }
+
+    // Check for active orders
+    const activeOrder = await Order.findOne({
+      seller: sellerId,
+      status: { $in: ["Placed", "Accepted", "Processing", "Packed"] },
+    });
+
+    if (activeOrder) {
+      return handleResponse(
+        res,
+        400,
+        `Cannot delete seller account with active order (#${activeOrder.orderId || activeOrder._id}) in progress. Please fulfill or resolve active orders first.`
+      );
+    }
+
+    // Inactivate all products for this seller
+    await Product.updateMany({ seller: sellerId }, { isActive: false });
+
+    // Invalidate cached seller name
+    invalidateSellerName(sellerId).catch(() => {});
+
+    // Delete seller document
+    await Seller.findByIdAndDelete(sellerId);
+
+    return handleResponse(res, 200, "Seller account deleted successfully");
+  } catch (error) {
+    return handleResponse(res, 500, error.message);
+  }
+};
+
 

@@ -7,7 +7,7 @@ import {
     sendSellerLoginOtp,
     verifySellerLoginOtp,
 } from "../controller/sellerAuthController.js";
-import { getSellerProfile, updateSellerProfile, requestWithdrawal, getNearbySellers, toggleStoreStatus, updateStoreHours } from "../controller/sellerController.js";
+import { getSellerProfile, updateSellerProfile, deleteSellerAccount, requestWithdrawal, getNearbySellers, toggleStoreStatus, updateStoreHours } from "../controller/sellerController.js";
 import { getSellerStats, getSellerEarnings } from "../controller/sellerStatsController.js";
 import { getSellerWalletSummaryController } from "../controller/adminFinanceController.js";
 import { bulkCreateProducts } from "../controller/productController.js";
@@ -64,6 +64,20 @@ router.put(
     verifyToken,
     allowRoles("seller"),
     updateSellerProfile
+);
+
+router.delete(
+    "/profile",
+    verifyToken,
+    allowRoles("seller"),
+    deleteSellerAccount
+);
+
+router.delete(
+    "/account",
+    verifyToken,
+    allowRoles("seller"),
+    deleteSellerAccount
 );
 
 // Store status and operating hours

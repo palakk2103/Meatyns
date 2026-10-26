@@ -43,9 +43,16 @@ const DesktopOrderConfirmation = ({
           <div className="col-span-7 xl:col-span-8 space-y-4">
             {/* Main Success Box */}
             <div className="bg-white rounded-2xl p-8 border border-[#ede5df] shadow-xs text-center">
-              {/* Green Circle Checkmark */}
-              <div className="w-16 h-16 rounded-full bg-[#15803D] text-white flex items-center justify-center mx-auto mb-4 shadow-sm">
-                <Check size={36} strokeWidth={3} />
+              <div className="flex items-center justify-center gap-4 mb-4">
+                <img
+                  src="/mascot/chef_mascot.png"
+                  alt="Meatyns Chef Mascot"
+                  className="h-28 w-auto object-contain drop-shadow-md"
+                  loading="eager"
+                />
+                <div className="w-14 h-14 rounded-full bg-[#15803D] text-white flex items-center justify-center shadow-sm shrink-0">
+                  <Check size={32} strokeWidth={3} />
+                </div>
               </div>
 
               <h2 className="text-xl lg:text-2xl font-anton font-normal tracking-wide uppercase text-slate-900 mb-1.5">

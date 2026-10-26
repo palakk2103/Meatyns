@@ -37,6 +37,8 @@ import {
   Bike,
   ShieldCheck,
   Lock,
+  AlertCircle,
+  AlertTriangle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
@@ -146,6 +148,9 @@ const CheckoutPage = () => {
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [isLoadingDeliverySlots, setIsLoadingDeliverySlots] = useState(false);
   const [deliverySlotError, setDeliverySlotError] = useState(null);
+  const [isDeliveryServiceable, setIsDeliveryServiceable] = useState(true);
+  const [deliveryUnserviceableReason, setDeliveryUnserviceableReason] = useState(null);
+  const [matchedDeliveryZone, setMatchedDeliveryZone] = useState(null);
   const [selectedPayment, setSelectedPayment] = useState("cash");
   const [selectedTip, setSelectedTip] = useState(0);
   const [showAllCartItems, setShowAllCartItems] = useState(false);
@@ -193,6 +198,41 @@ const CheckoutPage = () => {
   const [manualCode, setManualCode] = useState("");
   const [emptyBoxData, setEmptyBoxData] = useState(null);
 
+  useEffect(() => {
+    if (useWallet && user?.walletBalance && pricingPreview?.grandTotal) {
+      const maxAvailable = Number(user.walletBalance || 0);
+      const totalToPay = Number(pricingPreview.grandTotal || 0);
+      const maxAllowedFromWallet = Math.floor(maxAvailable * 0.25);
+      setWalletAmountToUse(Math.min(totalToPay, maxAllowedFromWallet));
+    } else {
+      setWalletAmountToUse(0);
+    }
+  }, [useWallet, user?.walletBalance, pricingPreview?.grandTotal]);
+
+  const discountAmount = selectedCoupon
+    ? selectedCoupon.discountAmount || selectedCoupon.discount || 0
+    : 0;
+
+  const currentSelectedDeliveryFee = Number(
+    deliveryOptions?.[deliveryMethod]?.deliveryFee ?? (deliveryMethod === "EXPRESS" ? 40 : 25)
+  );
+
+  const isFreeDeliveryForSubtotal = (pricingPreview?.productSubtotal ?? cartTotal) >= (pricingPreview?.freeDeliveryThreshold || 499);
+  const activeEffectiveDeliveryFee = pricingPreview?.deliveryFeeCharged != null
+    ? Number(pricingPreview.deliveryFeeCharged)
+    : (isFreeDeliveryForSubtotal
+        ? (deliveryMethod === "EXPRESS" ? Number(deliveryOptions?.EXPRESS?.surcharge ?? 40) : 0)
+        : currentSelectedDeliveryFee);
+
+  const finalAmountToPay = pricingPreview?.grandTotal != null
+    ? Math.max(0, Number(pricingPreview.grandTotal) - walletAmountToUse)
+    : Math.max(
+        0,
+        (cartTotal + activeEffectiveDeliveryFee + (pricingPreview?.handlingFeeCharged || 0) + (selectedTip || 0)) -
+          discountAmount -
+          walletAmountToUse
+      );
+
   // Dynamically load empty-box Lottie only when cart is empty
   useEffect(() => {
     if (cart.length === 0) {
@@ -210,7 +250,9 @@ const CheckoutPage = () => {
     }
   }, [cart.length, finalAmountToPay]);
 
+  // Online payment temporarily hidden
   const paymentMethods = [
+    /*
     ...(settings?.onlineEnabled === false
       ? []
       : [
@@ -221,16 +263,13 @@ const CheckoutPage = () => {
             sublabel: "Cards, UPI, NetBanking",
           },
         ]),
-    ...(settings?.codEnabled === false
-      ? []
-      : [
-          {
-            id: "cash",
-            label: "Cash on Delivery",
-            icon: Banknote,
-            sublabel: "Pay after delivery",
-          },
-        ]),
+    */
+    {
+      id: "cash",
+      label: "Cash on Delivery",
+      icon: Banknote,
+      sublabel: "Pay after delivery",
+    },
   ];
 
   const tipAmounts = [
@@ -239,10 +278,6 @@ const CheckoutPage = () => {
     { value: 20, label: "Rs.20" },
     { value: 30, label: "Rs.30" },
   ];
-
-  const discountAmount = selectedCoupon
-    ? selectedCoupon.discountAmount || selectedCoupon.discount || 0
-    : 0;
 
   const RECIPIENT_STORAGE_KEY = STORAGE_KEYS.RECIPIENT_ADDRESS;
 
@@ -261,19 +296,6 @@ const CheckoutPage = () => {
       setSelectedPayment(paymentMethods[0].id);
     }
   }, [paymentMethods, selectedPayment]);
-
-  useEffect(() => {
-    if (useWallet && user?.walletBalance && pricingPreview?.grandTotal) {
-      const maxAvailable = Number(user.walletBalance || 0);
-      const totalToPay = Number(pricingPreview.grandTotal || 0);
-      const maxAllowedFromWallet = Math.floor(maxAvailable * 0.25);
-      setWalletAmountToUse(Math.min(totalToPay, maxAllowedFromWallet));
-    } else {
-      setWalletAmountToUse(0);
-    }
-  }, [useWallet, user?.walletBalance, pricingPreview?.grandTotal]);
-
-  const finalAmountToPay = Math.max(0, (pricingPreview?.grandTotal || 0) - walletAmountToUse);
 
   const buildAddressForOrder = () => {
     if (savedRecipient) {
@@ -660,7 +682,13 @@ const CheckoutPage = () => {
 
       if (res.data?.success) {
         const result = res.data.result || {};
-        setDeliveryOptions(result.deliveryOptions || {});
+        const opts = result.deliveryOptions || {};
+        if (result.isServiceable !== undefined) {
+          setIsDeliveryServiceable(result.isServiceable);
+          setDeliveryUnserviceableReason(result.unserviceableReason || null);
+          setMatchedDeliveryZone(result.matchedZone || null);
+        }
+        setDeliveryOptions(opts);
         setAvailableDeliveryDates(result.availableDates || []);
         if (result.selectedDate && (!selectedDeliveryDate || dateToUse)) {
           setSelectedDeliveryDate(result.selectedDate);
@@ -675,12 +703,31 @@ const CheckoutPage = () => {
             setSelectedSlot(null);
           }
         }
+
+        // Auto fallback if current deliveryMethod is disabled
+        setDeliveryMethod((curr) => {
+          const currentOpt = opts[curr];
+          if (currentOpt && (currentOpt.available === false || currentOpt.enabled === false)) {
+            if (opts.NORMAL?.available && opts.NORMAL?.enabled !== false) return "NORMAL";
+            if (opts.EXPRESS?.available && opts.EXPRESS?.enabled !== false) return "EXPRESS";
+            if (opts.SCHEDULED?.available && opts.SCHEDULED?.enabled !== false) return "SCHEDULED";
+          }
+          return curr;
+        });
       }
     } catch (err) {
       console.warn("Could not fetch delivery slots:", err);
       setDeliverySlotError("Failed to fetch slots. Please check connection.");
     } finally {
       setIsLoadingDeliverySlots(false);
+    }
+  };
+
+  const handleSelectDeliveryMethod = (method) => {
+    setDeliveryMethod(method);
+    if (method !== "SCHEDULED") {
+      setSelectedSlot(null);
+      setSelectedTimeSlot(method === "EXPRESS" ? "Express (ASAP)" : "Normal (1-2 hrs)");
     }
   };
 
@@ -811,6 +858,11 @@ const CheckoutPage = () => {
       return;
     }
 
+    if (!isDeliveryServiceable) {
+      showToast(deliveryUnserviceableReason || "Your delivery address is outside our serviceable delivery zones.", "error");
+      return;
+    }
+
     if (deliveryMethod === "SCHEDULED" && !selectedSlot) {
       showToast("Please select a delivery date and time slot.", "warning");
       return;
@@ -840,7 +892,7 @@ const CheckoutPage = () => {
           price: item.price,
           image: item.image,
         })),
-        attribution: getStoredAttribution(),
+        ...(getStoredAttribution() ? { attribution: getStoredAttribution() } : {}),
       };
 
       const response = await customerApi.createOrder(orderData);
@@ -1198,10 +1250,23 @@ const CheckoutPage = () => {
               displayAddress={displayAddress}
             />
 
+            {/* Serviceability Alert (Mobile) */}
+            {!isDeliveryServiceable && (
+              <div className="p-3.5 rounded-2xl bg-red-50 border border-red-200 text-red-800 text-xs flex items-start gap-2.5">
+                <AlertCircle size={16} className="text-red-600 flex-shrink-0 mt-0.5" />
+                <div>
+                  <h4 className="font-bold text-red-900">Delivery Unavailable at Address</h4>
+                  <p className="mt-0.5 text-red-700 leading-snug">
+                    {deliveryUnserviceableReason || "Your address is outside all active delivery zones. Please select a different address."}
+                  </p>
+                </div>
+              </div>
+            )}
+
             {/* Delivery Method & Slot Selection (Mobile) */}
             <CheckoutDeliverySelector
               deliveryMethod={deliveryMethod}
-              onSelectDeliveryMethod={setDeliveryMethod}
+              onSelectDeliveryMethod={handleSelectDeliveryMethod}
               deliveryOptions={deliveryOptions}
               availableDates={availableDeliveryDates}
               selectedDate={selectedDeliveryDate}
@@ -1312,8 +1377,8 @@ const CheckoutPage = () => {
             <SlideToPay
               amount={finalAmountToPay}
               onSuccess={handlePlaceOrder}
-              isLoading={isPlacingOrder || isPreviewLoading || !pricingPreview}
-              text={finalAmountToPay === 0 ? "Place Free Order" : "Slide to Pay"}
+              isLoading={isPlacingOrder || isPreviewLoading || !pricingPreview || !isDeliveryServiceable}
+              text={!isDeliveryServiceable ? "Delivery Unavailable" : finalAmountToPay === 0 ? "Place Free Order" : "Slide to Pay"}
             />
           </div>
         </div>
@@ -1358,7 +1423,7 @@ const CheckoutPage = () => {
               {/* Step 2. Delivery Option & Slot (Desktop) */}
               <CheckoutDeliverySelector
                 deliveryMethod={deliveryMethod}
-                onSelectDeliveryMethod={setDeliveryMethod}
+                onSelectDeliveryMethod={handleSelectDeliveryMethod}
                 deliveryOptions={deliveryOptions}
                 availableDates={availableDeliveryDates}
                 selectedDate={selectedDeliveryDate}
@@ -1383,7 +1448,8 @@ const CheckoutPage = () => {
                 </h2>
 
                 <div className="bg-white rounded-2xl p-5 border border-[#ede5df] shadow-xs space-y-3">
-                  {/* Option 1: Online Payment (Razorpay) */}
+                  {/* Option 1: Online Payment (Razorpay) - Temporarily hidden */}
+                  {/*
                   {settings?.onlineEnabled !== false && (
                     <label
                       onClick={() => setSelectedPayment("razorpay")}
@@ -1417,6 +1483,7 @@ const CheckoutPage = () => {
                       </div>
                     </label>
                   )}
+                  */}
 
                   {/* Option 2: Cash on Delivery */}
                   {settings?.codEnabled !== false && (
@@ -1455,10 +1522,20 @@ const CheckoutPage = () => {
               <div>
                 <button
                   onClick={handlePlaceOrder}
-                  disabled={isPlacingOrder || isPreviewLoading}
-                  className="w-full py-4 rounded-xl bg-[#FDCE04] hover:bg-[#E5B800] disabled:opacity-50 text-[#1A1A1A] font-extrabold text-sm flex items-center justify-center gap-2 shadow-md active:scale-[0.99] transition-all cursor-pointer"
+                  disabled={isPlacingOrder || isPreviewLoading || !isDeliveryServiceable}
+                  className={`w-full py-4 rounded-xl font-extrabold text-sm flex items-center justify-center gap-2 shadow-md active:scale-[0.99] transition-all ${
+                    !isDeliveryServiceable
+                      ? "bg-slate-200 text-slate-500 cursor-not-allowed"
+                      : "bg-[#FDCE04] hover:bg-[#E5B800] disabled:opacity-50 text-[#1A1A1A] cursor-pointer"
+                  }`}
                 >
-                  <span>{isPlacingOrder ? "Placing Order..." : "Place Order"}</span>
+                  <span>
+                    {!isDeliveryServiceable
+                      ? "Delivery Unavailable at Address"
+                      : isPlacingOrder
+                      ? "Placing Order..."
+                      : "Place Order"}
+                  </span>
                 </button>
                 <p className="text-center text-xs text-slate-500 mt-2 flex items-center justify-center gap-1.5">
                   <Lock size={13} className="text-slate-400" />
@@ -1476,7 +1553,7 @@ const CheckoutPage = () => {
                     Order Summary
                   </h2>
                   <span className="text-xs text-slate-500 font-medium">
-                    {cartCount} items &bull; ₹{pricingPreview?.subtotal || cartTotal}
+                    {cartCount} items &bull; ₹{pricingPreview?.productSubtotal ?? cartTotal}
                   </span>
                 </div>
 
@@ -1504,6 +1581,30 @@ const CheckoutPage = () => {
                   ))}
                 </div>
 
+                {/* Delivery Method Selected Indicator */}
+                {deliveryMethod === "EXPRESS" ? (
+                  <div className="flex items-center justify-between text-[11px] font-bold text-amber-800 bg-amber-50/80 px-2.5 py-1.5 rounded-xl border border-amber-200/70">
+                    <span className="flex items-center gap-1.5">⚡ Express Priority Delivery</span>
+                    {pricingPreview?.expressSurcharge > 0 ? (
+                      <span className="text-amber-700 font-extrabold">+₹{pricingPreview.expressSurcharge}</span>
+                    ) : (
+                      <span>15–30 mins</span>
+                    )}
+                  </div>
+                ) : deliveryMethod === "SCHEDULED" ? (
+                  <div className="flex items-center justify-between text-[11px] font-bold text-emerald-800 bg-emerald-50/80 px-2.5 py-1.5 rounded-xl border border-emerald-200/70">
+                    <span className="flex items-center gap-1.5">📅 Scheduled Slot</span>
+                    <span className="truncate max-w-[150px]">
+                      {selectedSlot ? selectedSlot.label : selectedDeliveryDate || "Pick slot"}
+                    </span>
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-between text-[11px] font-semibold text-blue-800 bg-blue-50/80 px-2.5 py-1.5 rounded-xl border border-blue-200/70">
+                    <span className="flex items-center gap-1.5">🚚 Standard Delivery</span>
+                    <span>1–2 hours</span>
+                  </div>
+                )}
+
                 <hr className="border-slate-100" />
 
                 {/* Price Details */}
@@ -1511,35 +1612,84 @@ const CheckoutPage = () => {
                   <h3 className="font-bold text-slate-800 text-xs mb-1">Price Details</h3>
                   <div className="flex justify-between text-slate-600">
                     <span>Subtotal</span>
-                    <span className="font-semibold text-slate-900">₹{pricingPreview?.subtotal || cartTotal}</span>
-                  </div>
-                  <div className="flex justify-between text-slate-600">
-                    <div>
-                      <span>Delivery Charges</span>
-                      <p className="text-[10px] text-slate-400">Free delivery above ₹499</p>
-                    </div>
                     <span className="font-semibold text-slate-900">
-                      {(pricingPreview?.deliveryFee ?? 0) === 0 ? (
+                      ₹{pricingPreview?.productSubtotal ?? cartTotal}
+                    </span>
+                  </div>
+
+                  {/* Delivery Charges */}
+                  <div className="flex justify-between items-start text-slate-600">
+                    <div>
+                      <span className="font-medium text-slate-700">Delivery Charges</span>
+                      <p className="text-[10px] text-slate-400">
+                        {activeEffectiveDeliveryFee === 0
+                          ? `Free delivery applied (orders above ₹${pricingPreview?.freeDeliveryThreshold || 499})`
+                          : deliveryMethod === "EXPRESS" && isFreeDeliveryForSubtotal
+                          ? "Base fee waived • Express priority fee applied"
+                          : pricingPreview?.freeDeliveryThreshold
+                          ? `Free delivery on orders above ₹${pricingPreview.freeDeliveryThreshold}`
+                          : "Delivery charge"}
+                      </p>
+                    </div>
+                    <span className="font-bold text-slate-900">
+                      {activeEffectiveDeliveryFee === 0 ? (
                         <span className="text-emerald-700 font-bold">FREE</span>
                       ) : (
-                        `₹${pricingPreview?.deliveryFee || 30}`
+                        `₹${activeEffectiveDeliveryFee}`
                       )}
                     </span>
                   </div>
+
+                  {/* Handling Fee */}
+                  {(pricingPreview?.handlingFeeCharged || 0) > 0 && (
+                    <div className="flex justify-between text-slate-600">
+                      <span>Handling Fee</span>
+                      <span className="font-semibold text-slate-900">
+                        ₹{pricingPreview.handlingFeeCharged}
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Delivery Tip */}
+                  {(selectedTip || 0) > 0 && (
+                    <div className="flex justify-between text-slate-600">
+                      <span>Delivery Tip</span>
+                      <span className="font-semibold text-slate-900">₹{selectedTip}</span>
+                    </div>
+                  )}
+
+                  {/* Coupon Discount */}
+                  {discountAmount > 0 && (
+                    <div className="flex justify-between text-emerald-700 font-bold">
+                      <span>Coupon Discount</span>
+                      <span>-₹{discountAmount}</span>
+                    </div>
+                  )}
+
+                  {/* Wallet Applied */}
+                  {walletAmountToUse > 0 && (
+                    <div className="flex justify-between text-primary font-bold">
+                      <span>Wallet Applied</span>
+                      <span>-₹{walletAmountToUse}</span>
+                    </div>
+                  )}
+
                   <hr className="border-slate-100 my-1.5" />
                   <div className="flex justify-between text-sm font-black text-slate-900">
                     <span>Total Amount</span>
-                    <span className="text-base text-slate-900">₹{finalAmountToPay || cartTotal}</span>
+                    <span className="text-base font-[1000] text-slate-900">
+                      {isPreviewLoading ? "Calculating..." : `₹${Math.ceil(finalAmountToPay)}`}
+                    </span>
                   </div>
                 </div>
 
                 {/* Freshness Guaranteed Card */}
                 <div className="p-3 rounded-xl bg-[#FDF2F2] border border-[#FADCDD] flex items-center gap-3">
                   <div className="w-8 h-8 rounded-full bg-[#FDCE04]/20 flex items-center justify-center text-[#1A1A1A] flex-shrink-0">
-                  <CheckCircle size={18} className="stroke-[2.5]" />
-                </div>
-                <div>
-                  <p className="text-xs font-bold text-slate-900">Freshness Guaranteed</p>
+                    <CheckCircle size={18} className="stroke-[2.5]" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-slate-900">Freshness Guaranteed</p>
                     <p className="text-[11px] text-slate-500">or your money back</p>
                   </div>
                 </div>

@@ -43,10 +43,31 @@ export const createProductSchema = Joi.object({
   variants: Joi.array()
     .items(
       Joi.object({
-        slot: trimmedString.required(),
+        slot: trimmedString.optional(),
+        name: trimmedString.optional(),
+        sku: trimmedString.optional(),
         price: Joi.number().min(0).required(),
+        salePrice: Joi.number().min(0).optional(),
         stock: Joi.number().integer().min(0).required(),
         unit: trimmedString.optional(),
+        tieredPricing: Joi.array()
+          .items(
+            Joi.object({
+              minQty: Joi.number().min(0.01).required(),
+              discountPercentage: Joi.number().min(0).max(100).optional(),
+              fixedUnitPrice: Joi.number().min(0).optional(),
+            }),
+          )
+          .optional(),
+      }),
+    )
+    .optional(),
+  tieredPricing: Joi.array()
+    .items(
+      Joi.object({
+        minQty: Joi.number().min(0.01).required(),
+        discountPercentage: Joi.number().min(0).max(100).optional(),
+        fixedUnitPrice: Joi.number().min(0).optional(),
       }),
     )
     .optional(),

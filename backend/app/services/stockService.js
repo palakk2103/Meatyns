@@ -124,6 +124,55 @@ export async function reserveStockForItems({
   return lowStockAlerts;
 }
 
+export async function releaseStockForOrderItem(order, itemIndex, { session = null, reason = "Item unavailable" } = {}) {
+  if (!order || !Array.isArray(order.items) || !order.items[itemIndex]) {
+    return false;
+  }
+
+  const item = order.items[itemIndex];
+  if (item.stockReleased) {
+    return false; // Idempotent: already released once
+  }
+
+  const variantSku = String(item.variantSku || item.variantSlot || "").trim();
+
+  if (variantSku) {
+    await Product.updateOne(
+      { _id: item.product, "variants.sku": variantSku },
+      {
+        $inc: {
+          stock: item.quantity,
+          "variants.$.stock": item.quantity,
+        },
+      },
+      session ? { session } : {},
+    );
+  } else {
+    await Product.updateOne(
+      { _id: item.product },
+      { $inc: { stock: item.quantity } },
+      session ? { session } : {},
+    );
+  }
+
+  await StockHistory.create(
+    [
+      {
+        product: item.product,
+        seller: order.seller,
+        type: "Release",
+        quantity: item.quantity,
+        note: `Order #${order.orderId} Item #${itemIndex + 1} (${item.name || "Item"}) ${reason}${variantSku ? ` [variant: ${variantSku}]` : ""}`,
+        order: order._id,
+      },
+    ],
+    session ? { session } : {},
+  );
+
+  item.stockReleased = true;
+  return true;
+}
+
 export async function releaseReservedStockForOrder(order, { session = null, reason = "Reservation released" } = {}) {
   if (!order || !Array.isArray(order.items) || order.items.length === 0) {
     return false;
@@ -135,6 +184,10 @@ export async function releaseReservedStockForOrder(order, { session = null, reas
   }
 
   for (const item of order.items) {
+    if (item.stockReleased) {
+      continue; // Skip items already released individually during partial fulfillment
+    }
+
     const variantSku = String(item.variantSku || item.variantSlot || "").trim();
 
     if (variantSku) {
@@ -169,6 +222,8 @@ export async function releaseReservedStockForOrder(order, { session = null, reas
       ],
       session ? { session } : {},
     );
+
+    item.stockReleased = true;
   }
 
   order.stockReservation = {

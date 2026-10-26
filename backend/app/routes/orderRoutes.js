@@ -20,7 +20,12 @@ import {
   rejectReturnPickup,
   updateReturnStatus,
   uploadReturnPickupProof,
+  getOrderItemRefundPreview,
+  markOrderItemUnavailableController,
+  retryOrderItemRefundController,
 } from "../controller/orderController.js";
+import { validate } from "../middleware/validate.js";
+import { markOrderItemUnavailableSchema } from "../validation/orderValidation.js";
 import {
   createOrderWithFinancialSnapshot,
   markCodCollectedAfterDelivery,
@@ -154,6 +159,29 @@ router.put(
   allowRoles("admin", "seller"),
   requireApprovedSeller,
   assignReturnDelivery,
+);
+
+// Partial Order Fulfillment & Itemized Refunds (ORD-005)
+router.get(
+  "/:orderId/items/:itemIndex/refund-preview",
+  verifyToken,
+  allowRoles("admin", "seller"),
+  requireApprovedSeller,
+  getOrderItemRefundPreview,
+);
+router.post(
+  "/:orderId/items/:itemIndex/unavailable",
+  verifyToken,
+  allowRoles("admin", "seller"),
+  requireApprovedSeller,
+  validate(markOrderItemUnavailableSchema),
+  markOrderItemUnavailableController,
+);
+router.post(
+  "/:orderId/items/:itemIndex/retry-refund",
+  verifyToken,
+  allowRoles("admin"),
+  retryOrderItemRefundController,
 );
 
 // Delivery routes

@@ -72,3 +72,7 @@ export const acceptOrderSchema = Joi.object({}).unknown(false);
 export const skipOrderSchema = Joi.object({
   reason: trimmedString.max(500).optional(),
 });
+
+export const markOrderItemUnavailableSchema = Joi.object({
+  reason: trimmedString.min(1).max(500).required(),
+});

@@ -19,6 +19,7 @@ import {
     Linkedin,
     Youtube,
     Loader2,
+    Clock,
     X
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -72,11 +73,14 @@ const AdminSettings = () => {
         keywords: [],
         returnDeliveryCommission: 0,
         lowStockAlertsEnabled: true,
+        sellerAcceptanceTimeoutMs: 60000,
         productApproval: {
             sellerCreateRequiresApproval: false,
             sellerEditRequiresApproval: false,
         },
     });
+
+    const [timeoutUnit, setTimeoutUnit] = useState('seconds'); // 'seconds' | 'minutes'
 
     useEffect(() => {
         const fetchSettings = async () => {
@@ -90,6 +94,7 @@ const AdminSettings = () => {
                         productApproval: normalizeProductApprovalConfig(data || {}),
                         keywords: Array.isArray(data.keywords) ? data.keywords : (data.metaKeywords ? data.metaKeywords.split(',').map(k => k.trim()).filter(Boolean) : []),
                         returnDeliveryCommission: data.returnDeliveryCommission ?? 0,
+                        sellerAcceptanceTimeoutMs: data.sellerAcceptanceTimeoutMs ?? 60000,
                     }));
                 }
             } catch (error) {
@@ -103,10 +108,17 @@ const AdminSettings = () => {
     }, [showToast]);
 
     const handleSave = async () => {
+        const timeoutMs = Number(settings.sellerAcceptanceTimeoutMs);
+        if (!Number.isInteger(timeoutMs) || timeoutMs < 10000 || timeoutMs > 1800000) {
+            showToast('Seller Acceptance Timeout must be between 10 seconds and 30 minutes (1,800 seconds)', 'error');
+            return;
+        }
+
         try {
             setIsSaving(true);
             const payload = {
                 ...settings,
+                sellerAcceptanceTimeoutMs: timeoutMs,
                 keywords: Array.isArray(settings.keywords) ? settings.keywords : (settings.metaKeywords ? settings.metaKeywords.split(',').map(k => k.trim()).filter(Boolean) : []),
             };
             const res = await adminApi.updateSettings(payload);
@@ -391,6 +403,139 @@ const AdminSettings = () => {
                                             )}
                                         />
                                     </button>
+                                </div>
+
+                                {/* Seller Acceptance Timeout Configuration */}
+                                <div className="md:col-span-2 rounded-2xl bg-white border-2 border-brand-100/70 p-6 shadow-sm space-y-4">
+                                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                        <div className="flex items-center gap-3">
+                                            <div className="p-2.5 rounded-xl bg-brand-50 text-brand-600">
+                                                <Clock className="h-5 w-5" />
+                                            </div>
+                                            <div>
+                                                <h4 className="text-sm font-black text-slate-900 uppercase tracking-wider">
+                                                    Seller Acceptance Timeout
+                                                </h4>
+                                                <p className="text-xs font-medium text-slate-500 mt-0.5">
+                                                    Time allotted for sellers to accept or decline incoming orders before auto-cancellation.
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div className="inline-flex items-center rounded-xl bg-slate-100 p-1 self-start sm:self-auto">
+                                            <button
+                                                type="button"
+                                                onClick={() => setTimeoutUnit('seconds')}
+                                                className={cn(
+                                                    "px-3 py-1.5 text-xs font-black rounded-lg transition-all",
+                                                    timeoutUnit === 'seconds'
+                                                        ? "bg-white text-slate-900 shadow-sm"
+                                                        : "text-slate-500 hover:text-slate-900"
+                                                )}
+                                            >
+                                                Seconds
+                                            </button>
+                                            <button
+                                                type="button"
+                                                onClick={() => setTimeoutUnit('minutes')}
+                                                className={cn(
+                                                    "px-3 py-1.5 text-xs font-black rounded-lg transition-all",
+                                                    timeoutUnit === 'minutes'
+                                                        ? "bg-white text-slate-900 shadow-sm"
+                                                        : "text-slate-500 hover:text-slate-900"
+                                                )}
+                                            >
+                                                Minutes
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
+                                        <div className="sm:col-span-6 space-y-2">
+                                            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                                                Timeout Value ({timeoutUnit === 'minutes' ? 'Minutes' : 'Seconds'})
+                                            </label>
+                                            <div className="relative">
+                                                <input
+                                                    type="number"
+                                                    min={timeoutUnit === 'minutes' ? 0.2 : 10}
+                                                    max={timeoutUnit === 'minutes' ? 30 : 1800}
+                                                    step={timeoutUnit === 'minutes' ? '0.5' : '1'}
+                                                    value={
+                                                        timeoutUnit === 'minutes'
+                                                            ? Math.round(((settings.sellerAcceptanceTimeoutMs || 60000) / 60000) * 10) / 10
+                                                            : Math.round((settings.sellerAcceptanceTimeoutMs || 60000) / 1000)
+                                                    }
+                                                    onChange={(e) => {
+                                                        const rawVal = parseFloat(e.target.value);
+                                                        if (Number.isNaN(rawVal)) {
+                                                            handleInputChange('sellerAcceptanceTimeoutMs', 0);
+                                                            return;
+                                                        }
+                                                        const msVal = timeoutUnit === 'minutes'
+                                                            ? Math.round(rawVal * 60 * 1000)
+                                                            : Math.round(rawVal * 1000);
+                                                        handleInputChange('sellerAcceptanceTimeoutMs', msVal);
+                                                    }}
+                                                    className="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-base font-black text-slate-900 outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all font-mono"
+                                                    placeholder="Enter timeout..."
+                                                />
+                                                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-black text-slate-400 uppercase">
+                                                    {timeoutUnit}
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div className="sm:col-span-6 bg-slate-50/80 rounded-xl p-3.5 border border-slate-200/80">
+                                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-wider">
+                                                Configured Duration
+                                            </p>
+                                            <p className="text-base font-black text-slate-900 mt-1">
+                                                {Math.floor((settings.sellerAcceptanceTimeoutMs || 60000) / 60000)}m {Math.round(((settings.sellerAcceptanceTimeoutMs || 60000) % 60000) / 1000)}s
+                                                <span className="text-xs font-semibold text-slate-500 ml-2">
+                                                    ({Math.round((settings.sellerAcceptanceTimeoutMs || 60000) / 1000)} total seconds)
+                                                </span>
+                                            </p>
+                                            <p className="text-[11px] font-medium text-slate-500 mt-0.5">
+                                                Safe range: 10s to 30m (1800s). Default: 60s.
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    {/* Presets */}
+                                    <div className="space-y-1.5 pt-1">
+                                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-wider">
+                                            Quick Presets:
+                                        </p>
+                                        <div className="flex flex-wrap gap-2">
+                                            {[
+                                                { label: '30s', ms: 30000 },
+                                                { label: '60s (Default)', ms: 60000 },
+                                                { label: '90s', ms: 90000 },
+                                                { label: '2 min', ms: 120000 },
+                                                { label: '3 min', ms: 180000 },
+                                                { label: '5 min', ms: 300000 },
+                                            ].map((preset) => {
+                                                const isSelected = (settings.sellerAcceptanceTimeoutMs || 60000) === preset.ms;
+                                                return (
+                                                    <button
+                                                        key={preset.ms}
+                                                        type="button"
+                                                        onClick={() => {
+                                                            handleInputChange('sellerAcceptanceTimeoutMs', preset.ms);
+                                                        }}
+                                                        className={cn(
+                                                            "px-3 py-1.5 rounded-lg text-xs font-black transition-all",
+                                                            isSelected
+                                                                ? "bg-slate-900 text-white shadow-sm ring-1 ring-slate-900"
+                                                                : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                                                        )}
+                                                    >
+                                                        {preset.label}
+                                                    </button>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </Card>

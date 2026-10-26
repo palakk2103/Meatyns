@@ -61,13 +61,13 @@ const CheckoutDeliverySelector = ({
         {/* 1. EXPRESS DELIVERY */}
         <div
           onClick={() => {
-            if (express.available) onSelectDeliveryMethod("EXPRESS");
+            if (express.available && express.enabled !== false) onSelectDeliveryMethod("EXPRESS");
           }}
-          className={`relative p-4 rounded-2xl flex flex-col justify-between border transition-all cursor-pointer select-none ${
+          className={`relative p-4 rounded-2xl flex flex-col justify-between border transition-all select-none ${
             deliveryMethod === "EXPRESS"
-              ? "bg-[#FDCE04]/10 border-[#FDCE04] ring-2 ring-[#FDCE04] shadow-xs"
-              : express.available
-              ? "bg-white border-[#ede5df] hover:border-[#FDCE04]/60"
+              ? "bg-[#FDCE04]/10 border-[#FDCE04] ring-2 ring-[#FDCE04] shadow-xs cursor-pointer"
+              : express.available && express.enabled !== false
+              ? "bg-white border-[#ede5df] hover:border-[#FDCE04]/60 cursor-pointer"
               : "bg-slate-50 border-slate-200 opacity-60 cursor-not-allowed"
           }`}
         >
@@ -91,16 +91,26 @@ const CheckoutDeliverySelector = ({
                 </p>
               </div>
             </div>
-            {deliveryMethod === "EXPRESS" && (
-              <span className="w-5 h-5 rounded-full bg-[#FDCE04] flex items-center justify-center text-[#1A1A1A]">
-                <Check size={12} strokeWidth={3} />
+
+            <div className="flex flex-col items-end gap-1">
+              {deliveryMethod === "EXPRESS" && (
+                <span className="w-5 h-5 rounded-full bg-[#FDCE04] flex items-center justify-center text-[#1A1A1A]">
+                  <Check size={12} strokeWidth={3} />
+                </span>
+              )}
+              <span className="text-xs font-black text-slate-800 bg-amber-50 border border-amber-200/60 px-2 py-0.5 rounded-lg">
+                {typeof express.deliveryFee === "number"
+                  ? express.deliveryFee === 0
+                    ? "FREE"
+                    : `₹${express.deliveryFee}`
+                  : "₹40"}
               </span>
-            )}
+            </div>
           </div>
 
           <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between">
             <span className="text-[11px] font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200/60">
-              ⚡ {express.estimatedLabel || "20–30 mins"}
+              ⚡ {express.estimatedLabel || "15–30 mins"}
             </span>
             <span className="text-[10px] text-slate-400 font-medium">Fastest</span>
           </div>
@@ -115,13 +125,13 @@ const CheckoutDeliverySelector = ({
         {/* 2. NORMAL DELIVERY */}
         <div
           onClick={() => {
-            if (normal.available) onSelectDeliveryMethod("NORMAL");
+            if (normal.available && normal.enabled !== false) onSelectDeliveryMethod("NORMAL");
           }}
-          className={`relative p-4 rounded-2xl flex flex-col justify-between border transition-all cursor-pointer select-none ${
+          className={`relative p-4 rounded-2xl flex flex-col justify-between border transition-all select-none ${
             deliveryMethod === "NORMAL"
-              ? "bg-[#FDCE04]/10 border-[#FDCE04] ring-2 ring-[#FDCE04] shadow-xs"
-              : normal.available
-              ? "bg-white border-[#ede5df] hover:border-[#FDCE04]/60"
+              ? "bg-[#FDCE04]/10 border-[#FDCE04] ring-2 ring-[#FDCE04] shadow-xs cursor-pointer"
+              : normal.available && normal.enabled !== false
+              ? "bg-white border-[#ede5df] hover:border-[#FDCE04]/60 cursor-pointer"
               : "bg-slate-50 border-slate-200 opacity-60 cursor-not-allowed"
           }`}
         >
@@ -145,31 +155,47 @@ const CheckoutDeliverySelector = ({
                 </p>
               </div>
             </div>
-            {deliveryMethod === "NORMAL" && (
-              <span className="w-5 h-5 rounded-full bg-[#FDCE04] flex items-center justify-center text-[#1A1A1A]">
-                <Check size={12} strokeWidth={3} />
+
+            <div className="flex flex-col items-end gap-1">
+              {deliveryMethod === "NORMAL" && (
+                <span className="w-5 h-5 rounded-full bg-[#FDCE04] flex items-center justify-center text-[#1A1A1A]">
+                  <Check size={12} strokeWidth={3} />
+                </span>
+              )}
+              <span className="text-xs font-black text-slate-800 bg-blue-50 border border-blue-200/60 px-2 py-0.5 rounded-lg">
+                {typeof normal.deliveryFee === "number"
+                  ? normal.deliveryFee === 0
+                    ? "FREE"
+                    : `₹${normal.deliveryFee}`
+                  : "₹25"}
               </span>
-            )}
+            </div>
           </div>
 
           <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between">
             <span className="text-[11px] font-bold text-blue-800 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-200/60 flex items-center gap-1">
-              <Clock size={11} /> 1–2 hours
+              <Clock size={11} /> {normal.estimatedLabel || "1–2 hours"}
             </span>
             <span className="text-[10px] text-slate-400 font-medium">Standard</span>
           </div>
+
+          {normal.disabledReason && (
+            <p className="text-[10px] text-red-600 mt-1.5 font-medium leading-tight">
+              {normal.disabledReason}
+            </p>
+          )}
         </div>
 
         {/* 3. SCHEDULED DELIVERY */}
         <div
           onClick={() => {
-            if (scheduled.available) onSelectDeliveryMethod("SCHEDULED");
+            if (scheduled.available && scheduled.enabled !== false) onSelectDeliveryMethod("SCHEDULED");
           }}
-          className={`relative p-4 rounded-2xl flex flex-col justify-between border transition-all cursor-pointer select-none ${
+          className={`relative p-4 rounded-2xl flex flex-col justify-between border transition-all select-none ${
             deliveryMethod === "SCHEDULED"
-              ? "bg-[#FDCE04]/10 border-[#FDCE04] ring-2 ring-[#FDCE04] shadow-xs"
-              : scheduled.available
-              ? "bg-white border-[#ede5df] hover:border-[#FDCE04]/60"
+              ? "bg-[#FDCE04]/10 border-[#FDCE04] ring-2 ring-[#FDCE04] shadow-xs cursor-pointer"
+              : scheduled.available && scheduled.enabled !== false
+              ? "bg-white border-[#ede5df] hover:border-[#FDCE04]/60 cursor-pointer"
               : "bg-slate-50 border-slate-200 opacity-60 cursor-not-allowed"
           }`}
         >
@@ -193,19 +219,37 @@ const CheckoutDeliverySelector = ({
                 </p>
               </div>
             </div>
-            {deliveryMethod === "SCHEDULED" && (
-              <span className="w-5 h-5 rounded-full bg-[#FDCE04] flex items-center justify-center text-[#1A1A1A]">
-                <Check size={12} strokeWidth={3} />
+
+            <div className="flex flex-col items-end gap-1">
+              {deliveryMethod === "SCHEDULED" && (
+                <span className="w-5 h-5 rounded-full bg-[#FDCE04] flex items-center justify-center text-[#1A1A1A]">
+                  <Check size={12} strokeWidth={3} />
+                </span>
+              )}
+              <span className="text-xs font-black text-slate-800 bg-emerald-50 border border-emerald-200/60 px-2 py-0.5 rounded-lg">
+                {typeof scheduled.deliveryFee === "number"
+                  ? scheduled.deliveryFee === 0
+                    ? "FREE"
+                    : `₹${scheduled.deliveryFee}`
+                  : "₹25"}
               </span>
-            )}
+            </div>
           </div>
 
           <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between">
             <span className="text-[11px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200/60">
               📅 Future Slot
             </span>
-            <span className="text-[10px] text-slate-400 font-medium">Advance</span>
+            <span className="text-[10px] text-slate-400 font-medium">
+              {scheduled.maxAdvanceDays ? `Up to ${scheduled.maxAdvanceDays} days` : "Advance"}
+            </span>
           </div>
+
+          {scheduled.disabledReason && (
+            <p className="text-[10px] text-red-600 mt-1.5 font-medium leading-tight">
+              {scheduled.disabledReason}
+            </p>
+          )}
         </div>
       </div>
 

@@ -19,6 +19,8 @@ import {
   updateCashInHand,
 } from "./walletService.js";
 import { createPendingPayoutForOrder } from "./payoutService.js";
+import { processOrderDeliveryLoyalty } from "../loyaltyService.js";
+import { processOrderDeliveryReferral } from "../referralService.js";
 
 function toOrderIdQuery(orderOrId) {
   if (!orderOrId) return null;
@@ -593,6 +595,18 @@ export async function settleDeliveredOrder(orderOrId, { actorId = null } = {}) {
     }
     await createPendingRiderPayout(order, { session, actorId });
     await creditAdminEarning(order, { session, actorId });
+
+    // Phase 5: Automated Loyalty and Referral Settlement
+    try {
+      await processOrderDeliveryLoyalty(order, { session });
+    } catch (loyaltyErr) {
+      console.error("[Loyalty] Error during settlement loyalty reward:", loyaltyErr);
+    }
+    try {
+      await processOrderDeliveryReferral(order, { session });
+    } catch (referralErr) {
+      console.error("[Referral] Error during settlement referral reward:", referralErr);
+    }
 
     order.financeFlags = {
       ...(order.financeFlags || {}),

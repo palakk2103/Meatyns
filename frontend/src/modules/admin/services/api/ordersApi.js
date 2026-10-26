@@ -24,6 +24,14 @@ export const adminOrdersApi = {
         axiosInstance.put(`/orders/returns/${orderId}/assign-delivery`, data),
     updateReturnQc: (orderId, data) =>
         axiosInstance.put(`/orders/returns/${orderId}/qc`, data),
+
+    // Partial Fulfillment & Item Refunds (ORD-005)
+    getOrderItemRefundPreview: (orderId, itemIndex) =>
+        axiosInstance.get(`/orders/${orderId}/items/${itemIndex}/refund-preview`),
+    markOrderItemUnavailable: (orderId, itemIndex, data) =>
+        axiosInstance.post(`/orders/${orderId}/items/${itemIndex}/unavailable`, data),
+    retryOrderItemRefund: (orderId, itemIndex) =>
+        axiosInstance.post(`/orders/${orderId}/items/${itemIndex}/retry-refund`),
 };
 
 export default adminOrdersApi;

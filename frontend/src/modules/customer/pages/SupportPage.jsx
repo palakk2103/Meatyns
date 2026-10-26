@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   MessageCircle,
+  MessageSquare,
   Phone,
   Mail,
   ChevronDown,
@@ -19,6 +20,7 @@ import {
   ShoppingCart,
 } from 'lucide-react';
 import { useToast } from '@shared/components/ui/Toast';
+import { useAuth } from '@core/context/AuthContext';
 import { useSettings } from '@core/context/SettingsContext';
 import { useCart } from '../context/CartContext';
 import { useLocation as useAppLocation } from '../context/LocationContext';
@@ -36,6 +38,7 @@ const FAQ_CACHE_TTL_MS = 5 * 60 * 1000;
 
 const SupportPage = () => {
     const navigate = useNavigate();
+    const { isAuthenticated } = useAuth();
     const { showToast } = useToast();
     const { settings } = useSettings();
     const { cartCount } = useCart();
@@ -242,7 +245,14 @@ const SupportPage = () => {
                         icon={MessageSquare} 
                         label="Raise Ticket" 
                         sub="Detailed queries" 
-                        onClick={() => setIsTicketModalOpen(true)} 
+                        onClick={() => {
+                            if (!isAuthenticated) {
+                                showToast("Please log in to raise a support ticket", "info");
+                                navigate("/login?redirect=/support");
+                                return;
+                            }
+                            setIsTicketModalOpen(true);
+                        }} 
                     />
                     <ContactCard 
                         icon={MessageCircle} 

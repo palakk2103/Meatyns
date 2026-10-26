@@ -26,7 +26,14 @@ const USER_TYPE_CONFIG = {
 };
 
 function otpHashSecret() {
-  return process.env.OTP_HASH_SECRET || process.env.JWT_SECRET || "unsafe-dev-secret";
+  const secret = process.env.OTP_HASH_SECRET || process.env.JWT_SECRET;
+  if (!secret) {
+    if (process.env.NODE_ENV === "production") {
+      throw new Error("OTP_HASH_SECRET or JWT_SECRET must be configured in production");
+    }
+    return "unsafe-dev-secret";
+  }
+  return secret;
 }
 
 function hashOtp(mobile, otp, userType, purpose) {
@@ -46,13 +53,16 @@ function safeCompare(left, right) {
 }
 
 function isMockOtpEnabled() {
+  if (process.env.NODE_ENV === "production") {
+    return false;
+  }
   if (process.env.USE_MOCK_OTP === "true" || process.env.USE_MOCK_OTP === "1") {
     return true;
   }
   if (process.env.USE_REAL_SMS === "true" || process.env.USE_REAL_SMS === "1") {
     return false;
   }
-  return process.env.NODE_ENV !== "production";
+  return true;
 }
 
 function getExpiryMinutes() {
@@ -170,7 +180,11 @@ export async function sendSmsOtp({ mobile, userType, purpose, ipAddress = "unkno
 
 
   let otp = generateOTP(getOtpLength());
-  if (normalizedMobile === "6268423925" || normalizedMobile === "9111966732") {
+  if (
+    process.env.NODE_ENV !== "production" &&
+    isMockOtpEnabled() &&
+    (normalizedMobile === "6268423925" || normalizedMobile === "9111966732")
+  ) {
     otp = "1234";
   }
   const expiresAt = new Date(Date.now() + getExpiryMinutes() * 60 * 1000);

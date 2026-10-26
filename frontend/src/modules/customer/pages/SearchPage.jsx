@@ -42,6 +42,9 @@ const SearchPage = () => {
         return Array.isArray(saved) ? saved.filter((s) => typeof s === 'string') : [];
     });
 
+    const [selectedCutFilter, setSelectedCutFilter] = useState('all');
+    const [selectedBoneFilter, setSelectedBoneFilter] = useState('all');
+
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
     useEffect(() => {
@@ -224,9 +227,44 @@ const SearchPage = () => {
             .slice(0, 10);
     }, [allProducts]);
 
+    const filteredResults = useMemo(() => {
+        if (!Array.isArray(results) || results.length === 0) return [];
+        return results.filter(p => {
+            // Cut Type Facet Filter
+            if (selectedCutFilter && selectedCutFilter !== 'all') {
+                const cutVal = String(p.cutType || '').toLowerCase().trim();
+                const titleLower = String(p.name || '').toLowerCase();
+                const cutMatch = cutVal === selectedCutFilter ||
+                    (selectedCutFilter === 'curry_cut' && (cutVal.includes('curry') || titleLower.includes('curry cut') || titleLower.includes('curry'))) ||
+                    (selectedCutFilter === 'biryani_cut' && (cutVal.includes('biryani') || titleLower.includes('biryani cut') || titleLower.includes('biryani'))) ||
+                    (selectedCutFilter === 'boneless_cubes' && (cutVal.includes('boneless') || titleLower.includes('boneless'))) ||
+                    (selectedCutFilter === 'fillets' && (cutVal.includes('fillet') || titleLower.includes('fillet'))) ||
+                    (selectedCutFilter === 'minced' && (cutVal.includes('mince') || titleLower.includes('keema') || titleLower.includes('mince')));
+                if (!cutMatch) return false;
+            }
+
+            // Bone Type Facet Filter
+            if (selectedBoneFilter && selectedBoneFilter !== 'all') {
+                const boneVal = String(p.boneType || '').toLowerCase().trim();
+                const titleLower = String(p.name || '').toLowerCase();
+                if (selectedBoneFilter === 'boneless') {
+                    const isBoneless = boneVal === 'boneless' || titleLower.includes('boneless') || String(p.cutType || '').includes('boneless');
+                    if (!isBoneless) return false;
+                } else if (selectedBoneFilter === 'bone_in') {
+                    const isBoneIn = boneVal === 'bone_in' || titleLower.includes('with bone') || titleLower.includes('bone-in') || (!titleLower.includes('boneless') && boneVal !== 'boneless');
+                    if (!isBoneIn) return false;
+                }
+            }
+
+            return true;
+        });
+    }, [results, selectedCutFilter, selectedBoneFilter]);
+
     const handleClear = () => {
         setQuery('');
         setResults([]);
+        setSelectedCutFilter('all');
+        setSelectedBoneFilter('all');
     };
 
     return (
@@ -417,32 +455,125 @@ const SearchPage = () => {
                     {/* Search Results List */}
                     {query ? (
                         <section>
-                            <div className="flex justify-between items-center mb-5 md:mb-6">
+                            <div className="flex justify-between items-center mb-3 md:mb-4">
                                 <h2 className="text-xl md:text-2xl font-normal font-anton tracking-wide text-slate-800 uppercase">
                                     Search Results for <span className="text-[#111111] underline decoration-[#FAB82C] decoration-4">"{query}"</span>
                                 </h2>
-                                <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">{results.length} found</span>
+                                <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">
+                                    {selectedCutFilter !== 'all' || selectedBoneFilter !== 'all'
+                                        ? `${filteredResults.length} of ${results.length} found`
+                                        : `${results.length} found`}
+                                </span>
                             </div>
 
-                            {results.length > 0 ? (
+                            {/* Meat Cut & Boneless Facet Filter Pills */}
+                            {results.length > 0 && (
+                                <div className="flex items-center gap-2 overflow-x-auto pb-3 mb-3 hide-scrollbar select-none">
+                                    <button
+                                        type="button"
+                                        onClick={() => { setSelectedCutFilter('all'); setSelectedBoneFilter('all'); }}
+                                        className={cn(
+                                            "px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all border cursor-pointer",
+                                            selectedCutFilter === 'all' && selectedBoneFilter === 'all'
+                                                ? "bg-[#1A1A1A] text-white border-[#1A1A1A] shadow-xs"
+                                                : "bg-white text-slate-600 border-slate-200 hover:bg-slate-100"
+                                        )}
+                                    >
+                                        All Cuts
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => setSelectedCutFilter(selectedCutFilter === 'curry_cut' ? 'all' : 'curry_cut')}
+                                        className={cn(
+                                            "px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all border cursor-pointer",
+                                            selectedCutFilter === 'curry_cut'
+                                                ? "bg-[#1A1A1A] text-white border-[#1A1A1A] shadow-xs"
+                                                : "bg-white text-slate-600 border-slate-200 hover:bg-slate-100"
+                                        )}
+                                    >
+                                        Curry Cut
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => setSelectedCutFilter(selectedCutFilter === 'biryani_cut' ? 'all' : 'biryani_cut')}
+                                        className={cn(
+                                            "px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all border cursor-pointer",
+                                            selectedCutFilter === 'biryani_cut'
+                                                ? "bg-[#1A1A1A] text-white border-[#1A1A1A] shadow-xs"
+                                                : "bg-white text-slate-600 border-slate-200 hover:bg-slate-100"
+                                        )}
+                                    >
+                                        Biryani Cut
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => setSelectedBoneFilter(selectedBoneFilter === 'boneless' ? 'all' : 'boneless')}
+                                        className={cn(
+                                            "px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all border cursor-pointer",
+                                            selectedBoneFilter === 'boneless'
+                                                ? "bg-[#0B7D3B] text-white border-[#0B7D3B] shadow-xs"
+                                                : "bg-white text-slate-600 border-slate-200 hover:bg-slate-100"
+                                        )}
+                                    >
+                                        Boneless
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => setSelectedBoneFilter(selectedBoneFilter === 'bone_in' ? 'all' : 'bone_in')}
+                                        className={cn(
+                                            "px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all border cursor-pointer",
+                                            selectedBoneFilter === 'bone_in'
+                                                ? "bg-[#1A1A1A] text-white border-[#1A1A1A] shadow-xs"
+                                                : "bg-white text-slate-600 border-slate-200 hover:bg-slate-100"
+                                        )}
+                                    >
+                                        Bone-In
+                                    </button>
+                                </div>
+                            )}
+
+                            {filteredResults.length > 0 ? (
                                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 min-[1800px]:grid-cols-8 gap-2.5 sm:gap-3.5 md:gap-4">
-                                    {results.map((product) => (
+                                    {filteredResults.map((product) => (
                                         <div key={product.id} onClick={() => saveSearch(query)} className="flex justify-center w-full">
                                             <ProductCard product={product} variant="homeDesktop" />
                                         </div>
                                     ))}
                                 </div>
+                            ) : results.length > 0 ? (
+                                <div className="py-12 flex flex-col items-center text-center">
+                                    <p className="text-slate-600 font-medium mb-3">No products match your selected cut/bone filter.</p>
+                                    <button
+                                        type="button"
+                                        onClick={() => { setSelectedCutFilter('all'); setSelectedBoneFilter('all'); }}
+                                        className="px-4 py-1.5 bg-[#FAB82C] text-black font-bold text-xs rounded-full cursor-pointer hover:bg-amber-400"
+                                    >
+                                        Reset Filters
+                                    </button>
+                                </div>
                             ) : (
-                                <div className="py-16 flex flex-col items-center text-center">
-                                    <div className="w-48 h-48 md:w-64 md:h-64 mb-6">
-                                        {noServiceData ? (
-                                            <Lottie animationData={noServiceData} loop={true} />
-                                        ) : (
-                                            <div className="w-48 h-48 md:w-64 md:h-64" />
-                                        )}
+                                <div className="py-12 md:py-16 flex flex-col items-center text-center px-4">
+                                    <div className="w-44 h-52 sm:w-52 sm:h-60 mb-4 flex items-center justify-center">
+                                        <img
+                                            src="/mascot/chef_mascot.png"
+                                            alt="Meatyns Chef Mascot"
+                                            className="max-h-full max-w-full object-contain drop-shadow-[0_12px_24px_rgba(0,0,0,0.12)] hover:scale-105 transition-transform duration-300"
+                                            loading="eager"
+                                        />
                                     </div>
-                                    <h3 className="text-xl md:text-2xl font-normal font-anton tracking-wide text-slate-800 mb-2 uppercase">No items found</h3>
-                                    <p className="text-slate-500 font-medium max-w-xs text-sm">We couldn't find anything for "{query}". Try different keywords!</p>
+                                    <h3 className="text-xl md:text-2xl font-normal font-anton tracking-wide text-slate-800 mb-2 uppercase">
+                                        No results found
+                                    </h3>
+                                    <p className="text-slate-500 font-medium max-w-sm text-xs sm:text-sm leading-relaxed mb-6">
+                                        We couldn&apos;t find anything for &ldquo;<span className="text-slate-700 font-bold">{query}</span>&rdquo;. Try checking the spelling or browse our fresh categories.
+                                    </p>
+                                    <button
+                                        type="button"
+                                        onClick={() => navigate('/categories')}
+                                        className="inline-flex items-center justify-center px-8 py-3 text-white font-black text-xs sm:text-sm uppercase tracking-wider rounded-full shadow-md bg-[#C81017] hover:bg-[#A30D13] active:scale-95 transition-all cursor-pointer border-0"
+                                    >
+                                        Browse Categories
+                                    </button>
                                 </div>
                             )}
                         </section>

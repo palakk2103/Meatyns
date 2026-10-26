@@ -33,6 +33,7 @@ import {
 import { cn } from '@/lib/utils';
 import { useToast } from '@shared/components/ui/Toast';
 import { adminFinanceApi } from '../services/api/financeApi';
+import { adminOrdersApi } from '../services/api/ordersApi';
 
 const OrderDetail = () => {
     const { orderId } = useParams();
@@ -45,7 +46,96 @@ const OrderDetail = () => {
     const [refundAmount, setRefundAmount] = useState('');
     const [refundReason, setRefundReason] = useState('');
     const [isRefunding, setIsRefunding] = useState(false);
+    const [unavailableModal, setUnavailableModal] = useState({
+        isOpen: false,
+        itemIndex: null,
+        item: null,
+        preview: null,
+        loadingPreview: false,
+        reason: '',
+        isSubmitting: false,
+    });
+    const [retryingRefundIndex, setRetryingRefundIndex] = useState(null);
     const invoiceRef = useRef(null);
+
+    const handleOpenUnavailableModal = async (itemIndex, item) => {
+        setUnavailableModal({
+            isOpen: true,
+            itemIndex,
+            item,
+            preview: null,
+            loadingPreview: true,
+            reason: 'Item unavailable / inventory shortage at fulfillment node',
+            isSubmitting: false,
+        });
+
+        try {
+            const targetOrderId = order?._id || orderId;
+            const res = await adminOrdersApi.getOrderItemRefundPreview(targetOrderId, itemIndex);
+            if (res.data?.success) {
+                setUnavailableModal(prev => ({ ...prev, preview: res.data.preview, loadingPreview: false }));
+            } else {
+                showToast(res.data?.message || 'Failed to fetch refund preview', 'error');
+                setUnavailableModal(prev => ({ ...prev, loadingPreview: false }));
+            }
+        } catch (err) {
+            showToast(err.response?.data?.message || err.message || 'Failed to load refund preview', 'error');
+            setUnavailableModal(prev => ({ ...prev, loadingPreview: false }));
+        }
+    };
+
+    const handleConfirmMarkUnavailable = async () => {
+        if (!unavailableModal.reason.trim()) {
+            showToast('Please provide a reason', 'error');
+            return;
+        }
+
+        setUnavailableModal(prev => ({ ...prev, isSubmitting: true }));
+        try {
+            const targetOrderId = order?._id || orderId;
+            const res = await adminOrdersApi.markOrderItemUnavailable(targetOrderId, unavailableModal.itemIndex, {
+                reason: unavailableModal.reason.trim(),
+            });
+
+            if (res.data?.success) {
+                showToast(res.data.message || 'Item marked unavailable and refund processed', 'success');
+                setUnavailableModal({
+                    isOpen: false,
+                    itemIndex: null,
+                    item: null,
+                    preview: null,
+                    loadingPreview: false,
+                    reason: '',
+                    isSubmitting: false,
+                });
+                fetchDetail();
+            } else {
+                showToast(res.data?.message || 'Failed to process item status', 'error');
+                setUnavailableModal(prev => ({ ...prev, isSubmitting: false }));
+            }
+        } catch (err) {
+            showToast(err.response?.data?.message || err.message || 'Failed to process partial item cancellation', 'error');
+            setUnavailableModal(prev => ({ ...prev, isSubmitting: false }));
+        }
+    };
+
+    const handleRetryItemRefund = async (itemIndex) => {
+        setRetryingRefundIndex(itemIndex);
+        try {
+            const targetOrderId = order?._id || orderId;
+            const res = await adminOrdersApi.retryOrderItemRefund(targetOrderId, itemIndex);
+            if (res.data?.success) {
+                showToast(res.data.message || 'Item refund retry initiated successfully', 'success');
+                fetchDetail();
+            } else {
+                showToast(res.data?.message || 'Refund retry failed', 'error');
+            }
+        } catch (err) {
+            showToast(err.response?.data?.message || err.message || 'Refund retry failed', 'error');
+        } finally {
+            setRetryingRefundIndex(null);
+        }
+    };
 
     const handleOpenRefundModal = () => {
         const grandTotal = order?.paymentBreakdown?.grandTotal ?? order?.pricing?.total ?? 0;
@@ -255,9 +345,23 @@ const OrderDetail = () => {
 
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                {/* Left Column */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">                {/* Left Column */}
                 <div className="lg:col-span-2 space-y-6">
+                    {/* Partial Fulfillment Alert */}
+                    {order.partialFulfillment?.hasUnavailableItems && (
+                        <Card className="border-amber-200 bg-amber-50/70 p-4 rounded-2xl shadow-sm">
+                            <div className="flex items-start gap-3">
+                                <AlertCircle className="h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5" />
+                                <div className="space-y-1">
+                                    <h4 className="text-xs font-black text-amber-950 uppercase tracking-wider">Partial Order Fulfillment Active</h4>
+                                    <p className="text-xs text-amber-900 leading-relaxed">
+                                        One or more items in this order were marked out of stock. Stock was released back to inventory and an item-level refund of <strong className="font-black text-amber-950">₹{order.partialFulfillment.refundTotal || 0}</strong> was recorded ({order.partialFulfillment.refundStatus || 'PROCESSED'}). Remaining items proceed through fulfillment.
+                                    </p>
+                                </div>
+                            </div>
+                        </Card>
+                    )}
+
                     {/* Items Section */}
                     <Card className="border-none shadow-xl ring-1 ring-slate-100 bg-white rounded-xl overflow-hidden">
                         <div className="p-6 border-b border-slate-50 bg-slate-50/30 flex items-center justify-between">
@@ -275,33 +379,104 @@ const OrderDetail = () => {
                                         <th className="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">Unit Price</th>
                                         <th className="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">Qty</th>
                                         <th className="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Aggregate</th>
+                                        <th className="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-center">Fulfillment & Refund</th>
+                                        <th className="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-slate-50">
-                                    {order.items.map((item) => (
-                                        <tr key={item._id} className="group hover:bg-slate-50/30 transition-all">
-                                            <td className="px-6 py-5">
-                                                <div className="flex items-center gap-4">
-                                                    <div className="h-14 w-14 bg-slate-50 rounded-2xl flex items-center justify-center ds-h1 shadow-inner border border-slate-100 group-hover:scale-110 transition-transform overflow-hidden">
-                                                        {item.image ? (
-                                                            <img src={item.image} alt="" className="w-full h-full object-cover" />
-                                                        ) : (
-                                                            <Package className="h-6 w-6 text-slate-200" />
-                                                        )}
+                                    {order.items.map((item, idx) => {
+                                        const isUnavailable = item.status === 'UNAVAILABLE';
+                                        const canMarkUnavailable = !isUnavailable && ['pending', 'confirmed', 'packed'].includes(order.orderStatus?.toLowerCase() || order.status?.toLowerCase());
+
+                                        return (
+                                            <tr key={item._id || idx} className={`group hover:bg-slate-50/30 transition-all ${isUnavailable ? 'bg-rose-50/20' : ''}`}>
+                                                <td className="px-6 py-5">
+                                                    <div className="flex items-center gap-4">
+                                                        <div className="h-14 w-14 bg-slate-50 rounded-2xl flex items-center justify-center ds-h1 shadow-inner border border-slate-100 group-hover:scale-110 transition-transform overflow-hidden relative">
+                                                            {item.image ? (
+                                                                <img src={item.image} alt="" className={`w-full h-full object-cover ${isUnavailable ? 'grayscale opacity-60' : ''}`} />
+                                                            ) : (
+                                                                <Package className="h-6 w-6 text-slate-200" />
+                                                            )}
+                                                            {isUnavailable && (
+                                                                <div className="absolute inset-0 bg-rose-900/20 flex items-center justify-center">
+                                                                    <span className="text-[8px] font-black uppercase text-white bg-rose-600 px-1 py-0.5 rounded">OOS</span>
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                        <div>
+                                                            <h4 className={`text-sm font-black ${isUnavailable ? 'line-through text-slate-400' : 'text-slate-900'}`}>{item.name}</h4>
+                                                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">ID: {item.product?._id || item.product}</p>
+                                                            {item.unavailableReason && (
+                                                                <p className="text-[10px] text-rose-600 font-semibold mt-0.5">Reason: {item.unavailableReason}</p>
+                                                            )}
+                                                        </div>
                                                     </div>
-                                                    <div>
-                                                        <h4 className="text-sm font-black text-slate-900">{item.name}</h4>
-                                                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">ID: {item.product?._id || item.product}</p>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td className="px-6 py-5 text-center text-sm font-bold text-slate-600">₹{item.price}</td>
-                                            <td className="px-6 py-5 text-center">
-                                                <span className="bg-slate-100 px-3 py-1 rounded-lg text-xs font-black text-slate-700">x{item.quantity}</span>
-                                            </td>
-                                            <td className="px-6 py-5 text-right text-sm font-black text-slate-900">₹{item.price * item.quantity}</td>
-                                        </tr>
-                                    ))}
+                                                </td>
+                                                <td className="px-6 py-5 text-center text-sm font-bold text-slate-600">₹{item.price}</td>
+                                                <td className="px-6 py-5 text-center">
+                                                    <span className="bg-slate-100 px-3 py-1 rounded-lg text-xs font-black text-slate-700">x{item.quantity}</span>
+                                                </td>
+                                                <td className="px-6 py-5 text-right text-sm font-black text-slate-900">₹{item.price * item.quantity}</td>
+                                                <td className="px-6 py-5 text-center">
+                                                    {isUnavailable ? (
+                                                        <div className="inline-flex flex-col items-center gap-1">
+                                                            <span className="px-2 py-0.5 text-[9px] font-black uppercase rounded bg-rose-100 text-rose-700 border border-rose-200">
+                                                                Out of Stock
+                                                            </span>
+                                                            {item.refundStatus === 'COMPLETED' && (
+                                                                <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                                                                    Refunded ₹{item.refundAmount || 0}
+                                                                </span>
+                                                            )}
+                                                            {item.refundStatus === 'PENDING' && (
+                                                                <span className="text-[10px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">
+                                                                    Refund Pending ₹{item.refundAmount || 0}
+                                                                </span>
+                                                            )}
+                                                            {item.refundStatus === 'FAILED' && (
+                                                                <div className="flex items-center gap-1">
+                                                                    <span className="text-[10px] font-bold text-rose-700 bg-rose-50 px-2 py-0.5 rounded border border-rose-200">
+                                                                        Refund Failed
+                                                                    </span>
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={() => handleRetryItemRefund(idx)}
+                                                                        disabled={retryingRefundIndex === idx}
+                                                                        className="text-[10px] font-black text-blue-600 hover:text-blue-800 underline disabled:opacity-50"
+                                                                    >
+                                                                        {retryingRefundIndex === idx ? 'Retrying...' : 'Retry'}
+                                                                    </button>
+                                                                </div>
+                                                            )}
+                                                            {item.refundStatus === 'NONE' && (
+                                                                <span className="text-[10px] font-semibold text-slate-500">
+                                                                    COD Adjusted
+                                                                </span>
+                                                            )}
+                                                        </div>
+                                                    ) : (
+                                                        <span className="px-2 py-0.5 text-[9px] font-black uppercase rounded bg-emerald-100 text-emerald-700 border border-emerald-200">
+                                                            Available
+                                                        </span>
+                                                    )}
+                                                </td>
+                                                <td className="px-6 py-5 text-right">
+                                                    {canMarkUnavailable ? (
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => handleOpenUnavailableModal(idx, item)}
+                                                            className="px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-rose-600 hover:text-white bg-rose-50 hover:bg-rose-600 rounded-lg border border-rose-200 transition-colors"
+                                                        >
+                                                            Mark Out of Stock
+                                                        </button>
+                                                    ) : (
+                                                        <span className="text-[10px] text-slate-400 font-bold">—</span>
+                                                    )}
+                                                </td>
+                                            </tr>
+                                        );
+                                    })}
                                 </tbody>
                             </table>
                         </div>
@@ -610,6 +785,126 @@ const OrderDetail = () => {
                                             </>
                                         ) : (
                                             "Confirm Refund"
+                                        )}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Mark Item Unavailable & Refund Modal */}
+                    {unavailableModal.isOpen && (
+                        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4">
+                            <div className="bg-white rounded-3xl p-6 max-w-lg w-full shadow-2xl border border-slate-100 space-y-5 animate-in fade-in zoom-in-95 duration-200">
+                                <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-10 h-10 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center">
+                                            <AlertCircle size={18} />
+                                        </div>
+                                        <div>
+                                            <h3 className="text-base font-black text-slate-900">Mark Item Out of Stock</h3>
+                                            <p className="text-xs text-slate-400">Order #{order.orderId}</p>
+                                        </div>
+                                    </div>
+                                    <button
+                                        onClick={() => !unavailableModal.isSubmitting && setUnavailableModal(prev => ({ ...prev, isOpen: false }))}
+                                        className="text-slate-400 hover:text-slate-600 p-2"
+                                        disabled={unavailableModal.isSubmitting}
+                                    >
+                                        ✕
+                                    </button>
+                                </div>
+
+                                <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-100 space-y-1">
+                                    <div className="text-xs font-black text-slate-800">{unavailableModal.item?.name}</div>
+                                    <div className="text-[11px] text-slate-500">
+                                        Unit Price: ₹{unavailableModal.item?.price} • Quantity: {unavailableModal.item?.quantity}
+                                    </div>
+                                </div>
+
+                                {unavailableModal.loadingPreview ? (
+                                    <div className="py-6 flex flex-col items-center justify-center text-slate-400 gap-2">
+                                        <Loader2 size={24} className="animate-spin text-brand-600" />
+                                        <span className="text-xs font-bold">Calculating authoritative refund breakdown...</span>
+                                    </div>
+                                ) : unavailableModal.preview ? (
+                                    <div className="space-y-3">
+                                        <div className="p-3.5 rounded-2xl bg-amber-50/70 border border-amber-200 text-xs space-y-1.5">
+                                            <div className="flex justify-between text-slate-600">
+                                                <span>Item Gross Aggregate:</span>
+                                                <span className="font-bold text-slate-900">₹{unavailableModal.preview.itemGross}</span>
+                                            </div>
+                                            {unavailableModal.preview.allocatedDiscount > 0 && (
+                                                <div className="flex justify-between text-emerald-700">
+                                                    <span>Proportional Coupon Discount:</span>
+                                                    <span className="font-bold">-₹{unavailableModal.preview.allocatedDiscount}</span>
+                                                </div>
+                                            )}
+                                            {unavailableModal.preview.allocatedTax > 0 && (
+                                                <div className="flex justify-between text-slate-600">
+                                                    <span>Proportional Tax Share:</span>
+                                                    <span className="font-bold text-slate-900">+₹{unavailableModal.preview.allocatedTax}</span>
+                                                </div>
+                                            )}
+                                            <div className="h-px bg-amber-200/80 my-1" />
+                                            <div className="flex justify-between text-slate-900 font-black">
+                                                <span>Eligible Customer Refund:</span>
+                                                <span className="text-brand-600 text-sm">₹{unavailableModal.preview.eligibleRefund}</span>
+                                            </div>
+                                        </div>
+
+                                        <div className="p-3 rounded-xl bg-slate-50 border border-slate-100 text-[11px] text-slate-600 space-y-1">
+                                            <div><strong>Payment Mode:</strong> {unavailableModal.preview.paymentMode}</div>
+                                            <div><strong>Action on Confirmation:</strong> {unavailableModal.preview.willAutoCancelOrder ? 'All items unavailable — entire order will be cancelled' : 'Stock released back to inventory, remaining items proceed to delivery'}</div>
+                                            {unavailableModal.preview.paymentMode === 'ONLINE' && (
+                                                <div className="text-brand-600 font-semibold">
+                                                    ₹{unavailableModal.preview.gatewayRefundAmount} Razorpay refund + ₹{unavailableModal.preview.walletRefundAmount} wallet credit
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-xs text-rose-700">
+                                        Could not calculate preview. You can still proceed if authorized.
+                                    </div>
+                                )}
+
+                                <div>
+                                    <label className="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1.5">
+                                        Reason for Unavailability
+                                    </label>
+                                    <textarea
+                                        rows={2}
+                                        value={unavailableModal.reason}
+                                        onChange={(e) => setUnavailableModal(prev => ({ ...prev, reason: e.target.value }))}
+                                        className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-800 outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500"
+                                        placeholder="Reason (e.g. Out of stock, item failed freshness inspection)"
+                                        disabled={unavailableModal.isSubmitting}
+                                    />
+                                </div>
+
+                                <div className="flex items-center gap-3 pt-2">
+                                    <button
+                                        type="button"
+                                        onClick={() => setUnavailableModal(prev => ({ ...prev, isOpen: false }))}
+                                        className="flex-1 py-2.5 rounded-xl text-xs font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 transition-colors"
+                                        disabled={unavailableModal.isSubmitting}
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={handleConfirmMarkUnavailable}
+                                        disabled={unavailableModal.isSubmitting || unavailableModal.loadingPreview}
+                                        className="flex-1 py-2.5 rounded-xl text-xs font-black text-white bg-rose-600 hover:bg-rose-700 transition-colors flex items-center justify-center gap-2 shadow-sm"
+                                    >
+                                        {unavailableModal.isSubmitting ? (
+                                            <>
+                                                <Loader2 size={14} className="animate-spin" />
+                                                Processing...
+                                            </>
+                                        ) : (
+                                            "Confirm Out of Stock"
                                         )}
                                     </button>
                                 </div>

@@ -16,6 +16,7 @@ import {
 } from "../constants/payment.js";
 import { handleOnlineOrderFinance } from "./finance/orderFinanceService.js";
 import { DEFAULT_SELLER_TIMEOUT_MS, WORKFLOW_STATUS } from "../constants/orderWorkflow.js";
+import { getEffectiveSellerTimeoutMs } from "./workflow/sellerTimeoutConfig.js";
 import { afterPlaceOrderV2 } from "./orderWorkflowService.js";
 import { releaseReservedStockForOrder } from "./stockService.js";
 import { emitNotificationEvent } from "../modules/notifications/notification.emitter.js";
@@ -275,7 +276,8 @@ export async function transitionPaymentState(payment, {
 
 async function moveOrderToSellerPendingAfterPayment(orderId) {
   const now = new Date();
-  const sellerPendingUntil = new Date(now.getTime() + DEFAULT_SELLER_TIMEOUT_MS());
+  const sellerTimeoutMs = await getEffectiveSellerTimeoutMs();
+  const sellerPendingUntil = new Date(now.getTime() + sellerTimeoutMs);
   const updatedOrder = await Order.findOneAndUpdate(
     {
       _id: orderId,
@@ -286,6 +288,7 @@ async function moveOrderToSellerPendingAfterPayment(orderId) {
     {
       $set: {
         workflowStatus: WORKFLOW_STATUS.SELLER_PENDING,
+        sellerAcceptanceTimeoutMs: sellerTimeoutMs,
         sellerPendingExpiresAt: sellerPendingUntil,
         expiresAt: sellerPendingUntil,
       },

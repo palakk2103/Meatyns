@@ -83,6 +83,14 @@ const settingSchema = new mongoose.Schema(
             default: 0,
         },
 
+        // Seller acceptance workflow configuration (P4 / seller timeout)
+        sellerAcceptanceTimeoutMs: {
+            type: Number,
+            default: 60000,
+            min: 10000,
+            max: 1800000,
+        },
+
         /**
          * Finance / delivery pricing rules (single source of truth).
          * Existing keys are kept for backward compatibility.
@@ -164,6 +172,46 @@ const settingSchema = new mongoose.Schema(
             type: Boolean,
             default: true,
         },
+        deliveryConfig: {
+            express: {
+                enabled: { type: Boolean, default: true },
+                surcharge: { type: Number, default: 40, min: 0 },
+                estimatedMinMinutes: { type: Number, default: 15, min: 0 },
+                estimatedMaxMinutes: { type: Number, default: 30, min: 0 },
+                operatingHoursOnly: { type: Boolean, default: true },
+            },
+            normal: {
+                enabled: { type: Boolean, default: true },
+                deliveryFee: { type: Number, default: null, min: 0 },
+                estimatedLabel: { type: String, default: "1–2 hours" },
+                minMinutes: { type: Number, default: 60, min: 0 },
+                maxMinutes: { type: Number, default: 120, min: 0 },
+            },
+            advance: {
+                enabled: { type: Boolean, default: true },
+                deliveryFee: { type: Number, default: null, min: 0 },
+                maxAdvanceDays: { type: Number, default: 7, min: 1, max: 30 },
+                slotDurationMinutes: { type: Number, default: 60, min: 15, max: 240 },
+                maxOrdersPerSlot: { type: Number, default: 10, min: 1 },
+                minAdvanceMinutes: { type: Number, default: 60, min: 0 },
+                openTime: { type: String, default: "09:00" },
+                closeTime: { type: String, default: "21:00" },
+                operatingDays: {
+                    type: [String],
+                    default: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+                },
+            },
+            slotOverrides: [
+                {
+                    slotId: { type: String },
+                    date: { type: String },
+                    startTime: { type: String },
+                    endTime: { type: String },
+                    enabled: { type: Boolean, default: true },
+                    capacity: { type: Number, default: 10 },
+                },
+            ],
+        },
         productApproval: {
             sellerCreateRequiresApproval: {
                 type: Boolean,
@@ -188,6 +236,51 @@ const settingSchema = new mongoose.Schema(
         abandonedCartEnabled: {
             type: Boolean,
             default: true,
+        },
+        // Phase 5: Loyalty and Rewards Configuration
+        loyalty: {
+            enabled: {
+                type: Boolean,
+                default: true,
+            },
+            pointsPer100Rupees: {
+                type: Number,
+                default: 5, // 5% reward / 5 coins per ₹100
+                min: 0,
+            },
+            maxRedemptionPercentage: {
+                type: Number,
+                default: 20, // Max 20% order total payable via coins/wallet
+                min: 1,
+                max: 100,
+            },
+            minOrderAmountToEarn: {
+                type: Number,
+                default: 199,
+                min: 0,
+            },
+        },
+        // Phase 5: Referral Program Configuration
+        referral: {
+            enabled: {
+                type: Boolean,
+                default: true,
+            },
+            referrerRewardAmount: {
+                type: Number,
+                default: 100, // ₹100 wallet credit to referrer
+                min: 0,
+            },
+            refereeRewardAmount: {
+                type: Number,
+                default: 50, // ₹50 wallet credit to referee
+                min: 0,
+            },
+            minOrderAmountToQualify: {
+                type: Number,
+                default: 299, // Minimum delivered order amount for qualifying referral
+                min: 0,
+            },
         },
     },
     {

@@ -26,6 +26,11 @@ import walletRoute from "./walletRoutes.js";
 import flashDealRoute from "./flashDealRoutes.js";
 import metaRoute from "./metaRoutes.js";
 import posIntegrationRoute from "./posIntegrationRoutes.js";
+import subscriptionRoute from "./subscriptionRoutes.js";
+import referralRoute from "./referralRoutes.js";
+import recipeRoute from "./recipeRoutes.js";
+import comboRoute from "./comboRoutes.js";
+import deliveryZoneRoute from "./deliveryZoneRoutes.js";
 
 import express from "express";
 
@@ -78,6 +83,12 @@ const setupRoutes = (app) => {
     router.use("/meta", metaRoute);
     router.use("/v1/integrations/pos", posIntegrationRoute);
     router.use("/integrations/pos", posIntegrationRoute);
+    router.use("/subscriptions", subscriptionRoute);
+    router.use("/referrals", referralRoute);
+    router.use("/recipes", recipeRoute);
+    router.use("/combos", comboRoute);
+    router.use("/admin/delivery-zones", deliveryZoneRoute);
+    router.use("/delivery-zones", deliveryZoneRoute);
 
     app.use("/api", router);
 }

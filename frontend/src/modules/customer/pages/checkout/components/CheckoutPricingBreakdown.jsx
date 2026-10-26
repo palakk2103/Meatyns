@@ -96,6 +96,19 @@ const CheckoutPricingBreakdown = React.memo(function CheckoutPricingBreakdown({
               Free delivery qualified (above ₹{pricingPreview?.freeDeliveryThreshold})
             </div>
           )}
+          {pricingPreview?.deliveryMethod === "EXPRESS" && (
+            <div className="px-2 -mt-2 flex items-center justify-between text-[11px] font-semibold text-amber-700 bg-amber-50/70 p-1.5 rounded-lg border border-amber-200/50">
+              <span className="flex items-center gap-1">⚡ Express Priority Delivery</span>
+              {pricingPreview.expressSurcharge > 0 ? (
+                <span>Includes +₹{pricingPreview.expressSurcharge} surcharge</span>
+              ) : null}
+            </div>
+          )}
+          {pricingPreview?.deliveryMethod === "SCHEDULED" && (
+            <div className="px-2 -mt-2 flex items-center justify-between text-[11px] font-semibold text-emerald-700 bg-emerald-50/70 p-1.5 rounded-lg border border-emerald-200/50">
+              <span>📅 Scheduled Delivery Slot</span>
+            </div>
+          )}
           {pricingPreview &&
             typeof pricingPreview.distanceKmActual === "number" &&
             typeof pricingPreview.distanceKmRounded === "number" && (

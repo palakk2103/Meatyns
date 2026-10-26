@@ -1,12 +1,13 @@
 import mongoose from "mongoose";
 import Cart from "../models/cart.js";
 import Product from "../models/product.js";
+import Order from "../models/order.js";
 import handleResponse from "../utils/helper.js";
 import { getApprovedOrLegacyFilter } from "../services/productModerationService.js";
 import { evaluateProductAvailability } from "../services/productSchedulingService.js";
 
 const CART_POPULATE_FIELDS =
-  "name slug price salePrice mainImage stock status headerId categoryId subcategoryId sellerId variants unit unitValue orderIncrement minOrderQty maxOrderQty isScheduled scheduleDays availableFromTime availableToTime";
+  "name slug price salePrice mainImage stock status headerId categoryId subcategoryId sellerId variants unit unitValue orderIncrement minOrderQty maxOrderQty isScheduled scheduleDays availableFromTime availableToTime tieredPricing";
 
 const CUSTOMER_VISIBLE_PRODUCT_MATCH = {
   status: "active",
@@ -287,3 +288,134 @@ export const getAdminAbandonedCarts = async (req, res) => {
     return handleResponse(res, 500, error.message);
   }
 };
+
+/* ===============================
+   SMART REORDER FROM PAST ORDER
+================================ */
+export const reorderPreviousOrder = async (req, res) => {
+  try {
+    const customerId = req.user.id;
+    const { orderId } = req.params;
+
+    let query = { _id: orderId, customer: customerId };
+    if (!mongoose.isValidObjectId(orderId)) {
+      query = { orderId: String(orderId), customer: customerId };
+    }
+
+    const previousOrder = await Order.findOne(query).lean();
+    if (!previousOrder) {
+      return handleResponse(res, 404, "Order not found or unauthorized");
+    }
+
+    if (!Array.isArray(previousOrder.items) || previousOrder.items.length === 0) {
+      return handleResponse(res, 400, "This order contains no items to reorder");
+    }
+
+    let cart = await Cart.findOne({ customerId });
+    if (!cart) {
+      cart = await Cart.create({ customerId, items: [] });
+    }
+
+    const addedItems = [];
+    const unavailableItems = [];
+    const priceChangedItems = [];
+
+    for (const pastItem of previousOrder.items) {
+      const pId = pastItem.productId || pastItem.product;
+      if (!pId) {
+        unavailableItems.push({
+          name: pastItem.name || "Item",
+          reason: "Product record no longer available",
+        });
+        continue;
+      }
+
+      const product = await Product.findOne({
+        _id: pId,
+        status: "active",
+        ...getApprovedOrLegacyFilter(),
+      }).lean();
+
+      if (!product) {
+        unavailableItems.push({
+          name: pastItem.name,
+          reason: "Product is no longer active",
+        });
+        continue;
+      }
+
+      const scheduleCheck = evaluateProductAvailability(product);
+      if (!scheduleCheck.isAvailable) {
+        unavailableItems.push({
+          name: product.name,
+          reason: `Currently closed (${scheduleCheck.message})`,
+        });
+        continue;
+      }
+
+      const requestedQty = Math.max(0.01, Number(pastItem.quantity) || 1);
+      if (product.stock <= 0) {
+        unavailableItems.push({
+          name: product.name,
+          reason: "Out of stock",
+        });
+        continue;
+      }
+
+      const qtyToAdd = Math.min(product.stock, requestedQty);
+      const currentPrice = product.salePrice > 0 ? product.salePrice : product.price;
+      const previousPrice = Number(pastItem.price) || 0;
+
+      if (previousPrice > 0 && Math.abs(currentPrice - previousPrice) >= 1) {
+        priceChangedItems.push({
+          name: product.name,
+          previousPrice,
+          currentPrice,
+        });
+      }
+
+      const pIdStr = String(product._id);
+      const existingIdx = cart.items.findIndex((ci) => String(ci.productId) === pIdStr);
+
+      if (existingIdx > -1) {
+        cart.items[existingIdx].quantity += qtyToAdd;
+      } else {
+        cart.items.push({
+          productId: product._id,
+          quantity: qtyToAdd,
+          unit: product.unit || "pack",
+          unitValue: product.unitValue || 1,
+        });
+      }
+
+      addedItems.push({
+        productId: product._id,
+        name: product.name,
+        quantity: qtyToAdd,
+        price: currentPrice,
+        unit: product.unit || "pack",
+      });
+    }
+
+    if (addedItems.length > 0) {
+      await cart.save();
+    }
+
+    const populatedCart = await fetchPopulatedCart(cart._id);
+
+    return handleResponse(res, 200, "Smart reorder processed", {
+      addedItems,
+      unavailableItems,
+      priceChangedItems,
+      cart: populatedCart,
+      summaryMessage: `Added ${addedItems.length} items to cart.${
+        unavailableItems.length > 0
+          ? ` (${unavailableItems.length} items unavailable)`
+          : ""
+      }`,
+    });
+  } catch (error) {
+    return handleResponse(res, 500, error.message);
+  }
+};
+

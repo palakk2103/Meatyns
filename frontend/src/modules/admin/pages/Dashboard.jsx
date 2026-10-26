@@ -131,9 +131,10 @@ const AdminDashboard = () => {
     const categoryData = statsData?.categoryData || [];
     const recentOrders = statsData?.recentOrders || [];
     const topProducts = statsData?.topProducts || [];
+    const today = statsData?.today;
 
     return (
-        <div className="ds-section-spacing">
+        <div className="ds-section-spacing space-y-6">
             <PageHeader
                 title="Dashboard"
                 description="Overview of your platform's performance."
@@ -145,6 +146,78 @@ const AdminDashboard = () => {
                     </>
                 }
             />
+
+            {/* Today's Performance (IST) Section */}
+            {today && (
+                <div className="bg-white border border-slate-200/80 rounded-2xl p-4 shadow-2xs">
+                    <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+                        <div className="flex items-center gap-2">
+                            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+                            <h3 className="text-xs font-black uppercase tracking-wider text-slate-800">
+                                Today's Performance (IST)
+                            </h3>
+                            <span className="text-[11px] font-medium text-slate-400">
+                                {today.date}
+                            </span>
+                        </div>
+                        <Badge variant="outline" className="text-[10px] font-bold text-slate-500 bg-slate-50 border-slate-200">
+                            Live Day Metrics
+                        </Badge>
+                    </div>
+
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+                        <div className="p-3 rounded-xl bg-slate-50/80 border border-slate-100">
+                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                                Gross Sales
+                            </span>
+                            <span className="text-base font-extrabold text-slate-900 mt-0.5 block">
+                                ₹{today.grossSales?.toLocaleString() || '0'}
+                            </span>
+                            <span className="text-[10px] text-slate-500">All placed today</span>
+                        </div>
+                        <div className="p-3 rounded-xl bg-emerald-50/50 border border-emerald-100/60">
+                            <span className="text-[10px] font-bold text-emerald-700 uppercase tracking-wider block">
+                                Net Delivered Sales
+                            </span>
+                            <span className="text-base font-extrabold text-emerald-800 mt-0.5 block">
+                                ₹{today.netDeliveredSales?.toLocaleString() || '0'}
+                            </span>
+                            <span className="text-[10px] text-emerald-600 font-medium">Realized revenue</span>
+                        </div>
+                        <div className="p-3 rounded-xl bg-slate-50/80 border border-slate-100">
+                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                                Orders Placed
+                            </span>
+                            <span className="text-base font-extrabold text-slate-900 mt-0.5 block">
+                                {today.ordersCount || 0}
+                            </span>
+                            <span className="text-[10px] text-slate-500">
+                                {today.subOrdersCount && today.subOrdersCount !== today.ordersCount
+                                    ? `${today.subOrdersCount} fulfillments`
+                                    : 'Unique checkouts'}
+                            </span>
+                        </div>
+                        <div className="p-3 rounded-xl bg-slate-50/80 border border-slate-100">
+                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                                Delivered
+                            </span>
+                            <span className="text-base font-extrabold text-slate-900 mt-0.5 block">
+                                {today.deliveredOrdersCount || 0}
+                            </span>
+                            <span className="text-[10px] text-slate-500">Completed</span>
+                        </div>
+                        <div className="p-3 rounded-xl bg-amber-50/50 border border-amber-100/60">
+                            <span className="text-[10px] font-bold text-amber-700 uppercase tracking-wider block">
+                                In Progress
+                            </span>
+                            <span className="text-base font-extrabold text-amber-800 mt-0.5 block">
+                                {today.inTransitOrdersCount || 0}
+                            </span>
+                            <span className="text-[10px] text-amber-600 font-medium">Processing / Delivery</span>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* Main Stats Grid */}
             <div className="ds-grid-stats">

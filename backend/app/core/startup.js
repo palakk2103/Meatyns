@@ -120,10 +120,45 @@ async function validateDependencies() {
     requiredVars.push('JWT_SECRET');
     
     // Check for security defaults that should be overridden
-    if (process.env.JWT_SECRET === 'your-secret-key' || 
-        process.env.JWT_SECRET === 'default-secret') {
+    const jwtSecret = String(process.env.JWT_SECRET || "").trim();
+    const insecureSecrets = [
+      'your-secret-key',
+      'default-secret',
+      'secret',
+      'test-secret',
+      'unsafe-dev-secret',
+      'meatyns_meta_csrf_secret',
+      'changeme',
+    ];
+    if (insecureSecrets.includes(jwtSecret)) {
       result.valid = false;
-      result.errors.push('JWT_SECRET must be overridden in production (not using default value)');
+      result.errors.push('JWT_SECRET must be overridden with a secure production secret (insecure default detected)');
+    } else if (jwtSecret && jwtSecret.length < 32) {
+      result.valid = false;
+      result.errors.push('JWT_SECRET must be at least 32 characters in production');
+    }
+
+    // Ensure mock OTP is NEVER enabled in production
+    if (
+      process.env.USE_MOCK_OTP === 'true' ||
+      process.env.USE_MOCK_OTP === '1' ||
+      process.env.ALLOW_MOCK_DELIVERY_OTP === 'true'
+    ) {
+      result.valid = false;
+      result.errors.push('USE_MOCK_OTP and ALLOW_MOCK_DELIVERY_OTP cannot be enabled in production');
+    }
+
+    // Ensure CORS origins do not contain wildcard in production
+    const corsOrigins = (process.env.CORS_ALLOWED_ORIGINS || '').split(',').map(s => s.trim());
+    if (corsOrigins.includes('*')) {
+      result.valid = false;
+      result.errors.push('CORS_ALLOWED_ORIGINS cannot contain wildcard "*" in production with credentials enabled');
+    }
+
+    // Ensure Razorpay webhook secret is configured if payments are enabled
+    if (process.env.RAZORPAY_KEY_ID && !process.env.RAZORPAY_WEBHOOK_SECRET) {
+      result.valid = false;
+      result.errors.push('RAZORPAY_WEBHOOK_SECRET is required in production when RAZORPAY_KEY_ID is set');
     }
   }
   

@@ -10,6 +10,14 @@ import { uploadToCloudinary } from "../services/mediaService.js";
 /* ===============================
    Helpers
 ================================ */
+export const isBannerActiveNow = (banner, now = new Date()) => {
+  if (!banner) return false;
+  if (banner.status && banner.status !== "active") return false;
+  if (banner.validFrom && new Date(banner.validFrom) > now) return false;
+  if (banner.validTo && new Date(banner.validTo) < now) return false;
+  return true;
+};
+
 const validateBasePayload = async (body) => {
   const {
     pageType,
@@ -18,6 +26,8 @@ const validateBasePayload = async (body) => {
     title,
     order,
     status,
+    validFrom,
+    validTo,
     config = {},
   } = body;
 
@@ -53,6 +63,24 @@ const validateBasePayload = async (body) => {
     throw new Error("Invalid status");
   }
 
+  let parsedValidFrom = null;
+  let parsedValidTo = null;
+  if (validFrom) {
+    parsedValidFrom = new Date(validFrom);
+    if (isNaN(parsedValidFrom.getTime())) {
+      throw new Error("Invalid validFrom date format");
+    }
+  }
+  if (validTo) {
+    parsedValidTo = new Date(validTo);
+    if (isNaN(parsedValidTo.getTime())) {
+      throw new Error("Invalid validTo date format");
+    }
+  }
+  if (parsedValidFrom && parsedValidTo && parsedValidFrom > parsedValidTo) {
+    throw new Error("validFrom date cannot be after validTo date");
+  }
+
   return {
     pageType,
     headerId: headerId || null,
@@ -60,6 +88,8 @@ const validateBasePayload = async (body) => {
     title: title?.trim() || "",
     order: order ?? 0,
     status: status || "active",
+    validFrom: parsedValidFrom,
+    validTo: parsedValidTo,
     config,
   };
 };
@@ -83,6 +113,25 @@ const validateAndNormalizeConfig = async (displayType, config = {}) => {
         .map((b) => {
           const headline = (b.headline !== undefined ? b.headline : b.title) || "";
           const subheadline = (b.subheadline !== undefined ? b.subheadline : b.subtitle) || "";
+
+          let bValidFrom = null;
+          let bValidTo = null;
+          if (b.validFrom) {
+            bValidFrom = new Date(b.validFrom);
+            if (isNaN(bValidFrom.getTime())) {
+              throw new Error("Invalid banner validFrom date format");
+            }
+          }
+          if (b.validTo) {
+            bValidTo = new Date(b.validTo);
+            if (isNaN(bValidTo.getTime())) {
+              throw new Error("Invalid banner validTo date format");
+            }
+          }
+          if (bValidFrom && bValidTo && bValidFrom > bValidTo) {
+            throw new Error("Banner validFrom date cannot be after validTo date");
+          }
+
           return {
             imageUrl: b.imageUrl,
             title: headline,
@@ -92,6 +141,8 @@ const validateAndNormalizeConfig = async (displayType, config = {}) => {
             linkType: b.linkType || "none",
             linkValue: b.linkValue || "",
             status: b.status || "active",
+            validFrom: bValidFrom,
+            validTo: bValidTo,
           };
         }),
     };
@@ -370,7 +421,7 @@ export const getPublicExperienceSections = async (req, res) => {
       "public",
       `${pageType}:${headerId || "root"}`,
     );
-    const sections = await getOrSet(
+    const rawSections = await getOrSet(
       cacheKey,
       async () =>
         ExperienceSection.find(query)
@@ -378,6 +429,38 @@ export const getPublicExperienceSections = async (req, res) => {
           .lean(),
       getTTL("homepage"),
     );
+
+    const now = new Date();
+    const sections = (rawSections || [])
+      .filter((section) => {
+        if (section.validFrom && new Date(section.validFrom) > now) return false;
+        if (section.validTo && new Date(section.validTo) < now) return false;
+        return true;
+      })
+      .map((section) => {
+        if (section.displayType === "banners" && section.config?.banners?.items) {
+          const activeItems = section.config.banners.items.filter((item) =>
+            isBannerActiveNow(item, now)
+          );
+          return {
+            ...section,
+            config: {
+              ...section.config,
+              banners: {
+                ...section.config.banners,
+                items: activeItems,
+              },
+            },
+          };
+        }
+        return section;
+      })
+      .filter((section) => {
+        if (section.displayType === "banners") {
+          return (section.config?.banners?.items || []).length > 0;
+        }
+        return true;
+      });
 
     return handleResponse(res, 200, "Experience sections fetched", sections);
   } catch (error) {
@@ -454,9 +537,13 @@ export const getPublicHeroConfig = async (req, res) => {
       getTTL("homepage"),
     );
 
+    const now = new Date();
+    const rawItems = config?.banners?.items || [];
+    const activeItems = rawItems.filter((item) => isBannerActiveNow(item, now));
+
     const payload = config
       ? {
-          banners: config.banners || { items: [] },
+          banners: { items: activeItems },
           categoryIds: config.categoryIds || [],
         }
       : { banners: { items: [] }, categoryIds: [] };
@@ -514,24 +601,45 @@ export const upsertHeroConfig = async (req, res) => {
       }
     }
 
-    const bannerItems = Array.isArray(banners?.items)
-      ? banners.items
-        .filter((b) => b && b.imageUrl)
-        .map((b) => {
-          const headline = (b.headline !== undefined ? b.headline : b.title) || "";
-          const subheadline = (b.subheadline !== undefined ? b.subheadline : b.subtitle) || "";
-          return {
-            imageUrl: b.imageUrl,
-            title: headline,
-            headline: headline,
-            subtitle: subheadline,
-            subheadline: subheadline,
-            linkType: b.linkType || "none",
-            linkValue: b.linkValue || "",
-            status: b.status || "active",
-          };
-        })
-      : [];
+    const rawBannerList = Array.isArray(banners?.items) ? banners.items : [];
+    const bannerItems = [];
+
+    for (const b of rawBannerList) {
+      if (!b || !b.imageUrl) continue;
+      const headline = (b.headline !== undefined ? b.headline : b.title) || "";
+      const subheadline = (b.subheadline !== undefined ? b.subheadline : b.subtitle) || "";
+
+      let bValidFrom = null;
+      let bValidTo = null;
+      if (b.validFrom) {
+        bValidFrom = new Date(b.validFrom);
+        if (isNaN(bValidFrom.getTime())) {
+          return handleResponse(res, 400, "Invalid banner validFrom date format");
+        }
+      }
+      if (b.validTo) {
+        bValidTo = new Date(b.validTo);
+        if (isNaN(bValidTo.getTime())) {
+          return handleResponse(res, 400, "Invalid banner validTo date format");
+        }
+      }
+      if (bValidFrom && bValidTo && bValidFrom > bValidTo) {
+        return handleResponse(res, 400, "Banner validFrom date cannot be after validTo date");
+      }
+
+      bannerItems.push({
+        imageUrl: b.imageUrl,
+        title: headline,
+        headline: headline,
+        subtitle: subheadline,
+        subheadline: subheadline,
+        linkType: b.linkType || "none",
+        linkValue: b.linkValue || "",
+        status: b.status || "active",
+        validFrom: bValidFrom,
+        validTo: bValidTo,
+      });
+    }
 
     const ids = Array.isArray(categoryIds) ? categoryIds.filter(Boolean) : [];
 

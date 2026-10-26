@@ -1,6 +1,7 @@
 import Setting from "../../models/setting.js";
 import handleResponse from "../../utils/helper.js";
 import { normalizeProductApprovalConfig } from "../../services/productModerationService.js";
+import { invalidate } from "../../services/cacheService.js";
 
 function flattenForMongoSet(prefix, value, target) {
   if (value === undefined) return;
@@ -52,6 +53,10 @@ export const getPlatformSettings = async (req, res) => {
 export const updatePlatformSettings = async (req, res) => {
   try {
     const payload = req.body || {};
+    if (payload.sellerAcceptanceTimeoutSeconds !== undefined && payload.sellerAcceptanceTimeoutMs === undefined) {
+      payload.sellerAcceptanceTimeoutMs = Number(payload.sellerAcceptanceTimeoutSeconds) * 1000;
+      delete payload.sellerAcceptanceTimeoutSeconds;
+    }
     const toSet = {};
     for (const [key, value] of Object.entries(payload)) {
       flattenForMongoSet(key, value, toSet);
@@ -62,6 +67,7 @@ export const updatePlatformSettings = async (req, res) => {
       { $set: toSet },
       { new: true, upsert: true },
     );
+    await invalidate("cache:platform:settings:*");
 
     const result = settings?.toObject?.() || settings || {};
     result.productApproval = normalizeProductApprovalConfig(result);

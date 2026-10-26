@@ -151,6 +151,25 @@ const BillingCharges = () => {
             <div className="max-w-4xl mx-auto text-left">
                 {/* Main Configuration Core */}
                 <div className="space-y-8">
+                    {/* Delivery Slot Management Quick Link Banner */}
+                    <div className="bg-gradient-to-r from-amber-50 to-yellow-50 border border-amber-200/80 rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs">
+                        <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-xl bg-[#FDCE04] text-black flex items-center justify-center font-bold shadow-xs">
+                                <Truck size={20} />
+                            </div>
+                            <div>
+                                <p className="text-xs font-black text-slate-900 uppercase tracking-tight">Express Surcharge & Slot Management</p>
+                                <p className="text-[11px] text-slate-600 font-medium">Centrally manage Express delivery fees, time slots, advance horizons, and slot booking limits.</p>
+                            </div>
+                        </div>
+                        <a
+                            href="/admin/delivery-management"
+                            className="px-4 py-2 bg-black text-white rounded-xl text-xs font-black uppercase tracking-wider hover:bg-slate-800 transition-all flex items-center gap-1.5 whitespace-nowrap shadow-xs"
+                        >
+                            Open Slots & Charges &rarr;
+                        </a>
+                    </div>
+
                     {/* General Financial Thresholds */}
                     <Card className="border-none shadow-xl ring-1 ring-slate-100 bg-white rounded-[32px] overflow-hidden">
                         <div className="p-6 border-b border-slate-50 bg-slate-50/30">

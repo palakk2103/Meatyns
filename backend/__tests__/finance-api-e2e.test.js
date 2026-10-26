@@ -229,9 +229,11 @@ async function seedCoreData() {
 
   beforeAll(async () => {
     process.env.JWT_SECRET = process.env.JWT_SECRET || "e2e-test-secret";
-    mongoUri = process.env.MONGO_URI_E2E || process.env.MONGO_URI;
+    mongoUri = process.env.MONGO_URI_E2E;
     if (!mongoUri) {
-      throw new Error("Set MONGO_URI_E2E (or MONGO_URI) to run API E2E tests");
+      throw new Error(
+        "Dedicated isolated test database required: Set MONGO_URI_E2E (e.g. mongodb://localhost:27017/e2e-test) to run API E2E tests safely without modifying or dropping shared database state."
+      );
     }
 
     dbName = `quick_commerce_finance_e2e_${Date.now()}`;

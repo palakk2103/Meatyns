@@ -1,4 +1,6 @@
 import Customer from "../models/customer.js";
+import Order from "../models/order.js";
+import Cart from "../models/cart.js";
 import Transaction from "../models/transaction.js";
 import jwt from "jsonwebtoken";
 import handleResponse from "../utils/helper.js";
@@ -268,3 +270,45 @@ export const getCustomerTransactions = async (req, res) => {
         return handleResponse(res, 500, error.message);
     }
 };
+
+/* ===============================
+   DELETE CUSTOMER ACCOUNT
+================================ */
+export const deleteCustomerAccount = async (req, res) => {
+    try {
+        const customerId = req.user?.id;
+        if (!customerId) {
+            return handleResponse(res, 401, "Unauthorized");
+        }
+
+        const customer = await Customer.findById(customerId);
+        if (!customer) {
+            return handleResponse(res, 404, "Customer not found");
+        }
+
+        // Check for active orders
+        const activeOrder = await Order.findOne({
+            customer: customerId,
+            status: { $in: ["Placed", "Accepted", "Processing", "Packed", "Assigned", "Out For Delivery"] },
+        });
+
+        if (activeOrder) {
+            return handleResponse(
+                res,
+                400,
+                `Cannot delete account with an active order (#${activeOrder.orderId || activeOrder._id}) in progress. Please wait for delivery or cancel first.`
+            );
+        }
+
+        // Clean up customer cart
+        await Cart.deleteMany({ customer: customerId });
+
+        // Delete customer account
+        await Customer.findByIdAndDelete(customerId);
+
+        return handleResponse(res, 200, "Account deleted successfully");
+    } catch (error) {
+        return handleResponse(res, 500, error.message);
+    }
+};
+

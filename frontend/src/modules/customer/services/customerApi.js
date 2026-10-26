@@ -10,6 +10,7 @@ export const customerApi = {
   verifyOtp: (data) => axiosInstance.post("/customer/verify-otp", data),
   getProfile: () => getWithDedupe("/customer/profile", {}, { ttl: 5000 }), // Short cache for profile
   updateProfile: (data) => axiosInstance.put("/customer/profile", data),
+  deleteAccount: () => axiosInstance.delete("/customer/profile"),
   uploadMedia: (formData) =>
     axiosInstance.post("/media/upload", formData, {
       headers: { "Content-Type": "multipart/form-data" },
@@ -61,7 +62,9 @@ export const customerApi = {
     return axiosInstance.delete(`/wishlist/remove/${productId}`);
   },
 
-  // Orders
+  // Orders & Delivery Zones
+  checkDeliveryZone: (data) =>
+    axiosInstance.post("/delivery-zones/check", data),
   getDeliverySlots: (data) =>
     axiosInstance.post("/orders/delivery/slots", data, { timeout: 15000 }),
   // Explicit timeout so checkout never waits forever if the server blocks (e.g. Redis/Bull).
@@ -161,4 +164,39 @@ export const customerApi = {
   testPushNotification: () => axiosInstance.post("/push/test"),
   getTestPushNotificationStatus: (orderId) =>
     axiosInstance.get(`/push/test-status/${encodeURIComponent(String(orderId || "").trim())}`),
+
+  // Phase 5: Smart Reorder
+  reorderOrder: (orderId) => {
+    invalidateCache("/cart");
+    return axiosInstance.post(`/cart/reorder/${encodeURIComponent(String(orderId))}`);
+  },
+
+  // Phase 5: Subscriptions
+  getMySubscriptions: () => getWithDedupe("/subscriptions/my", {}, { ttl: 5000 }),
+  getSubscriptionById: (id) => getWithDedupe(`/subscriptions/${id}`),
+  createSubscription: (data) => axiosInstance.post("/subscriptions", data),
+  updateSubscription: (id, data) => axiosInstance.put(`/subscriptions/${id}`, data),
+  pauseSubscription: (id) => axiosInstance.put(`/subscriptions/${id}/pause`),
+  resumeSubscription: (id) => axiosInstance.put(`/subscriptions/${id}/resume`),
+  cancelSubscription: (id, data) => axiosInstance.put(`/subscriptions/${id}/cancel`, data),
+
+  // Phase 5: Referrals
+  getMyReferrals: () => getWithDedupe("/referrals/my", {}, { ttl: 5000 }),
+  validateReferralCode: (code) => axiosInstance.get(`/referrals/validate/${encodeURIComponent(code)}`),
+
+  // Phase 5: Recipes
+  getRecipes: (params) => getWithDedupe("/recipes", params, { ttl: 30000 }),
+  getRecipeDetails: (slugOrId) => getWithDedupe(`/recipes/${encodeURIComponent(slugOrId)}`),
+  addRecipeIngredientsToCart: (id, data) => {
+    invalidateCache("/cart");
+    return axiosInstance.post(`/recipes/${id}/add-to-cart`, data);
+  },
+
+  // Phase 5: Meal Prep Combos
+  getCombos: (params) => getWithDedupe("/combos", params, { ttl: 30000 }),
+  getComboDetails: (slugOrId) => getWithDedupe(`/combos/${encodeURIComponent(slugOrId)}`),
+  addComboToCart: (id, data) => {
+    invalidateCache("/cart");
+    return axiosInstance.post(`/combos/${id}/add-to-cart`, data);
+  },
 };

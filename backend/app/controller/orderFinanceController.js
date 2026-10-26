@@ -43,6 +43,7 @@ export const previewCheckoutFinance = async (req, res) => {
       couponCode: payload.couponCode || null,
       couponId: payload.couponId || null,
       customerId: req.user?.id || null,
+      deliveryMethod: payload.deliveryMethod || "NORMAL",
     });
 
     const sellerBreakdowns = pricingSnapshot.sellerBreakdownEntries.map((entry) => ({

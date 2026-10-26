@@ -15,12 +15,17 @@ import {
   IndianRupee,
   ChevronDown,
   ChevronUp,
+  Trash2,
+  AlertTriangle,
+  Loader2,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import Button from "@/shared/components/ui/Button";
 import Card from "@/shared/components/ui/Card";
 import { useAuth } from "@core/context/AuthContext";
 import { useSettings } from "@core/context/SettingsContext";
+import { deliveryApi } from "../services/deliveryApi";
+import { toast } from "sonner";
 import axiosInstance from '@core/api/axios';
 import { useEffect } from 'react';
 
@@ -30,6 +35,26 @@ const Profile = () => {
   const { settings } = useSettings();
   const appName = settings?.appName || "App";
   const [faqs, setFaqs] = useState([]);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const handleDeleteAccount = async () => {
+    try {
+      setIsDeleting(true);
+      await deliveryApi.deleteAccount();
+      toast.success("Delivery account deleted successfully");
+      setShowDeleteModal(false);
+      await logout();
+    } catch (error) {
+      const errorMsg =
+        error?.response?.data?.message ||
+        error?.message ||
+        "Failed to delete delivery account";
+      toast.error(errorMsg);
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   useEffect(() => {
     const fetchFaqs = async () => {
@@ -96,9 +121,16 @@ const Profile = () => {
     {
       icon: HelpCircle,
       label: "Help & Support",
-      sub: "FAQs, Chat support",
+      sub: "FAQs, Rider Helpline, Hub location",
       color: "text-teal-600 bg-teal-50",
-      path: "/delivery/profile/help-support",
+      path: "/delivery/support",
+    },
+    {
+      icon: Shield,
+      label: "Privacy Policy",
+      sub: "Rider data, GPS & KYC policy",
+      color: "text-indigo-600 bg-indigo-50",
+      path: "/delivery/privacy",
     },
   ];
 
@@ -238,14 +270,65 @@ const Profile = () => {
           </div>
         </div>
 
-        <motion.div variants={itemVariants} className="pt-4">
+        <motion.div variants={itemVariants} className="pt-4 space-y-2">
           <Button
             onClick={logout}
             variant="outline"
             className="w-full border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700 py-6">
             <LogOut size={20} className="mr-2" /> Logout
           </Button>
+
+          <Button
+            type="button"
+            onClick={() => setShowDeleteModal(true)}
+            variant="ghost"
+            className="w-full text-xs font-semibold text-rose-500 hover:text-rose-700 hover:bg-rose-50 py-3 flex items-center justify-center cursor-pointer">
+            <Trash2 size={16} className="mr-1.5" /> Delete Delivery Account
+          </Button>
         </motion.div>
+
+        {/* Delete Confirmation Modal */}
+        {showDeleteModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 animate-in fade-in duration-150">
+            <div className="bg-white rounded-2xl max-w-sm w-full p-5 shadow-2xl border border-gray-100 text-center">
+              <div className="w-12 h-12 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center mx-auto mb-3.5">
+                <AlertTriangle size={24} />
+              </div>
+              <h3 className="text-base font-bold text-gray-900 mb-1">Delete Delivery Account?</h3>
+              <p className="text-xs text-gray-600 leading-relaxed mb-5">
+                Are you sure you want to permanently delete your delivery partner account? This action cannot be undone. Active assigned deliveries must be completed first.
+              </p>
+              <div className="flex gap-2.5">
+                <button
+                  type="button"
+                  disabled={isDeleting}
+                  onClick={() => setShowDeleteModal(false)}
+                  className="flex-1 py-2.5 px-3 rounded-xl border border-gray-200 text-gray-700 font-medium text-xs hover:bg-gray-50 transition-colors cursor-pointer disabled:opacity-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  disabled={isDeleting}
+                  onClick={handleDeleteAccount}
+                  className="flex-1 py-2.5 px-3 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs shadow-sm transition-all flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
+                >
+                  {isDeleting ? (
+                    <>
+                      <Loader2 size={14} className="animate-spin" />
+                      Deleting...
+                    </>
+                  ) : (
+                    <>
+                      <Trash2 size={14} />
+                      Yes, Delete
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </motion.div>
 
       <div className="text-center text-gray-400 text-xs mt-8 pb-4">

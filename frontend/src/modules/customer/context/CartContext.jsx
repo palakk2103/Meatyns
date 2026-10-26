@@ -101,10 +101,58 @@ export const CartProvider = ({ children }) => {
       }
     }
 
+    const candidateTiers = Array.isArray(hit?.tieredPricing) && hit.tieredPricing.length > 0
+      ? hit.tieredPricing
+      : (Array.isArray(product?.tieredPricing) ? product.tieredPricing : []);
+
     return {
       price,
       salePrice,
       variantName: String(hit?.name || "").trim(),
+      tieredPricing: candidateTiers,
+    };
+  };
+
+  const resolveItemEffectivePrice = (item, quantity = 1) => {
+    const baseUnit =
+      Number(item?.salePrice || 0) > 0 && Number(item?.salePrice) < Number(item?.price || 0)
+        ? Number(item.salePrice)
+        : Number(item?.price || 0);
+
+    const tiers = Array.isArray(item?.tieredPricing) ? item.tieredPricing : [];
+    const q = Number(quantity || 0);
+    if (!tiers.length || q <= 0) {
+      return { unitPrice: baseUnit, appliedTier: null };
+    }
+
+    const eligible = tiers
+      .filter((t) => t && Number(t.minQty) > 0 && Number(t.minQty) <= q)
+      .sort((a, b) => Number(b.minQty) - Number(a.minQty));
+
+    if (!eligible.length) {
+      return { unitPrice: baseUnit, appliedTier: null };
+    }
+
+    const bestTier = eligible[0];
+    const fixed = Number(bestTier.fixedUnitPrice || 0);
+    const pct = Number(bestTier.discountPercentage || 0);
+    let tieredPrice = baseUnit;
+
+    if (fixed > 0) {
+      tieredPrice = Math.min(fixed, baseUnit);
+    } else if (pct > 0) {
+      const clampedPct = Math.min(Math.max(pct, 0), 100);
+      tieredPrice = Math.round(baseUnit * (1 - clampedPct / 100));
+    }
+
+    tieredPrice = Math.max(0, Math.min(tieredPrice, baseUnit));
+    return {
+      unitPrice: tieredPrice,
+      appliedTier: {
+        minQty: Number(bestTier.minQty),
+        discountPercentage: pct,
+        fixedUnitPrice: fixed,
+      },
     };
   };
 
@@ -329,11 +377,9 @@ export const CartProvider = ({ children }) => {
   };
 
   const cartTotal = cart.reduce((total, item) => {
-    const unit =
-      Number(item.salePrice || 0) > 0 && Number(item.salePrice) < Number(item.price || 0)
-        ? Number(item.salePrice)
-        : Number(item.price || 0);
-    return total + unit * Number(item.quantity || 0);
+    const qty = Number(item.quantity || 0);
+    const { unitPrice } = resolveItemEffectivePrice(item, qty);
+    return total + unitPrice * qty;
   }, 0);
   const cartCount = cart.reduce((total, item) => total + (Number(item.quantity) || 0), 0);
 
@@ -346,6 +392,7 @@ export const CartProvider = ({ children }) => {
     cartTotal,
     cartCount,
     loading,
+    resolveItemEffectivePrice,
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }), [cart, cartTotal, cartCount, loading]);
 

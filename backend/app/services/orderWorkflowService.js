@@ -99,13 +99,23 @@ export function resolveWorkflowStatus(order) {
  */
 export async function afterPlaceOrderV2(orderDoc) {
   const orderId = orderDoc.orderId;
-  await scheduleSellerTimeoutJob(orderId);
+  const now = Date.now();
+  const delayMs = orderDoc.sellerAcceptanceTimeoutMs
+    ? (orderDoc.sellerPendingExpiresAt
+        ? Math.max(0, new Date(orderDoc.sellerPendingExpiresAt).getTime() - now)
+        : orderDoc.sellerAcceptanceTimeoutMs)
+    : (orderDoc.sellerPendingExpiresAt
+        ? Math.max(0, new Date(orderDoc.sellerPendingExpiresAt).getTime() - now)
+        : undefined);
+
+  await scheduleSellerTimeoutJob(orderId, delayMs);
   emitToSeller(orderDoc.seller?.toString(), {
     event: "order:new",
     payload: {
       orderId,
       workflowStatus: WORKFLOW_STATUS.SELLER_PENDING,
       sellerPendingExpiresAt: orderDoc.sellerPendingExpiresAt,
+      sellerAcceptanceTimeoutMs: orderDoc.sellerAcceptanceTimeoutMs,
     },
   });
 }
@@ -113,8 +123,8 @@ export async function afterPlaceOrderV2(orderDoc) {
 // Workflow timeout scheduling delegates to the jobSchedulerPort (P2.6).
 // The function names below remain for in-file callers; the implementation
 // lives in services/workflow/bullJobScheduler.js behind the port.
-export async function scheduleSellerTimeoutJob(orderId) {
-  return scheduleSellerTimeout(orderId);
+export async function scheduleSellerTimeoutJob(orderId, delayMs) {
+  return scheduleSellerTimeout(orderId, delayMs);
 }
 
 export async function removeSellerTimeoutJob(orderId) {
@@ -152,10 +162,20 @@ export async function sellerAcceptAtomic(sellerId, orderId) {
       seller: sellerId,
       workflowVersion: { $gte: 2 },
       workflowStatus: WORKFLOW_STATUS.SELLER_PENDING,
-      sellerPendingExpiresAt: { $gt: now },
-      $or: [
-        { paymentMode: { $ne: "ONLINE" } },
-        { paymentStatus: "PAID" },
+      $and: [
+        {
+          $or: [
+            { sellerPendingExpiresAt: { $gt: now } },
+            { sellerPendingExpiresAt: null },
+            { sellerPendingExpiresAt: { $exists: false } },
+          ],
+        },
+        {
+          $or: [
+            { paymentMode: { $ne: "ONLINE" } },
+            { paymentStatus: "PAID" },
+          ],
+        },
       ],
     },
     {
@@ -231,7 +251,11 @@ export async function sellerRejectAtomic(sellerId, orderId) {
       seller: sellerId,
       workflowVersion: { $gte: 2 },
       workflowStatus: WORKFLOW_STATUS.SELLER_PENDING,
-      sellerPendingExpiresAt: { $gt: now },
+      $or: [
+        { sellerPendingExpiresAt: { $gt: now } },
+        { sellerPendingExpiresAt: null },
+        { sellerPendingExpiresAt: { $exists: false } },
+      ],
     },
     {
       $set: {
@@ -416,18 +440,30 @@ export async function processSellerTimeoutJob({ orderId }) {
     return;
   }
 
+  const timeoutSeconds = order.sellerAcceptanceTimeoutMs
+    ? Math.round(order.sellerAcceptanceTimeoutMs / 1000)
+    : (order.sellerPendingExpiresAt && order.createdAt
+        ? Math.max(1, Math.round((new Date(order.sellerPendingExpiresAt).getTime() - new Date(order.createdAt).getTime()) / 1000))
+        : 60);
+  const cancelReason = `Seller timeout (${timeoutSeconds}s)`;
+
   const updated = await Order.findOneAndUpdate(
     {
       orderId,
       workflowVersion: { $gte: 2 },
       workflowStatus: WORKFLOW_STATUS.SELLER_PENDING,
+      $or: [
+        { sellerPendingExpiresAt: { $lte: now } },
+        { sellerPendingExpiresAt: null },
+        { sellerPendingExpiresAt: { $exists: false } },
+      ],
     },
     {
       $set: {
         workflowStatus: WORKFLOW_STATUS.CANCELLED,
         status: "cancelled",
         cancelledBy: "system",
-        cancelReason: "Seller timeout (60s)",
+        cancelReason,
       },
     },
     { new: true },
@@ -1281,44 +1317,46 @@ export async function verifyHandoffOtpAndDeliver(deliveryId, orderId, code) {
     createdAt: -1,
   });
 
-  const isMockOtp = String(code) === "1234";
-
-  if (!otp && !isMockOtp) {
+  if (!otp) {
     const err = new Error("No OTP has been generated for this order yet");
     err.statusCode = statusCodeForOtpError("OTP_NOT_FOUND");
     err.code = "OTP_NOT_FOUND";
     throw err;
   }
 
-  if (otp && !isMockOtp) {
-    if (otp.consumedAt) {
-      const err = new Error("OTP has already been used. Please generate a new OTP.");
-      err.statusCode = statusCodeForOtpError("OTP_CONSUMED");
-      err.code = "OTP_CONSUMED";
-      err.attemptsRemaining = 0;
-      throw err;
-    }
-
-    if (otp.attempts >= otp.maxAttempts) {
-      const err = new Error(
-        "Maximum validation attempts exceeded. Supervisor intervention required.",
-      );
-      err.statusCode = statusCodeForOtpError("MAX_ATTEMPTS_EXCEEDED");
-      err.code = "MAX_ATTEMPTS_EXCEEDED";
-      err.attemptsRemaining = 0;
-      throw err;
-    }
-
-    if (otp.expiresAt && otp.expiresAt < new Date()) {
-      const err = new Error("OTP has expired. Please generate a new OTP.");
-      err.statusCode = statusCodeForOtpError("OTP_EXPIRED");
-      err.code = "OTP_EXPIRED";
-      err.attemptsRemaining = otp.maxAttempts - otp.attempts;
-      throw err;
-    }
+  if (otp.consumedAt) {
+    const err = new Error("OTP has already been used. Please generate a new OTP.");
+    err.statusCode = statusCodeForOtpError("OTP_CONSUMED");
+    err.code = "OTP_CONSUMED";
+    err.attemptsRemaining = 0;
+    throw err;
   }
 
-  const match = isMockOtp || (otp && OrderOtp.hashCode(String(code)) === otp.codeHash);
+  if (otp.attempts >= otp.maxAttempts) {
+    const err = new Error(
+      "Maximum validation attempts exceeded. Supervisor intervention required.",
+    );
+    err.statusCode = statusCodeForOtpError("MAX_ATTEMPTS_EXCEEDED");
+    err.code = "MAX_ATTEMPTS_EXCEEDED";
+    err.attemptsRemaining = 0;
+    throw err;
+  }
+
+  if (otp.expiresAt && otp.expiresAt < new Date()) {
+    const err = new Error("OTP has expired. Please generate a new OTP.");
+    err.statusCode = statusCodeForOtpError("OTP_EXPIRED");
+    err.code = "OTP_EXPIRED";
+    err.attemptsRemaining = otp.maxAttempts - otp.attempts;
+    throw err;
+  }
+
+  const isMockAllowed =
+    process.env.NODE_ENV !== "production" &&
+    (process.env.USE_MOCK_OTP === "true" ||
+      process.env.USE_MOCK_OTP === "1" ||
+      process.env.ALLOW_MOCK_DELIVERY_OTP === "true");
+  const isMockMatch = isMockAllowed && String(code) === "1234";
+  const match = Boolean((otp && OrderOtp.hashCode(String(code)) === otp.codeHash) || isMockMatch);
   if (!match) {
     if (otp) {
       otp.attempts += 1;

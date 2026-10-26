@@ -8,6 +8,13 @@ const mockFindByIdAndDelete = jest.fn();
 const mockFindOne = jest.fn();
 const mockInvalidate = jest.fn();
 const mockHandleResponse = jest.fn();
+const mockProductCountDocuments = jest.fn();
+
+jest.unstable_mockModule("../app/models/product.js", () => ({
+  default: {
+    countDocuments: mockProductCountDocuments,
+  },
+}));
 
 jest.unstable_mockModule("../app/models/category.js", () => ({
   default: {
@@ -47,7 +54,13 @@ describe("cache invalidation on category mutations", () => {
         lean: async () => ({ type: "header", parentId: null }),
       }),
     });
-    mockFind.mockResolvedValue([]);
+    mockFind.mockReturnValue({
+      select: jest.fn().mockReturnValue({
+        lean: jest.fn().mockResolvedValue([]),
+      }),
+      then: (resolve, reject) => Promise.resolve([]).then(resolve, reject),
+    });
+    mockProductCountDocuments.mockResolvedValue(0);
     mockFindByIdAndDelete.mockResolvedValue({ _id: "cat-1" });
     mockFindOne.mockReturnValue({ lean: async () => null });
   });
@@ -86,7 +99,7 @@ describe("cache invalidation on category mutations", () => {
   test("deleteCategory invalidates category caches", async () => {
     await deleteCategory(
       {
-        params: { id: "cat-1" },
+        params: { id: "507f1f77bcf86cd799439011" },
       },
       {},
     );

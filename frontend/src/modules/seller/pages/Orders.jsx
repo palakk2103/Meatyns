@@ -60,6 +60,15 @@ const Orders = () => {
     const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
     const [isQuickViewModalOpen, setIsQuickViewModalOpen] = useState(false);
     const [selectedOrder, setSelectedOrder] = useState(null);
+    const [partialRefundModal, setPartialRefundModal] = useState({
+        isOpen: false,
+        item: null,
+        itemIndex: null,
+        preview: null,
+        reason: 'Item out of stock',
+        loading: false,
+        submitting: false,
+    });
     const { showToast } = useToast();
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(20);
@@ -106,13 +115,19 @@ const Orders = () => {
                     phone: order.customer?.phone || '',
                     avatar: (order.customer?.name || 'U').charAt(0)
                 },
-                items: (order.items || []).map(item => ({
+                items: (order.items || []).map((item, itemIdx) => ({
+                    itemIndex: itemIdx,
                     name: item.name,
                     price: item.price,
                     qty: item.quantity,
-                    image: item.image
+                    image: item.image,
+                    status: item.status || 'AVAILABLE',
+                    refundStatus: item.refundStatus || 'NONE',
+                    refundAmount: item.refundAmount || 0,
+                    unavailableReason: item.unavailableReason || null,
                 })),
                 total: order.pricing?.total || 0,
+                partialFulfillment: order.partialFulfillment || null,
                 status: getLegacyStatusFromOrder(order),
                 workflowStatus: order.workflowStatus,
                 workflowVersion: order.workflowVersion,
@@ -231,6 +246,83 @@ const Orders = () => {
         } catch (error) {
             console.error("Failed to update status:", error);
             showToast("Failed to update status", "error");
+        }
+    };
+
+    const handleOpenUnavailableModal = async (order, item, itemIndex) => {
+        setPartialRefundModal({
+            isOpen: true,
+            item,
+            itemIndex,
+            preview: null,
+            reason: 'Item out of stock',
+            loading: true,
+            submitting: false,
+        });
+
+        try {
+            const res = await sellerApi.getOrderItemRefundPreview(order.id, itemIndex);
+            setPartialRefundModal(prev => ({
+                ...prev,
+                preview: res.data?.result || res.data?.data || null,
+                loading: false,
+            }));
+        } catch (error) {
+            console.error("Failed to load refund preview:", error);
+            showToast(error?.response?.data?.message || "Failed to load refund preview", "error");
+            setPartialRefundModal(prev => ({ ...prev, loading: false }));
+        }
+    };
+
+    const handleConfirmUnavailable = async () => {
+        if (!selectedOrder || partialRefundModal.itemIndex === null) return;
+        setPartialRefundModal(prev => ({ ...prev, submitting: true }));
+
+        try {
+            const res = await sellerApi.markOrderItemUnavailable(
+                selectedOrder.id,
+                partialRefundModal.itemIndex,
+                { reason: partialRefundModal.reason }
+            );
+
+            showToast(res.data?.message || "Item marked unavailable and refund processed.", "success");
+            const updatedOrder = res.data?.result?.order;
+
+            setPartialRefundModal({
+                isOpen: false,
+                item: null,
+                itemIndex: null,
+                preview: null,
+                reason: 'Item out of stock',
+                loading: false,
+                submitting: false,
+            });
+
+            await fetchOrders(page, false);
+
+            if (updatedOrder) {
+                setSelectedOrder(prev => ({
+                    ...prev,
+                    items: (updatedOrder.items || []).map((it, idx) => ({
+                        itemIndex: idx,
+                        name: it.name,
+                        price: it.price,
+                        qty: it.quantity,
+                        image: it.image,
+                        status: it.status || 'AVAILABLE',
+                        refundStatus: it.refundStatus || 'NONE',
+                        refundAmount: it.refundAmount || 0,
+                        unavailableReason: it.unavailableReason || null,
+                    })),
+                    total: updatedOrder.pricing?.total || 0,
+                    status: updatedOrder.status,
+                    partialFulfillment: updatedOrder.partialFulfillment,
+                }));
+            }
+        } catch (error) {
+            console.error("Failed to mark item unavailable:", error);
+            showToast(error?.response?.data?.message || "Failed to mark item unavailable", "error");
+            setPartialRefundModal(prev => ({ ...prev, submitting: false }));
         }
     };
 
@@ -904,22 +996,64 @@ const Orders = () => {
 
                                         <h4 className="text-xs font-black text-slate-600 uppercase tracking-widest mb-3 sm:mb-4">Items Ordered ({selectedOrder.items.length})</h4>
                                         <div className="space-y-3 max-h-52 sm:max-h-64 overflow-y-auto pr-1">
-                                            {selectedOrder.items.map((item, idx) => (
-                                                <div key={idx} className="flex items-center justify-between p-3 bg-white ring-1 ring-slate-100 rounded-2xl group hover:shadow-md transition-all">
-                                                    <div className="flex items-center gap-4">
-                                                        <div className="h-12 w-12 rounded-xl overflow-hidden bg-slate-50 ring-1 ring-slate-200">
-                                                            <img src={item.image} alt={item.name} className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                            {selectedOrder.items.map((item, idx) => {
+                                                const isUnavailable = item.status === 'UNAVAILABLE';
+                                                const canMarkUnavailable =
+                                                    !isUnavailable &&
+                                                    ['pending', 'confirmed', 'packed'].includes(
+                                                        String(selectedOrder.status || '').toLowerCase()
+                                                    );
+
+                                                return (
+                                                    <div key={idx} className={cn(
+                                                        "flex items-center justify-between p-3 rounded-2xl group transition-all ring-1",
+                                                        isUnavailable
+                                                            ? "bg-rose-50/40 ring-rose-200/60"
+                                                            : "bg-white ring-slate-100 hover:shadow-md"
+                                                    )}>
+                                                        <div className="flex items-center gap-4">
+                                                            <div className="h-12 w-12 rounded-xl overflow-hidden bg-slate-50 ring-1 ring-slate-200 shrink-0">
+                                                                <img src={item.image} alt={item.name} className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                                            </div>
+                                                            <div>
+                                                                <div className="flex items-center gap-2">
+                                                                    <p className={cn(
+                                                                        "text-xs font-bold",
+                                                                        isUnavailable ? "text-slate-400 line-through" : "text-slate-900"
+                                                                    )}>{item.name}</p>
+                                                                    {isUnavailable && (
+                                                                        <span className="px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-rose-100 text-rose-700">
+                                                                            Out of Stock
+                                                                        </span>
+                                                                    )}
+                                                                </div>
+                                                                <p className="text-xs font-semibold text-slate-600 mt-0.5">₹{Number(item.price || 0).toFixed(2)} × {item.qty}</p>
+                                                                {isUnavailable && item.refundAmount > 0 && (
+                                                                    <p className="text-[10px] font-bold text-emerald-600 mt-0.5">
+                                                                        ✓ Refunded: ₹{Number(item.refundAmount).toFixed(2)}
+                                                                    </p>
+                                                                )}
+                                                            </div>
                                                         </div>
-                                                        <div>
-                                                            <p className="text-xs font-bold text-slate-900">{item.name}</p>
-                                                            <p className="text-xs font-semibold text-slate-600 mt-0.5">₹{item.price.toFixed(2)} × {item.qty}</p>
+                                                        <div className="text-right flex flex-col items-end gap-1.5">
+                                                            <p className={cn(
+                                                                "text-xs font-black",
+                                                                isUnavailable ? "text-slate-400 line-through" : "text-slate-900"
+                                                            )}>₹{(Number(item.price || 0) * Number(item.qty || 0)).toFixed(2)}</p>
+
+                                                            {canMarkUnavailable && (
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => handleOpenUnavailableModal(selectedOrder, item, idx)}
+                                                                    className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 rounded-lg transition-all"
+                                                                >
+                                                                    Mark Out of Stock
+                                                                </button>
+                                                            )}
                                                         </div>
                                                     </div>
-                                                    <div className="text-right">
-                                                        <p className="text-xs font-black text-slate-900">₹{(item.price * item.qty).toFixed(2)}</p>
-                                                    </div>
-                                                </div>
-                                            ))}
+                                                );
+                                            })}
                                         </div>
                                     </div>
 
@@ -952,6 +1086,149 @@ const Orders = () => {
                                                 <HiOutlineChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 pointer-events-none opacity-60" />
                                             </div>
                                         </div>
+                                    </div>
+                                </motion.div>
+                            </div>
+                        )}
+                    </AnimatePresence>
+
+                    {/* Partial Order Fulfillment & Item Refund Modal */}
+                    <AnimatePresence>
+                        {partialRefundModal.isOpen && (
+                            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+                                <motion.div
+                                    initial={{ opacity: 0, scale: 0.95 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    exit={{ opacity: 0, scale: 0.95 }}
+                                    className="bg-white rounded-3xl shadow-2xl border border-slate-100 max-w-lg w-full overflow-hidden"
+                                >
+                                    <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+                                        <h3 className="text-sm font-black text-slate-900 uppercase tracking-wider">
+                                            Mark Item Out of Stock
+                                        </h3>
+                                        <button
+                                            onClick={() => setPartialRefundModal(prev => ({ ...prev, isOpen: false }))}
+                                            className="p-1 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100"
+                                        >
+                                            <HiOutlineXMark className="h-5 w-5" />
+                                        </button>
+                                    </div>
+
+                                    <div className="p-6 space-y-4">
+                                        {partialRefundModal.loading ? (
+                                            <div className="flex flex-col items-center justify-center py-10 space-y-3">
+                                                <Loader2 className="h-7 w-7 text-brand-600 animate-spin" />
+                                                <p className="text-xs font-bold text-slate-500">Calculating refund breakdown...</p>
+                                            </div>
+                                        ) : (
+                                            <>
+                                                {/* Item Summary */}
+                                                <div className="flex items-center gap-3.5 p-3 rounded-2xl bg-slate-50 border border-slate-100">
+                                                    <div className="h-12 w-12 rounded-xl overflow-hidden bg-white ring-1 ring-slate-200 shrink-0">
+                                                        <img src={partialRefundModal.item?.image} alt="" className="h-full w-full object-cover" />
+                                                    </div>
+                                                    <div className="min-w-0 flex-1">
+                                                        <p className="text-xs font-bold text-slate-900 truncate">{partialRefundModal.item?.name}</p>
+                                                        <p className="text-[11px] font-semibold text-slate-500">
+                                                            ₹{Number(partialRefundModal.item?.price || 0).toFixed(2)} × {partialRefundModal.item?.qty}
+                                                        </p>
+                                                    </div>
+                                                    <div className="text-right">
+                                                        <p className="text-xs font-black text-slate-900">
+                                                            ₹{Number((partialRefundModal.item?.price || 0) * (partialRefundModal.item?.qty || 0)).toFixed(2)}
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                                {/* Financial Calculation Breakdown */}
+                                                {partialRefundModal.preview?.calculation && (
+                                                    <div className="p-4 rounded-2xl bg-amber-50/60 border border-amber-200/70 space-y-2">
+                                                        <div className="flex items-center justify-between text-xs">
+                                                            <span className="font-semibold text-slate-600">Item Gross Value:</span>
+                                                            <span className="font-bold text-slate-800">
+                                                                ₹{partialRefundModal.preview.calculation.itemGross.toFixed(2)}
+                                                            </span>
+                                                        </div>
+                                                        {partialRefundModal.preview.calculation.allocatedDiscount > 0 && (
+                                                            <div className="flex items-center justify-between text-xs text-rose-600">
+                                                                <span className="font-semibold">Coupon Discount Share:</span>
+                                                                <span className="font-bold">
+                                                                    -₹{partialRefundModal.preview.calculation.allocatedDiscount.toFixed(2)}
+                                                                </span>
+                                                            </div>
+                                                        )}
+                                                        <div className="h-px bg-amber-200/60 my-1.5" />
+                                                        <div className="flex items-center justify-between text-sm font-black text-emerald-700">
+                                                            <span>Customer Refund:</span>
+                                                            <span>₹{partialRefundModal.preview.calculation.eligibleRefund.toFixed(2)}</span>
+                                                        </div>
+
+                                                        {partialRefundModal.preview.calculation.walletRefund > 0 && (
+                                                            <p className="text-[10px] text-slate-500">
+                                                                • Wallet credit: ₹{partialRefundModal.preview.calculation.walletRefund.toFixed(2)}
+                                                                {partialRefundModal.preview.calculation.gatewayRefund > 0 && ` | Gateway refund: ₹${partialRefundModal.preview.calculation.gatewayRefund.toFixed(2)}`}
+                                                            </p>
+                                                        )}
+
+                                                        <div className="flex items-center justify-between text-[11px] text-slate-500 pt-1">
+                                                            <span>New Order Grand Total:</span>
+                                                            <span className="font-bold text-slate-700">
+                                                                ₹{partialRefundModal.preview.calculation.newOrderGrandTotal.toFixed(2)}
+                                                            </span>
+                                                        </div>
+
+                                                        {partialRefundModal.preview.calculation.isOrderFullyCancelled && (
+                                                            <div className="mt-2 p-2.5 rounded-xl bg-rose-100/70 border border-rose-300 text-rose-800 text-[11px] font-bold">
+                                                                ⚠️ Notice: This is the only remaining item in this order. Marking it unavailable will cancel and fully refund the entire order.
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                )}
+
+                                                {/* Reason selection */}
+                                                <div className="space-y-1.5">
+                                                    <label className="text-xs font-black text-slate-600 uppercase tracking-wider block">
+                                                        Reason for unavailability
+                                                    </label>
+                                                    <select
+                                                        value={partialRefundModal.reason}
+                                                        onChange={(e) => setPartialRefundModal(prev => ({ ...prev, reason: e.target.value }))}
+                                                        className="w-full text-xs p-2.5 rounded-xl border border-slate-200 font-semibold focus:ring-2 focus:ring-brand-200 outline-none"
+                                                    >
+                                                        <option value="Item out of stock">Item out of stock</option>
+                                                        <option value="Damaged or quality issue">Damaged or quality issue</option>
+                                                        <option value="Packaging unavailable">Packaging unavailable</option>
+                                                        <option value="Customer requested item cancellation">Customer requested cancellation</option>
+                                                    </select>
+                                                </div>
+                                            </>
+                                        )}
+                                    </div>
+
+                                    <div className="px-6 py-4 bg-slate-50 border-t border-slate-100 flex items-center justify-end gap-2.5">
+                                        <button
+                                            type="button"
+                                            onClick={() => setPartialRefundModal(prev => ({ ...prev, isOpen: false }))}
+                                            disabled={partialRefundModal.submitting}
+                                            className="px-4 py-2 text-xs font-bold text-slate-600 hover:bg-slate-200 rounded-xl transition-colors"
+                                        >
+                                            CANCEL
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={handleConfirmUnavailable}
+                                            disabled={partialRefundModal.loading || partialRefundModal.submitting}
+                                            className="px-5 py-2 text-xs font-black uppercase tracking-wider text-white bg-rose-600 hover:bg-rose-700 active:scale-95 rounded-xl shadow-sm transition-all flex items-center gap-1.5 disabled:opacity-50"
+                                        >
+                                            {partialRefundModal.submitting ? (
+                                                <>
+                                                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                                                    Processing...
+                                                </>
+                                            ) : (
+                                                "Confirm & Issue Refund"
+                                            )}
+                                        </button>
                                     </div>
                                 </motion.div>
                             </div>

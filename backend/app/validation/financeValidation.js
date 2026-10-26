@@ -71,7 +71,7 @@ export const createFinanceOrderSchema = checkoutPreviewSchema.keys({
   items: Joi.array().items(orderItemSchema).min(1).optional(),
   paymentMode: Joi.string().valid("ONLINE", "COD").required(),
   walletAmount: Joi.number().min(0).default(0),
-  attribution: Joi.object().unknown(true).optional(),
+  attribution: Joi.object().unknown(true).optional().allow(null),
 });
 
 export const verifyOnlinePaymentSchema = Joi.object({
@@ -138,6 +138,41 @@ export const updateDeliverySettingsSchema = Joi.object({
     .optional(),
   codEnabled: Joi.boolean().optional(),
   onlineEnabled: Joi.boolean().optional(),
+  deliveryConfig: Joi.object({
+    express: Joi.object({
+      enabled: Joi.boolean().optional(),
+      surcharge: Joi.number().min(0).optional(),
+      estimatedMinMinutes: Joi.number().min(1).optional(),
+      estimatedMaxMinutes: Joi.number().min(1).optional(),
+      operatingHoursOnly: Joi.boolean().optional(),
+    }).optional(),
+    normal: Joi.object({
+      enabled: Joi.boolean().optional(),
+      deliveryFee: Joi.number().min(0).allow(null).optional(),
+      estimatedLabel: Joi.string().allow("", null).optional(),
+      minMinutes: Joi.number().min(1).optional(),
+      maxMinutes: Joi.number().min(1).optional(),
+    }).optional(),
+    advance: Joi.object({
+      enabled: Joi.boolean().optional(),
+      deliveryFee: Joi.number().min(0).allow(null).optional(),
+      maxAdvanceDays: Joi.number().min(1).max(30).optional(),
+      slotDurationMinutes: Joi.number().min(15).max(240).optional(),
+      maxOrdersPerSlot: Joi.number().min(1).optional(),
+      minAdvanceMinutes: Joi.number().min(0).optional(),
+      openTime: Joi.string().allow("", null).optional(),
+      closeTime: Joi.string().allow("", null).optional(),
+      operatingDays: Joi.array().items(Joi.string()).optional(),
+    }).optional(),
+    slotOverrides: Joi.array().items(Joi.object({
+      slotId: Joi.string().required(),
+      date: Joi.string().allow("", null).optional(),
+      startTime: Joi.string().allow("", null).optional(),
+      endTime: Joi.string().allow("", null).optional(),
+      enabled: Joi.boolean().optional(),
+      capacity: Joi.number().min(0).optional(),
+    })).optional(),
+  }).optional(),
 }).or(
   "deliveryPricingMode",
   "pricingMode",
@@ -154,4 +189,5 @@ export const updateDeliverySettingsSchema = Joi.object({
   "handlingFeeStrategy",
   "codEnabled",
   "onlineEnabled",
+  "deliveryConfig",
 );

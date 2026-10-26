@@ -3,6 +3,7 @@ import { jest } from "@jest/globals";
 const mockProductFind = jest.fn();
 const mockCategoryFind = jest.fn();
 const mockGetOrCreateFinanceSettings = jest.fn();
+const mockFlashDealFind = jest.fn();
 
 function createQueryChain(result) {
   return {
@@ -10,6 +11,24 @@ function createQueryChain(result) {
     lean: jest.fn().mockResolvedValue(result),
   };
 }
+
+function createFlashDealQueryChain(result = []) {
+  const chain = {
+    session: jest.fn().mockReturnThis(),
+    then: (resolve, reject) => Promise.resolve(result).then(resolve, reject),
+  };
+  return {
+    lean: jest.fn().mockReturnValue(chain),
+    session: jest.fn().mockReturnThis(),
+    then: (resolve, reject) => Promise.resolve(result).then(resolve, reject),
+  };
+}
+
+jest.unstable_mockModule("../app/models/flashDeal.js", () => ({
+  default: {
+    find: mockFlashDealFind,
+  },
+}));
 
 jest.unstable_mockModule("../app/models/product.js", () => ({
   default: {
@@ -40,6 +59,7 @@ const {
 describe("finance pricing flow", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockFlashDealFind.mockReturnValue(createFlashDealQueryChain([]));
   });
 
   it("calculates product subtotal accurately", () => {

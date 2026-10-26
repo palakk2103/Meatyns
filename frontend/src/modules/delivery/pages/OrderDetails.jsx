@@ -13,6 +13,9 @@ import {
   User,
   AlertTriangle,
   ShieldCheck,
+  Zap,
+  Clock,
+  Calendar,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Button from "@/shared/components/ui/Button";
@@ -637,6 +640,67 @@ const OrderDetails = () => {
       </div>
 
       <div className="max-w-2xl mx-auto px-4 py-4 space-y-4">
+        {/* Delivery Method & Slot Window Banner */}
+        {order?.deliveryMethod && (
+          <div
+            className={`rounded-2xl p-4 flex items-center justify-between border shadow-xs ${
+              order.deliveryMethod === "EXPRESS"
+                ? "bg-amber-500/10 border-amber-300 text-amber-950"
+                : order.deliveryMethod === "SCHEDULED"
+                ? "bg-emerald-50 border-emerald-200 text-emerald-950"
+                : "bg-blue-50 border-blue-200 text-blue-950"
+            }`}
+          >
+            <div className="flex items-center gap-3">
+              <div
+                className={`w-10 h-10 rounded-xl flex items-center justify-center font-bold text-base shadow-xs ${
+                  order.deliveryMethod === "EXPRESS"
+                    ? "bg-[#FDCE04] text-[#1A1A1A]"
+                    : order.deliveryMethod === "SCHEDULED"
+                    ? "bg-emerald-600 text-white"
+                    : "bg-blue-600 text-white"
+                }`}
+              >
+                {order.deliveryMethod === "EXPRESS" ? (
+                  <Zap size={20} strokeWidth={2.4} />
+                ) : order.deliveryMethod === "SCHEDULED" ? (
+                  <Calendar size={20} strokeWidth={2.4} />
+                ) : (
+                  <Clock size={20} strokeWidth={2.4} />
+                )}
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h3 className="text-sm font-black uppercase tracking-tight">
+                    {order.deliveryMethod === "EXPRESS"
+                      ? "Express Priority Order"
+                      : order.deliveryMethod === "SCHEDULED"
+                      ? "Scheduled Slot Order"
+                      : "Standard Delivery Order"}
+                  </h3>
+                  <span
+                    className={`text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full ${
+                      order.deliveryMethod === "EXPRESS"
+                        ? "bg-amber-200 text-amber-900 border border-amber-300"
+                        : order.deliveryMethod === "SCHEDULED"
+                        ? "bg-emerald-200 text-emerald-900 border border-emerald-300"
+                        : "bg-blue-200 text-blue-900 border border-blue-300"
+                    }`}
+                  >
+                    {order.deliveryMethod}
+                  </span>
+                </div>
+                <p className="text-xs font-semibold text-slate-600 mt-0.5">
+                  {order.deliveryMethod === "SCHEDULED"
+                    ? `📅 Date: ${order.scheduledDate || "N/A"} • Slot Window: ${order.timeSlot || "N/A"}`
+                    : order.deliveryMethod === "EXPRESS"
+                    ? `⚡ Dispatch immediately (ASAP ETA: ${order.timeSlot || "15–30 mins"})`
+                    : `🚚 Standard window: ${order.timeSlot || "1–2 hours"}`}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
         {/* Acceptance Guard for Returns */}
         <AnimatePresence>
           {isReturnWaitAccept && (

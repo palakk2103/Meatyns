@@ -130,7 +130,17 @@ const MobileHeroBanner = ({ heroConfig }) => {
               loading="eager"
             />
 
-            <div className="relative z-10 w-[58%] sm:w-[55%] pl-3.5 sm:pl-5 pr-1 flex flex-col justify-center gap-1.5 sm:gap-2">
+            {/* Official Meatyns Chef Mascot */}
+            <div className="absolute right-1 sm:right-3 bottom-0 top-1 w-[38%] sm:w-[35%] flex items-end justify-center pointer-events-none z-10">
+              <img
+                src="/mascot/chef_mascot.png"
+                alt="Meatyns Chef Mascot"
+                className="h-[95%] w-auto object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.18)] group-hover:scale-105 transition-transform duration-500"
+                loading="eager"
+              />
+            </div>
+
+            <div className="relative z-10 w-[60%] sm:w-[62%] pl-3.5 sm:pl-5 pr-1 flex flex-col justify-center gap-1.5 sm:gap-2">
               <span className="text-[8.5px] sm:text-[9.5px] font-black tracking-wider uppercase text-[#111111] bg-[#FAB82C] px-2.5 py-0.5 rounded-full w-fit shadow-2xs">
                 PREMIUM QUALITY
               </span>

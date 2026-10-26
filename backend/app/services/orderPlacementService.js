@@ -6,6 +6,7 @@ import User from "../models/customer.js";
 import Transaction from "../models/transaction.js";
 import Coupon from "../models/coupon.js";
 import { WORKFLOW_STATUS, DEFAULT_SELLER_TIMEOUT_MS } from "../constants/orderWorkflow.js";
+import { getEffectiveSellerTimeoutMs } from "./workflow/sellerTimeoutConfig.js";
 import {
   LEDGER_TRANSACTION_TYPE,
   ORDER_PAYMENT_STATUS,
@@ -425,6 +426,7 @@ export async function placeOrderAtomic({
       couponCode: normalizedPayload.couponCode || null,
       couponId: normalizedPayload.couponId || null,
       customerId,
+      deliveryMethod: normalizedPayload.deliveryMethod || "NORMAL",
       session,
     });
 
@@ -459,7 +461,7 @@ export async function placeOrderAtomic({
 
     const orders = [];
     const pendingLowStockAlerts = [];
-    const sellerTimeoutMs = DEFAULT_SELLER_TIMEOUT_MS();
+    const sellerTimeoutMs = await getEffectiveSellerTimeoutMs({ session });
     const shouldStartSellerWorkflow = paymentMode === "COD";
 
     for (let index = 0; index < pricingSnapshot.sellerBreakdownEntries.length; index += 1) {
@@ -573,6 +575,7 @@ export async function placeOrderAtomic({
         workflowStatus: startSellerWorkflow
           ? WORKFLOW_STATUS.SELLER_PENDING
           : WORKFLOW_STATUS.CREATED,
+        sellerAcceptanceTimeoutMs: sellerTimeoutMs,
         sellerPendingExpiresAt: sellerPendingUntil,
         expiresAt: orderExpiresAt,
         stockReservation: orderReservation,

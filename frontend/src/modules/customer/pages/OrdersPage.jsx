@@ -1,14 +1,35 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Package, ChevronRight, CheckCircle, Loader2, ChevronLeft } from 'lucide-react';
+import { Package, ChevronRight, CheckCircle, Loader2, ChevronLeft, RotateCcw } from 'lucide-react';
 import { customerApi } from '../services/customerApi';
+import { useToast } from '@/shared/components/ui/Toast';
 import { getOrderStatusLabel, getLegacyStatusFromOrder } from '@/shared/utils/orderStatus';
 import { applyCloudinaryTransform } from '@/core/utils/imageUtils';
 
 const OrdersPage = () => {
     const navigate = useNavigate();
+    const { showToast } = useToast();
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [reorderingId, setReorderingId] = useState(null);
+
+    const handleReorder = async (e, order) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const orderId = order.orderId || order._id;
+        setReorderingId(orderId);
+        try {
+            const res = await customerApi.reorderOrder(orderId);
+            const data = res?.data?.result || res?.data?.data || {};
+            const msg = data.summaryMessage || "Items reordered to your cart!";
+            showToast(msg, "success");
+            navigate("/cart");
+        } catch (err) {
+            showToast(err?.response?.data?.message || "Failed to reorder items", "error");
+        } finally {
+            setReorderingId(null);
+        }
+    };
 
     useEffect(() => {
         const fetchOrders = async () => {
@@ -183,14 +204,28 @@ const OrdersPage = () => {
                                     </div>
 
                                     <div className="border-t border-[#F2EDE4] pt-3 flex justify-between items-center gap-3">
-                                        <div className="text-[12px] text-[#6E645A] font-medium truncate max-w-[200px] sm:max-w-[340px]">
+                                        <div className="text-[12px] text-[#6E645A] font-medium truncate max-w-[150px] sm:max-w-[280px]">
                                             {order.items?.map((i) => i.name).join(', ') || 'Items'}
                                         </div>
-                                        <div className="flex items-center gap-1.5 shrink-0">
-                                            <span className="text-[11.5px] font-medium text-[#8C7E72]">Total</span>
-                                            <span className="text-sm font-extrabold text-[#1A1A1A]">
-                                                ₹{orderTotal}
-                                            </span>
+                                        <div className="flex items-center gap-2.5 shrink-0">
+                                            <div className="text-right">
+                                                <span className="text-xs font-extrabold text-[#1A1A1A] block">
+                                                    ₹{orderTotal}
+                                                </span>
+                                            </div>
+                                            <button
+                                                type="button"
+                                                onClick={(e) => handleReorder(e, order)}
+                                                disabled={reorderingId === (order.orderId || order._id)}
+                                                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-[#FDCE04] hover:bg-[#E5B800] text-[#1A1A1A] text-[11px] font-extrabold uppercase tracking-wider active:scale-95 transition-all shadow-sm disabled:opacity-60"
+                                            >
+                                                {reorderingId === (order.orderId || order._id) ? (
+                                                    <Loader2 size={12} className="animate-spin" />
+                                                ) : (
+                                                    <RotateCcw size={12} strokeWidth={2.5} />
+                                                )}
+                                                <span>Reorder</span>
+                                            </button>
                                             <ChevronRight size={17} className="text-[#CEB186]" />
                                         </div>
                                     </div>

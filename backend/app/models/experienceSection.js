@@ -18,6 +18,8 @@ const bannerItemSchema = new mongoose.Schema(
       enum: ["active", "inactive"],
       default: "active",
     },
+    validFrom: { type: Date, default: null },
+    validTo: { type: Date, default: null },
   },
   { _id: false }
 );
@@ -88,6 +90,8 @@ const experienceSectionSchema = new mongoose.Schema(
       enum: ["active", "inactive"],
       default: "active",
     },
+    validFrom: { type: Date, default: null },
+    validTo: { type: Date, default: null },
     config: configSchema,
   },
   { timestamps: true }

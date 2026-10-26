@@ -202,6 +202,20 @@ const productSchema = new mongoose.Schema(
                 salePrice: Number,
                 stock: Number,
                 sku: String,
+                tieredPricing: [
+                    {
+                        minQty: { type: Number, required: true, min: 0.01 },
+                        discountPercentage: { type: Number, min: 0, max: 100, default: 0 },
+                        fixedUnitPrice: { type: Number, min: 0, default: 0 },
+                    }
+                ],
+            }
+        ],
+        tieredPricing: [
+            {
+                minQty: { type: Number, required: true, min: 0.01 },
+                discountPercentage: { type: Number, min: 0, max: 100, default: 0 },
+                fixedUnitPrice: { type: Number, min: 0, default: 0 },
             }
         ],
         isFeatured: {

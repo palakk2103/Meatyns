@@ -52,7 +52,7 @@ const InvoiceModal = ({ isOpen, onClose, order }) => {
                                     </div>
                                     <div className="text-right">
                                         <p className="text-sm font-bold text-slate-800">Bill To:</p>
-                                        <p className="text-xs text-slate-500 mt-1">{order.address.name}<br />{order.address.phone}</p>
+                                        <p className="text-xs text-slate-500 mt-1">{order.address?.name || 'Customer'}<br />{order.address?.phone || '—'}</p>
                                     </div>
                                 </div>
 

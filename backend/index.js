@@ -50,6 +50,11 @@ import {
   getAbandonedCartJobInterval,
   isAbandonedCartJobEnabled,
 } from "./app/jobs/abandonedCartJob.js";
+import {
+  getSubscriptionOrderJobHandler,
+  getSubscriptionOrderJobInterval,
+  isSubscriptionOrderJobEnabled,
+} from "./app/jobs/subscriptionOrderJob.js";
 import logger from "./app/services/logger.js";
 import { stopScheduledJobs } from "./app/services/distributedScheduler.js";
 
@@ -143,7 +148,20 @@ function createApp() {
   app.set("trust proxy", parseTrustProxy(process.env.TRUST_PROXY));
 
   const corsOptions = {
-    origin: true,
+    origin: (origin, callback) => {
+      // Allow requests with no origin (e.g. mobile apps, curl, server-to-server)
+      if (!origin) return callback(null, true);
+
+      if (NODE_ENV !== "production") {
+        return callback(null, true);
+      }
+
+      // In production, strictly match configured allowedOrigins
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      return callback(new Error(`CORS policy violation: Origin ${origin} is not allowed`));
+    },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allowedHeaders: [
@@ -235,7 +253,7 @@ async function startHttpServer() {
   const allowedOrigins = parseAllowedOrigins();
   const io = new Server(server, {
     cors: {
-      origin: true,
+      origin: NODE_ENV === "production" ? allowedOrigins : true,
       methods: ["GET", "POST"],
       credentials: true,
     },
@@ -361,6 +379,15 @@ async function startScheduler() {
     );
   }
 
+  // Phase 5 automated recurring subscription order processor
+  if (isSubscriptionOrderJobEnabled()) {
+    registerScheduledJob(
+      'subscriptionOrderJob',
+      getSubscriptionOrderJobInterval(),
+      getSubscriptionOrderJobHandler()
+    );
+  }
+
   // Start all registered jobs
   await startScheduledJobs();
   registerSchedulerStopper(stopScheduledJobs);
@@ -370,6 +397,7 @@ async function startScheduler() {
   if (isWalletLedgerVerifierEnabled()) scheduledJobs.push('walletLedgerVerifierJob');
   if (isFirebaseTrackingCleanupJobEnabled()) scheduledJobs.push('firebaseTrackingCleanupJob');
   if (isAbandonedCartJobEnabled()) scheduledJobs.push('abandonedCartJob');
+  if (isSubscriptionOrderJobEnabled()) scheduledJobs.push('subscriptionOrderJob');
   logger.info('Scheduler started', {
     jobs: scheduledJobs,
     role: getProcessRole()

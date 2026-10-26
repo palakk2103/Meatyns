@@ -113,33 +113,50 @@ const PaymentStatusPage = () => {
                     <motion.div 
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="max-w-md w-full bg-white rounded-[2.5rem] p-8 shadow-2xl shadow-slate-200 border border-slate-100 text-center relative overflow-hidden"
+                        className="max-w-md w-full bg-white rounded-[2rem] p-6 shadow-2xl shadow-slate-200 border border-slate-100 text-center relative overflow-hidden"
                     >
-                        <div className="mb-8 flex justify-center">
-                            <motion.div 
-                                initial={{ scale: 0.5, opacity: 0 }}
-                                animate={{ scale: 1, opacity: 1 }}
-                                transition={{ type: "spring", damping: 12 }}
-                                className="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center shadow-lg shadow-emerald-100/50"
-                            >
-                                <Check size={40} strokeWidth={3} />
-                            </motion.div>
+                        {/* Meatyns Brand Logo */}
+                        <div className="flex justify-center mb-3">
+                            <img src="/meatyns_logo.png" alt="Meatyns" className="h-7 object-contain" />
                         </div>
-                        <h1 className="text-2xl font-normal font-anton tracking-wide text-slate-800 mb-2 uppercase">Order Confirmed!</h1>
-                        <p className="text-emerald-600 text-sm font-black mb-6 uppercase tracking-wider">Payment Successful</p>
-                        <div className="bg-slate-50 rounded-2xl p-4 mb-8 border border-slate-100">
-                            <div className="flex justify-between items-center mb-2">
+
+                        {/* Official Meatyns Chef Mascot Illustration */}
+                        <div className="flex justify-center mb-3">
+                            <motion.img 
+                                initial={{ scale: 0.8, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                transition={{ type: "spring", damping: 14 }}
+                                src="/mascot/chef_mascot.png" 
+                                alt="Meatyns Chef Mascot" 
+                                className="h-36 w-auto object-contain drop-shadow-[0_8px_16px_rgba(0,0,0,0.15)]"
+                            />
+                        </div>
+
+                        <div className="mb-1.5 flex items-center justify-center gap-2">
+                            <span className="w-6 h-6 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center shrink-0">
+                                <Check size={16} strokeWidth={3} />
+                            </span>
+                            <h1 className="text-xl font-normal font-anton tracking-wide text-slate-800 uppercase">Order Confirmed!</h1>
+                        </div>
+                        <p className="text-slate-500 text-xs font-semibold mb-4">Your fresh meat is on its way!</p>
+
+                        <div className="bg-slate-50 rounded-2xl p-4 mb-5 border border-slate-100 text-left">
+                            <div className="flex justify-between items-center mb-1">
                                 <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Order ID</span>
-                                <span className="text-xs font-black text-slate-700">#{merchantOrderId?.slice(-8).toUpperCase()}</span>
+                                <span className="text-xs font-black text-slate-800">#{merchantOrderId?.slice(-8).toUpperCase()}</span>
+                            </div>
+                            <div className="flex justify-between items-center text-[11px] text-slate-500 mb-2">
+                                <span>Placed just now</span>
+                                <span className="text-emerald-600 font-bold">Payment Verified</span>
                             </div>
                             <div className="h-px bg-slate-200 my-2" />
-                            <p className="text-[11px] text-slate-500 font-medium">Redirecting to your order details in 4 seconds...</p>
+                            <p className="text-[10.5px] text-slate-400 font-medium">Redirecting to your order details in a few seconds...</p>
                         </div>
                         <Button 
                             onClick={() => navigate(`/orders/${targetId || ''}`)}
-                            className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold h-12 rounded-xl flex items-center justify-center gap-2"
+                            className="w-full bg-[#C81017] hover:bg-[#A30D13] text-white font-bold h-11 rounded-xl flex items-center justify-center gap-2 text-xs uppercase tracking-wider shadow-sm"
                         >
-                            Go to My Orders <ArrowRight size={18} />
+                            View Order Details <ArrowRight size={16} />
                         </Button>
                     </motion.div>
                 </div>

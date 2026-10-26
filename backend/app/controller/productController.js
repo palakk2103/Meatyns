@@ -335,6 +335,10 @@ export const getProducts = async (req, res) => {
       sort,
       lat,
       lng,
+      cutType,
+      boneType,
+      skinType,
+      freshness,
     } = req.query;
     const enforceRadius = isCustomerVisibilityRequest(req);
 
@@ -380,7 +384,10 @@ export const getProducts = async (req, res) => {
           : nearbySellerIds;
 
         if (finalSellerIds.length > 0) {
-          query.sellerId = finalSellerIds.length === 1 ? finalSellerIds[0] : { $in: finalSellerIds };
+          query.sellerId =
+            finalSellerIds.length === 1
+              ? finalSellerIds[0]
+              : { $in: finalSellerIds };
         } else {
           // Requested seller is outside service radius
           query.sellerId = { $in: [] };
@@ -415,6 +422,54 @@ export const getProducts = async (req, res) => {
     }
 
     if (featured !== undefined) query.isFeatured = featured === "true";
+
+    if (cutType && typeof cutType === "string" && cutType !== "all") {
+      const cuts = cutType
+        .split(",")
+        .map((c) => c.trim().toLowerCase())
+        .filter(Boolean);
+      if (cuts.length === 1) {
+        query.cutType = cuts[0];
+      } else if (cuts.length > 1) {
+        query.cutType = { $in: cuts };
+      }
+    }
+
+    if (boneType && typeof boneType === "string" && boneType !== "all") {
+      const bones = boneType
+        .split(",")
+        .map((b) => b.trim().toLowerCase())
+        .filter(Boolean);
+      if (bones.length === 1) {
+        query.boneType = bones[0];
+      } else if (bones.length > 1) {
+        query.boneType = { $in: bones };
+      }
+    }
+
+    if (skinType && typeof skinType === "string" && skinType !== "all") {
+      const skins = skinType
+        .split(",")
+        .map((s) => s.trim().toLowerCase())
+        .filter(Boolean);
+      if (skins.length === 1) {
+        query.skinType = skins[0];
+      } else if (skins.length > 1) {
+        query.skinType = { $in: skins };
+      }
+    }
+
+    if (freshness && typeof freshness === "string" && freshness !== "all") {
+      const f = freshness
+        .split(",")
+        .map((item) => item.trim().toLowerCase())
+        .filter(Boolean);
+      if (f.length === 1) {
+        query.freshness = f[0];
+      } else if (f.length > 1) {
+        query.freshness = { $in: f };
+      }
+    }
 
     let finalQuery = { ...query };
     if (enforceRadius) {
@@ -453,7 +508,7 @@ export const getProducts = async (req, res) => {
       const [rawProducts, total] = await Promise.all([
         Product.find(finalQuery)
           .select(
-            "name slug metaTitle metaDescription seoKeywords description sku price salePrice stock brand weight mainImage galleryImages headerId categoryId subcategoryId sellerId status approvalStatus approvalRequestedAt approvalReviewedAt approvalReviewedBy approvalNote lastSubmittedByRole isFeatured variants createdAt",
+            "name slug metaTitle metaDescription seoKeywords description sku price salePrice stock brand weight mainImage galleryImages headerId categoryId subcategoryId sellerId status approvalStatus approvalRequestedAt approvalReviewedAt approvalReviewedBy approvalNote lastSubmittedByRole isFeatured variants createdAt cutType boneType skinType freshness unit unitValue orderIncrement minOrderQty maxOrderQty isScheduled scheduleDays availableFromTime availableToTime tieredPricing",
           )
           // No .populate() — names resolved via cache-backed entityNameCache
           .sort(sortQuery)

@@ -220,6 +220,16 @@ const DesktopHomeContent = ({ products = [], categories = [], heroConfig }) => {
                 </span>
               </div>
 
+              {/* Official Meatyns Chef Mascot */}
+              <div className="absolute right-4 sm:right-10 lg:right-16 bottom-0 top-4 z-10 hidden sm:flex items-end justify-center pointer-events-none">
+                <img
+                  src="/mascot/chef_mascot.png"
+                  alt="Meatyns Chef Mascot"
+                  className="h-[88%] lg:h-[94%] max-w-[220px] lg:max-w-[270px] object-contain drop-shadow-[0_12px_24px_rgba(0,0,0,0.22)] group-hover:scale-105 transition-transform duration-500"
+                  loading="eager"
+                />
+              </div>
+
               {/* Hero Left Content */}
               <div className="relative z-10 max-w-sm sm:max-w-md lg:max-w-lg flex flex-col items-start gap-2">
                 {/* Tagline Pill */}

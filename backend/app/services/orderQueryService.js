@@ -9,6 +9,8 @@ import {
 } from "../utils/orderLookup.js";
 import { buildKey, getOrSet, getTTL } from "./cacheService.js";
 import { resolveWorkflowStatus } from "./orderWorkflowService.js";
+import mongoose from "mongoose";
+import { escapeRegex } from "../utils/regex.js";
 import logger from "./logger.js";
 
 function svcErr(message, statusCode) {
@@ -461,37 +463,91 @@ export async function getOrderWithAccess(orderId, userId, role) {
     .lean();
 
   if (!order) {
-    if (orderId && orderId.startsWith("CHK-")) {
-      const group = await CheckoutGroup.findOne({
-        checkoutGroupId: orderId,
-      }).lean();
-      if (group) {
-        return {
-          isGroupSummary: true,
-          payload: {
-            orderId: group.checkoutGroupId,
-            status: group.status?.toLowerCase() || "pending",
-            orderStatus: group.status?.toLowerCase() || "pending",
-            paymentStatus:
-              group.paymentStatus === "CAPTURED"
-                ? "PAID"
-                : group.paymentStatus || "CREATED",
-            workflowStatus: group.status || "CREATED",
-            pricing: {
-              subtotal: group.pricingSummary?.subtotal || 0,
-              deliveryFee: group.pricingSummary?.deliveryFee || 0,
-              platformFee: group.pricingSummary?.platformFee || 0,
-              total: group.pricingSummary?.totalAmount || 0,
-            },
-            address: group.addressSnapshot || {},
-            items: [],
-            createdAt: group.createdAt,
-            isGroupSummary: true,
-            isFragmented: true,
-          },
-        };
-      }
+    const rawId = decodeURIComponent(String(orderId ?? "")).trim();
+    const groupQuery = {
+      $or: [
+        { checkoutGroupId: rawId },
+        { checkoutGroupId: new RegExp(`^${escapeRegex(rawId)}$`, "i") },
+        { publicOrderIds: rawId },
+        { publicOrderIds: new RegExp(`^${escapeRegex(rawId)}$`, "i") },
+        { "sellerBreakdown.publicOrderId": rawId },
+        { "sellerBreakdown.publicOrderId": new RegExp(`^${escapeRegex(rawId)}$`, "i") },
+      ],
+    };
+    if (rawId.length === 24 && mongoose.Types.ObjectId.isValid(rawId)) {
+      groupQuery.$or.push({ orderIds: new mongoose.Types.ObjectId(rawId) });
+      groupQuery.$or.push({ "sellerBreakdown.order": new mongoose.Types.ObjectId(rawId) });
     }
+
+    const group = await CheckoutGroup.findOne(groupQuery).lean();
+    if (group) {
+      const matchedBreakdown = group.sellerBreakdown?.find(
+        (b) =>
+          b.publicOrderId === rawId ||
+          (b.order && String(b.order) === rawId) ||
+          (b.publicOrderId && String(b.publicOrderId).toLowerCase() === rawId.toLowerCase())
+      ) || group.sellerBreakdown?.[0];
+
+      const publicOrderId =
+        matchedBreakdown?.publicOrderId ||
+        group.publicOrderIds?.[0] ||
+        (rawId.startsWith("ORD-") ? rawId : group.checkoutGroupId);
+
+      const items = (group.pricingSummary?.lineItems || []).map((li) => ({
+        product: {
+          _id: li.productId,
+          name: li.productName,
+          mainImage: li.image || "",
+          price: li.unitPrice || 0,
+        },
+        name: li.productName,
+        quantity: li.quantity || 1,
+        price: li.unitPrice || 0,
+        image: li.image || "",
+      }));
+
+      let custData = group.customer;
+      if (custData && (typeof custData === "string" || mongoose.Types.ObjectId.isValid(custData))) {
+        try {
+          const uDoc = await mongoose.model("User").findById(custData).select("name email phone").lean();
+          if (uDoc) custData = uDoc;
+        } catch (_) {}
+      }
+
+      order = {
+        _id: matchedBreakdown?.order || group._id,
+        orderId: publicOrderId,
+        checkoutGroupId: group.checkoutGroupId,
+        customer: custData,
+        seller: matchedBreakdown?.seller || group.pricingSummary?.snapshots?.perSeller?.[0]?.sellerId,
+        items,
+        address: group.addressSnapshot || {},
+        deliveryAddress: group.addressSnapshot || {},
+        paymentMode: group.paymentMode || "COD",
+        paymentStatus: group.paymentStatus === "CAPTURED" ? "PAID" : (group.paymentStatus || "CREATED"),
+        status: group.status === "CANCELLED" ? "cancelled" : (group.status?.toLowerCase() || "pending"),
+        orderStatus: group.status === "CANCELLED" ? "cancelled" : (group.status?.toLowerCase() || "pending"),
+        workflowStatus: group.status === "CANCELLED" ? "CANCELLED" : (group.status || "CREATED"),
+        deliveryMethod: group.deliveryMethod || "NORMAL",
+        scheduledDate: group.scheduledDate || null,
+        scheduledStartTime: group.scheduledStartTime || null,
+        scheduledEndTime: group.scheduledEndTime || null,
+        timeSlot: group.metadata?.timeSlot || (group.scheduledStartTime && group.scheduledEndTime ? `${group.scheduledStartTime} - ${group.scheduledEndTime}` : "now"),
+        pricing: {
+          subtotal: Number(matchedBreakdown?.subtotal ?? group.pricingSummary?.productSubtotal ?? 0),
+          deliveryFee: Number(group.pricingSummary?.deliveryFeeCharged ?? 0),
+          platformFee: Number(group.pricingSummary?.handlingFeeCharged ?? 0),
+          total: Number(matchedBreakdown?.grandTotal ?? group.pricingSummary?.grandTotal ?? 0),
+          discount: Number(group.pricingSummary?.discountTotal ?? 0),
+          tip: Number(group.pricingSummary?.tipTotal ?? 0),
+        },
+        createdAt: group.createdAt,
+        isGroupSummary: true,
+      };
+    }
+  }
+
+  if (!order) {
     throw svcErr("Order not found", 404);
   }
 
@@ -581,7 +637,7 @@ export async function getOrderWithAccess(orderId, userId, role) {
   }
 
   return {
-    isGroupSummary: false,
+    isGroupSummary: Boolean(order.isGroupSummary),
     payload: order,
   };
 }

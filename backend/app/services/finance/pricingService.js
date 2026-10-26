@@ -53,6 +53,46 @@ function normalizeLinePrice(value) {
   return Number.isFinite(amount) ? clampMoney(amount, 0) : 0;
 }
 
+export function resolveTieredUnitPrice(baseUnitPrice, tiers, quantity) {
+  const normBase = normalizeLinePrice(baseUnitPrice);
+  const q = Number(quantity || 0);
+  if (!Array.isArray(tiers) || tiers.length === 0 || q <= 0) {
+    return { unitPrice: normBase, appliedTier: null };
+  }
+
+  const eligible = tiers
+    .filter((t) => t && Number(t.minQty) > 0 && Number(t.minQty) <= q)
+    .sort((a, b) => Number(b.minQty) - Number(a.minQty));
+
+  if (eligible.length === 0) {
+    return { unitPrice: normBase, appliedTier: null };
+  }
+
+  const bestTier = eligible[0];
+  let tieredPrice = normBase;
+
+  const fixedUnitPrice = Number(bestTier.fixedUnitPrice || 0);
+  const discountPct = Number(bestTier.discountPercentage || 0);
+
+  if (fixedUnitPrice > 0) {
+    tieredPrice = normalizeLinePrice(fixedUnitPrice);
+  } else if (discountPct > 0) {
+    const clampedPct = Math.min(Math.max(discountPct, 0), 100);
+    tieredPrice = roundCurrency(normBase * (1 - clampedPct / 100));
+  }
+
+  tieredPrice = clampMoney(tieredPrice, 0, normBase);
+
+  return {
+    unitPrice: tieredPrice,
+    appliedTier: {
+      minQty: Number(bestTier.minQty),
+      discountPercentage: discountPct,
+      fixedUnitPrice,
+    },
+  };
+}
+
 function resolveCommissionConfig(category) {
   if (!category) {
     return {
@@ -232,58 +272,107 @@ export function calculateHandlingFee(cartItems, options = {}) {
   };
 }
 
-export function calculateCustomerDeliveryFee(distanceKm, deliverySettings) {
+export function calculateCustomerDeliveryFee(distanceKm, deliverySettings, options = {}) {
+  const deliveryMethod = typeof options === "string" ? options : (options?.deliveryMethod || "NORMAL");
+  const zone = typeof options === "object" ? options?.zone : null;
   const mode =
-    deliverySettings.deliveryPricingMode || DELIVERY_PRICING_MODE.DISTANCE_BASED;
+    deliverySettings?.deliveryPricingMode || DELIVERY_PRICING_MODE.DISTANCE_BASED;
   const actualDistance = Number(distanceKm || 0);
   const normalizedDistance = Number.isFinite(actualDistance)
     ? Math.max(actualDistance, 0)
     : 0;
 
-  if (mode === DELIVERY_PRICING_MODE.FIXED_PRICE) {
-    const fixedFee = roundCurrency(
-      deliverySettings.fixedDeliveryFee ?? deliverySettings.customerBaseDeliveryFee ?? 0,
-    );
-    return {
-      deliveryFeeCharged: fixedFee,
-      distanceKmActual: normalizedDistance,
-      distanceKmRounded: roundCurrency(normalizedDistance),
-      roundedExtraKm: 0,
-      mode,
-      baseFee: fixedFee,
-      extraFee: 0,
-    };
+  const deliveryConfig = deliverySettings?.deliveryConfig || {};
+  const expressConfig = deliveryConfig?.express || {};
+  const normalConfig = deliveryConfig?.normal || {};
+  const advanceConfig = deliveryConfig?.advance || {};
+
+  let baseFee = 0;
+  let extraFee = 0;
+  let roundedExtraKm = 0;
+  let distanceKmRounded = normalizedDistance;
+
+  // Zone delivery fee override (TASK-P1.4 / DEL-002)
+  const hasZoneFeeOverride = zone?.deliveryFee != null && Number.isFinite(Number(zone.deliveryFee));
+
+  if (hasZoneFeeOverride) {
+    baseFee = roundCurrency(Number(zone.deliveryFee));
+    extraFee = 0;
+    distanceKmRounded = roundCurrency(normalizedDistance);
+  } else if (mode === DELIVERY_PRICING_MODE.FIXED_PRICE) {
+    const configuredFixed = normalConfig?.deliveryFee != null && Number.isFinite(Number(normalConfig.deliveryFee))
+      ? Number(normalConfig.deliveryFee)
+      : (deliverySettings?.fixedDeliveryFee ?? deliverySettings?.customerBaseDeliveryFee ?? 0);
+    baseFee = roundCurrency(configuredFixed);
+    distanceKmRounded = roundCurrency(normalizedDistance);
+  } else {
+    const configuredBase = normalConfig?.deliveryFee != null && Number.isFinite(Number(normalConfig.deliveryFee))
+      ? Number(normalConfig.deliveryFee)
+      : (deliverySettings?.customerBaseDeliveryFee ?? 0);
+    baseFee = roundCurrency(configuredBase);
+    const baseDistance = Math.max(Number(deliverySettings?.baseDistanceCapacityKm || 0), 0);
+    const surcharge = roundCurrency(deliverySettings?.incrementalKmSurcharge ?? 0);
+
+    if (normalizedDistance <= baseDistance) {
+      distanceKmRounded = roundCurrency(baseDistance);
+    } else {
+      const extraKm = normalizedDistance - baseDistance;
+      roundedExtraKm = ceilKm(extraKm);
+      extraFee = roundCurrency(roundedExtraKm * surcharge);
+      distanceKmRounded = roundCurrency(baseDistance + roundedExtraKm);
+    }
   }
 
-  const baseFee = roundCurrency(deliverySettings.customerBaseDeliveryFee ?? 0);
-  const baseDistance = Math.max(Number(deliverySettings.baseDistanceCapacityKm || 0), 0);
-  const surcharge = roundCurrency(deliverySettings.incrementalKmSurcharge ?? 0);
+  const standardNormalFee = addMoney(baseFee, extraFee);
+  let methodSurcharge = 0;
+  let expressSurcharge = 0;
+  let advanceBookingFee = 0;
+  let finalDeliveryFee = standardNormalFee;
 
-  if (normalizedDistance <= baseDistance) {
-    return {
-      deliveryFeeCharged: baseFee,
-      distanceKmActual: normalizedDistance,
-      distanceKmRounded: roundCurrency(baseDistance),
-      roundedExtraKm: 0,
-      mode,
-      baseFee,
-      extraFee: 0,
-    };
+  if (deliveryMethod === "EXPRESS") {
+    expressSurcharge = roundCurrency(Number(expressConfig?.surcharge ?? 40));
+    methodSurcharge = expressSurcharge;
+    finalDeliveryFee = addMoney(standardNormalFee, expressSurcharge);
+  } else if (deliveryMethod === "SCHEDULED") {
+    if (advanceConfig?.deliveryFee != null && Number.isFinite(Number(advanceConfig.deliveryFee))) {
+      advanceBookingFee = roundCurrency(Number(advanceConfig.deliveryFee));
+      finalDeliveryFee = advanceBookingFee;
+    } else {
+      finalDeliveryFee = standardNormalFee;
+    }
   }
 
-  const extraKm = normalizedDistance - baseDistance;
-  const roundedExtraKm = ceilKm(extraKm);
-  const extraFee = roundCurrency(roundedExtraKm * surcharge);
-  const total = addMoney(baseFee, extraFee);
+  // Zone surcharge (if zone has a peak or locality surcharge)
+  const zoneSurcharge = Number(zone?.surcharge || 0);
+  if (zoneSurcharge > 0) {
+    finalDeliveryFee = addMoney(finalDeliveryFee, zoneSurcharge);
+  }
 
   return {
-    deliveryFeeCharged: total,
+    deliveryFeeCharged: finalDeliveryFee,
     distanceKmActual: normalizedDistance,
-    distanceKmRounded: roundCurrency(baseDistance + roundedExtraKm),
+    distanceKmRounded,
     roundedExtraKm,
     mode,
     baseFee,
     extraFee,
+    standardNormalFee,
+    deliveryMethod,
+    expressSurcharge,
+    advanceBookingFee,
+    methodSurcharge,
+    zoneFeeOverride: hasZoneFeeOverride ? Number(zone.deliveryFee) : null,
+    zoneSurcharge,
+    matchedZoneId: zone?._id || null,
+    matchedZoneName: zone?.name || null,
+    breakdown: {
+      standardNormalFee,
+      expressSurcharge,
+      advanceBookingFee,
+      finalDeliveryFee,
+      zoneFeeOverride: hasZoneFeeOverride ? Number(zone.deliveryFee) : null,
+      zoneSurcharge,
+    },
   };
 }
 
@@ -337,7 +426,7 @@ export async function hydrateOrderItems(
 
   const productQuery = Product.find({ _id: { $in: productIds } })
     .select(
-      "_id name salePrice price mainImage headerId categoryId subcategoryId sellerId status approvalStatus variants unit unitValue orderIncrement minOrderQty maxOrderQty isScheduled scheduleDays availableFromTime availableToTime scheduleStartDate scheduleEndDate"
+      "_id name salePrice price mainImage headerId categoryId subcategoryId sellerId status approvalStatus variants unit unitValue orderIncrement minOrderQty maxOrderQty isScheduled scheduleDays availableFromTime availableToTime scheduleStartDate scheduleEndDate tieredPricing"
     )
     .lean();
   if (session) productQuery.session(session);
@@ -473,12 +562,24 @@ export async function hydrateOrderItems(
     const standardUnitPrice = normalizeLinePrice(
       salePrice > 0 && salePrice < price ? salePrice : price
     );
-    let serverUnitPrice = standardUnitPrice;
+
+    const candidateTiers =
+      Array.isArray(resolvedVariant?.tieredPricing) && resolvedVariant.tieredPricing.length > 0
+        ? resolvedVariant.tieredPricing
+        : (Array.isArray(product.tieredPricing) ? product.tieredPricing : []);
+
+    const { unitPrice: tieredUnitPrice, appliedTier } = resolveTieredUnitPrice(
+      standardUnitPrice,
+      candidateTiers,
+      quantity
+    );
+
+    let serverUnitPrice = tieredUnitPrice;
     const activeDealItem = dealProductMap.get(productId);
     if (
       activeDealItem &&
       Number(activeDealItem.flashPrice) > 0 &&
-      Number(activeDealItem.flashPrice) < serverUnitPrice
+      Number(activeDealItem.flashPrice) < standardUnitPrice
     ) {
       serverUnitPrice = normalizeLinePrice(activeDealItem.flashPrice);
     }
@@ -508,6 +609,8 @@ export async function hydrateOrderItems(
       variantName: resolvedVariant ? String(resolvedVariant?.name || "").trim() : "",
       unit: product.unit || "pack",
       unitValue: product.unitValue || 1,
+      appliedTier: appliedTier || null,
+      basePrice: standardUnitPrice,
     };
   });
 }
@@ -529,8 +632,10 @@ export async function generateOrderPaymentBreakdown({
   // legacy pre-wallet value so existing flows are bit-for-bit unchanged.
   walletAmount = 0,
   deliverySettings,
+  deliveryMethod = "NORMAL",
   handlingFeeStrategy,
   session = null,
+  zone = null,
 }) {
   const normalizedItems = Array.isArray(preHydratedItems) && preHydratedItems.length > 0
     ? preHydratedItems
@@ -602,7 +707,7 @@ export async function generateOrderPaymentBreakdown({
     handlingFeeStrategy: effectiveHandlingStrategy,
     categoryById,
   });
-  const delivery = calculateCustomerDeliveryFee(distanceKm, effectiveSettings);
+  const delivery = calculateCustomerDeliveryFee(distanceKm, effectiveSettings, { deliveryMethod, zone });
   const rider = calculateRiderPayout(distanceKm, effectiveSettings);
 
   const normalizedDiscount = roundCurrency(discountTotal || 0);
@@ -664,6 +769,8 @@ export async function generateOrderPaymentBreakdown({
     })),
     handlingFeeStrategy: effectiveHandlingStrategy,
     handlingCategoryUsed: handling.handlingCategoryUsed,
+    deliveryMethod,
+    deliveryFeeBreakdown: delivery.breakdown || {},
   };
 
   return {

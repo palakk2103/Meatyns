@@ -16,6 +16,7 @@ import {
 import { computeOrderDiscount } from "./finance/couponService.js";
 import { getOrCreateFinanceSettings } from "./finance/financeSettingsService.js";
 import { validateCustomerDealLimit } from "./flashDealService.js";
+import { resolveDeliveryZoneForLocation } from "./deliveryZoneService.js";
 
 function normalizeLocation(location = null) {
   const lat = Number(location?.lat);
@@ -64,10 +65,20 @@ async function computeDistanceKmForSeller({ sellerId, addressLocation, session =
   }
 
   const normalizedLocation = normalizeLocation(addressLocation);
-  if (!normalizedLocation) return 0;
+  if (!normalizedLocation) return { distanceKm: 0, zone: null };
+
+  // Validate polygon delivery zone serviceability
+  const zoneResolution = await resolveDeliveryZoneForLocation(normalizedLocation);
+  if (!zoneResolution.isServiceable) {
+    const err = new Error(
+      zoneResolution.reason || "Delivery is not available at your location. Address is outside all active delivery zones."
+    );
+    err.statusCode = 400;
+    throw err;
+  }
 
   const coords = seller?.location?.coordinates;
-  if (!Array.isArray(coords) || coords.length < 2) return 0;
+  if (!Array.isArray(coords) || coords.length < 2) return { distanceKm: 0, zone: zoneResolution.zone };
 
   const [sellerLng, sellerLat] = coords;
   const distanceInMeters = distanceMeters(
@@ -78,16 +89,18 @@ async function computeDistanceKmForSeller({ sellerId, addressLocation, session =
   );
   const distanceKm = Number((distanceInMeters / 1000).toFixed(3));
 
-  const radius = Number(seller.serviceRadius || 5);
-  if (distanceKm > radius) {
-    const err = new Error(
-      `${seller.shopName || "Store"} does not deliver to your current location (Distance: ${distanceKm}km, Service Radius: ${radius}km)`,
-    );
-    err.statusCode = 400;
-    throw err;
+  if (zoneResolution.fallbackToRadius) {
+    const radius = Number(seller.serviceRadius || 5);
+    if (distanceKm > radius) {
+      const err = new Error(
+        `${seller.shopName || "Store"} does not deliver to your current location (Distance: ${distanceKm}km, Service Radius: ${radius}km)`,
+      );
+      err.statusCode = 400;
+      throw err;
+    }
   }
 
-  return distanceKm;
+  return { distanceKm, zone: zoneResolution.zone };
 }
 
 function sumField(rows, field) {
@@ -309,24 +322,38 @@ export function applyFreeDeliveryToSellerBreakdowns(sellerBreakdownEntries = [])
       breakdown.snapshots.freeDeliveryRebate = 0;
       continue;
     }
-    breakdown.deliveryFeeCharged = 0;
-    breakdown.grossTotal = round2(Number(breakdown.grossTotal || 0) - oldDeliveryFee);
-    breakdown.grandTotal = round2(Number(breakdown.grandTotal || 0) - oldDeliveryFee);
+
+    const expressSurcharge = round2(
+      Number(
+        breakdown.snapshots?.deliveryFeeBreakdown?.expressSurcharge ||
+        breakdown.expressSurcharge ||
+        0
+      )
+    );
+
+    // If customer selected EXPRESS, free delivery waives the base standard fee,
+    // but the extra express surcharge remains payable by the customer!
+    const isExpress = breakdown.deliveryMethod === "EXPRESS" || expressSurcharge > 0;
+    const remainingCharge = isExpress ? expressSurcharge : 0;
+    const rebateAmount = round2(Math.max(0, oldDeliveryFee - remainingCharge));
+
+    breakdown.deliveryFeeCharged = remainingCharge;
+    breakdown.grossTotal = round2(Number(breakdown.grossTotal || 0) - rebateAmount);
+    breakdown.grandTotal = round2(Number(breakdown.grandTotal || 0) - rebateAmount);
     breakdown.payableAmount = breakdown.grandTotal;
+
     const handlingFeeCharged = Number(breakdown.handlingFeeCharged || 0);
     const riderPayoutTotal = Number(breakdown.riderPayoutTotal || 0);
     const adminProductCommissionTotal = Number(breakdown.adminProductCommissionTotal || 0);
-    // Platform now collects only the handling fee against the rider
-    // payout — typically a loss, which is the campaign cost we want to
-    // attribute to the free-delivery coupon for finance reconciliation.
-    breakdown.platformLogisticsMargin = round2(handlingFeeCharged - riderPayoutTotal);
+    // Platform absorbs the rebate on the base delivery fee
+    breakdown.platformLogisticsMargin = round2(handlingFeeCharged + remainingCharge - riderPayoutTotal);
     breakdown.platformTotalEarning = round2(
       adminProductCommissionTotal + breakdown.platformLogisticsMargin,
     );
     breakdown.snapshots = breakdown.snapshots && typeof breakdown.snapshots === "object"
       ? breakdown.snapshots
       : {};
-    breakdown.snapshots.freeDeliveryRebate = oldDeliveryFee;
+    breakdown.snapshots.freeDeliveryRebate = rebateAmount;
   }
 }
 
@@ -402,6 +429,7 @@ export async function buildCheckoutPricingSnapshot({
   couponCode = null,
   couponId = null,
   customerId = null,
+  deliveryMethod = "NORMAL",
   session = null,
 }) {
   const hydratedItems = await hydrateOrderItems(orderItems, {
@@ -482,11 +510,22 @@ export async function buildCheckoutPricingSnapshot({
 
   for (const sellerId of sellerIds) {
     const sellerItems = itemsBySeller.get(sellerId) || [];
-    const distanceKm = await computeDistanceKmForSeller({
+    const distanceResult = await computeDistanceKmForSeller({
       sellerId,
       addressLocation: address?.location,
       session,
     });
+    const distanceKm = typeof distanceResult === "number" ? distanceResult : distanceResult.distanceKm;
+    const zone = typeof distanceResult === "object" ? distanceResult.zone : null;
+
+    if (zone?.minOrderValue != null && totalSubtotal < Number(zone.minOrderValue)) {
+      const err = new Error(
+        `Minimum order value for ${zone.name} is ₹${zone.minOrderValue}. Please add more items to proceed.`
+      );
+      err.statusCode = 400;
+      throw err;
+    }
+
     // Distribute discount proportionally by seller subtotal
     const sellerRatio = totalSubtotal > 0 ? (sellerSubtotals.get(sellerId) || 0) / totalSubtotal : 1 / sellerIds.length;
     const sellerDiscount = round2(effectiveDiscount * sellerRatio);
@@ -499,11 +538,15 @@ export async function buildCheckoutPricingSnapshot({
       distanceKm,
       discountTotal: sellerDiscount,
       taxTotal: 0,
+      deliveryMethod,
+      deliverySettings: financeSettings,
       session,
+      zone,
     });
     sellerBreakdownEntries.push({
       sellerId,
       distanceKm,
+      zone: zone ? { id: zone._id, name: zone.name, priority: zone.priority } : null,
       items: sellerItems,
       breakdown: {
         ...breakdown,
@@ -547,6 +590,7 @@ export async function buildCheckoutPricingSnapshot({
   aggregateBreakdown.freeDeliveryThreshold = financeSettings.freeDeliveryThreshold;
   aggregateBreakdown.minimumOrderValue = financeSettings.minimumOrderValue;
   aggregateBreakdown.isFreeDeliveryApplied = Boolean(applyFreeDelivery || qualifiesForPlatformFreeDelivery);
+  aggregateBreakdown.deliveryMethod = deliveryMethod;
 
   return {
     hydratedItems,

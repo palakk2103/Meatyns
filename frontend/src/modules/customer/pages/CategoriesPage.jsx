@@ -334,6 +334,47 @@ const CategoriesPage = () => {
             </span>
           </div>
 
+          {/* Branded Meatyns Category Mascot Banner (matching mockup screen 3) */}
+          <div className="relative w-full rounded-2xl md:rounded-3xl overflow-hidden mt-4 mb-3 shadow-xs border border-red-900/15 bg-gradient-to-r from-[#8B0000] via-[#C81017] to-[#7A0000] text-white">
+            <div className="relative z-10 px-4 py-4 sm:px-7 sm:py-5 flex items-center justify-between min-h-[135px] sm:min-h-[155px]">
+              {/* Left: Chef Mascot */}
+              <div className="w-24 sm:w-32 h-28 sm:h-36 shrink-0 flex items-end justify-center pointer-events-none -mb-2">
+                <img
+                  src="/mascot/chef_mascot.png"
+                  alt="Meatyns Chef Mascot"
+                  className="max-h-full max-w-full object-contain drop-shadow-[0_8px_16px_rgba(0,0,0,0.3)]"
+                  loading="eager"
+                />
+              </div>
+
+              {/* Center / Right Content */}
+              <div className="flex-1 pl-3 sm:pl-6 max-w-md">
+                <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-wider text-[#111111] bg-[#FAB82C] px-2.5 py-0.5 rounded-full shadow-2xs">
+                  PREMIUM QUALITY
+                </span>
+                <h2 className="text-xl sm:text-2xl lg:text-3xl font-normal font-anton uppercase tracking-wide leading-tight mt-1 text-white drop-shadow-sm">
+                  Fresh Meat Everyday!
+                </h2>
+                <p className="text-[11px] sm:text-xs text-red-100 font-medium mt-0.5 line-clamp-1">
+                  100% farm-fresh, tender cuts delivered hygienically.
+                </p>
+                <div className="pt-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const el = document.getElementById("categories-grid-start");
+                      el?.scrollIntoView({ behavior: "smooth" });
+                    }}
+                    className="inline-flex items-center gap-1.5 px-3.5 py-1 sm:px-4 sm:py-1.5 rounded-full bg-[#FAB82C] hover:bg-[#F2B022] text-[#111111] text-[10px] sm:text-[11px] font-black uppercase tracking-wide transition-all active:scale-95 shadow-xs cursor-pointer border-0"
+                  >
+                    <span>Explore Cuts</span>
+                    <ArrowRight size={13} className="stroke-[3]" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* Group Filter Tabs */}
           {groups.length > 1 && (
             <div className="flex items-center gap-2 overflow-x-auto no-scrollbar mt-3.5 pt-1 pb-1">

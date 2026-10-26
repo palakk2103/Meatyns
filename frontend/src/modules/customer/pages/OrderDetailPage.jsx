@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import InvoiceModal from "../components/order/InvoiceModal";
@@ -32,6 +32,9 @@ import {
   Check,
   Zap,
   CalendarDays,
+  RotateCcw,
+  AlertCircle,
+  Heart,
 } from "lucide-react";
 import { customerApi } from "../services/customerApi";
 import { toast } from "sonner";
@@ -160,6 +163,7 @@ const OrderDetailPage = () => {
   const [trail, setTrail] = useState([]);
   const [routePolyline, setRoutePolyline] = useState(null);
   const [handoffOtp, setHandoffOtp] = useState(null);
+  const [reordering, setReordering] = useState(false);
   const [clockTick, setClockTick] = useState(Date.now());
   const parsedReturnWindowMinutes = parseInt(
     import.meta.env.VITE_RETURN_WINDOW_MINUTES || "2",
@@ -211,6 +215,33 @@ const OrderDetailPage = () => {
     window.scrollTo(0, 0);
   }, []);
 
+  const fetchOrderDetails = useCallback(async () => {
+    if (!orderId || orderId === "undefined" || orderId === "null") return;
+    try {
+      refreshRef.current.inFlight = true;
+      const response = await customerApi.getOrderDetails(orderId);
+      const ord = response.data.result;
+      setOrder(ord);
+
+      try {
+        const retRes = await customerApi.getReturnDetails(resolveOrderLookupId(ord));
+        const ret = retRes.data.result;
+        setReturnDetails(ret);
+        if (ret?.returnPickupOtp) {
+          setHandoffOtp(ret.returnPickupOtp);
+        }
+      } catch {
+        setReturnDetails(null);
+      }
+    } catch (error) {
+      console.error("Failed to fetch order details:", error);
+      toast.error("Failed to load order details");
+    } finally {
+      refreshRef.current.inFlight = false;
+      setLoading(false);
+    }
+  }, [orderId]);
+
   useEffect(() => {
     const isInvalid = !orderId || orderId === "undefined" || orderId === "null";
     if (isInvalid) {
@@ -219,36 +250,8 @@ const OrderDetailPage = () => {
       return;
     }
 
-    const fetchOrderDetails = async () => {
-      try {
-        refreshRef.current.inFlight = true;
-        const response = await customerApi.getOrderDetails(orderId);
-        const ord = response.data.result;
-        setOrder(ord);
-
-        try {
-          const retRes = await customerApi.getReturnDetails(resolveOrderLookupId(ord));
-          const ret = retRes.data.result;
-          setReturnDetails(ret);
-          if (ret?.returnPickupOtp) {
-            setHandoffOtp(ret.returnPickupOtp);
-          }
-        } catch {
-          setReturnDetails(null);
-        }
-      } catch (error) {
-        console.error("Failed to fetch order details:", error);
-        toast.error("Failed to load order details");
-      } finally {
-        refreshRef.current.inFlight = false;
-        setLoading(false);
-      }
-    };
-
-    if (orderId) {
-      fetchOrderDetails();
-    }
-  }, [orderId]);
+    fetchOrderDetails();
+  }, [orderId, fetchOrderDetails, navigate]);
 
   useEffect(() => {
     if (!orderId) return undefined;
@@ -647,7 +650,7 @@ const OrderDetailPage = () => {
       if (next[index]) {
         delete next[index];
       } else {
-        next[index] = { quantity: order.items[index].quantity };
+        next[index] = { quantity: order.items?.[index]?.quantity || 1 };
       }
       return next;
     });
@@ -837,6 +840,21 @@ const OrderDetailPage = () => {
     }
   };
 
+  const handleReorder = async () => {
+    if (!order) return;
+    setReordering(true);
+    try {
+      const res = await customerApi.reorderOrder(order.orderId || order._id);
+      const data = res?.data?.result || res?.data?.data || {};
+      toast.success(data.summaryMessage || "Items reordered to your cart!");
+      navigate("/cart");
+    } catch (err) {
+      toast.error(err?.response?.data?.message || "Failed to reorder items");
+    } finally {
+      setReordering(false);
+    }
+  };
+
   if (!order) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-slate-50 to-white">
@@ -864,9 +882,17 @@ const OrderDetailPage = () => {
           </button>
           <div className="flex-1 text-center">
             <h1 className="text-base font-normal font-anton tracking-wide text-slate-800 uppercase">Order</h1>
-            <p className="text-xs text-slate-500 font-medium">#{order.orderId.slice(-8)}</p>
+            <p className="text-xs text-slate-500 font-medium">#{order?.orderId ? (order.orderId.length > 8 ? order.orderId.slice(-8) : order.orderId) : (order?._id ? String(order._id).slice(-8) : String(orderId || "").slice(-8))}</p>
           </div>
-          <div className="w-10" />
+          <button
+            type="button"
+            onClick={handleReorder}
+            disabled={reordering}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#FDCE04] text-[#1A1A1A] text-xs font-bold shadow-sm active:scale-95 transition-all disabled:opacity-50"
+          >
+            {reordering ? <Loader2 size={13} className="animate-spin" /> : <RotateCcw size={13} />}
+            <span>Reorder</span>
+          </button>
         </div>
 
         <div className="max-w-2xl mx-auto px-4 py-4 space-y-4">
@@ -968,7 +994,7 @@ const OrderDetailPage = () => {
                 sellerLocation={sellerLocation}
                 destinationLocation={
                   order.address?.location?.lat
-                    ? order.address.location
+                    ? order.address?.location
                     : activeRoutePolyline?.destination || null
                 }
                 routePhase={routePhase}
@@ -1061,6 +1087,76 @@ const OrderDetailPage = () => {
             </div>
           </motion.div>
 
+          {/* Delivery Method & Slot Card */}
+          {order.deliveryMethod && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.18 }}
+              className={`rounded-3xl p-5 shadow-sm border ${
+                order.deliveryMethod === "EXPRESS"
+                  ? "bg-amber-500/10 border-amber-300 text-amber-950"
+                  : order.deliveryMethod === "SCHEDULED"
+                  ? "bg-emerald-50 border-emerald-200 text-emerald-950"
+                  : "bg-blue-50 border-blue-200 text-blue-950"
+              }`}
+            >
+              <div className="flex items-start gap-4">
+                <div
+                  className={`h-12 w-12 rounded-2xl flex items-center justify-center flex-shrink-0 font-bold ${
+                    order.deliveryMethod === "EXPRESS"
+                      ? "bg-[#FDCE04] text-[#1A1A1A]"
+                      : order.deliveryMethod === "SCHEDULED"
+                      ? "bg-emerald-600 text-white"
+                      : "bg-blue-600 text-white"
+                  }`}
+                >
+                  {order.deliveryMethod === "EXPRESS" ? (
+                    <Zap size={22} strokeWidth={2.4} />
+                  ) : order.deliveryMethod === "SCHEDULED" ? (
+                    <CalendarDays size={22} strokeWidth={2.4} />
+                  ) : (
+                    <Clock size={22} strokeWidth={2.4} />
+                  )}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1">
+                    <p className="text-xs font-bold uppercase tracking-wider">
+                      {order.deliveryMethod === "EXPRESS"
+                        ? "Express Delivery"
+                        : order.deliveryMethod === "SCHEDULED"
+                        ? "Scheduled Booking"
+                        : "Standard Delivery"}
+                    </p>
+                    <span
+                      className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase ${
+                        order.deliveryMethod === "EXPRESS"
+                          ? "bg-amber-200 text-amber-900 border border-amber-300"
+                          : order.deliveryMethod === "SCHEDULED"
+                          ? "bg-emerald-200 text-emerald-900 border border-emerald-300"
+                          : "bg-blue-200 text-blue-900 border border-blue-300"
+                      }`}
+                    >
+                      {order.deliveryMethod}
+                    </span>
+                  </div>
+                  <h4 className="font-bold text-slate-900 text-base mb-1">
+                    {order.deliveryMethod === "SCHEDULED"
+                      ? `Slot: ${order.timeSlot || "Scheduled Slot"}`
+                      : order.deliveryMethod === "EXPRESS"
+                      ? `Priority Dispatch (ETA: ${order.timeSlot || "15–30 mins"})`
+                      : `Standard SLA: ${order.timeSlot || "1–2 hours"}`}
+                  </h4>
+                  {order.scheduledDate && (
+                    <p className="text-sm text-slate-600 font-medium">
+                      Scheduled Date: {order.scheduledDate}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          )}
+
           {/* Delivery Address Card - Redesigned */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -1076,12 +1172,12 @@ const OrderDetailPage = () => {
                 <div className="flex items-center gap-2 mb-1">
                   <p className="text-xs font-bold text-brand-600 uppercase tracking-wider">Delivery Address</p>
                   <span className="bg-brand-50 text-brand-700 text-[10px] px-2 py-0.5 rounded-full font-bold">
-                    {order.address.type}
+                    {order.address?.type || "Delivery"}
                   </span>
                 </div>
-                <h4 className="font-bold text-slate-900 text-base mb-1">{order.address.name}</h4>
+                <h4 className="font-bold text-slate-900 text-base mb-1">{order.address?.name || "Customer"}</h4>
                 <p className="text-sm text-slate-500 leading-relaxed">
-                  {order.address.address}, {order.address.city}
+                  {order.address?.address ? `${order.address.address}${order.address.city ? `, ${order.address.city}` : ""}` : (order.address?.fullAddress || order.address?.city || "Address not available")}
                 </p>
                 {order.address?.location &&
                   typeof order.address.location.lat === "number" &&
@@ -1091,13 +1187,59 @@ const OrderDetailPage = () => {
                       Precise location confirmed
                     </p>
                   )}
-                <p className="text-sm text-slate-800 font-semibold mt-3 flex items-center gap-2">
-                  <Phone size={14} className="text-slate-400" />
-                  {order.address.phone}
-                </p>
+                {order.address?.phone && (
+                  <p className="text-sm text-slate-800 font-semibold mt-3 flex items-center gap-2">
+                    <Phone size={14} className="text-slate-400" />
+                    {order.address.phone}
+                  </p>
+                )}
               </div>
             </div>
           </motion.div>
+
+          {/* Branded Meatyns Chef Delivery Banner (matching mockup screen 7) */}
+          <div className="rounded-2xl sm:rounded-3xl p-4 sm:p-5 bg-gradient-to-r from-[#FFF5ED] via-[#FFF1E8] to-[#FFEFE6] border border-[#FCD9C8] flex items-center gap-3.5 sm:gap-4 shadow-xs">
+            <div className="w-16 sm:w-20 h-16 sm:h-20 shrink-0 flex items-center justify-center">
+              <img
+                src="/mascot/chef_mascot.png"
+                alt="Meatyns Chef Mascot"
+                className="max-h-full max-w-full object-contain drop-shadow-[0_4px_10px_rgba(0,0,0,0.12)]"
+                loading="lazy"
+              />
+            </div>
+            <div className="min-w-0">
+              <h4 className="font-anton uppercase tracking-wide text-base sm:text-lg text-slate-900 leading-tight flex items-center gap-1.5">
+                Fresh Meat on the way! <Heart size={15} className="fill-[#C81017] text-[#C81017] inline-block shrink-0" />
+              </h4>
+              <p className="text-[11.5px] sm:text-xs text-slate-600 font-medium mt-0.5 leading-snug">
+                100% fresh &amp; hygienic cuts packed with love from Meatyns kitchen.
+              </p>
+            </div>
+          </div>
+
+          {/* Partial Fulfillment Notice */}
+          {order.partialFulfillment?.hasUnavailableItems && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.22 }}
+              className="bg-amber-50/90 rounded-3xl p-5 shadow-sm border border-amber-200/80 mb-4 text-left"
+            >
+              <div className="flex items-start gap-3">
+                <AlertCircle className="h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5" />
+                <div>
+                  <h4 className="font-bold text-amber-950 text-sm">Partial Order Fulfillment Update</h4>
+                  <p className="text-xs text-amber-800 mt-1 leading-relaxed">
+                    One or more items in your order were unavailable and could not be packed.
+                    {order.partialFulfillment.refundTotal > 0 && (
+                      <span className="font-semibold"> A refund of ₹{order.partialFulfillment.refundTotal} has been credited to your {order.paymentMode === 'ONLINE' ? 'original payment method' : (order.paymentMode === 'WALLET' ? 'wallet' : 'COD invoice deduction')}.</span>
+                    )}
+                    {" "}The remaining available items are being fulfilled and will be delivered shortly!
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          )}
 
           {/* Order Items Summary */}
           <motion.div
@@ -1110,20 +1252,54 @@ const OrderDetailPage = () => {
               <h4 className="font-bold text-slate-900 text-base">Order Items ({order.items?.length || 0})</h4>
             </div>
             <div className="space-y-3">
-              {order.items?.map((item, idx) => (
-                <div key={idx} className="flex items-center justify-between text-sm py-1 border-b border-slate-50 last:border-0">
-                  <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-xl bg-slate-50 overflow-hidden flex-shrink-0">
-                      <img src={applyCloudinaryTransform(item.image)} alt={item.name} className="h-full w-full object-cover" />
+              {order.items?.map((item, idx) => {
+                const isUnavailable = item.status === 'UNAVAILABLE';
+                return (
+                  <div key={idx} className={`flex items-center justify-between text-sm py-2 border-b border-slate-50 last:border-0 ${isUnavailable ? 'opacity-80' : ''}`}>
+                    <div className="flex items-center gap-3">
+                      <div className="h-10 w-10 rounded-xl bg-slate-50 overflow-hidden flex-shrink-0 relative">
+                        <img src={applyCloudinaryTransform(item.image)} alt={item.name} className={`h-full w-full object-cover ${isUnavailable ? 'grayscale opacity-60' : ''}`} />
+                        {isUnavailable && (
+                          <div className="absolute inset-0 bg-rose-950/20 flex items-center justify-center">
+                            <span className="text-[8px] font-black uppercase text-white bg-rose-600 px-1 rounded">OOS</span>
+                          </div>
+                        )}
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <p className={`font-bold text-xs ${isUnavailable ? 'line-through text-slate-400' : 'text-slate-800'}`}>{item.name}</p>
+                          {isUnavailable && (
+                            <span className="bg-rose-50 text-rose-600 text-[9px] font-bold px-1.5 py-0.5 rounded border border-rose-100">
+                              Out of Stock
+                            </span>
+                          )}
+                        </div>
+                        <div className="flex items-center gap-2 mt-0.5">
+                          <p className="text-[10px] text-slate-400 font-medium">Qty: {item.quantity}</p>
+                          {isUnavailable && item.refundStatus === 'COMPLETED' && (
+                            <span className="text-[9px] text-emerald-600 font-semibold">
+                              • Refunded ₹{item.refundAmount || 0}
+                            </span>
+                          )}
+                          {isUnavailable && item.refundStatus === 'PENDING' && (
+                            <span className="text-[9px] text-amber-600 font-semibold">
+                              • Refund Pending ₹{item.refundAmount || 0}
+                            </span>
+                          )}
+                        </div>
+                      </div>
                     </div>
-                    <div>
-                      <p className="font-bold text-slate-800 text-xs">{item.name}</p>
-                      <p className="text-[10px] text-slate-400 font-medium">Qty: {item.quantity}</p>
+                    <div className="text-right">
+                      <span className={`font-bold text-xs ${isUnavailable ? 'line-through text-slate-400' : 'text-slate-900'}`}>₹{item.price * item.quantity}</span>
+                      {isUnavailable && item.refundAmount > 0 && (
+                        <div className="text-[10px] font-bold text-emerald-600">
+                          -₹{item.refundAmount}
+                        </div>
+                      )}
                     </div>
                   </div>
-                  <span className="font-bold text-slate-900 text-xs">₹{item.price * item.quantity}</span>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </motion.div>
 
@@ -1317,6 +1493,33 @@ const OrderDetailPage = () => {
                     : "Standard"}
                 </span>
               </div>
+
+              {/* Live Tracking Map (Desktop) */}
+              {!isAwaitingOnlinePayment && status !== "delivered" && status !== "cancelled" && (
+                <div className="rounded-2xl overflow-hidden shadow-xs border border-[#ede5df] bg-white">
+                  <LiveTrackingMap
+                    status={order.workflowStatus || order.status}
+                    eta={estimatedArrival.arrivingInText}
+                    riderName={order.deliveryBoy?.name || "Delivery Partner"}
+                    riderLocation={liveLocation}
+                    sellerLocation={sellerLocation}
+                    destinationLocation={
+                      order.address?.location?.lat
+                        ? order.address?.location
+                        : activeRoutePolyline?.destination || null
+                    }
+                    routePhase={routePhase}
+                    routePolyline={activeRoutePolyline}
+                    onOpenInMaps={handleOpenInMaps}
+                  />
+                </div>
+              )}
+
+              {/* Delivery OTP Display (Desktop) */}
+              <DeliveryOtpDisplay
+                orderId={order?.orderId || orderId}
+                checkoutGroupId={order?.checkoutGroupId || orderId}
+              />
 
               {/* Vertical Step Tracker Card */}
               <div className="bg-white rounded-2xl p-8 border border-[#ede5df] shadow-xs space-y-8">
@@ -1581,6 +1784,26 @@ const OrderDetailPage = () => {
                   <p className="text-[11px] text-slate-600">We ensure your order is fresh and safe</p>
                 </div>
               </div>
+
+              {/* Branded Meatyns Chef Mascot Card (Desktop) */}
+              <div className="rounded-2xl p-4 bg-gradient-to-r from-[#FFF5ED] via-[#FFF1E8] to-[#FFEFE6] border border-[#FCD9C8] flex items-center gap-3.5 shadow-xs">
+                <div className="w-14 h-14 shrink-0 flex items-center justify-center">
+                  <img
+                    src="/mascot/chef_mascot.png"
+                    alt="Meatyns Chef Mascot"
+                    className="max-h-full max-w-full object-contain drop-shadow-[0_4px_10px_rgba(0,0,0,0.12)]"
+                    loading="lazy"
+                  />
+                </div>
+                <div className="min-w-0">
+                  <h4 className="font-anton uppercase tracking-wide text-sm font-normal text-slate-900 leading-tight flex items-center gap-1">
+                    Fresh Meat on the way! <Heart size={13} className="fill-[#C81017] text-[#C81017] inline-block shrink-0" />
+                  </h4>
+                  <p className="text-[11px] text-slate-600 font-medium mt-0.5">
+                    100% fresh, chemical-free &amp; hygienically packed.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -1615,7 +1838,7 @@ const OrderDetailPage = () => {
               Select the items you want to return and tell us why.
             </p>
             <div className="max-h-48 overflow-y-auto space-y-3">
-              {order.items.map((item, idx) => {
+              {(order.items || []).map((item, idx) => {
                 const checked = !!selectedReturnItems[idx];
                 return (
                   <label

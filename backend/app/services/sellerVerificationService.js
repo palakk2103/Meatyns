@@ -35,12 +35,19 @@ const OTP_VERIFY_LIMIT_PER_WINDOW = () =>
 const OTP_LENGTH = () => 4;
 
 function verificationSecret() {
-  return (
+  const secret =
     process.env.SELLER_VERIFICATION_SECRET ||
     process.env.OTP_HASH_SECRET ||
-    process.env.JWT_SECRET ||
-    "unsafe-dev-secret"
-  );
+    process.env.JWT_SECRET;
+  if (!secret) {
+    if (process.env.NODE_ENV === "production") {
+      throw new Error(
+        "SELLER_VERIFICATION_SECRET, OTP_HASH_SECRET, or JWT_SECRET must be configured in production"
+      );
+    }
+    return "unsafe-dev-secret";
+  }
+  return secret;
 }
 
 function randomOtp(length) {
@@ -50,6 +57,9 @@ function randomOtp(length) {
 }
 
 function isMockOtpEnabled() {
+  if (process.env.NODE_ENV === "production") {
+    return false;
+  }
   return (
     process.env.USE_MOCK_OTP === "true" ||
     process.env.USE_MOCK_OTP === "1"
@@ -61,15 +71,14 @@ function generateSellerOtp(channel) {
     return MOCK_OTP;
   }
 
-  const production = process.env.NODE_ENV === "production";
   const useRealDelivery =
     channel === "email" ? useRealEmailOTP() : useRealSMS();
 
-  if (production && !useRealDelivery) {
-    return MOCK_OTP;
+  if (process.env.NODE_ENV === "production" || useRealDelivery) {
+    return randomOtp(OTP_LENGTH());
   }
 
-  return useRealDelivery ? randomOtp(OTP_LENGTH()) : MOCK_OTP;
+  return MOCK_OTP;
 }
 
 function hashOtp(channel, target, otp) {

@@ -1285,13 +1285,18 @@ const Auth = () => {
                       {isLogin ? "Register Store" : "Log In"}
                     </button>
                   </p>
-                  <div className="mt-2 text-center">
+                  <div className="mt-2 text-center space-y-1">
                     <p className="text-[11px] text-stone-400 font-normal">
                       By continuing, you agree to our{" "}
-                      <Link to="/terms" className="text-stone-600 hover:text-stone-900 underline transition-colors">Terms & Conditions</Link>
+                      <Link to="/terms" className="text-stone-600 hover:text-stone-900 underline transition-colors">Terms &amp; Conditions</Link>
                       {" "}and{" "}
-                      <Link to="/privacy" className="text-stone-600 hover:text-stone-900 underline transition-colors">Privacy Policy</Link>.
+                      <Link to="/seller/privacy" className="text-stone-600 hover:text-stone-900 underline transition-colors">Seller Privacy Policy</Link>.
                     </p>
+                    <div>
+                      <Link to="/seller/support" className="text-xs text-[#621320] font-bold hover:underline inline-flex items-center gap-1">
+                        Need Help? Merchant Support Desk
+                      </Link>
+                    </div>
                   </div>
                 </div>
               )}

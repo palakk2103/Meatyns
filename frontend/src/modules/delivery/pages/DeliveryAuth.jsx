@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import {
   Phone,
   ArrowRight,
@@ -1050,10 +1050,15 @@ const DeliveryAuth = () => {
                       {/* Legal Agreement Footer for Login */}
                       <p className="text-center text-xs text-gray-400 font-semibold pt-4">
                         By logging in, you agree to our{" "}
-                        <a href="/terms?from=delivery" target="_blank" rel="opener" className="text-brand-500 font-bold cursor-pointer hover:underline">Terms &amp; Conditions</a>{" "}
+                        <Link to="/terms?from=delivery" className="text-brand-500 font-bold cursor-pointer hover:underline">Terms &amp; Conditions</Link>{" "}
                         &amp;{" "}
-                        <a href="/privacy?from=delivery" target="_blank" rel="opener" className="text-brand-500 font-bold cursor-pointer hover:underline">Privacy Policy</a>
+                        <Link to="/delivery/privacy" className="text-brand-500 font-bold cursor-pointer hover:underline">Privacy Policy</Link>
                       </p>
+                      <div className="text-center pt-2">
+                        <Link to="/delivery/support" className="text-[11px] text-brand-600 font-bold hover:underline inline-flex items-center gap-1">
+                          Need Help? Partner Support Desk
+                        </Link>
+                      </div>
                     </div>
                   )}
                 </motion.div>
@@ -1118,8 +1123,8 @@ const DeliveryAuth = () => {
                     />
                     <label htmlFor="terms" className="text-xs text-gray-500 leading-relaxed cursor-pointer select-none">
                       I confirm my phone number is correct and I agree to the{" "}
-                      <a href="/terms?from=delivery" target="_blank" rel="opener" onClick={(e) => e.stopPropagation()} className="text-brand-600 font-bold hover:underline cursor-pointer">Terms &amp; Conditions</a> &amp;{" "}
-                      <a href="/privacy?from=delivery" target="_blank" rel="opener" onClick={(e) => e.stopPropagation()} className="text-brand-600 font-bold hover:underline cursor-pointer">Privacy Policy</a>.
+                      <Link to="/terms?from=delivery" onClick={(e) => e.stopPropagation()} className="text-brand-600 font-bold hover:underline cursor-pointer">Terms &amp; Conditions</Link> &amp;{" "}
+                      <Link to="/delivery/privacy" onClick={(e) => e.stopPropagation()} className="text-brand-600 font-bold hover:underline cursor-pointer">Privacy Policy</Link>.
                     </label>
                   </div>
 

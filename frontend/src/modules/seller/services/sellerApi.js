@@ -27,6 +27,7 @@ export const sellerApi = {
     getWalletSummary: () => axiosInstance.get('/seller/wallet/summary'),
     getProfile: () => axiosInstance.get('/seller/profile'),
     updateProfile: (data) => axiosInstance.put('/seller/profile', data),
+    deleteAccount: () => axiosInstance.delete('/seller/profile'),
     toggleStoreStatus: (data) => axiosInstance.patch('/seller/store-status', data),
     updateStoreHours: (data) => axiosInstance.put('/seller/store-hours', data),
 
@@ -50,4 +51,12 @@ export const sellerApi = {
     approveReturn: (orderId, data) => axiosInstance.put(`/orders/returns/${orderId}/approve`, data),
     rejectReturn: (orderId, data) => axiosInstance.put(`/orders/returns/${orderId}/reject`, data),
     assignReturnDelivery: (orderId, data) => axiosInstance.put(`/orders/returns/${orderId}/assign-delivery`, data),
+
+    // Partial Fulfillment & Item Refunds (ORD-005)
+    getOrderItemRefundPreview: (orderId, itemIndex) =>
+        axiosInstance.get(`/orders/${orderId}/items/${itemIndex}/refund-preview`),
+    markOrderItemUnavailable: (orderId, itemIndex, data) =>
+        axiosInstance.post(`/orders/${orderId}/items/${itemIndex}/unavailable`, data),
+    retryOrderItemRefund: (orderId, itemIndex) =>
+        axiosInstance.post(`/orders/${orderId}/items/${itemIndex}/retry-refund`),
 };

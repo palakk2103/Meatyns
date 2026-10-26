@@ -236,6 +236,16 @@ const OrderHistory = () => {
                               }`}>
                             {displayOrderStatus(order)}
                           </span>
+                          {order.deliveryMethod === "EXPRESS" && (
+                            <span className="text-[10px] font-extrabold px-1.5 py-0.5 rounded bg-amber-100 text-amber-900 border border-amber-300">
+                              ⚡ Express
+                            </span>
+                          )}
+                          {order.deliveryMethod === "SCHEDULED" && (
+                            <span className="text-[10px] font-extrabold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-900 border border-emerald-300">
+                              📅 Scheduled
+                            </span>
+                          )}
                         </div>
                         <div className="flex items-center text-gray-400 text-xs">
                           <Calendar size={12} className="mr-1" />

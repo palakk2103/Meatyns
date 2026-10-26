@@ -5,6 +5,43 @@ import {
 } from "../../constants/finance.js";
 import { roundCurrency } from "../../utils/money.js";
 
+export const DEFAULT_DELIVERY_CONFIG = Object.freeze({
+  express: {
+    enabled: true,
+    surcharge: 40,
+    estimatedMinMinutes: 15,
+    estimatedMaxMinutes: 30,
+    operatingHoursOnly: true,
+  },
+  normal: {
+    enabled: true,
+    deliveryFee: null,
+    estimatedLabel: "1–2 hours",
+    minMinutes: 60,
+    maxMinutes: 120,
+  },
+  advance: {
+    enabled: true,
+    deliveryFee: null,
+    maxAdvanceDays: 7,
+    slotDurationMinutes: 60,
+    maxOrdersPerSlot: 10,
+    minAdvanceMinutes: 60,
+    openTime: "09:00",
+    closeTime: "21:00",
+    operatingDays: [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ],
+  },
+  slotOverrides: [],
+});
+
 const DEFAULT_FINANCE_SETTINGS = {
   deliveryPricingMode: DELIVERY_PRICING_MODE.DISTANCE_BASED,
   customerBaseDeliveryFee: 30,
@@ -18,6 +55,7 @@ const DEFAULT_FINANCE_SETTINGS = {
   handlingFeeStrategy: HANDLING_FEE_STRATEGY.HIGHEST_CATEGORY_FEE,
   codEnabled: true,
   onlineEnabled: true,
+  deliveryConfig: DEFAULT_DELIVERY_CONFIG,
 };
 
 export function normalizeFinanceSettings(raw = {}) {
@@ -63,6 +101,66 @@ export function normalizeFinanceSettings(raw = {}) {
   const handlingFeeStrategy =
     raw.handlingFeeStrategy || DEFAULT_FINANCE_SETTINGS.handlingFeeStrategy;
 
+  const rawDeliveryConfig = raw.deliveryConfig || {};
+  const rawExpress = rawDeliveryConfig.express || {};
+  const rawNormal = rawDeliveryConfig.normal || {};
+  const rawAdvance = rawDeliveryConfig.advance || {};
+
+  const deliveryConfig = {
+    express: {
+      enabled: rawExpress.enabled !== undefined ? Boolean(rawExpress.enabled) : DEFAULT_DELIVERY_CONFIG.express.enabled,
+      surcharge: roundCurrency(rawExpress.surcharge ?? DEFAULT_DELIVERY_CONFIG.express.surcharge),
+      estimatedMinMinutes: Number.isFinite(Number(rawExpress.estimatedMinMinutes))
+        ? Math.max(1, Number(rawExpress.estimatedMinMinutes))
+        : DEFAULT_DELIVERY_CONFIG.express.estimatedMinMinutes,
+      estimatedMaxMinutes: Number.isFinite(Number(rawExpress.estimatedMaxMinutes))
+        ? Math.max(1, Number(rawExpress.estimatedMaxMinutes))
+        : DEFAULT_DELIVERY_CONFIG.express.estimatedMaxMinutes,
+      operatingHoursOnly: rawExpress.operatingHoursOnly !== undefined
+        ? Boolean(rawExpress.operatingHoursOnly)
+        : DEFAULT_DELIVERY_CONFIG.express.operatingHoursOnly,
+    },
+    normal: {
+      enabled: rawNormal.enabled !== undefined ? Boolean(rawNormal.enabled) : DEFAULT_DELIVERY_CONFIG.normal.enabled,
+      deliveryFee: rawNormal.deliveryFee != null && Number.isFinite(Number(rawNormal.deliveryFee))
+        ? roundCurrency(Number(rawNormal.deliveryFee))
+        : null,
+      estimatedLabel: String(rawNormal.estimatedLabel || DEFAULT_DELIVERY_CONFIG.normal.estimatedLabel),
+      minMinutes: Number.isFinite(Number(rawNormal.minMinutes))
+        ? Math.max(1, Number(rawNormal.minMinutes))
+        : DEFAULT_DELIVERY_CONFIG.normal.minMinutes,
+      maxMinutes: Number.isFinite(Number(rawNormal.maxMinutes))
+        ? Math.max(1, Number(rawNormal.maxMinutes))
+        : DEFAULT_DELIVERY_CONFIG.normal.maxMinutes,
+    },
+    advance: {
+      enabled: rawAdvance.enabled !== undefined ? Boolean(rawAdvance.enabled) : DEFAULT_DELIVERY_CONFIG.advance.enabled,
+      deliveryFee: rawAdvance.deliveryFee != null && Number.isFinite(Number(rawAdvance.deliveryFee))
+        ? roundCurrency(Number(rawAdvance.deliveryFee))
+        : null,
+      maxAdvanceDays: Number.isFinite(Number(rawAdvance.maxAdvanceDays))
+        ? Math.min(30, Math.max(1, Number(rawAdvance.maxAdvanceDays)))
+        : DEFAULT_DELIVERY_CONFIG.advance.maxAdvanceDays,
+      slotDurationMinutes: Number.isFinite(Number(rawAdvance.slotDurationMinutes))
+        ? Math.min(240, Math.max(15, Number(rawAdvance.slotDurationMinutes)))
+        : DEFAULT_DELIVERY_CONFIG.advance.slotDurationMinutes,
+      maxOrdersPerSlot: Number.isFinite(Number(rawAdvance.maxOrdersPerSlot))
+        ? Math.max(1, Number(rawAdvance.maxOrdersPerSlot))
+        : DEFAULT_DELIVERY_CONFIG.advance.maxOrdersPerSlot,
+      minAdvanceMinutes: Number.isFinite(Number(rawAdvance.minAdvanceMinutes))
+        ? Math.max(0, Number(rawAdvance.minAdvanceMinutes))
+        : DEFAULT_DELIVERY_CONFIG.advance.minAdvanceMinutes,
+      openTime: String(rawAdvance.openTime || DEFAULT_DELIVERY_CONFIG.advance.openTime),
+      closeTime: String(rawAdvance.closeTime || DEFAULT_DELIVERY_CONFIG.advance.closeTime),
+      operatingDays: Array.isArray(rawAdvance.operatingDays) && rawAdvance.operatingDays.length > 0
+        ? rawAdvance.operatingDays
+        : DEFAULT_DELIVERY_CONFIG.advance.operatingDays,
+    },
+    slotOverrides: Array.isArray(rawDeliveryConfig.slotOverrides)
+      ? rawDeliveryConfig.slotOverrides
+      : [],
+  };
+
   return {
     deliveryPricingMode,
     pricingMode: deliveryPricingMode,
@@ -85,6 +183,7 @@ export function normalizeFinanceSettings(raw = {}) {
     handlingFeeStrategy,
     codEnabled: raw.codEnabled ?? DEFAULT_FINANCE_SETTINGS.codEnabled,
     onlineEnabled: raw.onlineEnabled ?? DEFAULT_FINANCE_SETTINGS.onlineEnabled,
+    deliveryConfig,
   };
 }
 
@@ -109,7 +208,34 @@ export async function getOrCreateFinanceSettings({ session } = {}) {
 }
 
 export async function updateDeliveryFinanceSettings(payload, { session } = {}) {
-  const normalized = normalizeFinanceSettings(payload || {});
+  const existing = await Setting.findOne({}, null, session ? { session } : {});
+  const existingObj = existing?.toObject ? existing.toObject() : (existing || {});
+
+  const merged = {
+    ...existingObj,
+    ...(payload || {}),
+    deliveryConfig: {
+      ...(existingObj.deliveryConfig || {}),
+      ...(payload?.deliveryConfig || {}),
+      express: {
+        ...(existingObj.deliveryConfig?.express || {}),
+        ...(payload?.deliveryConfig?.express || {}),
+      },
+      normal: {
+        ...(existingObj.deliveryConfig?.normal || {}),
+        ...(payload?.deliveryConfig?.normal || {}),
+      },
+      advance: {
+        ...(existingObj.deliveryConfig?.advance || {}),
+        ...(payload?.deliveryConfig?.advance || {}),
+      },
+      slotOverrides: payload?.deliveryConfig?.slotOverrides !== undefined
+        ? payload.deliveryConfig.slotOverrides
+        : (existingObj.deliveryConfig?.slotOverrides || []),
+    },
+  };
+
+  const normalized = normalizeFinanceSettings(merged);
   const query = {};
   const options = { upsert: true, new: true };
   if (session) options.session = session;

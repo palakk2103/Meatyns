@@ -19,11 +19,15 @@ import orderAlertSound from '@/assets/sounds/order_alert.mp3';
 
 const POLL_INTERVAL_MS = 15000;
 
-/** Match server `sellerPendingExpiresAt` — never reset to a full 60s when the modal opens late. */
+/** Match server `sellerPendingExpiresAt` — never reset to a full window when the modal opens late. */
 function secondsLeftUntilSellerExpiry(order) {
     if (!order) return 0;
     const raw = order.sellerPendingExpiresAt ?? order.expiresAt;
-    if (!raw) return 60;
+    if (!raw) {
+        return order.sellerAcceptanceTimeoutMs
+            ? Math.round(order.sellerAcceptanceTimeoutMs / 1000)
+            : 60;
+    }
     const ms = new Date(raw).getTime() - Date.now();
     return Math.max(0, Math.ceil(ms / 1000));
 }
@@ -325,7 +329,7 @@ const DashboardLayout = ({ children, navItems, title }) => {
         setIsSidebarOpen(false);
     }, [location.pathname]);
 
-    // Timer: driven by server expiry (sellerPendingExpiresAt), not a local 60s from modal open
+    // Timer: driven by server expiry (sellerPendingExpiresAt), not a local static countdown
     useEffect(() => {
         if (!newOrderAlert) return undefined;
 
@@ -336,7 +340,12 @@ const DashboardLayout = ({ children, navItems, title }) => {
             return undefined;
         }
 
-        acceptWindowTotalRef.current = left;
+        const totalWindow = newOrderAlert.sellerAcceptanceTimeoutMs
+            ? Math.round(newOrderAlert.sellerAcceptanceTimeoutMs / 1000)
+            : (newOrderAlert.sellerPendingExpiresAt && newOrderAlert.createdAt
+                ? Math.max(left, Math.round((new Date(newOrderAlert.sellerPendingExpiresAt).getTime() - new Date(newOrderAlert.createdAt).getTime()) / 1000))
+                : Math.max(left, 60));
+        acceptWindowTotalRef.current = totalWindow > 0 ? totalWindow : Math.max(left, 60);
         setTimeLeft(left);
 
         const timer = setInterval(() => {
@@ -460,7 +469,7 @@ const DashboardLayout = ({ children, navItems, title }) => {
                                 <div className="flex items-center gap-4 text-sm font-bold mb-8">
                                     <Clock className={cn("h-4 w-4", timeLeft < 15 ? "text-rose-500 animate-pulse" : "text-slate-600")} />
                                     <span className={timeLeft < 15 ? "text-rose-500" : "text-slate-600"}>
-                                        Accept within {timeLeft} {timeLeft === 1 ? "second" : "seconds"}
+                                        Accept within {timeLeft >= 60 ? `${Math.floor(timeLeft / 60)}m ${timeLeft % 60}s` : `${timeLeft}s`}
                                     </span>
                                 </div>
 

@@ -57,6 +57,11 @@ import { computeReturnWindowForOrder } from "../utils/returnWindow.js";
 import logger from "../services/logger.js";
 import { validateBody as validateWithJoi } from "../middleware/validate.js";
 import OrderReturnService from "../services/order/orderReturnService.js";
+import {
+  calculateItemRefundPreview,
+  markOrderItemUnavailable,
+  retryOrderItemRefund,
+} from "../services/partialOrderFulfillmentService.js";
 
 function normalizePaymentMode(value) {
   const raw = String(value || "").trim().toUpperCase();
@@ -1487,5 +1492,102 @@ export const uploadReturnPickupProof = async (req, res) => {
     });
   } catch (error) {
     return handleResponse(res, 500, error.message);
+  }
+};
+
+/**
+ * GET /api/orders/:orderId/items/:itemIndex/refund-preview
+ * Previews itemized refund calculation for an order item before action.
+ */
+export const getOrderItemRefundPreview = async (req, res) => {
+  try {
+    const { orderId, itemIndex } = req.params;
+    const { id: userId, role } = req.user;
+
+    const orderKey = orderMatchQueryFromRouteParam(orderId);
+    if (!orderKey) return handleResponse(res, 404, "Order not found");
+
+    const order = await Order.findOne(orderKey);
+    if (!order) return handleResponse(res, 404, "Order not found");
+
+    if (role === "seller" && order.seller?.toString() !== userId) {
+      return handleResponse(res, 403, "Access denied. Not authorized for this order.");
+    }
+    if (role !== "admin" && role !== "seller") {
+      return handleResponse(res, 403, "Access denied.");
+    }
+
+    const idx = parseInt(itemIndex, 10);
+    if (isNaN(idx)) {
+      return handleResponse(res, 400, "Invalid itemIndex parameter.");
+    }
+
+    const preview = calculateItemRefundPreview(order, idx);
+    return handleResponse(res, 200, "Refund preview generated successfully", preview);
+  } catch (error) {
+    return handleResponse(res, error.statusCode || 500, error.message);
+  }
+};
+
+/**
+ * POST /api/orders/:orderId/items/:itemIndex/unavailable
+ * Marks an individual item unavailable, releases inventory, and issues eligible refund.
+ */
+export const markOrderItemUnavailableController = async (req, res) => {
+  try {
+    const { orderId, itemIndex } = req.params;
+    const { reason } = req.body || {};
+    const { id: userId, role } = req.user;
+
+    const idx = parseInt(itemIndex, 10);
+    if (isNaN(idx)) {
+      return handleResponse(res, 400, "Invalid itemIndex parameter.");
+    }
+
+    const result = await markOrderItemUnavailable({
+      orderId,
+      itemIndex: idx,
+      reason,
+      actorId: userId,
+      actorRole: role,
+    });
+
+    return handleResponse(
+      res,
+      200,
+      result.isOrderFullyCancelled
+        ? "All items unavailable; order cancelled and refunded."
+        : "Item marked unavailable and refund processed successfully.",
+      result,
+    );
+  } catch (error) {
+    return handleResponse(res, error.statusCode || 500, error.message);
+  }
+};
+
+/**
+ * POST /api/orders/:orderId/items/:itemIndex/retry-refund
+ * Admin-only: Retries a failed gateway refund for an unavailable item.
+ */
+export const retryOrderItemRefundController = async (req, res) => {
+  try {
+    const { orderId, itemIndex } = req.params;
+    const { id: userId, role } = req.user;
+
+    const idx = parseInt(itemIndex, 10);
+    if (isNaN(idx)) {
+      return handleResponse(res, 400, "Invalid itemIndex parameter.");
+    }
+
+    const result = await retryOrderItemRefund({
+      orderId,
+      itemIndex: idx,
+      actorId: userId,
+      actorRole: role,
+    });
+
+    return handleResponse(res, 200, "Refund retry processed successfully.", result);
+  } catch (error) {
+    return handleResponse(res, error.statusCode || 500, error.message);
   }
 };

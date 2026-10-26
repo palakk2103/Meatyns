@@ -3,7 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import {
     User, MapPin, Package, CreditCard, Wallet, ChevronRight,
     LogOut, ShieldCheck, Heart, HelpCircle, Info, Edit2, ChevronLeft, Bell,
-    ScrollText, RotateCcw, Truck, Coins, Sparkles, Store, Phone, Mail, Clock, Award
+    ScrollText, RotateCcw, Truck, Coins, Sparkles, Store, Phone, Mail, Clock, Award,
+    Calendar, Gift, UtensilsCrossed, Boxes, Trash2, AlertTriangle, Loader2
 } from 'lucide-react';
 import { useAuth } from '@core/context/AuthContext';
 import { useSettings } from '@core/context/SettingsContext';
@@ -24,6 +25,23 @@ const ProfilePage = () => {
     const { settings } = useSettings();
     const appName = settings?.appName || 'App';
     const [isTestingPush, setIsTestingPush] = React.useState(false);
+    const [showDeleteModal, setShowDeleteModal] = React.useState(false);
+    const [isDeleting, setIsDeleting] = React.useState(false);
+
+    const handleDeleteAccount = async () => {
+        try {
+            setIsDeleting(true);
+            await customerApi.deleteAccount();
+            toast.success("Account deleted successfully");
+            setShowDeleteModal(false);
+            await logout();
+        } catch (error) {
+            const message = error?.response?.data?.message || error?.message || "Failed to delete account";
+            toast.error(message);
+        } finally {
+            setIsDeleting(false);
+        }
+    };
 
     const formatIndiaPhone = (value) => {
         const raw = String(value || '').trim();
@@ -200,6 +218,38 @@ const ProfilePage = () => {
                                 bg="#FEE2E2"
                             />
                             <MenuItem
+                                icon={Calendar}
+                                label="My Subscriptions"
+                                sub="Scheduled fresh meat deliveries"
+                                path="/subscriptions"
+                                color="#B45309"
+                                bg="#FEF3C7"
+                            />
+                            <MenuItem
+                                icon={Gift}
+                                label="Refer & Earn"
+                                sub="Invite friends, get wallet rewards"
+                                path="/referrals"
+                                color="#7C3AED"
+                                bg="#F5F3FF"
+                            />
+                            <MenuItem
+                                icon={UtensilsCrossed}
+                                label="Recipes & Cooking"
+                                sub="Chef recipes with 1-click cart"
+                                path="/recipes"
+                                color="#047857"
+                                bg="#ECFDF5"
+                            />
+                            <MenuItem
+                                icon={Boxes}
+                                label="Meal Prep & Combos"
+                                sub="Curated bundles & savings"
+                                path="/combos"
+                                color="#EA580C"
+                                bg="#FFF7ED"
+                            />
+                            <MenuItem
                                 icon={MapPin}
                                 label="Saved Addresses"
                                 sub="Manage your delivery locations"
@@ -294,16 +344,89 @@ const ProfilePage = () => {
                     </div>
                 </div>
 
+                {/* Branded Thank You Mascot Banner (matching mockup screen 8) */}
+                <div className="rounded-2xl p-4 bg-gradient-to-r from-[#FFF5ED] via-[#FFF1E8] to-[#FFEFE6] border border-[#FCD9C8] flex items-center gap-3.5 shadow-2xs mt-4">
+                    <div className="w-16 h-16 shrink-0 flex items-center justify-center">
+                        <img
+                            src="/mascot/chef_mascot.png"
+                            alt="Meatyns Chef Mascot"
+                            className="max-h-full max-w-full object-contain drop-shadow-[0_4px_10px_rgba(0,0,0,0.12)]"
+                            loading="lazy"
+                        />
+                    </div>
+                    <div className="min-w-0">
+                        <p className="font-serif italic text-xs text-slate-500">
+                            Thank you
+                        </p>
+                        <h4 className="font-anton uppercase tracking-wide text-sm font-normal text-slate-800 leading-tight flex items-center gap-1.5 mt-0.5">
+                            for being a part of <span className="text-[#C81017]">Meatyns!</span> <Heart size={13} className="fill-[#C81017] text-[#C81017] inline-block shrink-0" />
+                        </h4>
+                    </div>
+                </div>
+
                 {/* Logout Button */}
                 <button
                     onClick={logout}
-                    className="w-full py-3.5 rounded-xl border border-[#FDE68A] text-[#1A1A1A] font-bold bg-white hover:bg-[#FFFBEB] active:scale-[0.99] transition-all flex items-center justify-center gap-2 mt-2 shadow-sm"
+                    className="w-full py-3.5 rounded-xl border border-[#FDE68A] text-[#1A1A1A] font-bold bg-white hover:bg-[#FFFBEB] active:scale-[0.99] transition-all flex items-center justify-center gap-2 mt-4 shadow-sm cursor-pointer"
                 >
                     <LogOut size={19} className="text-[#EF131F]" />
                     Sign out
                 </button>
 
-                <div className="text-center pb-8 pt-1">
+                {/* Delete Account Button */}
+                <button
+                    type="button"
+                    onClick={() => setShowDeleteModal(true)}
+                    className="w-full py-3 rounded-xl border border-rose-200 text-rose-600 font-semibold bg-rose-50/60 hover:bg-rose-100/80 active:scale-[0.99] transition-all flex items-center justify-center gap-2 mt-2.5 text-xs sm:text-sm cursor-pointer"
+                >
+                    <Trash2 size={16} className="text-rose-600" />
+                    Delete Account
+                </button>
+
+                {/* Delete Confirmation Modal */}
+                {showDeleteModal && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 animate-in fade-in duration-150">
+                        <div className="bg-white rounded-2xl max-w-sm w-full p-5 shadow-2xl border border-slate-100 text-center">
+                            <div className="w-12 h-12 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center mx-auto mb-3.5">
+                                <AlertTriangle size={24} />
+                            </div>
+                            <h3 className="text-base font-bold text-slate-900 mb-1">Delete Customer Account?</h3>
+                            <p className="text-xs text-slate-600 leading-relaxed mb-5">
+                                Are you sure you want to delete your account? This action is <strong className="text-rose-600 font-semibold">permanent</strong>. All your saved addresses, cart items, and personal data will be erased.
+                            </p>
+                            <div className="flex gap-2.5">
+                                <button
+                                    type="button"
+                                    disabled={isDeleting}
+                                    onClick={() => setShowDeleteModal(false)}
+                                    className="flex-1 py-2.5 px-3 rounded-xl border border-slate-200 text-slate-700 font-medium text-xs hover:bg-slate-50 transition-colors cursor-pointer disabled:opacity-50"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    type="button"
+                                    disabled={isDeleting}
+                                    onClick={handleDeleteAccount}
+                                    className="flex-1 py-2.5 px-3 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs shadow-sm transition-all flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
+                                >
+                                    {isDeleting ? (
+                                        <>
+                                            <Loader2 size={14} className="animate-spin" />
+                                            Deleting...
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Trash2 size={14} />
+                                            Yes, Delete
+                                        </>
+                                    )}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                <div className="text-center pb-8 pt-2">
                     <p className="text-[11px] text-[#9E8E80] font-medium">Version 2.4.0 • {appName}</p>
                 </div>
 

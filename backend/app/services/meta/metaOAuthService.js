@@ -24,6 +24,17 @@ export async function getOrCreateMetaIntegration(includeSecrets = false) {
   return doc;
 }
 
+function getMetaCsrfSecret() {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    if (process.env.NODE_ENV === "production") {
+      throw new Error("JWT_SECRET must be configured in production for Meta OAuth state signing");
+    }
+    return "meatyns_meta_csrf_secret";
+  }
+  return secret;
+}
+
 /**
  * Generates the official Meta OAuth redirect URL with CSRF protection
  */
@@ -38,7 +49,7 @@ export async function generateMetaOAuthUrl(adminUserId) {
   // Create HMAC-signed state token containing user ID, timestamp, and a nonce
   const nonce = crypto.randomBytes(16).toString("hex");
   const payload = JSON.stringify({ userId: String(adminUserId || ""), nonce, ts: Date.now() });
-  const secret = process.env.JWT_SECRET || "meatyns_meta_csrf_secret";
+  const secret = getMetaCsrfSecret();
   const signature = crypto.createHmac("sha256", secret).update(payload).digest("hex");
   const state = Buffer.from(JSON.stringify({ payload, signature })).toString("base64url");
 
@@ -66,7 +77,7 @@ export function validateOAuthState(stateStr) {
   try {
     if (!stateStr) return false;
     const { payload, signature } = JSON.parse(Buffer.from(stateStr, "base64url").toString());
-    const secret = process.env.JWT_SECRET || "meatyns_meta_csrf_secret";
+    const secret = getMetaCsrfSecret();
     const expectedSignature = crypto.createHmac("sha256", secret).update(payload).digest("hex");
 
     if (!crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expectedSignature))) {

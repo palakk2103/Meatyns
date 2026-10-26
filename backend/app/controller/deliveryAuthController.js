@@ -1,4 +1,5 @@
 import Delivery from "../models/delivery.js";
+import Order from "../models/order.js";
 import jwt from "jsonwebtoken";
 import handleResponse from "../utils/helper.js";
 import { sendSmsIndiaHubOtp } from "../services/smsIndiaHubService.js";
@@ -306,3 +307,45 @@ export const updateDeliveryProfile = async (req, res) => {
         return handleResponse(res, 500, error.message);
     }
 };
+
+/* ===============================
+   DELETE DELIVERY ACCOUNT
+================================ */
+export const deleteDeliveryAccount = async (req, res) => {
+    try {
+        const deliveryId = req.user?.id;
+        if (!deliveryId) {
+            return handleResponse(res, 401, "Unauthorized");
+        }
+
+        const delivery = await Delivery.findById(deliveryId);
+        if (!delivery) {
+            return handleResponse(res, 404, "Delivery partner not found");
+        }
+
+        // Check for active assigned deliveries
+        const activeOrder = await Order.findOne({
+            deliveryBoy: deliveryId,
+            status: { $in: ["Assigned", "Out For Delivery"] },
+        });
+
+        if (activeOrder) {
+            return handleResponse(
+                res,
+                400,
+                `Cannot delete delivery account while an order (#${activeOrder.orderId || activeOrder._id}) is actively in progress. Please complete delivery first.`
+            );
+        }
+
+        // Clear presence in realtime tracking
+        clearRiderPresence(String(deliveryId)).catch(() => {});
+
+        // Delete delivery document
+        await Delivery.findByIdAndDelete(deliveryId);
+
+        return handleResponse(res, 200, "Delivery account deleted successfully");
+    } catch (error) {
+        return handleResponse(res, 500, error.message);
+    }
+};
+

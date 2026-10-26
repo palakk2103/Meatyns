@@ -131,6 +131,22 @@ const userSchema = new mongoose.Schema(
             default: true,
         },
 
+        referralCode: {
+            type: String,
+            unique: true,
+            sparse: true,
+            uppercase: true,
+            trim: true,
+            index: true,
+        },
+
+        referredBy: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            default: null,
+            index: true,
+        },
+
         crmNotes: {
             type: [
                 {

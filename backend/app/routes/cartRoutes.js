@@ -4,7 +4,8 @@ import {
     addToCart,
     updateQuantity,
     removeFromCart,
-    clearCart
+    clearCart,
+    reorderPreviousOrder,
 } from "../controller/cartController.js";
 import { verifyToken } from "../middleware/authMiddleware.js";
 import { validate } from "../middleware/validate.js";
@@ -30,5 +31,8 @@ router.delete(
     removeFromCart,
 );
 router.delete("/clear", clearCart);
+
+// Phase 5: Smart Reorder
+router.post("/reorder/:orderId", reorderPreviousOrder);
 
 export default router;

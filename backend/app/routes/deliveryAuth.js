@@ -6,6 +6,7 @@ import {
   loginDeliveryWithPassword,
   getDeliveryProfile,
   updateDeliveryProfile,
+  deleteDeliveryAccount,
 } from "../controller/deliveryAuthController.js";
 import {
   getDeliveryStats,
@@ -36,6 +37,8 @@ router.post("/login-password", loginDeliveryWithPassword);
 // Profile routes
 router.get("/profile", verifyToken, getDeliveryProfile);
 router.put("/profile", verifyToken, updateDeliveryProfile);
+router.delete("/profile", verifyToken, allowRoles("delivery"), deleteDeliveryAccount);
+router.delete("/account", verifyToken, allowRoles("delivery"), deleteDeliveryAccount);
 router.get("/stats", verifyToken, getDeliveryStats);
 router.get("/earnings", verifyToken, getDeliveryEarnings);
 router.get("/cod/summary", verifyToken, allowRoles("delivery"), getDeliveryCodCashSummary);

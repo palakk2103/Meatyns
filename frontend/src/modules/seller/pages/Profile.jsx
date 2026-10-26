@@ -13,7 +13,11 @@ import {
   Globe,
   MapPin,
   CheckCircle,
+  Trash2,
+  AlertTriangle,
+  Loader2,
 } from "lucide-react";
+import { useAuth } from "@core/context/AuthContext";
 import { sellerApi } from "../services/sellerApi";
 import { toast } from "sonner";
 import Card from "@shared/components/ui/Card";
@@ -22,10 +26,13 @@ import MapPicker from "../../../shared/components/MapPicker";
 import StoreHoursManager from "../components/StoreHoursManager";
 
 const SellerProfile = () => {
+  const { logout } = useAuth();
   const [profile, setProfile] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [isMapOpen, setIsMapOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -156,6 +163,24 @@ const SellerProfile = () => {
       toast.success(`Store is now ${updatedOnline ? "Online (Accepting Orders)" : "Offline"}`);
     } catch (error) {
       toast.error("Failed to update store status");
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    try {
+      setIsDeleting(true);
+      await sellerApi.deleteAccount();
+      toast.success("Seller account deleted successfully");
+      setShowDeleteModal(false);
+      await logout();
+    } catch (error) {
+      const errorMsg =
+        error?.response?.data?.message ||
+        error?.message ||
+        "Failed to delete seller account";
+      toast.error(errorMsg);
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -508,6 +533,70 @@ const SellerProfile = () => {
         <div className="mt-8">
           <StoreHoursManager />
         </div>
+
+        {/* Danger Zone: Account Deletion */}
+        <div className="mt-8 bg-rose-50/50 border border-rose-200/80 rounded-2xl p-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div>
+              <h3 className="text-base font-bold text-rose-900 flex items-center gap-2">
+                <AlertTriangle size={18} className="text-rose-600" /> Danger Zone
+              </h3>
+              <p className="text-xs sm:text-sm text-rose-700/80 mt-1">
+                Permanently delete your seller store, catalog listings, and account data from Meatyns.
+              </p>
+            </div>
+            <Button
+              type="button"
+              onClick={() => setShowDeleteModal(true)}
+              className="bg-rose-600 hover:bg-rose-700 text-white font-semibold text-xs sm:text-sm px-4 py-2.5 rounded-xl shadow-xs transition-colors flex items-center gap-2 cursor-pointer shrink-0"
+            >
+              <Trash2 size={16} /> Delete Account
+            </Button>
+          </div>
+        </div>
+
+        {/* Delete Confirmation Modal */}
+        {showDeleteModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 animate-in fade-in duration-150">
+            <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100 text-center">
+              <div className="w-12 h-12 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center mx-auto mb-3.5">
+                <AlertTriangle size={24} />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 mb-1">Delete Seller Account?</h3>
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed mb-6">
+                Are you sure you want to permanently delete your seller account? This will delist your store products, remove your vendor profile, and revoke store access. Any active orders in progress must be fulfilled first.
+              </p>
+              <div className="flex gap-3 justify-center">
+                <button
+                  type="button"
+                  disabled={isDeleting}
+                  onClick={() => setShowDeleteModal(false)}
+                  className="flex-1 py-2.5 px-4 rounded-xl border border-slate-200 text-slate-700 font-medium text-xs sm:text-sm hover:bg-slate-50 transition-colors cursor-pointer disabled:opacity-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  disabled={isDeleting}
+                  onClick={handleDeleteAccount}
+                  className="flex-1 py-2.5 px-4 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs sm:text-sm shadow-sm transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                >
+                  {isDeleting ? (
+                    <>
+                      <Loader2 size={16} className="animate-spin" />
+                      Deleting...
+                    </>
+                  ) : (
+                    <>
+                      <Trash2 size={16} />
+                      Yes, Delete Account
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {isMapOpen && (

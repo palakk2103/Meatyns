@@ -14,6 +14,11 @@ export const WORKFLOW_STATUS = {
   CANCELLED: "CANCELLED",
 };
 
+export {
+  ITEM_FULFILLMENT_STATUS,
+  ITEM_REFUND_STATUS,
+} from "./orderItemStatus.js";
+
 /** Milliseconds — override via env in services */
 export const DEFAULT_SELLER_TIMEOUT_MS = () =>
   parseInt(process.env.SELLER_TIMEOUT_MS || "60000", 10);

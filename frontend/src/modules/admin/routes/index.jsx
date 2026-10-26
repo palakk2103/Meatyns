@@ -23,6 +23,8 @@ import {
   User,
   ShieldCheck,
   Megaphone,
+  Calendar,
+  Gift,
 } from "lucide-react";
 import { useAuth } from "@core/context/AuthContext";
 
@@ -99,6 +101,11 @@ const AdminSettings = React.lazy(() => import("../pages/AdminSettings"));
 const EnvSettings = React.lazy(() => import("../pages/EnvSettings"));
 const AdminProfile = React.lazy(() => import("../pages/AdminProfile"));
 const MetaAdsManager = React.lazy(() => import("../pages/metaAds/MetaAdsManager"));
+const SubscriptionsManagement = React.lazy(() => import("../pages/SubscriptionsManagement"));
+const ReferralsManagement = React.lazy(() => import("../pages/ReferralsManagement"));
+const RecipesManagement = React.lazy(() => import("../pages/RecipesManagement"));
+const CombosManagement = React.lazy(() => import("../pages/CombosManagement"));
+const DeliveryManagement = React.lazy(() => import("../pages/DeliveryManagement"));
 
 const navItems = [
   {
@@ -138,6 +145,18 @@ const navItems = [
     ],
   },
   {
+    label: "Retention & Growth",
+    icon: Calendar,
+    color: "amber",
+    roles: ["super_admin", "admin", "marketing_manager"],
+    children: [
+      { label: "Subscriptions", path: "/admin/subscriptions" },
+      { label: "Referrals & Invites", path: "/admin/referrals" },
+      { label: "Recipes-to-Cart", path: "/admin/recipes" },
+      { label: "Meal Combos", path: "/admin/combos" },
+    ],
+  },
+  {
     label: "Marketing & Meta Ads",
     icon: Megaphone,
     color: "blue",
@@ -173,11 +192,12 @@ const navItems = [
     ],
   },
   {
-    label: "Delivery Drivers",
+    label: "Delivery Management",
     icon: Truck,
     color: "emerald",
     roles: ["super_admin", "admin", "delivery_manager"],
     children: [
+      { label: "Delivery Slots & Charges", path: "/admin/delivery-management" },
       { label: "Active Drivers", path: "/admin/delivery-boys/active" },
       { label: "Waiting for Review", path: "/admin/delivery-boys/pending" },
       { label: "Track Drivers", path: "/admin/tracking" },
@@ -324,10 +344,16 @@ const AdminRoutes = () => {
         <Route path="/orders/view/:orderId" element={<OrderDetail />} />
         <Route path="/returns" element={<Returns />} />
         <Route path="/billing" element={<BillingCharges />} />
+        <Route path="/delivery-management" element={<DeliveryManagement />} />
         <Route path="/settings" element={<AdminSettings />} />
         <Route path="/env" element={<EnvSettings />} />
         <Route path="/meta-ads" element={<MetaAdsManager />} />
         <Route path="/meta-ads/:tab" element={<MetaAdsManager />} />
+        {/* Phase 5 Retention & Growth Routes */}
+        <Route path="/subscriptions" element={<SubscriptionsManagement />} />
+        <Route path="/referrals" element={<ReferralsManagement />} />
+        <Route path="/recipes" element={<RecipesManagement />} />
+        <Route path="/combos" element={<CombosManagement />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </DashboardLayout>

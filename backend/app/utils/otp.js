@@ -1,6 +1,19 @@
 const MOCK_OTP = "1234";
 
+export const isMockOtpPermitted = () => {
+  if (process.env.NODE_ENV === "production") {
+    return false;
+  }
+  return (
+    process.env.USE_MOCK_OTP === "true" ||
+    process.env.USE_MOCK_OTP === "1"
+  );
+};
+
 export const useRealSMS = () => {
+  if (process.env.NODE_ENV === "production") {
+    return true;
+  }
   if (
     process.env.USE_MOCK_OTP === "true" ||
     process.env.USE_MOCK_OTP === "1"
@@ -19,17 +32,10 @@ function randomOtp(length) {
 }
 
 export const generateOTP = () => {
-  if (
-    process.env.USE_MOCK_OTP === "true" ||
-    process.env.USE_MOCK_OTP === "1"
-  ) {
+  if (isMockOtpPermitted()) {
     return MOCK_OTP;
   }
-  const production = process.env.NODE_ENV === "production";
-  if (production && !useRealSMS()) {
-    return MOCK_OTP;
-  }
-  return useRealSMS() ? randomOtp(OTP_LENGTH) : MOCK_OTP;
+  return randomOtp(OTP_LENGTH);
 };
 
 export { MOCK_OTP };
