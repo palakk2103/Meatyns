@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     ShieldCheck,
@@ -100,6 +100,17 @@ const DesktopCustomerAuth = ({
     timer
 }) => {
     const navigate = useNavigate();
+    const [isOtpFocused, setIsOtpFocused] = useState(false);
+    const otpInputRef = useRef(null);
+
+    useEffect(() => {
+        if (showOtp) {
+            const t = setTimeout(() => {
+                otpInputRef.current?.focus();
+            }, 200);
+            return () => clearTimeout(t);
+        }
+    }, [showOtp]);
 
     return (
         <div className="hidden md:flex min-h-screen w-full bg-[#FAF7F2] font-poppins">
@@ -380,29 +391,56 @@ const DesktopCustomerAuth = ({
                                     </div>
 
                                     <form onSubmit={handleVerifyOtp} className="space-y-6">
-                                        <div className="flex justify-between gap-3 px-2">
-                                            {[...Array(4)].map((_, i) => (
-                                                <input
-                                                    key={i}
-                                                    type="tel"
-                                                    maxLength={1}
-                                                    value={formData.otp?.[i] || ''}
-                                                    className="w-14 h-16 bg-white border-2 border-stone-300 rounded-2xl text-center text-2xl font-black text-[#1A1A1A] outline-none shadow-sm focus:border-[#FDCE04] focus:ring-2 focus:ring-[#FDCE04]/40 transition-all"
-                                                    onKeyDown={(e) => {
-                                                        if (e.key === 'Backspace' && !e.target.value && i > 0) {
-                                                            e.target.previousElementSibling?.focus();
-                                                        }
-                                                    }}
-                                                    onChange={(e) => {
-                                                        const val = e.target.value.replace(/\D/g, '');
-                                                        const otpArr = (formData.otp || '').split('');
-                                                        otpArr[i] = val;
-                                                        const newOtp = otpArr.join('').slice(0, 4);
-                                                        setFormData({ ...formData, otp: newOtp });
-                                                        if (val && i < 3) e.target.nextElementSibling?.focus();
-                                                    }}
-                                                />
-                                            ))}
+                                        {/* Unified OTP Container */}
+                                        <div 
+                                            className="relative w-full cursor-pointer px-2"
+                                            onClick={() => otpInputRef.current?.focus()}
+                                        >
+                                            {/* Single unified input */}
+                                            <input
+                                                ref={otpInputRef}
+                                                type="tel"
+                                                inputMode="numeric"
+                                                autoComplete="one-time-code"
+                                                pattern="[0-9]*"
+                                                maxLength={4}
+                                                value={formData.otp || ''}
+                                                onChange={(e) => {
+                                                    const val = e.target.value.replace(/\D/g, '').slice(0, 4);
+                                                    setFormData(prev => ({ ...prev, otp: val }));
+                                                }}
+                                                onFocus={() => setIsOtpFocused(true)}
+                                                onBlur={() => setIsOtpFocused(false)}
+                                                className="absolute inset-0 w-full h-full opacity-0 z-20 cursor-pointer text-[16px]"
+                                                aria-label="4-digit OTP code"
+                                                autoFocus
+                                            />
+
+                                            {/* Visual 4 boxes */}
+                                            <div className="flex justify-between gap-3 pointer-events-none">
+                                                {[0, 1, 2, 3].map((i) => {
+                                                    const digit = (formData.otp || '')[i] || '';
+                                                    const isCurrent = isOtpFocused && (formData.otp || '').length === i;
+                                                    const isFilled = Boolean(digit);
+
+                                                    return (
+                                                        <div
+                                                            key={i}
+                                                            className="w-14 h-16 bg-white border-2 rounded-2xl flex items-center justify-center text-center text-2xl font-black text-[#1A1A1A] outline-none transition-all select-none"
+                                                            style={{
+                                                                borderColor: isCurrent ? '#FDCE04' : isFilled ? '#E5B800' : '#D6D3D1',
+                                                                boxShadow: isCurrent ? '0 0 0 3px rgba(253, 206, 4, 0.35)' : 'none'
+                                                            }}
+                                                        >
+                                                            {digit ? (
+                                                                <span>{digit}</span>
+                                                            ) : isCurrent ? (
+                                                                <span className="w-0.5 h-6 rounded-full bg-[#1A1A1A] animate-pulse" />
+                                                            ) : null}
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
                                         </div>
 
                                         <button

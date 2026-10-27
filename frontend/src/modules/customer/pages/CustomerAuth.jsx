@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@core/context/AuthContext';
@@ -92,6 +92,17 @@ const CustomerAuth = () => {
             otp: ''
         };
     });
+    const [isOtpFocused, setIsOtpFocused] = useState(false);
+    const otpInputRef = useRef(null);
+
+    useEffect(() => {
+        if (showOtp) {
+            const t = setTimeout(() => {
+                otpInputRef.current?.focus();
+            }, 200);
+            return () => clearTimeout(t);
+        }
+    }, [showOtp]);
 
     useEffect(() => {
         sessionStorage.setItem('auth_phone', formData.phone);
@@ -508,32 +519,64 @@ const CustomerAuth = () => {
                                     </div>
 
                                     <form onSubmit={handleVerifyOtp} className="space-y-8">
-                                        <div className="flex justify-between gap-3 px-1">
-                                            {[...Array(4)].map((_, i) => (
-                                                <input
-                                                    key={i}
-                                                    type="tel"
-                                                    maxLength={1}
-                                                    value={formData.otp?.[i] || ''}
-                                                    className="w-14 h-16 bg-white border-2 border-gray-200 rounded-3xl text-center text-2xl font-black outline-none shadow-[0_18px_45px_rgba(15,23,42,0.15)] focus:bg-white focus:shadow-[0_24px_65px_rgba(15,23,42,0.25)] transition-all"
-                                                    style={{ color: activeCategory.theme }}
-                                                    onKeyDown={(e) => {
-                                                        if (e.key === 'Backspace' && !e.target.value && i > 0) {
-                                                            e.target.previousElementSibling?.focus();
-                                                        }
-                                                    }}
-                                                    onChange={(e) => {
-                                                        const val = e.target.value.replace(/\D/g, '');
-                                                        const otpArr = (formData.otp || '').split('');
-                                                        otpArr[i] = val;
-                                                        const newOtp = otpArr.join('').slice(0, 4);
-                                                        setFormData({ ...formData, otp: newOtp });
-                                                        if (val && i < 3) e.target.nextElementSibling?.focus();
-                                                    }}
-                                                    onFocus={(e) => e.target.style.borderColor = activeCategory.theme}
-                                                    onBlur={(e) => e.target.style.borderColor = '#E5E7EB'}
-                                                />
-                                            ))}
+                                        {/* Unified OTP Container: Prevents iOS keyboard/viewport jumps across boxes */}
+                                        <div 
+                                            className="relative w-full cursor-pointer"
+                                            onClick={() => otpInputRef.current?.focus()}
+                                        >
+                                            {/* Single unified input capturing all 4 digits */}
+                                            <input
+                                                ref={otpInputRef}
+                                                type="tel"
+                                                inputMode="numeric"
+                                                autoComplete="one-time-code"
+                                                pattern="[0-9]*"
+                                                maxLength={4}
+                                                value={formData.otp || ''}
+                                                onChange={(e) => {
+                                                    const val = e.target.value.replace(/\D/g, '').slice(0, 4);
+                                                    setFormData(prev => ({ ...prev, otp: val }));
+                                                }}
+                                                onFocus={() => setIsOtpFocused(true)}
+                                                onBlur={() => setIsOtpFocused(false)}
+                                                className="absolute inset-0 w-full h-full opacity-0 z-20 cursor-pointer text-[16px]"
+                                                aria-label="4-digit OTP code"
+                                                autoFocus
+                                            />
+
+                                            {/* 4 Visual Digit Display Boxes */}
+                                            <div className="flex justify-between gap-3 px-1 pointer-events-none">
+                                                {[0, 1, 2, 3].map((i) => {
+                                                    const digit = (formData.otp || '')[i] || '';
+                                                    const isCurrent = isOtpFocused && (formData.otp || '').length === i;
+                                                    const isFilled = Boolean(digit);
+
+                                                    return (
+                                                        <div
+                                                            key={i}
+                                                            className="w-14 h-16 bg-white border-2 rounded-3xl flex items-center justify-center text-center text-2xl font-black outline-none transition-all select-none"
+                                                            style={{
+                                                                borderColor: isCurrent || isFilled ? activeCategory.theme : '#E5E7EB',
+                                                                color: activeCategory.theme,
+                                                                boxShadow: isCurrent
+                                                                    ? '0 20px 45px rgba(15,23,42,0.18)'
+                                                                    : isFilled
+                                                                    ? '0 16px 35px rgba(15,23,42,0.12)'
+                                                                    : '0 10px 25px rgba(15,23,42,0.06)'
+                                                            }}
+                                                        >
+                                                            {digit ? (
+                                                                <span>{digit}</span>
+                                                            ) : isCurrent ? (
+                                                                <span 
+                                                                    className="w-0.5 h-6 rounded-full animate-pulse" 
+                                                                    style={{ backgroundColor: activeCategory.theme }} 
+                                                                />
+                                                            ) : null}
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
                                         </div>
 
                                         <div className="space-y-4">
