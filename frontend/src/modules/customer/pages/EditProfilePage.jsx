@@ -4,11 +4,12 @@ import { ArrowLeft, User, Phone, Mail, Camera, Save } from 'lucide-react';
 import { toast } from 'sonner';
 
 import { useAuth } from '@core/context/AuthContext';
+import { invalidateCache } from '@core/api/dedupe';
 import { customerApi } from '../services/customerApi';
 
 const EditProfilePage = () => {
     const navigate = useNavigate();
-    const { user, login } = useAuth();
+    const { user, login, updateUser, refreshUser } = useAuth();
     const formatIndiaPhone = (value) => {
         const raw = String(value || '').trim();
         if (!raw) return '';
@@ -49,11 +50,19 @@ const EditProfilePage = () => {
             uploadData.append('file', file);
             
             const response = await customerApi.uploadMedia(uploadData);
-            const imageUrl = response.data?.result?.url || response.data?.url;
+            const imageUrl = response.data?.result?.url || response.data?.result?.secureUrl || response.data?.url || response.data?.secureUrl;
             
             if (imageUrl) {
                 setFormData(prev => ({ ...prev, profileImage: imageUrl }));
-                toast.success('Profile photo uploaded successfully!');
+                try {
+                    await customerApi.updateProfile({ profileImage: imageUrl });
+                    invalidateCache('/customer/profile');
+                    if (updateUser) updateUser({ profileImage: imageUrl });
+                    else if (refreshUser) refreshUser();
+                } catch (saveErr) {
+                    console.warn('Auto-save profile image failed:', saveErr);
+                }
+                toast.success('Profile photo saved successfully!');
             }
         } catch (error) {
             toast.error(error.response?.data?.message || 'Failed to upload image');
@@ -71,10 +80,16 @@ const EditProfilePage = () => {
                 dataToSubmit.phone = '+91' + dataToSubmit.phone;
             }
             const response = await customerApi.updateProfile(dataToSubmit);
-            const updatedUser = response.data.result;
+            const updatedUser = response.data?.result || response.data?.results || dataToSubmit;
 
-            // Update local auth state
-            login({ ...user, ...updatedUser });
+            invalidateCache('/customer/profile');
+
+            if (updateUser) {
+                updateUser(updatedUser);
+            }
+            if (refreshUser) {
+                await refreshUser();
+            }
 
             toast.success('Profile updated successfully!');
             navigate('/profile');

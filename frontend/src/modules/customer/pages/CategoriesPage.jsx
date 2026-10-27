@@ -115,7 +115,7 @@ const resolveCategoryImage = (cat) => {
 };
 
 const isMeat = (txt) =>
-  /meat|chicken|mutton|fish|seafood|prawn|crab|egg|poultry|kebab|tikka|marinade|cold cut|sausage/i.test(
+  /chicken|poultry|murga|mutton|goat|lamb|gosht|bakra/i.test(
     txt || ""
   );
 
@@ -304,7 +304,7 @@ const CategoriesPage = () => {
             <div className="relative w-full sm:w-64">
               <input
                 type="text"
-                placeholder="Search cuts (chicken, mutton, fish...)"
+                placeholder="Search cuts (chicken, mutton...)"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full bg-white border border-[#E9DDD4] rounded-full pl-9 pr-4 py-1.5 text-xs text-[#2A2A2A] placeholder-[#9C8D87] shadow-2xs focus:outline-none focus:border-[#C81017] transition-all"
@@ -386,7 +386,7 @@ const CategoriesPage = () => {
                     : "bg-white text-slate-700 border border-slate-200 hover:bg-[#FFFBEB]"
                 }`}
               >
-                All Meat &amp; Seafood
+                All Cuts
               </button>
               {groups.map((g, idx) => (
                 <button
@@ -467,6 +467,11 @@ const CategoriesPage = () => {
                   <Link
                     key={category.id}
                     to={`/category/${category.id}`}
+                    state={{
+                      categoryName: category.name,
+                      activeSubcategoryId: category.id,
+                      headerName: group.title,
+                    }}
                     className="group bg-[#FFF9F5] border border-[#F3E5DC] rounded-2xl p-2 sm:p-2.5 md:p-3 flex flex-col justify-between shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:border-[#C81017]/50 hover:shadow-[0_6px_20px_rgba(200,16,23,0.08)] active:scale-[0.97] transition-all cursor-pointer"
                   >
                     {/* Soft Warm Circular Container for Image */}

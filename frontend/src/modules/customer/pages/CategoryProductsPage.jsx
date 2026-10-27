@@ -34,11 +34,17 @@ const isMuttonOrChickenCategory = (catObj, paramId, stateName) => {
         .join(" ")
         .toLowerCase();
 
+    if (text.includes("all")) return true;
+
     return (
         text.includes("chicken") ||
         text.includes("mutton") ||
         text.includes("goat") ||
-        text.includes("lamb")
+        text.includes("lamb") ||
+        text.includes("poultry") ||
+        text.includes("murga") ||
+        text.includes("gosht") ||
+        text.includes("bakra")
     );
 };
 
@@ -135,6 +141,7 @@ const CategoryProductsPage = () => {
 
             let categoryType = null;
             let currentCat = null;
+            let parentHeader = null;
 
             if (catRes.data.success) {
                 const tree = catRes.data.results || catRes.data.result || [];
@@ -142,7 +149,8 @@ const CategoryProductsPage = () => {
                 const normalizedCatId = decodeURIComponent(String(catId || "")).toLowerCase().trim();
                 const matches = (item) =>
                     item &&
-                    (item._id === catId ||
+                    (String(item._id) === String(catId) ||
+                     String(item.id) === String(catId) ||
                      (item.slug && item.slug.toLowerCase() === normalizedCatId) ||
                      (item.name && item.name.toLowerCase() === normalizedCatId));
 
@@ -150,17 +158,23 @@ const CategoryProductsPage = () => {
                 if (headerMatch) {
                     categoryType = 'header';
                     currentCat = headerMatch;
+                    parentHeader = headerMatch;
                 } else {
                     for (const header of tree) {
                         const found = (header.children || []).find(matches);
                         if (found) {
-                            categoryType = 'category';
-                            currentCat = found;
+                            parentHeader = header;
+                            currentCat = {
+                                ...found,
+                                siblings: header.children || []
+                            };
+                            categoryType = found.type || 'subcategory';
                             break;
                         } else {
                             for (const cat of (header.children || [])) {
                                 const subMatch = (cat.children || []).find(matches);
                                 if (subMatch) {
+                                    parentHeader = header;
                                     categoryType = 'subcategory';
                                     currentCat = {
                                         ...subMatch,
@@ -175,7 +189,7 @@ const CategoryProductsPage = () => {
                 }
             }
 
-            console.log(`[CategoryProductsPage] fetchData [seq=${seq}] matched Category:`, currentCat?.name, "Type:", categoryType);
+            console.log(`[CategoryProductsPage] fetchData [seq=${seq}] matched Category:`, currentCat?.name, "Type:", categoryType, "ParentHeader:", parentHeader?.name);
 
             setIsHeaderCategory(categoryType === 'header');
 
@@ -188,10 +202,21 @@ const CategoryProductsPage = () => {
                     icon: s.image || 'https://cdn-icons-png.flaticon.com/128/2321/2321801.png'
                 }));
                 setSubCategories([{ id: 'all', name: 'All', icon: 'https://cdn-icons-png.flaticon.com/128/2321/2321831.png' }, ...subs]);
+
+                // If user accessed a specific cut/subcategory directly, pre-select it
+                if (categoryType === 'subcategory' && currentCat._id) {
+                    setSelectedSubCategory(currentCat._id);
+                } else if (categoryType === 'header') {
+                    setSelectedSubCategory('all');
+                }
             }
 
             // Strictly check if category is Mutton or Chicken
-            const isTargetChickenOrMutton = isMuttonOrChickenCategory(currentCat, catId, location.state?.categoryName);
+            const isTargetChickenOrMutton =
+                Boolean(parentHeader) ||
+                isMuttonOrChickenCategory(currentCat, catId, location.state?.categoryName) ||
+                isMuttonOrChickenCategory(parentHeader);
+
             if (!isTargetChickenOrMutton) {
                 setProducts([]);
                 setIsOutOfService(false);
@@ -205,7 +230,9 @@ const CategoryProductsPage = () => {
                 limit: 1000,
             };
             const resolvedId = currentCat?._id || catId;
-            if (categoryType === 'header') {
+            if (parentHeader?._id) {
+                productParams.headerId = parentHeader._id;
+            } else if (categoryType === 'header') {
                 productParams.headerId = resolvedId;
             } else if (categoryType === 'subcategory') {
                 productParams.subcategoryId = resolvedId;
@@ -255,16 +282,6 @@ const CategoryProductsPage = () => {
                 setProducts([]);
             }
 
-            if (currentCat) {
-                setCategory(currentCat);
-                const childrenToMap = categoryType === 'subcategory' ? (currentCat.siblings || []) : (currentCat.children || []);
-                const subs = childrenToMap.map(s => ({
-                    id: s._id,
-                    name: s.name,
-                    icon: s.image || 'https://cdn-icons-png.flaticon.com/128/2321/2321801.png'
-                }));
-                setSubCategories([{ id: 'all', name: 'All', icon: 'https://cdn-icons-png.flaticon.com/128/2321/2321831.png' }, ...subs]);
-            }
         } catch (error) {
             if (seq !== requestSeqRef.current) return;
             console.error(`[CategoryProductsPage] fetchData [seq=${seq}] error:`, error);
@@ -296,14 +313,19 @@ const CategoryProductsPage = () => {
                 const activeSub = subCategories.find(s => String(s.id).trim() === targetId);
                 if (activeSub) {
                     const activeName = String(activeSub.name || '').toLowerCase().trim();
-                    const pSubName = String(p.subcategoryId?.name || p.subCategory || '').toLowerCase().trim();
-                    if (pSubName && (pSubName === activeName || activeName.includes(pSubName) || pSubName.includes(activeName))) {
+                    const headerName = String(category?.name || '').toLowerCase().trim();
+                    if (activeName === 'chicken' || activeName === 'mutton' || (headerName && activeName === headerName)) {
                         matchesSub = true;
                     } else {
-                        const pTitle = String(p.name || '').toLowerCase();
-                        const keyword = activeName.replace(/chicken|mutton|fish|prawns?|eggs?/gi, '').trim();
-                        if (keyword.length >= 3 && pTitle.includes(keyword)) {
+                        const pSubName = String(p.subcategoryId?.name || p.subCategory || '').toLowerCase().trim();
+                        if (pSubName && (pSubName === activeName || activeName.includes(pSubName) || pSubName.includes(activeName))) {
                             matchesSub = true;
+                        } else {
+                            const pTitle = String(p.name || '').toLowerCase();
+                            const keyword = activeName.replace(/chicken|mutton|fish|prawns?|eggs?/gi, '').trim();
+                            if (keyword.length >= 3 && pTitle.includes(keyword)) {
+                                matchesSub = true;
+                            }
                         }
                     }
                 }
@@ -372,35 +394,29 @@ const CategoryProductsPage = () => {
 
             <div className="flex flex-1 relative items-start">
                 {!isChickenOrMutton ? (
-                    /* ──── COMING SOON: ALL HEADER CATEGORIES EXCEPT MUTTON & CHICKEN ──── */
+                    /* ──── EXPLORE FRESH CUTS (NO COMING SOON FOR APP STORE COMPLIANCE) ──── */
                     <div className="w-full flex-1 py-16 md:py-24 px-6 sm:px-8 flex flex-col items-center justify-center text-center">
-                        <div className="w-56 h-56 sm:w-64 sm:h-64 mb-6">
-                            {noServiceData ? (
-                                <Lottie animationData={noServiceData} loop={true} />
-                            ) : (
-                                <div className="w-56 h-56 sm:w-64 sm:h-64 flex items-center justify-center text-6xl">
-                                    🚀
-                                </div>
-                            )}
+                        <div className="w-20 h-20 rounded-full bg-amber-50 flex items-center justify-center text-4xl mb-4 border border-amber-200 shadow-sm">
+                            🍗
                         </div>
-                        <h3 className="text-3xl sm:text-4xl font-normal font-anton tracking-wide text-slate-800 mb-3 uppercase">
-                            Coming <span className="text-primary">Soon!</span>
+                        <h3 className="text-2xl sm:text-3xl font-normal font-anton tracking-wide text-slate-800 mb-3 uppercase">
+                            Explore Fresh <span className="text-primary">Meat Cuts</span>
                         </h3>
                         <p className="text-slate-500 font-bold text-sm sm:text-base max-w-[340px] mb-8 leading-relaxed">
-                            We are preparing fresh {category?.name || location.state?.categoryName || catId} cuts for you. Stay tuned, launching soon!
+                            Check out our 100% farm-fresh Chicken and tender Mutton cuts, delivered hygienically in minutes!
                         </p>
                         <div className="flex flex-wrap items-center justify-center gap-3">
                             <button 
-                                onClick={() => navigate('/category/mutton')}
+                                onClick={() => navigate('/category/chicken')}
                                 className="px-8 py-3.5 bg-primary text-slate-950 rounded-2xl font-black text-sm uppercase tracking-wider hover:brightness-105 active:scale-95 transition-all shadow-lg cursor-pointer"
                             >
-                                Explore Mutton
+                                Explore Chicken
                             </button>
                             <button 
-                                onClick={() => navigate('/')}
+                                onClick={() => navigate('/category/mutton')}
                                 className="px-8 py-3.5 bg-slate-900 text-white rounded-2xl font-black text-sm uppercase tracking-wider hover:bg-slate-800 active:scale-95 transition-all shadow-lg cursor-pointer"
                             >
-                                Back to Home
+                                Explore Mutton
                             </button>
                         </div>
                     </div>

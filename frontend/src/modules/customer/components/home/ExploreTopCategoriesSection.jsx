@@ -49,6 +49,8 @@ const CategoryGridIcon = () => (
   </svg>
 );
 
+import { isChickenOrMutton } from "../../utils/categoryFilter";
+
 // Curated Meatyns meat categories fallback matching reference
 const TOP_CATEGORIES = [
   {
@@ -59,13 +61,6 @@ const TOP_CATEGORIES = [
     image: "/categories/chicken.png",
   },
   {
-    id: "fish-seafood",
-    name: "Fish & Seafood",
-    count: "10+ Types",
-    query: "fish",
-    image: "/categories/fish.png",
-  },
-  {
     id: "mutton",
     name: "Mutton",
     count: "8+ Cuts",
@@ -73,39 +68,18 @@ const TOP_CATEGORIES = [
     image: "/categories/mutton.png",
   },
   {
-    id: "eggs",
-    name: "Classic & Farm Eggs",
-    count: "5+ Varieties",
-    query: "egg",
-    image: "/categories/eggs.jpg",
+    id: "chicken-curry",
+    name: "Chicken Curry Cut",
+    count: "Special Cuts",
+    query: "chicken curry cut",
+    image: "/categories/chicken.png",
   },
   {
-    id: "prawns",
-    name: "Prawns & Crabs",
-    count: "6+ Sizes",
-    query: "prawn",
-    image: "/categories/prawns.png",
-  },
-  {
-    id: "cold-cuts",
-    name: "Cold Cuts & Sausages",
-    count: "8+ Options",
-    query: "cold cut",
-    image: "/categories/coldcuts.jpg",
-  },
-  {
-    id: "ready-to-cook",
-    name: "Ready to Cook & Marinated",
-    count: "12+ Dishes",
-    query: "ready to cook",
-    image: "/categories/marinades.jpg",
-  },
-  {
-    id: "ready-to-eat-spreads",
-    name: "Spreads & Ready to Eat",
-    count: "5+ Flavors",
-    query: "spread",
-    image: "/categories/steaks.jpg",
+    id: "goat-curry",
+    name: "Goat Curry Cut",
+    count: "Prime Cuts",
+    query: "goat curry cut",
+    image: "/categories/mutton.png",
   },
 ];
 
@@ -114,7 +88,7 @@ const ExploreTopCategoriesSection = ({ categories = [] }) => {
 
   const displayCategories = React.useMemo(() => {
     const valid = (categories || []).filter(
-      (c) => c && c.name && c.id !== "all" && c._id !== "all"
+      (c) => c && c.name && c.id !== "all" && c._id !== "all" && isChickenOrMutton(c)
     );
     if (valid.length > 0) {
       return valid.map((cat, idx) => ({
@@ -124,7 +98,9 @@ const ExploreTopCategoriesSection = ({ categories = [] }) => {
         image:
           cat.image ||
           cat.icon ||
-          "https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&q=80&w=350&h=350",
+          (String(cat.name).toLowerCase().includes("mutton") || String(cat.name).toLowerCase().includes("goat")
+            ? "/categories/mutton.png"
+            : "/categories/chicken.png"),
         raw: cat,
       }));
     }

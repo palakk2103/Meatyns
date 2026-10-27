@@ -128,8 +128,7 @@ const CustomerAuth = () => {
             setShowOtp(true);
             setTimer(30);
             toast.success('OTP sent to your phone!');
-            const mockOtp = res?.data?.result?.mockOtp || res?.data?.mockOtp || '1234';
-            toast.info(`Mock OTP: ${mockOtp}`, { duration: 10000 });
+            // Mock OTP toast hidden for App Store submission
         } catch (error) {
             const apiMessage = error?.response?.data?.message;
             toast.error(apiMessage || 'Failed to send OTP. Please try again.');
@@ -504,9 +503,7 @@ const CustomerAuth = () => {
                                                     Change
                                                 </button>
                                             </p>
-                                            <p className="text-[11px] font-bold text-emerald-600 mt-0.5">
-                                                Mock OTP: <span className="underline cursor-pointer tracking-wider" onClick={() => setFormData(prev => ({ ...prev, otp: '1234' }))}>1234 (Tap to fill)</span>
-                                            </p>
+
                                         </div>
                                     </div>
 

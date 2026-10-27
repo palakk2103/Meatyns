@@ -42,14 +42,12 @@ const resolveImage = (cat) => {
   return "/categories/chicken.png";
 };
 
+import { isChickenOrMutton } from "../../utils/categoryFilter";
+
 // Default items if backend categories are empty or loading
 const DEFAULT_HEADER_ITEMS = [
   { id: "chicken", name: "Chicken", image: "/categories/chicken.png" },
   { id: "mutton", name: "Mutton", image: "/categories/mutton.png" },
-  { id: "fish", name: "Fish", image: "/categories/fish.png" },
-  { id: "seafood", name: "Seafood", image: "/categories/prawns.png" },
-  { id: "fresh-cuts", name: "Fresh Cuts", image: "/categories/steaks.jpg" },
-  { id: "ready-to-cook", name: "Ready to Cook", image: "/categories/marinades.jpg" },
 ];
 
 const HeaderCategoryNav = ({
@@ -91,13 +89,14 @@ const HeaderCategoryNav = ({
     scrollRef.current.scrollBy({ left: offset, behavior: "smooth" });
   };
 
-  // Filter out "all" category from dynamic list
+  // Filter out "all" category from dynamic list and strictly keep Chicken & Mutton
   const displayCategories = React.useMemo(() => {
     const valid = (categories || []).filter((c) => {
       const id = String(c._id || c.id || "").toLowerCase();
       const slug = String(c.slug || "").toLowerCase();
       const name = String(c.name || "").toLowerCase();
-      return id !== "all" && slug !== "all" && name !== "all";
+      if (id === "all" || slug === "all" || name === "all") return false;
+      return isChickenOrMutton(c);
     });
     return valid.length > 0 ? valid : DEFAULT_HEADER_ITEMS;
   }, [categories]);

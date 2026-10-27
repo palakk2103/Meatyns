@@ -137,7 +137,7 @@ const SupportPage = () => {
                             <Search size={18} className="text-[#1A1A1A] shrink-0 stroke-[2.2]" />
                             <input
                                 type="text"
-                                placeholder="Search for meat, fish, seafood, etc..."
+                                placeholder="Search for chicken, mutton, cuts..."
                                 readOnly
                                 className="flex-1 bg-transparent border-none outline-none text-slate-800 placeholder:text-slate-400 font-normal text-[13.5px] cursor-pointer select-none"
                             />

@@ -48,16 +48,12 @@ const resolveImage = (cat) => {
   return "/categories/chicken.png";
 };
 
+import { isChickenOrMutton } from "../../utils/categoryFilter";
+
 // Default categories matching reference screenshot
 const DEFAULT_HEADER_CATEGORIES = [
   { id: "chicken", _id: "chicken", name: "Chicken", image: "/categories/chicken.png" },
   { id: "mutton", _id: "mutton", name: "Mutton", image: "/categories/mutton.png" },
-  { id: "fish", _id: "fish", name: "Fish", image: "/categories/fish.png" },
-  { id: "seafood", _id: "seafood", name: "Seafood", image: "/categories/prawns.png" },
-  { id: "eggs", _id: "eggs", name: "Eggs", image: "/categories/eggs.jpg" },
-  { id: "crab", _id: "crab", name: "Crab", image: "/categories/crab.png" },
-  { id: "marinades", _id: "marinades", name: "Marinades", image: "/categories/marinades.jpg" },
-  { id: "cold-cuts", _id: "cold-cuts", name: "Cold Cuts", image: "/categories/coldcuts.jpg" },
 ];
 
 const MobileHeaderCategoryNav = ({
@@ -70,13 +66,14 @@ const MobileHeaderCategoryNav = ({
   const scrollRef = useRef(null);
   const [canScrollRight, setCanScrollRight] = useState(true);
 
-  // Filter out "all" from dynamic list so we can render custom "All" button
+  // Filter out "all" from dynamic list so we can render custom "All" button, and only allow Chicken & Mutton
   const displayCategories = React.useMemo(() => {
     const valid = (categories || []).filter((c) => {
       const id = String(c._id || c.id || "").toLowerCase();
       const slug = String(c.slug || "").toLowerCase();
       const name = String(c.name || "").toLowerCase();
-      return id !== "all" && slug !== "all" && name !== "all";
+      if (id === "all" || slug === "all" || name === "all") return false;
+      return isChickenOrMutton(c);
     });
     return valid.length > 0 ? valid : DEFAULT_HEADER_CATEGORIES;
   }, [categories]);

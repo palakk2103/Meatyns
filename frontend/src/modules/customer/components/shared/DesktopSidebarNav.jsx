@@ -16,12 +16,9 @@ import {
 
 const mainCategories = [
     { label: 'Home', icon: Home, path: '/' },
-    { label: 'Meat & Seafood', icon: Fish, path: '/category/Meat%20%26%20Seafood' },
-    { label: 'Fruits & Vegetables', icon: Apple, path: '/categories' },
-    { label: 'Dairy & Eggs', icon: Milk, path: '/categories' },
-    { label: 'Grocery', icon: ShoppingBag, path: '/categories' },
-    { label: 'Beverages', icon: CupSoda, path: '/categories' },
-    { label: 'Snacks & More', icon: Cookie, path: '/categories' },
+    { label: 'Fresh Chicken', icon: Package, path: '/category/chicken' },
+    { label: 'Tender Mutton', icon: Package, path: '/category/mutton' },
+    { label: 'All Categories', icon: ShoppingBag, path: '/categories' },
 ];
 
 const secondaryNav = [

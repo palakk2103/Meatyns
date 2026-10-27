@@ -170,9 +170,17 @@ export const AuthProvider = ({ children }) => {
 
             setAuthData(prev => ({ ...prev, [role]: userData.token }));
             setUser(userData); // Set full data initially
+        } else if (userData) {
+            // Updating user profile state when already authenticated
+            setUser(prev => ({ ...(prev || {}), ...userData }));
         } else {
             console.error('Invalid role or missing token for login:', role);
         }
+    };
+
+    const updateUser = (data) => {
+        if (!data) return;
+        setUser((prev) => ({ ...(prev || {}), ...data }));
     };
 
     const logout = async () => {
@@ -241,6 +249,7 @@ export const AuthProvider = ({ children }) => {
         isLoading,
         authData,
         login,
+        updateUser,
         logout,
         refreshUser
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -162,13 +162,11 @@ const CategoryItemIcon = ({ cat, isActive }) => {
   );
 };
 
+import { isChickenOrMutton } from "../../utils/categoryFilter";
+
 const DEFAULT_FALLBACK_CATEGORIES = [
-  { id: "meat", name: "Meat", image: "/categories/mutton.png" },
-  { id: "fish", name: "Fish", image: "/categories/fish.png" },
   { id: "chicken", name: "Chicken", image: "/categories/chicken.png" },
-  { id: "seafood", name: "Seafood", image: "/categories/other_seafood.png" },
-  { id: "fresh-cuts", name: "Fresh Cuts", image: "/categories/steaks.jpg" },
-  { id: "ready-to-cook", name: "Ready to Cook", image: "/categories/marinades.jpg" },
+  { id: "mutton", name: "Mutton", image: "/categories/mutton.png" },
 ];
 
 const DesktopSidebar = ({ activeCategory, onCategorySelect, categories = [] }) => {
@@ -188,7 +186,8 @@ const DesktopSidebar = ({ activeCategory, onCategorySelect, categories = [] }) =
               (c) =>
                 (c.type === "header" || (c.type === "category" && !c.parentId)) &&
                 c.name?.toLowerCase() !== "all" &&
-                c.slug?.toLowerCase() !== "all"
+                c.slug?.toLowerCase() !== "all" &&
+                isChickenOrMutton(c)
             );
             setFetchedCategories(headers);
           }
@@ -197,14 +196,15 @@ const DesktopSidebar = ({ activeCategory, onCategorySelect, categories = [] }) =
     }
   }, [categories]);
 
-  // Combine categories and filter out "all"
+  // Combine categories and filter out non-chicken/mutton
   const dynamicCategories = useMemo(() => {
     const sourceList = categories && categories.length > 1 ? categories : (fetchedCategories.length > 0 ? fetchedCategories : DEFAULT_FALLBACK_CATEGORIES);
     return sourceList.filter((c) => {
       const id = String(c._id || c.id || "").toLowerCase();
       const slug = String(c.slug || "").toLowerCase();
       const name = String(c.name || "").toLowerCase();
-      return id !== "all" && slug !== "all" && name !== "all";
+      if (id === "all" || slug === "all" || name === "all") return false;
+      return isChickenOrMutton(c);
     });
   }, [categories, fetchedCategories]);
 

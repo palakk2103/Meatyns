@@ -1,6 +1,8 @@
 import axiosInstance from "@core/api/axios";
 import { getWithDedupe, invalidateCache } from "@core/api/dedupe";
 
+import { filterChickenAndMuttonTree, filterChickenAndMuttonFlat } from "../utils/categoryFilter";
+
 export const customerApi = {
   loginWithPassword: (data) =>
     axiosInstance.post("/customer/login-password", data),
@@ -17,8 +19,25 @@ export const customerApi = {
     }),
   getWalletTransactions: (params) =>
     getWithDedupe("/customer/transactions", params),
-  getCategories: (params) =>
-    getWithDedupe("/categories", params, { ttl: 60 * 1000 }), // 1 min for categories
+  getCategories: async (params) => {
+    const res = await getWithDedupe("/categories", params, { ttl: 60 * 1000 });
+    if (res?.data?.success) {
+      const isTree = Boolean(params?.tree === true || params?.tree === "true");
+      const rawData = res.data.results || res.data.result || [];
+      const filtered = isTree
+        ? filterChickenAndMuttonTree(rawData)
+        : filterChickenAndMuttonFlat(rawData);
+      return {
+        ...res,
+        data: {
+          ...res.data,
+          results: filtered,
+          result: filtered,
+        },
+      };
+    }
+    return res;
+  },
   getProducts: (params, options) => getWithDedupe("/products", params, options),
   getProductById: (id, params) => getWithDedupe(`/products/${id}`, params),
 

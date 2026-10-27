@@ -4,7 +4,7 @@ import {
     User, MapPin, Package, CreditCard, Wallet, ChevronRight,
     LogOut, ShieldCheck, Heart, HelpCircle, Info, Edit2, ChevronLeft, Bell,
     ScrollText, RotateCcw, Truck, Coins, Sparkles, Store, Phone, Mail, Clock, Award,
-    Calendar, Gift, UtensilsCrossed, Boxes, Trash2, AlertTriangle, Loader2
+    Calendar, Gift, UtensilsCrossed, Boxes, Trash2, AlertTriangle, Loader2, Camera
 } from 'lucide-react';
 import { useAuth } from '@core/context/AuthContext';
 import { useSettings } from '@core/context/SettingsContext';
@@ -21,12 +21,36 @@ const TEST_PUSH_STATUS_MAX_ATTEMPTS = 20;
 
 const ProfilePage = () => {
     const navigate = useNavigate();
-    const { user, role, logout } = useAuth();
+    const { user, role, logout, updateUser, refreshUser } = useAuth();
     const { settings } = useSettings();
     const appName = settings?.appName || 'App';
     const [isTestingPush, setIsTestingPush] = React.useState(false);
     const [showDeleteModal, setShowDeleteModal] = React.useState(false);
     const [isDeleting, setIsDeleting] = React.useState(false);
+    const [isUploadingPhoto, setIsUploadingPhoto] = React.useState(false);
+
+    const handlePhotoUpload = async (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        setIsUploadingPhoto(true);
+        try {
+            const uploadData = new FormData();
+            uploadData.append('file', file);
+            const response = await customerApi.uploadMedia(uploadData);
+            const imageUrl = response.data?.result?.url || response.data?.result?.secureUrl || response.data?.url || response.data?.secureUrl;
+            if (imageUrl) {
+                await customerApi.updateProfile({ profileImage: imageUrl });
+                if (updateUser) updateUser({ profileImage: imageUrl });
+                if (refreshUser) await refreshUser();
+                toast.success('Profile photo updated successfully!');
+            }
+        } catch (error) {
+            toast.error(error.response?.data?.message || 'Failed to upload photo');
+        } finally {
+            setIsUploadingPhoto(false);
+        }
+    };
 
     const handleDeleteAccount = async () => {
         try {
@@ -152,14 +176,30 @@ const ProfilePage = () => {
                 {/* User Identity Card */}
                 <div className="bg-white rounded-2xl p-4 sm:p-5 border border-[#EBE3D5] shadow-[0_4px_16px_rgba(253,206,4,0.08)] flex items-center justify-between">
                     <div className="flex items-center gap-3.5">
-                        <div className="h-14 w-14 rounded-2xl bg-[#FAF6F0] flex items-center justify-center p-0.5 border border-[#E4D5BE] overflow-hidden shrink-0">
-                            {user?.profileImage ? (
-                                <img src={user.profileImage} alt="Profile" className="h-full w-full object-cover rounded-xl" />
-                            ) : (
-                                <div className="h-full w-full rounded-xl bg-[#FEF08A] flex items-center justify-center">
-                                    <User size={26} className="text-[#1A1A1A]" />
-                                </div>
-                            )}
+                        <div className="relative">
+                            <div className="h-14 w-14 rounded-2xl bg-[#FAF6F0] flex items-center justify-center p-0.5 border border-[#E4D5BE] overflow-hidden shrink-0">
+                                {user?.profileImage ? (
+                                    <img src={user.profileImage} alt="Profile" className="h-full w-full object-cover rounded-xl" />
+                                ) : (
+                                    <div className="h-full w-full rounded-xl bg-[#FEF08A] flex items-center justify-center">
+                                        <User size={26} className="text-[#1A1A1A]" />
+                                    </div>
+                                )}
+                            </div>
+                            <label className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-[#1A1A1A] text-white flex items-center justify-center cursor-pointer shadow-sm hover:scale-105 active:scale-95 transition-all" title="Change profile photo">
+                                {isUploadingPhoto ? (
+                                    <Loader2 size={12} className="animate-spin text-[#FDCE04]" />
+                                ) : (
+                                    <Camera size={12} className="text-[#FDCE04]" />
+                                )}
+                                <input 
+                                    type="file" 
+                                    accept="image/*" 
+                                    className="hidden" 
+                                    onChange={handlePhotoUpload}
+                                    disabled={isUploadingPhoto} 
+                                />
+                            </label>
                         </div>
                         <div>
                             <h2 className="text-base sm:text-[17px] leading-tight font-bold text-[#1A1A1A]">{user?.name || 'Customer'}</h2>
@@ -202,52 +242,12 @@ const ProfilePage = () => {
                                 bg="#FEF3C7"
                             />
                             <MenuItem
-                                icon={Wallet}
-                                label="Wallet"
-                                sub="Balance & return refunds"
-                                path="/wallet"
-                                color="#047857"
-                                bg="#ECFDF5"
-                            />
-                            <MenuItem
                                 icon={Heart}
                                 label="Your Wishlist"
                                 sub="Your saved items"
                                 path="/wishlist"
                                 color="#EF131F"
                                 bg="#FEE2E2"
-                            />
-                            <MenuItem
-                                icon={Calendar}
-                                label="My Subscriptions"
-                                sub="Scheduled fresh meat deliveries"
-                                path="/subscriptions"
-                                color="#B45309"
-                                bg="#FEF3C7"
-                            />
-                            <MenuItem
-                                icon={Gift}
-                                label="Refer & Earn"
-                                sub="Invite friends, get wallet rewards"
-                                path="/referrals"
-                                color="#7C3AED"
-                                bg="#F5F3FF"
-                            />
-                            <MenuItem
-                                icon={UtensilsCrossed}
-                                label="Recipes & Cooking"
-                                sub="Chef recipes with 1-click cart"
-                                path="/recipes"
-                                color="#047857"
-                                bg="#ECFDF5"
-                            />
-                            <MenuItem
-                                icon={Boxes}
-                                label="Meal Prep & Combos"
-                                sub="Curated bundles & savings"
-                                path="/combos"
-                                color="#EA580C"
-                                bg="#FFF7ED"
                             />
                             <MenuItem
                                 icon={MapPin}

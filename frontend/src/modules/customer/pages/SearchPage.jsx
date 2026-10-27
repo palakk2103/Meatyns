@@ -297,7 +297,7 @@ const SearchPage = () => {
                             <input
                                 autoFocus
                                 type="text"
-                                placeholder="Search for meat, fish, seafood, etc..."
+                                placeholder="Search for chicken, mutton, cuts..."
                                 value={query}
                                 onKeyDown={handleKeyDown}
                                 onChange={(e) => {
@@ -412,7 +412,7 @@ const SearchPage = () => {
                                 <input
                                     autoFocus
                                     type="text"
-                                    placeholder="Search for meat, fish, seafood, etc..."
+                                    placeholder="Search for chicken, mutton, cuts..."
                                     value={query}
                                     onKeyDown={handleKeyDown}
                                     onChange={(e) => {

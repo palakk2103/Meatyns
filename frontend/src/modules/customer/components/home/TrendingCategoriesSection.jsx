@@ -2,38 +2,36 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { TrendingUp } from "lucide-react";
 
+import { isChickenOrMutton } from "../../utils/categoryFilter";
+
 const TRENDING_CATEGORIES = [
   {
-    id: "prawns",
-    name: "Prawns",
-    subtitle: "Fresh & Juicy",
-    route: "/category/prawns",
-    image:
-      "https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?auto=format&fit=crop&q=80&w=240",
-  },
-  {
-    id: "seafood",
-    name: "Seafood",
-    subtitle: "Premium Quality",
-    route: "/category/seafood",
-    image:
-      "https://images.unsplash.com/photo-1615141982883-c7ad0e69fd62?auto=format&fit=crop&q=80&w=240",
-  },
-  {
     id: "chicken",
-    name: "Chicken",
-    subtitle: "Farm Fresh",
+    name: "Fresh Chicken",
+    subtitle: "100% Farm Fresh",
     route: "/category/chicken",
-    image:
-      "https://images.unsplash.com/photo-1587593810167-a84920ea0781?auto=format&fit=crop&q=80&w=240",
+    image: "/categories/chicken.png",
   },
   {
-    id: "fish",
-    name: "Fish",
-    subtitle: "Rich in Omega-3",
-    route: "/category/fish",
-    image:
-      "https://images.unsplash.com/photo-1534482421-64566f976cfa?auto=format&fit=crop&q=80&w=240",
+    id: "mutton",
+    name: "Tender Mutton",
+    subtitle: "Pasture Raised Goat",
+    route: "/category/mutton",
+    image: "/categories/mutton.png",
+  },
+  {
+    id: "chicken_curry",
+    name: "Chicken Curry Cut",
+    subtitle: "Juicy & Clean Cut",
+    route: "/search?q=chicken",
+    image: "/categories/chicken.png",
+  },
+  {
+    id: "goat_curry",
+    name: "Goat Curry Cut",
+    subtitle: "Tender Prime Cuts",
+    route: "/search?q=mutton",
+    image: "/categories/mutton.png",
   },
 ];
 
@@ -42,7 +40,7 @@ const TrendingCategoriesSection = ({ categories = [] }) => {
 
   const displayCategories = React.useMemo(() => {
     const valid = (categories || []).filter(
-      (c) => c && c.name && c.id !== "all" && c._id !== "all"
+      (c) => c && c.name && c.id !== "all" && c._id !== "all" && isChickenOrMutton(c)
     );
     if (valid.length > 0) {
       return valid.slice(0, 6).map((cat, idx) => ({
@@ -53,7 +51,9 @@ const TrendingCategoriesSection = ({ categories = [] }) => {
         image:
           cat.image ||
           cat.icon ||
-          "https://images.unsplash.com/photo-1604503468506-a8da13d82791?auto=format&fit=crop&q=80&w=240",
+          (String(cat.name).toLowerCase().includes("mutton") || String(cat.name).toLowerCase().includes("goat")
+            ? "/categories/mutton.png"
+            : "/categories/chicken.png"),
       }));
     }
     return TRENDING_CATEGORIES;
