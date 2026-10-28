@@ -158,8 +158,9 @@ const AdminSettings = () => {
     const handleLogoUpload = async (e) => {
         const file = e.target.files?.[0];
         if (!file) return;
-        if (!file.type.startsWith('image/')) {
-            showToast('Please select an image file (PNG, JPG, etc.)', 'error');
+        const isImage = file.type?.startsWith('image/') || /\.(png|jpe?g|webp|svg)$/i.test(file.name);
+        if (!isImage) {
+            showToast('Please select an image file (PNG, JPG, SVG, WebP)', 'error');
             return;
         }
         setLogoUploading(true);
@@ -184,8 +185,9 @@ const AdminSettings = () => {
     const handleFaviconUpload = async (e) => {
         const file = e.target.files?.[0];
         if (!file) return;
-        if (!file.type.startsWith('image/')) {
-            showToast('Please select an image file (PNG, ICO, etc.)', 'error');
+        const isImage = file.type?.startsWith('image/') || /\.(ico|png|jpe?g|webp|svg)$/i.test(file.name);
+        if (!isImage) {
+            showToast('Please select an image file (ICO, PNG, JPG, WebP, SVG)', 'error');
             return;
         }
         setFaviconUploading(true);
@@ -595,7 +597,7 @@ const AdminSettings = () => {
                                             onKeyDown={(e) => e.key === 'Enter' && !faviconUploading && faviconInputRef.current?.click()}
                                             className={cn(
                                                 "h-40 w-full rounded-2xl border-2 border-dashed flex flex-col items-center justify-center gap-2 transition-all group overflow-hidden",
-                                                settings.faviconUrl ? "border-slate-200 bg-slate-50/50" : "border-slate-200 hover:border-brand-500/50 hover:bg-brand-50/10 cursor-pointer"
+                                                settings.faviconUrl ? "border-slate-200 bg-slate-50/50 hover:border-brand-500/50 cursor-pointer" : "border-slate-200 hover:border-brand-500/50 hover:bg-brand-50/10 cursor-pointer"
                                             )}
                                         >
                                             {faviconUploading ? (

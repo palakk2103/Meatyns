@@ -48,29 +48,51 @@ export default function SeoHead() {
 
         // Update or create dynamic favicon
         const defaultFavicon = '/favicon-144x144.png';
-        const rawFaviconUrl = settings.faviconUrl || '';
+        const rawFaviconUrl = (settings.faviconUrl || '').trim();
         // If the URL is the old distorted 303x128 screenshot or anitalogo, ignore and use the high-res square favicon
         const isDistortedScreenshot = rawFaviconUrl.includes('i52aeavwi6hunlpzmqde') || rawFaviconUrl.includes('anitalogo');
         const faviconUrl = (isDistortedScreenshot || !rawFaviconUrl) ? defaultFavicon : rawFaviconUrl;
 
-        let linkFavicon = metaRefs.current.favicon;
-        if (!linkFavicon) {
-            linkFavicon = document.getElementById('dynamic-favicon');
-            if (!linkFavicon && faviconUrl) {
-                linkFavicon = document.createElement('link');
-                linkFavicon.id = 'dynamic-favicon';
-                linkFavicon.rel = 'icon';
-                linkFavicon.type = 'image/png';
-                document.head.appendChild(linkFavicon);
-                metaRefs.current.favicon = linkFavicon;
-            } else if (linkFavicon) {
-                metaRefs.current.favicon = linkFavicon;
-            }
+        let mimeType = 'image/png';
+        if (faviconUrl.endsWith('.ico')) {
+            mimeType = 'image/x-icon';
+        } else if (/\.(jpe?g)$/i.test(faviconUrl)) {
+            mimeType = 'image/jpeg';
+        } else if (/\.svg$/i.test(faviconUrl)) {
+            mimeType = 'image/svg+xml';
+        } else if (/\.webp$/i.test(faviconUrl)) {
+            mimeType = 'image/webp';
         }
-        if (linkFavicon) {
-            linkFavicon.type = faviconUrl.endsWith('.ico') ? 'image/x-icon' : 'image/png';
-            linkFavicon.href = faviconUrl;
+
+        // Remove old competing / static favicon links so Chrome/Edge doesn't override with cached 16x16 / 32x32 icons
+        document.querySelectorAll("link[rel*='icon']").forEach((el) => {
+            el.remove();
+        });
+
+        // Create new primary favicon
+        const linkFavicon = document.createElement('link');
+        linkFavicon.id = 'dynamic-favicon';
+        linkFavicon.rel = 'icon';
+        linkFavicon.type = mimeType;
+        linkFavicon.href = faviconUrl;
+        document.head.appendChild(linkFavicon);
+        metaRefs.current.favicon = linkFavicon;
+
+        // Also add shortcut icon for legacy browsers
+        const linkShortcut = document.createElement('link');
+        linkShortcut.rel = 'shortcut icon';
+        linkShortcut.type = mimeType;
+        linkShortcut.href = faviconUrl;
+        document.head.appendChild(linkShortcut);
+
+        // Update or add apple-touch-icon
+        let appleTouch = document.querySelector("link[rel='apple-touch-icon']");
+        if (!appleTouch) {
+            appleTouch = document.createElement('link');
+            appleTouch.rel = 'apple-touch-icon';
+            document.head.appendChild(appleTouch);
         }
+        appleTouch.href = faviconUrl;
 
         // Maintain theme-color for mobile status bar (defaults to Meatyns yellow)
         const themeColor = settings.primaryColor || '#FDCE04';
