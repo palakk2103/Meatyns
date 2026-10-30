@@ -1,6 +1,7 @@
 import crypto from "crypto";
 import axios from "axios";
 import MetaIntegration from "../../models/metaIntegration.js";
+import MetaConversionEvent from "../../models/metaConversionEvent.js";
 import logger from "../logger.js";
 
 const GRAPH_API_VERSION = "v21.0";
@@ -239,6 +240,135 @@ export async function disconnectMetaIntegration() {
   config.selectedPixel = null;
   config.lastSyncedAt = new Date();
   await config.save();
+
+  return config.toSafeDTO();
+}
+
+/**
+ * Connects a simulated Demo Meta Account for client showcase and local testing
+ */
+export async function connectDemoMetaIntegration() {
+  const config = await getOrCreateMetaIntegration(true);
+  config.isConnected = true;
+  config.accessToken = "demo_meta_token_meatyns_2026";
+  config.tokenExpiresAt = new Date(Date.now() + 60 * 24 * 60 * 60 * 1000);
+  config.connectedUser = {
+    id: "1084920194821034",
+    name: "Meatyns Marketing Official",
+    email: "marketing@meatyns.com",
+  };
+  config.adAccounts = [
+    {
+      id: "act_928374829104",
+      name: "Meatyns Patna HQ (INR)",
+      accountId: "928374829104",
+      currency: "INR",
+      timezone: "Asia/Kolkata",
+      accountStatus: 1,
+    },
+    {
+      id: "act_472819382109",
+      name: "Meatyns Growth & Awareness",
+      accountId: "472819382109",
+      currency: "INR",
+      timezone: "Asia/Kolkata",
+      accountStatus: 1,
+    },
+  ];
+  config.selectedAdAccount = config.adAccounts[0];
+  config.pixels = [
+    {
+      id: "884920194821034",
+      name: "Meatyns Production Pixel",
+    },
+    {
+      id: "773910283746192",
+      name: "Meatyns Retargeting Dataset",
+    },
+  ];
+  config.selectedPixel = config.pixels[0];
+  config.pixelEnabled = true;
+  config.capiEnabled = true;
+  config.lastSyncedAt = new Date();
+  config.lastError = null;
+  await config.save();
+
+  // Seed sample conversion events if empty
+  try {
+    const count = await MetaConversionEvent.countDocuments();
+    if (count === 0) {
+      const now = Date.now();
+      await MetaConversionEvent.insertMany([
+        {
+          eventId: "purchase_ORD_DEMO_9821",
+          eventName: "Purchase",
+          eventTime: Math.floor(now / 1000) - 120,
+          orderId: "ORD_DEMO_9821",
+          status: "SENT",
+          value: 749,
+          currency: "INR",
+          payload: { content_type: "product", num_items: 2 },
+          response: { events_received: 1, messages: [] },
+          retryCount: 0,
+          lastAttemptAt: new Date(now - 120000),
+        },
+        {
+          eventId: "initiate_checkout_DEMO_9821",
+          eventName: "InitiateCheckout",
+          eventTime: Math.floor(now / 1000) - 240,
+          orderId: "ORD_DEMO_9821",
+          status: "SENT",
+          value: 749,
+          currency: "INR",
+          payload: { content_type: "product", num_items: 2 },
+          response: { events_received: 1 },
+          retryCount: 0,
+          lastAttemptAt: new Date(now - 240000),
+        },
+        {
+          eventId: "add_to_cart_DEMO_4812",
+          eventName: "AddToCart",
+          eventTime: Math.floor(now / 1000) - 600,
+          orderId: null,
+          status: "SENT",
+          value: 499,
+          currency: "INR",
+          payload: { content_name: "Fresh Chicken Curry Cut 1kg" },
+          response: { events_received: 1 },
+          retryCount: 0,
+          lastAttemptAt: new Date(now - 600000),
+        },
+        {
+          eventId: "view_content_DEMO_3192",
+          eventName: "ViewContent",
+          eventTime: Math.floor(now / 1000) - 900,
+          orderId: null,
+          status: "SENT",
+          value: 499,
+          currency: "INR",
+          payload: { content_name: "Fresh Chicken Curry Cut 1kg" },
+          response: { events_received: 1 },
+          retryCount: 0,
+          lastAttemptAt: new Date(now - 900000),
+        },
+        {
+          eventId: "purchase_ORD_DEMO_9815",
+          eventName: "Purchase",
+          eventTime: Math.floor(now / 1000) - 3600,
+          orderId: "ORD_DEMO_9815",
+          status: "SENT",
+          value: 1299,
+          currency: "INR",
+          payload: { content_name: "Mutton Rogan Josh Special Pack" },
+          response: { events_received: 1 },
+          retryCount: 0,
+          lastAttemptAt: new Date(now - 3600000),
+        },
+      ]);
+    }
+  } catch (seedErr) {
+    logger.warn("Failed to seed demo Meta conversion events:", { message: seedErr.message });
+  }
 
   return config.toSafeDTO();
 }

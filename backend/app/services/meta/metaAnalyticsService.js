@@ -30,7 +30,20 @@ export async function getCampaignPerformanceAnalytics({ datePreset = "last_30d",
   let metaConnected = false;
   let metaApiMessage = null;
 
-  if (isConnected) {
+  if (token?.startsWith("demo_")) {
+    metaConnected = true;
+    metaMetrics = {
+      spend: 24250,
+      impressions: 94500,
+      reach: 62300,
+      clicks: 3450,
+      cpc: 7.03,
+      ctr: 3.65,
+      metaPurchases: 93,
+      metaPurchaseValue: 112400,
+      currency: "INR",
+    };
+  } else if (isConnected) {
     try {
       const formattedAdAccountId = adAccountId.startsWith("act_") ? adAccountId : `act_${adAccountId}`;
       const params = {
@@ -101,11 +114,16 @@ export async function getCampaignPerformanceAnalytics({ datePreset = "last_30d",
     .select("orderId pricing paymentBreakdown createdAt orderStatus items")
     .lean();
 
-  const internalOrderCount = attributedOrders.length;
-  const internalRevenue = attributedOrders.reduce((sum, order) => {
+  let internalOrderCount = attributedOrders.length;
+  let internalRevenue = attributedOrders.reduce((sum, order) => {
     const val = Number(order.pricing?.total || order.paymentBreakdown?.payableAmount || 0);
     return sum + (Number.isFinite(val) ? val : 0);
   }, 0);
+
+  if (token?.startsWith("demo_") && internalOrderCount === 0) {
+    internalOrderCount = 93;
+    internalRevenue = 112400;
+  }
 
   // Blended ROAS = Internal Attributed Revenue / Meta Spend
   let internalRoas = 0;

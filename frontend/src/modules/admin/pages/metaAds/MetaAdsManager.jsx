@@ -146,6 +146,7 @@ const MetaAdsManager = () => {
           <MetaCampaignsTab
             status={status}
             onNavigateToConnect={() => handleTabChange("connect")}
+            onRefresh={fetchStatusAndOverview}
           />
         )}
         {activeTabId === "analytics" && (

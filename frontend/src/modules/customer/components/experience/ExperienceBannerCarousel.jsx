@@ -65,7 +65,7 @@ const ExperienceBannerCarousel = ({ section, items, fullWidth = false, slideGap 
   const getBannerOptimizedSrc = React.useCallback((url) => {
     if (!url) return url;
     if (!isCloudinaryUrl(url)) return url;
-    return applyCloudinaryTransform(url, "f_auto,q_auto,c_fill,g_auto,w_824,h_380");
+    return applyCloudinaryTransform(url, "f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0");
   }, []);
 
   return (

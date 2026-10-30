@@ -5,6 +5,7 @@ import {
   handleOAuthCallback,
   selectAdAccount,
   disconnectMeta,
+  connectDemoAccountController,
   getCampaigns,
   createCampaignDraft,
   updateCampaignStatusController,
@@ -36,6 +37,7 @@ router.get("/status", requireAdminPermission(ADMIN_PERMISSIONS.MARKETING_VIEW), 
 router.get("/oauth/url", requireAdminPermission(ADMIN_PERMISSIONS.MARKETING_MANAGE), getOAuthUrl);
 router.post("/select-account", requireAdminPermission(ADMIN_PERMISSIONS.MARKETING_MANAGE), selectAdAccount);
 router.post("/disconnect", requireAdminPermission(ADMIN_PERMISSIONS.MARKETING_MANAGE), disconnectMeta);
+router.post("/connect-demo", requireAdminPermission(ADMIN_PERMISSIONS.MARKETING_MANAGE), connectDemoAccountController);
 
 // Campaigns
 router.get("/campaigns", requireAdminPermission(ADMIN_PERMISSIONS.MARKETING_VIEW), getCampaigns);
