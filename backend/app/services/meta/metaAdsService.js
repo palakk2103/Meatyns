@@ -21,6 +21,66 @@ async function getActiveMetaContext() {
   };
 }
 
+let demoCampaignsStore = [
+  {
+    id: "camp_demo_101",
+    name: "Diwali Fresh Chicken Blitz - 30 Min Delivery",
+    objective: "OUTCOME_SALES",
+    status: "ACTIVE",
+    effectiveStatus: "ACTIVE",
+    dailyBudget: 1500,
+    lifetimeBudget: null,
+    startTime: new Date(Date.now() - 7 * 86400000).toISOString(),
+    stopTime: null,
+    createdTime: new Date(Date.now() - 14 * 86400000).toISOString(),
+    metrics: {
+      impressions: 48200,
+      spend: 12450,
+      clicks: 1840,
+      cpc: 6.76,
+      ctr: 3.82,
+    },
+  },
+  {
+    id: "camp_demo_102",
+    name: "Mutton Biryani Cut Special - Hyperlocal Patna",
+    objective: "OUTCOME_SALES",
+    status: "ACTIVE",
+    effectiveStatus: "ACTIVE",
+    dailyBudget: 1000,
+    lifetimeBudget: null,
+    startTime: new Date(Date.now() - 5 * 86400000).toISOString(),
+    stopTime: null,
+    createdTime: new Date(Date.now() - 10 * 86400000).toISOString(),
+    metrics: {
+      impressions: 31400,
+      spend: 8200,
+      clicks: 1120,
+      cpc: 7.32,
+      ctr: 3.56,
+    },
+  },
+  {
+    id: "camp_demo_103",
+    name: "Weekend Seafood & Prawns Discovery",
+    objective: "OUTCOME_TRAFFIC",
+    status: "PAUSED",
+    effectiveStatus: "PAUSED",
+    dailyBudget: 800,
+    lifetimeBudget: null,
+    startTime: new Date(Date.now() - 3 * 86400000).toISOString(),
+    stopTime: null,
+    createdTime: new Date(Date.now() - 7 * 86400000).toISOString(),
+    metrics: {
+      impressions: 14900,
+      spend: 3600,
+      clicks: 490,
+      cpc: 7.34,
+      ctr: 3.28,
+    },
+  },
+];
+
 /**
  * List campaigns for the connected ad account
  */
@@ -32,6 +92,15 @@ export async function getMetaCampaigns() {
       connected: false,
       message: "Meta account not connected or ad account not selected.",
       campaigns: [],
+    };
+  }
+
+  // Handle simulated demo environment
+  if (token?.startsWith("demo_")) {
+    return {
+      connected: true,
+      selectedAdAccount: config.selectedAdAccount,
+      campaigns: demoCampaignsStore,
     };
   }
 
@@ -105,6 +174,29 @@ export async function createDraftCampaign({ name, objective, dailyBudget, specia
     throw new Error("Meta account is not connected or ad account is missing.");
   }
 
+  if (token?.startsWith("demo_")) {
+    const newDemo = {
+      id: `camp_demo_${Date.now()}`,
+      name: String(name || "New Promo Draft").trim(),
+      objective: String(objective || "OUTCOME_SALES").toUpperCase(),
+      status: "PAUSED",
+      effectiveStatus: "PAUSED",
+      dailyBudget: Number(dailyBudget) || 1000,
+      lifetimeBudget: null,
+      startTime: new Date().toISOString(),
+      stopTime: null,
+      createdTime: new Date().toISOString(),
+      metrics: { impressions: 0, spend: 0, clicks: 0, cpc: 0, ctr: 0 },
+    };
+    demoCampaignsStore.unshift(newDemo);
+    return {
+      success: true,
+      campaignId: newDemo.id,
+      status: "PAUSED",
+      message: "Demo Campaign draft created successfully in PAUSED state.",
+    };
+  }
+
   const formattedAdAccountId = adAccountId.startsWith("act_") ? adAccountId : `act_${adAccountId}`;
   
   // Enforce PAUSED draft status for safety (never publish live directly)
@@ -156,6 +248,20 @@ export async function updateCampaignStatus(campaignId, nextStatus, { confirmed }
   const { token, isConnected } = await getActiveMetaContext();
   if (!isConnected) {
     throw new Error("Meta account is not connected.");
+  }
+
+  if (token?.startsWith("demo_") || campaignId?.startsWith("camp_demo_")) {
+    const target = demoCampaignsStore.find((c) => c.id === campaignId);
+    if (target) {
+      target.status = normalizedStatus;
+      target.effectiveStatus = normalizedStatus;
+    }
+    return {
+      success: true,
+      campaignId,
+      status: normalizedStatus,
+      result: { success: true },
+    };
   }
 
   try {

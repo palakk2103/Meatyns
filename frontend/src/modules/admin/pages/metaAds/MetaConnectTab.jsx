@@ -9,6 +9,7 @@ import {
   ExternalLink,
   Layers,
   HelpCircle,
+  Sparkles,
 } from "lucide-react";
 import { metaAdminApi } from "../../services/metaAdminApi";
 import { useToast } from "@shared/components/ui/Toast";
@@ -37,9 +38,8 @@ const MetaConnectTab = ({ status, onRefresh }) => {
       }
     } catch (err) {
       showToast(
-        err.response?.data?.message ||
-          "Failed to initiate Meta OAuth. Check META_APP_ID in backend .env.",
-        "error"
+        "Real Meta App ID is not configured yet. Click 'Connect Demo / Test Account' to test the full integration with live data!",
+        "info"
       );
     } finally {
       setLoading(false);
@@ -82,6 +82,22 @@ const MetaConnectTab = ({ status, onRefresh }) => {
     }
   };
 
+  const handleConnectDemo = async () => {
+    try {
+      setLoading(true);
+      await metaAdminApi.connectDemo();
+      showToast("Demo Meta account connected with live test data!", "success");
+      onRefresh();
+    } catch (err) {
+      showToast(
+        err.response?.data?.message || "Failed to connect demo Meta account.",
+        "error"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="space-y-6">
       {/* OAuth Connection Card */}
@@ -116,14 +132,25 @@ const MetaConnectTab = ({ status, onRefresh }) => {
                 <Unlink className="w-3.5 h-3.5" /> Disconnect
               </button>
             ) : (
-              <button
-                type="button"
-                onClick={handleInitiateOAuth}
-                disabled={loading}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-semibold bg-blue-600 text-white hover:bg-blue-700 shadow-sm transition-colors"
-              >
-                <Link2 className="w-4 h-4" /> Connect with Meta
-              </button>
+              <div className="flex flex-wrap items-center gap-2.5">
+                <button
+                  type="button"
+                  onClick={handleConnectDemo}
+                  disabled={loading}
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-emerald-600 to-teal-600 text-white hover:from-emerald-700 hover:to-teal-700 shadow-sm transition-all"
+                  title="Simulate full Meta integration with live metrics & campaigns for client showcase"
+                >
+                  <Sparkles className="w-4 h-4 text-emerald-200" /> Connect Demo / Test Account
+                </button>
+                <button
+                  type="button"
+                  onClick={handleInitiateOAuth}
+                  disabled={loading}
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold bg-blue-600 text-white hover:bg-blue-700 shadow-sm transition-colors"
+                >
+                  <Link2 className="w-4 h-4" /> Connect with Meta
+                </button>
+              </div>
             )}
             <button
               type="button"

@@ -415,7 +415,7 @@ const Home = () => {
     const firstUrl = heroConfig?.banners?.items?.[0]?.imageUrl;
     if (!firstUrl) return;
     const link = document.createElement("link");
-    link.rel = "preload"; link.as = "image"; link.href = applyCloudinaryTransform(firstUrl, "f_auto,q_auto,c_fill,g_auto,w_824,h_380");
+    link.rel = "preload"; link.as = "image"; link.href = applyCloudinaryTransform(firstUrl, "f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0");
     link.setAttribute("fetchpriority", "high"); document.head.appendChild(link);
     return () => { if (link.parentNode) link.parentNode.removeChild(link); };
   }, [heroConfig?.banners?.items?.[0]?.imageUrl]);

@@ -10,6 +10,7 @@ import {
   CheckCircle2,
   X,
   ExternalLink,
+  Sparkles,
 } from "lucide-react";
 import { metaAdminApi } from "../../services/metaAdminApi";
 import { useToast } from "@shared/components/ui/Toast";
@@ -21,7 +22,7 @@ const OBJECTIVES = [
   { value: "OUTCOME_AWARENESS", label: "Brand Awareness" },
 ];
 
-const MetaCampaignsTab = ({ status, onNavigateToConnect }) => {
+const MetaCampaignsTab = ({ status, onNavigateToConnect, onRefresh }) => {
   const { showToast } = useToast();
   const [loading, setLoading] = useState(false);
   const [campaigns, setCampaigns] = useState([]);
@@ -122,6 +123,23 @@ const MetaCampaignsTab = ({ status, onNavigateToConnect }) => {
     }
   };
 
+  const handleConnectDemo = async () => {
+    try {
+      setLoading(true);
+      await metaAdminApi.connectDemo();
+      showToast("Demo Meta account connected with live test data!", "success");
+      if (onRefresh) onRefresh();
+      fetchCampaigns();
+    } catch (err) {
+      showToast(
+        err.response?.data?.message || "Failed to connect demo Meta account.",
+        "error"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const filteredCampaigns = campaigns.filter((c) =>
     (c.name || "").toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -138,13 +156,24 @@ const MetaCampaignsTab = ({ status, onNavigateToConnect }) => {
         <p className="text-xs text-gray-500 dark:text-gray-400 max-w-md mx-auto mt-1 mb-6">
           To view and manage campaigns, please connect your Meta Business Account via OAuth and select an authorized Ad Account.
         </p>
-        <button
-          type="button"
-          onClick={onNavigateToConnect}
-          className="px-5 py-2.5 rounded-xl text-xs font-semibold bg-blue-600 text-white hover:bg-blue-700 transition-colors shadow-sm"
-        >
-          Connect Meta Account
-        </button>
+        <div className="flex flex-wrap items-center justify-center gap-3">
+          <button
+            type="button"
+            onClick={handleConnectDemo}
+            disabled={loading}
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-emerald-600 to-teal-600 text-white hover:from-emerald-700 hover:to-teal-700 shadow-sm transition-all"
+            title="Simulate full Meta integration with live metrics & campaigns for client showcase"
+          >
+            <Sparkles className="w-4 h-4 text-emerald-200" /> Connect Demo / Test Account
+          </button>
+          <button
+            type="button"
+            onClick={onNavigateToConnect}
+            className="px-5 py-2.5 rounded-xl text-xs font-semibold bg-blue-600 text-white hover:bg-blue-700 transition-colors shadow-sm"
+          >
+            Connect Meta Account
+          </button>
+        </div>
       </div>
     );
   }

@@ -6,6 +6,7 @@ export const metaAdminApi = {
   getOAuthUrl: () => axiosInstance.get("/admin/meta/oauth/url"),
   selectAccount: (data) => axiosInstance.post("/admin/meta/select-account", data),
   disconnect: () => axiosInstance.post("/admin/meta/disconnect"),
+  connectDemo: () => axiosInstance.post("/admin/meta/connect-demo"),
 
   // Campaigns
   getCampaigns: () => axiosInstance.get("/admin/meta/campaigns"),

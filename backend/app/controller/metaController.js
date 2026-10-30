@@ -5,6 +5,7 @@ import {
   validateOAuthState,
   exchangeCodeAndConnectMeta,
   disconnectMetaIntegration,
+  connectDemoMetaIntegration,
 } from "../services/meta/metaOAuthService.js";
 import {
   getMetaCampaigns,
@@ -14,6 +15,7 @@ import {
 import { sendMetaConversionEvent } from "../services/meta/metaCapiService.js";
 import { getCampaignPerformanceAnalytics } from "../services/meta/metaAnalyticsService.js";
 import MetaConversionEvent from "../models/metaConversionEvent.js";
+import MetaIntegration from "../models/metaIntegration.js";
 import logger from "../services/logger.js";
 
 /**
@@ -144,6 +146,20 @@ export const disconnectMeta = async (req, res) => {
     return handleResponse(res, 200, "Meta integration disconnected", safeDTO);
   } catch (error) {
     logger.error("disconnectMeta error:", { message: error.message });
+    return handleResponse(res, 500, error.message);
+  }
+};
+
+/**
+ * POST /api/admin/meta/connect-demo
+ * Connects demo Meta account for local testing and client showcase
+ */
+export const connectDemoAccountController = async (req, res) => {
+  try {
+    const safeDTO = await connectDemoMetaIntegration();
+    return handleResponse(res, 200, "Demo Meta account connected successfully", safeDTO);
+  } catch (error) {
+    logger.error("connectDemoAccountController error:", { message: error.message });
     return handleResponse(res, 500, error.message);
   }
 };
