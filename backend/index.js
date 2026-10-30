@@ -56,6 +56,11 @@ import {
   isSubscriptionOrderJobEnabled,
 } from "./app/jobs/subscriptionOrderJob.js";
 import logger from "./app/services/logger.js";
+import {
+  ensureUploadsDir,
+  UPLOADS_URL_PREFIX,
+  ALLOWED_IMAGE_EXTENSIONS,
+} from "./app/services/localImageStorage.js";
 import { stopScheduledJobs } from "./app/services/distributedScheduler.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -187,6 +192,34 @@ function createApp() {
   }));
   app.use(helmet());
   app.use(cors(corsOptions));
+
+  // Locally stored images (STORAGE_PROVIDER=local). Mounted before the API rate limiter so
+  // image-heavy pages don't exhaust it. Only whitelisted image extensions are served, dotfiles
+  // and directory listings are denied, and files are sent with nosniff + a locked-down CSP.
+  const uploadsDir = ensureUploadsDir();
+  app.use(
+    UPLOADS_URL_PREFIX,
+    (req, res, next) => {
+      const ext = path.extname(req.path).slice(1).toLowerCase();
+      if (!ALLOWED_IMAGE_EXTENSIONS.has(ext)) return res.status(404).end();
+      next();
+    },
+    express.static(uploadsDir, {
+      dotfiles: "deny",
+      index: false,
+      redirect: false,
+      fallthrough: false,
+      maxAge: "365d", // filenames are unique and never rewritten
+      immutable: true,
+      setHeaders: (res) => {
+        res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
+        res.setHeader("Access-Control-Allow-Origin", "*");
+        res.setHeader("X-Content-Type-Options", "nosniff");
+        res.setHeader("Content-Security-Policy", "default-src 'none'; sandbox");
+      },
+    }),
+  );
+
   app.use(globalApiRateLimiter);
   app.use(
     express.json({

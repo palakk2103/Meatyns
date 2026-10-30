@@ -4,6 +4,7 @@ import handleResponse from "../utils/helper.js";
 import getPagination from "../utils/pagination.js";
 import { buildKey, getOrSet, getTTL, invalidate } from "../services/cacheService.js";
 import { uploadToCloudinary } from "../services/mediaService.js";
+import { deleteLocalImageByUrl } from "../services/localImageStorage.js";
 import mongoose from "mongoose";
 import { invalidateCategoryName } from "../services/entityNameCache.js";
 import { buildSearchRegex } from "../utils/regex.js";
@@ -415,7 +416,7 @@ export const updateCategory = async (req, res) => {
         if (req.body.image && typeof req.body.image === 'object') delete categoryData.image;
     }
 
-    const existing = await Category.findById(id).select("type parentId name slug").lean();
+    const existing = await Category.findById(id).select("type parentId name slug image").lean();
     if (!existing) return handleResponse(res, 404, "Category not found");
 
     const hasParentId = Object.prototype.hasOwnProperty.call(categoryData, "parentId");
@@ -445,6 +446,11 @@ export const updateCategory = async (req, res) => {
     );
 
     if (!updatedCategory) return handleResponse(res, 404, "Category not found");
+
+    // Old image is removed only after the DB update succeeded (no-op for Cloudinary URLs).
+    if (existing.image && existing.image !== updatedCategory.image) {
+      deleteLocalImageByUrl(existing.image);
+    }
 
     invalidate("cache:catalog:categories:*").catch(err => {
       console.warn("[Category] Cache invalidation failed:", err.message);

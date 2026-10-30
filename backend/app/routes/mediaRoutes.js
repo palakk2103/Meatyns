@@ -11,7 +11,10 @@ import {
 import logger from "../services/logger.js";
 
 const router = express.Router();
-const upload = multer({ storage: multer.memoryStorage() });
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: parseInt(process.env.MEDIA_MAX_FILE_SIZE || "10485760", 10) || 10485760, files: 1 },
+});
 
 const VALID_ENTITY_TYPES = [
   "product",

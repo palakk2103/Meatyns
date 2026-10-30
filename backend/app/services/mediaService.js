@@ -2,6 +2,12 @@ import crypto from "crypto";
 import { v2 as cloudinary } from "cloudinary";
 import MediaMetadata from "../models/mediaMetadata.js";
 import logger from "./logger.js";
+import {
+  shouldStoreLocally,
+  saveImageToLocal,
+  isLocalStorageEnabled,
+  detectImageType,
+} from "./localImageStorage.js";
 
 function getMaxUploadBytes() {
   const raw = parseInt(process.env.MEDIA_MAX_FILE_SIZE || "10485760", 10);
@@ -490,6 +496,16 @@ async function deleteMedia(publicId, userId, userModel) {
 }
 
 async function uploadToCloudinary(fileBuffer, folder = "categories", options = {}) {
+  // STORAGE_PROVIDER=local routes validated images to server disk. Anything else
+  // (PDFs, KYC document folders) keeps using Cloudinary, so rollback = unset the flag.
+  if (shouldStoreLocally(fileBuffer)) {
+    return saveImageToLocal(fileBuffer, folder);
+  }
+  if (isLocalStorageEnabled() && isImageMimeType(options.mimeType) && !detectImageType(fileBuffer)) {
+    const err = new Error("Unsupported or corrupt image. Allowed: JPEG, PNG, WebP, GIF");
+    err.statusCode = 400;
+    throw err;
+  }
   validateStorageConfig();
   configureCloudinary();
   const mimeType = String(options.mimeType || "").trim().toLowerCase();
