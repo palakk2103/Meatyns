@@ -13,8 +13,12 @@ jest.unstable_mockModule("../app/models/customer.js", () => ({
 }));
 
 jest.unstable_mockModule("../app/utils/otp.js", () => ({
-  generateOTP: jest.fn(() => "1234"),
-  useRealSMS: jest.fn(() => false),
+  generateSecureOtp: jest.fn(() => "5821"),
+  MOCK_OTP: "1234",
+}));
+
+jest.unstable_mockModule("../app/services/smsIndiaHubService.js", () => ({
+  sendSmsIndiaHubOtp: jest.fn().mockResolvedValue({ provider: "mock" }),
 }));
 
 const { issueCustomerOtp, verifyCustomerOtpCode } = await import(
@@ -107,7 +111,7 @@ describe("Phase 0 OTP hardening", () => {
 
     expect(customer.otp).toBeUndefined();
     expect(customer.otpHash).toBeTruthy();
-    expect(customer.otpHash).not.toBe("1234");
+    expect(customer.otpHash).not.toBe("5821");
     expect(customer.save).toHaveBeenCalled();
   });
 });

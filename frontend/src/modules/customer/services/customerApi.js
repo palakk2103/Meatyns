@@ -5,11 +5,12 @@ import { filterChickenAndMuttonTree, filterChickenAndMuttonFlat } from "../utils
 
 export const customerApi = {
   loginWithPassword: (data) =>
-    axiosInstance.post("/customer/login-password", data),
+    axiosInstance.post("/customer/login-password", data, { withCredentials: true }),
   sendLoginOtp: (data) => axiosInstance.post("/customer/send-login-otp", data),
   sendSignupOtp: (data) =>
     axiosInstance.post("/customer/send-signup-otp", data),
-  verifyOtp: (data) => axiosInstance.post("/customer/verify-otp", data),
+  verifyOtp: (data) =>
+    axiosInstance.post("/customer/verify-otp", data, { withCredentials: true }),
   getProfile: () => getWithDedupe("/customer/profile", {}, { ttl: 5000 }), // Short cache for profile
   updateProfile: (data) => axiosInstance.put("/customer/profile", data),
   deleteAccount: () => axiosInstance.delete("/customer/profile"),

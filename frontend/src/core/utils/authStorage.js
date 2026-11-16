@@ -1,5 +1,5 @@
 import { isTokenExpired } from "./token";
-import { rawGet, rawRemove } from "./storage";
+import { rawGet, rawRemove, STORAGE_KEYS } from "./storage";
 
 function extractTokenCandidate(rawValue) {
   if (rawValue == null) return null;
@@ -45,7 +45,13 @@ export function normalizeStoredToken(rawValue) {
 export function getStoredAuthToken(storageKey, { allowExpired = false } = {}) {
   const normalized = normalizeStoredToken(rawGet(storageKey));
   if (!normalized) return null;
-  if (!allowExpired && isTokenExpired(normalized)) {
+  // A customer with a refresh session keeps their (expired) access token so
+  // the API layer can silently renew it instead of treating them as logged out.
+  const keepExpired =
+    allowExpired ||
+    (storageKey === STORAGE_KEYS.AUTH_CUSTOMER &&
+      rawGet(STORAGE_KEYS.AUTH_CUSTOMER_SESSION) === "1");
+  if (!keepExpired && isTokenExpired(normalized)) {
     rawRemove(storageKey);
     return null;
   }

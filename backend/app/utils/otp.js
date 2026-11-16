@@ -1,3 +1,5 @@
+import crypto from "crypto";
+
 const MOCK_OTP = "1234";
 
 export const isMockOtpPermitted = () => {
@@ -33,6 +35,12 @@ export const generateOTP = () => {
     return MOCK_OTP;
   }
   return randomOtp(OTP_LENGTH);
+};
+
+// Cryptographically secure OTP with no mock/env bypass (used by customer phone auth).
+export const generateSecureOtp = (length = 4) => {
+  const len = Math.max(4, Number(length) || 4);
+  return String(crypto.randomInt(10 ** (len - 1), 10 ** len));
 };
 
 export { MOCK_OTP };

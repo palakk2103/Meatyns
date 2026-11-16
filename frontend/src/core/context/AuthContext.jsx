@@ -1,7 +1,17 @@
-import { createContext, useContext, useState, useEffect, useMemo } from 'react';
+import { createContext, useContext, useState, useEffect, useMemo, useRef } from 'react';
 import axiosInstance from '@core/api/axios';
 import { getWithDedupe } from '@core/api/dedupe';
 import { getStoredAuthToken } from '@core/utils/authStorage';
+import { isTokenExpired } from '@core/utils/token';
+import {
+    REFRESH_RESULT,
+    clearCustomerSessionHint,
+    endCustomerSessionRemote,
+    markCustomerSession,
+    msUntilExpiry,
+    refreshCustomerAccessToken,
+    subscribeCustomerSession,
+} from '@core/auth/customerSession';
 import {
     getActiveRole,
     subscribeActiveRole,
@@ -46,7 +56,19 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     const [user, setUser] = useState(null);
+    const userRef = useRef(null);
+    userRef.current = user;
     const [isLoading, setIsLoading] = useState(true);
+
+    // Customer session restoration: when the app opens with no usable access
+    // token (expired, or storage evicted) but a refresh cookie may exist, renew
+    // BEFORE deciding whether the customer is logged in. Guards and the profile
+    // fetch wait on `sessionReady` so a refresh/reopen never flashes /login.
+    const [sessionReady, setSessionReady] = useState(() => {
+        if (getActiveRole() !== 'customer') return true;
+        const t = getStoredAuthToken(ROLE_STORAGE_KEYS.customer);
+        return Boolean(t) && !isTokenExpired(t);
+    });
     const token = authData[currentRole];
     const isAuthenticated = !!token;
 
@@ -70,6 +92,61 @@ export const AuthProvider = ({ children }) => {
             document.removeEventListener('visibilitychange', syncStoredTokens);
         };
     }, []);
+
+    // One-shot restore on app start (customer portal only).
+    useEffect(() => {
+        if (sessionReady) return undefined;
+        let cancelled = false;
+        refreshCustomerAccessToken().then((result) => {
+            if (cancelled) return;
+            if (result.status === REFRESH_RESULT.OK) {
+                setAuthData((prev) => ({ ...prev, customer: result.token }));
+            }
+            // INVALID already cleared storage via the session listener;
+            // TRANSIENT keeps whatever token we have (no forced logout).
+            setSessionReady(true);
+        });
+        return () => {
+            cancelled = true;
+        };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    // React to session changes from the API layer (silent refresh / revoked).
+    useEffect(() => {
+        return subscribeCustomerSession((event) => {
+            if (event.type === 'refreshed') {
+                setAuthData((prev) =>
+                    prev.customer === event.token ? prev : { ...prev, customer: event.token }
+                );
+            } else if (event.type === 'invalid') {
+                setAuthData((prev) => (prev.customer ? { ...prev, customer: null } : prev));
+            }
+        });
+    }, []);
+
+    // Renew the customer access token shortly before it expires, and whenever
+    // the tab regains focus / connectivity (timers pause while sleeping).
+    const customerToken = authData.customer;
+    useEffect(() => {
+        if (!customerToken) return undefined;
+        let timer = null;
+        const renewIfNeeded = () => {
+            if (msUntilExpiry(customerToken) <= 60 * 1000) refreshCustomerAccessToken();
+        };
+        const delay = Math.min(
+            Math.max(msUntilExpiry(customerToken) - 60 * 1000, 5000),
+            2 ** 31 - 1
+        );
+        timer = setTimeout(renewIfNeeded, delay);
+        window.addEventListener('online', renewIfNeeded);
+        window.addEventListener('focus', renewIfNeeded);
+        return () => {
+            clearTimeout(timer);
+            window.removeEventListener('online', renewIfNeeded);
+            window.removeEventListener('focus', renewIfNeeded);
+        };
+    }, [customerToken]);
 
     // Register FCM token after login (non-blocking).
     useEffect(() => {
@@ -124,16 +201,21 @@ export const AuthProvider = ({ children }) => {
     // Fetch user profile on mount or token change
     useEffect(() => {
         const fetchProfile = async () => {
+            if (!sessionReady) return;
             if (token) {
                 try {
-                    setIsLoading(true);
+                    // Background token renewals must not unmount the UI.
+                    if (!userRef.current) setIsLoading(true);
                     // Use deduplicated fetch to avoid multiple simultaneous profile calls
                     const endpoint = `/${currentRole}/profile`;
                     const response = await getWithDedupe(endpoint, {}, { ttl: 5000 });
                     setUser(response.data.result);
                 } catch (error) {
                     console.error('Failed to fetch profile:', error);
-                    if (error.response?.status === 401) {
+                    // Customer 401s are handled by the API layer: it already tried a
+                    // silent refresh and only clears credentials if the session is
+                    // truly gone (never on network trouble).
+                    if (error.response?.status === 401 && currentRole !== 'customer') {
                         const storageKey = ROLE_STORAGE_KEYS[currentRole];
                         if (storageKey) {
                             rawRemove(storageKey);
@@ -151,7 +233,7 @@ export const AuthProvider = ({ children }) => {
         };
 
         fetchProfile();
-    }, [token, currentRole]);
+    }, [token, currentRole, sessionReady]);
 
     const login = (userData) => {
         const role = userData.role?.toLowerCase() || 'customer';
@@ -168,7 +250,10 @@ export const AuthProvider = ({ children }) => {
             rawRemove(STORAGE_KEYS.CART);
             rawRemove(STORAGE_KEYS.WISHLIST);
 
+            if (role === 'customer') markCustomerSession();
+
             setAuthData(prev => ({ ...prev, [role]: userData.token }));
+            setSessionReady(true);
             setUser(userData); // Set full data initially
         } else if (userData) {
             // Updating user profile state when already authenticated
@@ -192,6 +277,13 @@ export const AuthProvider = ({ children }) => {
             await removeStoredFcmToken({ role: currentRole });
         } catch (error) {
             console.warn('Failed to remove push token during logout:', error);
+        }
+
+        // Revoke the server-side refresh session first so the cookie cannot
+        // silently log this customer back in.
+        if (currentRole === 'customer') {
+            await endCustomerSessionRemote();
+            clearCustomerSessionHint();
         }
 
         if (storageKey) {

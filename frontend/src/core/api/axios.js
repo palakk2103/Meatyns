@@ -2,13 +2,19 @@ import axios from 'axios';
 import { resolveApiBaseUrl } from './resolveApiBaseUrl';
 import { getStoredAuthToken } from '@core/utils/authStorage';
 import { getActiveRole, ROLES } from '@core/auth/activeRoleStore';
-import { rawGet, STORAGE_KEYS } from '@core/utils/storage';
+import { STORAGE_KEYS } from '@core/utils/storage';
+import { decodeToken } from '@core/utils/token';
+import {
+    refreshCustomerAccessToken,
+    REFRESH_RESULT,
+} from '@core/auth/customerSession';
 
-const ROLE_STORAGE_KEYS = [
-    STORAGE_KEYS.AUTH_SELLER,
-    STORAGE_KEYS.AUTH_ADMIN,
-    STORAGE_KEYS.AUTH_DELIVERY,
-    STORAGE_KEYS.AUTH_CUSTOMER,
+const AUTH_ENDPOINT_PREFIXES = [
+    '/customer/login',
+    '/customer/verify',
+    '/customer/send-',
+    '/customer/refresh',
+    '/customer/logout',
 ];
 
 const ROLE_TO_STORAGE_KEY = {
@@ -101,22 +107,33 @@ axiosInstance.interceptors.request.use(
     }
 );
 
-// Response interceptor for API calls
+// Response interceptor: on a 401 for a customer request, silently renew the
+// access token from the refresh cookie (single-flight) and retry once. Stored
+// tokens are only cleared when the server says the session is gone for good;
+// network trouble never logs the customer out.
 axiosInstance.interceptors.response.use(
     (response) => response,
     async (error) => {
         const originalRequest = error.config;
-        if (error.response?.status === 401 && !originalRequest._retry) {
-            originalRequest._retry = true;
-            const hasStoredRoleToken = ROLE_STORAGE_KEYS.some((key) => Boolean(rawGet(key)));
-            if (hasStoredRoleToken) {
-                console.warn(
-                    '[axios] Received 401 response. Preserving stored auth tokens; session data is only cleared by explicit logout.',
-                    {
-                        url: originalRequest?.url,
-                        method: originalRequest?.method,
-                    }
-                );
+        if (error.response?.status !== 401 || !originalRequest || originalRequest._retry) {
+            return Promise.reject(error);
+        }
+        originalRequest._retry = true;
+
+        const url = originalRequest.url || '';
+        const sentAuth = String(
+            originalRequest.headers?.Authorization ||
+                originalRequest.headers?.get?.('Authorization') ||
+                ''
+        ).replace(/^Bearer\s+/i, '');
+        const wasCustomerRequest = decodeToken(sentAuth)?.role === 'customer';
+        const isAuthEndpoint = AUTH_ENDPOINT_PREFIXES.some((p) => url.startsWith(p));
+
+        if (wasCustomerRequest && !isAuthEndpoint) {
+            const result = await refreshCustomerAccessToken();
+            if (result.status === REFRESH_RESULT.OK) {
+                originalRequest.headers.Authorization = `Bearer ${result.token}`;
+                return axiosInstance(originalRequest);
             }
         }
         return Promise.reject(error);

@@ -4,7 +4,7 @@ import Customer from "../models/customer.js";
 import DeviceClaim from "../models/deviceClaim.js";
 import Transaction from "../models/transaction.js";
 import { sendSmsIndiaHubOtp } from "./smsIndiaHubService.js";
-import { generateOTP, useRealSMS } from "../utils/otp.js";
+import { generateSecureOtp, MOCK_OTP } from "../utils/otp.js";
 import { getRedisClient } from "../config/redis.js";
 import { isValidE164Phone, maskPhone, normalizePhoneNumber } from "../utils/phone.js";
 import { creditWallet } from "./finance/walletService.js";
@@ -25,6 +25,20 @@ const OTP_VERIFY_LIMIT_WINDOW_SECONDS = () =>
   parseInt(process.env.OTP_VERIFY_LIMIT_WINDOW_SECONDS || "900", 10);
 const OTP_VERIFY_LIMIT_PER_WINDOW = () =>
   parseInt(process.env.OTP_VERIFY_LIMIT_PER_WINDOW || "20", 10);
+// Only this number may authenticate with the mock OTP; it never triggers an SMS.
+// Configurable via CUSTOMER_MOCK_OTP_PHONE (backend env only). Set to "none" to disable.
+const DEFAULT_MOCK_OTP_PHONE = "8770620342";
+function getMockOtpPhone() {
+  const configured = String(process.env.CUSTOMER_MOCK_OTP_PHONE ?? DEFAULT_MOCK_OTP_PHONE).trim();
+  if (!configured || configured.toLowerCase() === "none") return null;
+  const normalized = normalizePhoneNumber(configured);
+  return isValidE164Phone(normalized) ? normalized : null;
+}
+export function isMockOtpPhone(phone) {
+  const mock = getMockOtpPhone();
+  return Boolean(mock) && normalizePhoneNumber(phone) === mock;
+}
+
 function otpHashSecret() {
   const secret = process.env.OTP_HASH_SECRET || process.env.JWT_SECRET;
   if (!secret) {
@@ -151,9 +165,14 @@ export async function issueCustomerOtp({
     throw err;
   }
 
-  const realSms = useRealSMS();
-  // Customer app mock OTP: 1234
-  const otp = "1234";
+  const isMock = isMockOtpPhone(phone);
+  const otp = isMock ? MOCK_OTP : generateSecureOtp(4);
+  const previous = {
+    otpHash: customer.otpHash,
+    otpExpiresAt: customer.otpExpiresAt,
+    otpLastSentAt: customer.otpLastSentAt,
+    otpSessionVersion: customer.otpSessionVersion,
+  };
   customer.otpHash = hashOtp(phone, otp);
   customer.otpExpiresAt = new Date(now.getTime() + OTP_EXPIRY_MINUTES() * 60 * 1000);
   customer.otpFailedAttempts = 0;
@@ -167,7 +186,14 @@ export async function issueCustomerOtp({
 
   await customer.save();
 
-  if (realSms) {
+  if (isMock) {
+    otpAuditLog("customer_otp_mock_number", {
+      phone: maskPhone(phone),
+      flow,
+      ipAddress,
+      mode: "mock",
+    });
+  } else {
     try {
       await dispatchCustomerOtpSms({ phone, otp });
       otpAuditLog("customer_otp_sms_dispatched", {
@@ -177,20 +203,25 @@ export async function issueCustomerOtp({
         mode: "real",
       });
     } catch (smsErr) {
-      console.warn("Customer SMS dispatch error (mock OTP 1234 active):", smsErr.message);
+      // Do not leave a usable challenge behind, and do not report success.
+      customer.otpHash = previous.otpHash;
+      customer.otpExpiresAt = previous.otpExpiresAt;
+      customer.otpLastSentAt = previous.otpLastSentAt;
+      customer.otpSessionVersion = previous.otpSessionVersion;
+      await customer.save().catch(() => {});
+      otpAuditLog("customer_otp_sms_failed", {
+        phone: maskPhone(phone),
+        flow,
+        ipAddress,
+        reason: smsErr.message,
+      });
+      const err = new Error("Failed to send OTP. Please try again later.");
+      err.statusCode = 502;
+      throw err;
     }
-  } else {
-    otpAuditLog("customer_otp_mock_mode", {
-      phone: maskPhone(phone),
-      flow,
-      ipAddress,
-      mode: "mock",
-      otp,
-    });
   }
 
-  const response = { sent: true, phone, mockOtp: "1234" };
-  return response;
+  return { sent: true, phone };
 }
 
 export async function verifyCustomerOtpCode({
@@ -213,7 +244,7 @@ export async function verifyCustomerOtpCode({
     limit: OTP_VERIFY_LIMIT_PER_WINDOW(),
     windowSeconds: OTP_VERIFY_LIMIT_WINDOW_SECONDS(),
   });
-  if (!verifyAllowed && code !== "1234") {
+  if (!verifyAllowed) {
     const err = new Error("Too many OTP verification attempts. Try again later.");
     err.statusCode = 429;
     throw err;
@@ -222,8 +253,9 @@ export async function verifyCustomerOtpCode({
   let customer = await Customer.findOne({ phone }).select(
     "+otpHash +otpExpiresAt +otpFailedAttempts +otpLockedUntil +otpSessionVersion +otp +otpExpiry",
   );
+  const isMock = isMockOtpPhone(phone);
   if (!customer) {
-    if (code === "1234") {
+    if (isMock && code === MOCK_OTP) {
       customer = await Customer.create({
         name: "Customer",
         phone,
@@ -241,7 +273,7 @@ export async function verifyCustomerOtpCode({
 
   const now = new Date();
   if (customer.otpLockedUntil && customer.otpLockedUntil > now) {
-    if (code !== "1234") {
+    if (!(isMock && code === MOCK_OTP)) {
       const err = new Error("Too many failed attempts. Please try again later.");
       err.statusCode = 423;
       throw err;
@@ -249,14 +281,16 @@ export async function verifyCustomerOtpCode({
   }
 
   if (!customer.otpHash || !customer.otpExpiresAt || customer.otpExpiresAt <= now) {
-    if (code !== "1234") {
+    if (!(isMock && code === MOCK_OTP)) {
       const err = new Error("Invalid or expired OTP");
       err.statusCode = 400;
       throw err;
     }
   }
 
-  const isValid = code === "1234" || hashOtp(phone, code) === customer.otpHash;
+  const isValid = isMock
+    ? code === MOCK_OTP
+    : hashOtp(phone, code) === customer.otpHash;
   if (!isValid) {
     customer.otpFailedAttempts = (customer.otpFailedAttempts || 0) + 1;
 

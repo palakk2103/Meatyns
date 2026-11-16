@@ -195,7 +195,10 @@ const CategoryProductsPage = () => {
 
             if (currentCat) {
                 setCategory(currentCat);
-                const childrenToMap = categoryType === 'subcategory' ? (currentCat.siblings || []) : (currentCat.children || []);
+                // Any matched non-header item (cut/category/subcategory) shows its siblings in the sidebar
+                const childrenToMap = categoryType !== 'header' && currentCat.siblings
+                    ? currentCat.siblings
+                    : (currentCat.children || []);
                 const subs = childrenToMap.map(s => ({
                     id: s._id,
                     name: s.name,
@@ -204,7 +207,7 @@ const CategoryProductsPage = () => {
                 setSubCategories([{ id: 'all', name: 'All', icon: 'https://cdn-icons-png.flaticon.com/128/2321/2321831.png' }, ...subs]);
 
                 // If user accessed a specific cut/subcategory directly, pre-select it
-                if (categoryType === 'subcategory' && currentCat._id) {
+                if (categoryType !== 'header' && currentCat._id) {
                     setSelectedSubCategory(currentCat._id);
                 } else if (categoryType === 'header') {
                     setSelectedSubCategory('all');
@@ -231,6 +234,7 @@ const CategoryProductsPage = () => {
             };
             const resolvedId = currentCat?._id || catId;
             if (parentHeader?._id) {
+                // Load every product under the header so the sidebar can switch between cuts
                 productParams.headerId = parentHeader._id;
             } else if (categoryType === 'header') {
                 productParams.headerId = resolvedId;
@@ -518,69 +522,6 @@ const CategoryProductsPage = () => {
 
                         {/* Content */}
                         <main className="flex-1 p-2 sm:p-4 md:p-6 pb-28 bg-white space-y-4 overflow-x-hidden min-h-[calc(100vh-60px)]">
-                            {/* Meat Cut & Boneless Facet Filter Pills */}
-                            <div className="flex items-center gap-2 overflow-x-auto pb-1 hide-scrollbar select-none">
-                                <button
-                                    type="button"
-                                    onClick={() => { setSelectedCutFilter('all'); setSelectedBoneFilter('all'); }}
-                                    className={cn(
-                                        "px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all border cursor-pointer",
-                                        selectedCutFilter === 'all' && selectedBoneFilter === 'all'
-                                            ? "bg-[#1A1A1A] text-white border-[#1A1A1A] shadow-xs"
-                                            : "bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100"
-                                    )}
-                                >
-                                    All Cuts
-                                </button>
-                                <button
-                                    type="button"
-                                    onClick={() => setSelectedCutFilter(prev => prev === 'curry_cut' ? 'all' : 'curry_cut')}
-                                    className={cn(
-                                        "px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all border cursor-pointer",
-                                        selectedCutFilter === 'curry_cut'
-                                            ? "bg-[#FDCE04] text-[#1A1A1A] border-[#FDCE04] shadow-xs"
-                                            : "bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100"
-                                    )}
-                                >
-                                    🍲 Curry Cut
-                                </button>
-                                <button
-                                    type="button"
-                                    onClick={() => setSelectedCutFilter(prev => prev === 'biryani_cut' ? 'all' : 'biryani_cut')}
-                                    className={cn(
-                                        "px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all border cursor-pointer",
-                                        selectedCutFilter === 'biryani_cut'
-                                            ? "bg-[#FDCE04] text-[#1A1A1A] border-[#FDCE04] shadow-xs"
-                                            : "bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100"
-                                    )}
-                                >
-                                    🍚 Biryani Cut
-                                </button>
-                                <button
-                                    type="button"
-                                    onClick={() => setSelectedBoneFilter(prev => prev === 'boneless' ? 'all' : 'boneless')}
-                                    className={cn(
-                                        "px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all border cursor-pointer",
-                                        selectedBoneFilter === 'boneless'
-                                            ? "bg-[#FDCE04] text-[#1A1A1A] border-[#FDCE04] shadow-xs"
-                                            : "bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100"
-                                    )}
-                                >
-                                    ✨ Boneless
-                                </button>
-                                <button
-                                    type="button"
-                                    onClick={() => setSelectedBoneFilter(prev => prev === 'bone_in' ? 'all' : 'bone_in')}
-                                    className={cn(
-                                        "px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all border cursor-pointer",
-                                        selectedBoneFilter === 'bone_in'
-                                            ? "bg-[#FDCE04] text-[#1A1A1A] border-[#FDCE04] shadow-xs"
-                                            : "bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100"
-                                    )}
-                                >
-                                    🍖 Bone-In
-                                </button>
-                            </div>
                             {filteredProducts.length > 0 ? (
                                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-2.5 sm:gap-3.5 md:gap-4">
                                     {filteredProducts.map((product) => (

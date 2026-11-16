@@ -16,6 +16,8 @@
 export const STORAGE_KEYS = Object.freeze({
     // ── Auth tokens (one per portal) ──────────────────────────────────────────
     AUTH_CUSTOMER: 'auth_customer',
+    // Non-sensitive marker: this browser holds a server-side refresh session (HttpOnly cookie).
+    AUTH_CUSTOMER_SESSION: 'auth_customer_session',
     AUTH_SELLER: 'auth_seller',
     AUTH_ADMIN: 'auth_admin',
     AUTH_DELIVERY: 'auth_delivery',

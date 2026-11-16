@@ -157,7 +157,7 @@ const CartPage = () => {
                                                 </div>
                                                 <div className="min-w-0 flex-1">
                                                     <div className="flex items-start justify-between gap-3">
-                                                        <div>
+                                                        <div className="min-w-0 flex-1">
                                                             <h3 className="truncate text-base font-bold text-slate-900">
                                                                 {item.name}
                                                             </h3>
@@ -167,7 +167,9 @@ const CartPage = () => {
                                                         </div>
                                                         <button
                                                             onClick={() => handleRemove(item.id, item.name, item.variantSku)}
-                                                            className="text-slate-400 hover:text-rose-500 p-1"
+                                                            aria-label="Remove item"
+                                                            title="Remove item"
+                                                            className="flex-shrink-0 text-slate-400 hover:text-rose-500 active:scale-90 p-1.5 rounded-lg hover:bg-rose-50"
                                                         >
                                                             <Trash2 size={16} />
                                                         </button>
@@ -190,9 +192,11 @@ const CartPage = () => {
                                                         })()}
                                                         <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-2 py-0.5">
                                                             <button
-                                                                onClick={() => updateQuantity(item.id, -1, item.variantSku)}
+                                                                onClick={() => item.quantity <= 1
+                                                                    ? handleRemove(item.id, item.name, item.variantSku)
+                                                                    : updateQuantity(item.id, -1, item.variantSku)}
+                                                                aria-label="Decrease quantity"
                                                                 className="h-7 w-7 flex items-center justify-center text-slate-600"
-                                                                disabled={item.quantity <= 1}
                                                             >
                                                                 <Minus size={13} />
                                                             </button>
@@ -358,9 +362,10 @@ const CartPage = () => {
                                                 <div className="flex items-center gap-4 flex-shrink-0">
                                                     <div className="flex items-center border border-slate-200 rounded-xl bg-slate-50/80 px-2 py-1 gap-2">
                                                         <button
-                                                            onClick={() => updateQuantity(item.id, -1, item.variantSku)}
-                                                            disabled={item.quantity <= 1}
-                                                            className="w-6 h-6 flex items-center justify-center text-slate-600 hover:text-slate-900 disabled:opacity-30 cursor-pointer"
+                                                            onClick={() => item.quantity <= 1
+                                                                ? handleRemove(item.id, item.name, item.variantSku)
+                                                                : updateQuantity(item.id, -1, item.variantSku)}
+                                                            className="w-6 h-6 flex items-center justify-center text-slate-600 hover:text-slate-900 cursor-pointer"
                                                         >
                                                             <Minus size={13} strokeWidth={2.5} />
                                                         </button>

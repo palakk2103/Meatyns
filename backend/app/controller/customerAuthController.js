@@ -2,8 +2,13 @@ import Customer from "../models/customer.js";
 import Order from "../models/order.js";
 import Cart from "../models/cart.js";
 import Transaction from "../models/transaction.js";
-import jwt from "jsonwebtoken";
 import handleResponse from "../utils/helper.js";
+import {
+    endCustomerSession,
+    refreshCustomerSession,
+    signCustomerAccessToken,
+    startCustomerSession,
+} from "../services/customerSessionService.js";
 import {
     issueCustomerOtp,
     sanitizeCustomer,
@@ -16,12 +21,17 @@ import {
     verifyOtpSchema,
 } from "../validation/customerAuthValidation.js";
 
-const generateToken = (customer) =>
-    jwt.sign(
-        { id: customer._id, role: "customer" },
-        String(process.env.JWT_SECRET || "").trim(),
-        { expiresIn: "7d" }
-    );
+const generateToken = signCustomerAccessToken;
+
+// Persist the login: HttpOnly refresh cookie + server-side session record.
+// A failure here must never block an otherwise successful login.
+const openSession = async (req, res, customer) => {
+    try {
+        await startCustomerSession(req, res, customer);
+    } catch (error) {
+        console.error("Failed to start customer session:", error?.message);
+    }
+};
 
 /* ===============================
    SIGNUP – Send OTP
@@ -123,6 +133,7 @@ export const verifyCustomerOTP = async (req, res) => {
             customer.otpExpiry = undefined;
             await customer.save();
 
+            await openSession(req, res, customer);
             const token = generateToken(customer);
             return handleResponse(res, 200, "Login successful", {
                 token,
@@ -138,6 +149,7 @@ export const verifyCustomerOTP = async (req, res) => {
             fingerprint: payload.fingerprint,
             userAgent: req.headers["user-agent"],
         });
+        await openSession(req, res, customer);
         const token = generateToken(customer);
 
         return handleResponse(
@@ -179,6 +191,7 @@ export const loginCustomerWithPassword = async (req, res) => {
         customer.lastLogin = new Date();
         await customer.save();
 
+        await openSession(req, res, customer);
         const token = generateToken(customer);
 
         return handleResponse(res, 200, "Login successful", {
@@ -187,6 +200,34 @@ export const loginCustomerWithPassword = async (req, res) => {
         });
     } catch (error) {
         return handleResponse(res, error.statusCode || 500, error.message);
+    }
+};
+
+/* ===============================
+   REFRESH SESSION (cookie -> new access token)
+================================ */
+export const refreshCustomerToken = async (req, res) => {
+    try {
+        const { token, customer } = await refreshCustomerSession(req, res);
+        return handleResponse(res, 200, "Session refreshed", {
+            token,
+            customer: sanitizeCustomer(customer),
+        });
+    } catch (error) {
+        const status = error.statusCode || 500;
+        return handleResponse(res, status, status === 500 ? "Unable to refresh session" : error.message);
+    }
+};
+
+/* ===============================
+   LOGOUT (revoke session + clear cookie)
+================================ */
+export const logoutCustomer = async (req, res) => {
+    try {
+        await endCustomerSession(req, res);
+        return handleResponse(res, 200, "Logged out");
+    } catch (error) {
+        return handleResponse(res, 500, "Unable to log out");
     }
 };
 
