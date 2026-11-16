@@ -13,7 +13,7 @@ export const isChickenOrMutton = (categoryOrName) => {
     const text = categoryOrName.trim().toLowerCase();
     if (text === 'all') return true;
     if (EXCLUDED_REGEX.test(text) && !CHICKEN_MUTTON_REGEX.test(text)) return false;
-    return CHICKEN_MUTTON_REGEX.test(text);
+    return true; // allow-by-default so newly created categories render
   }
 
   const name = String(categoryOrName.name || '').toLowerCase();
@@ -28,7 +28,7 @@ export const isChickenOrMutton = (categoryOrName) => {
     return false;
   }
 
-  return CHICKEN_MUTTON_REGEX.test(combined);
+  return true; // allow-by-default: only the excluded list above is hidden
 };
 
 export const filterChickenAndMuttonTree = (tree = []) => {

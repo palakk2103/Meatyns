@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
+import * as cache from "../services/cacheService.js";
 
 const sellerSchema = new mongoose.Schema(
   {
@@ -189,6 +190,16 @@ const sellerSchema = new mongoose.Schema(
 
 sellerSchema.index({ location: "2dsphere" });
 sellerSchema.index({ isActive: 1, isVerified: 1 });
+
+// Seller location / radius / active / approval changes alter which seller
+// serves a customer, so cached selections must not outlive them.
+const dropSelectedSellerCache = () => {
+  Promise.resolve(cache.delPattern?.(cache.buildKey("sellers", "selected", "*"))).catch(() => {});
+};
+sellerSchema.post("save", dropSelectedSellerCache);
+sellerSchema.post("findOneAndUpdate", dropSelectedSellerCache);
+sellerSchema.post("updateOne", dropSelectedSellerCache);
+sellerSchema.post("updateMany", dropSelectedSellerCache);
 
 // Hash password before saving
 sellerSchema.pre("save", async function (next) {

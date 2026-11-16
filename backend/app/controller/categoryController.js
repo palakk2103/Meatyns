@@ -82,7 +82,11 @@ export const getCategories = async (req, res) => {
         cacheKey,
         async () => {
           const selectFields = "name slug image iconId type parentId headerColor headerFontColor headerIconColor displayOrder status description metaTitle metaDescription canonicalUrl ogImage";
-          const treeQuery = { type: type || "header" };
+          // Without an explicit type, also surface orphan categories/subcategories
+          // (no parent) as roots so they stay selectable in product forms.
+          const treeQuery = type
+            ? { type }
+            : { $or: [{ type: "header" }, { parentId: null, type: { $ne: "header" } }] };
           if (status && status !== "all") {
             treeQuery.status = status;
           }

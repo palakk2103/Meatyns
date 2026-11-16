@@ -1,12 +1,25 @@
 import Seller from "../models/seller.js";
-import { calculateDistance } from "../utils/helper.js";
-import { buildKey, getOrSet, getTTL } from "./cacheService.js";
+import Product from "../models/product.js";
+import { distanceMeters } from "../utils/geoUtils.js";
+import * as cache from "./cacheService.js";
+import { getApprovedOrLegacyFilter } from "./productModerationService.js";
 
 const MAX_SELLER_SEARCH_DISTANCE_M = 10000000;
+
+export const DEFAULT_SERVICE_RADIUS_KM = 5;
+export const MIN_SERVICE_RADIUS_KM = 1;
+export const MAX_SERVICE_RADIUS_KM = 100;
 
 export function parseCustomerCoordinates(query = {}) {
   const lat = Number(query.lat);
   const lng = Number(query.lng);
+
+  if (
+    query.lat === undefined || query.lat === null || query.lat === "" ||
+    query.lng === undefined || query.lng === null || query.lng === ""
+  ) {
+    return { valid: false, lat: null, lng: null };
+  }
 
   if (!Number.isFinite(lat) || !Number.isFinite(lng)) {
     return { valid: false, lat: null, lng: null };
@@ -20,77 +33,134 @@ export function parseCustomerCoordinates(query = {}) {
 }
 
 /**
- * Round lat/lng to 4 decimal places (~11m precision) for cache key.
- * This groups nearby requests into the same cache bucket.
+ * A seller's configured radius in km, bounded to the range the seller/admin
+ * forms allow (1-100). Legacy/bad values (e.g. 100000) are clamped, never
+ * treated as "serves the whole country".
  */
-function buildNearbySellersKey(lat, lng) {
-  const rLat = Number(lat).toFixed(4);
-  const rLng = Number(lng).toFixed(4);
-  return buildKey("sellers", "nearby", `${rLat}:${rLng}`);
+export function normalizeServiceRadiusKm(value) {
+  const n = Number(value);
+  if (!Number.isFinite(n) || n <= 0) return DEFAULT_SERVICE_RADIUS_KM;
+  return Math.min(Math.max(n, MIN_SERVICE_RADIUS_KM), MAX_SERVICE_RADIUS_KM);
 }
 
-export async function getNearbySellerIdsForCustomer(lat, lng) {
+/**
+ * Pure selection rule (no I/O) so it is unit-testable.
+ *  1. Sellers whose radius covers the customer -> pick the nearest.
+ *  2. Nobody covers the customer -> fall back to the nearest eligible seller.
+ *  Ties break on seller id for a deterministic result.
+ * `sellers` must already be eligible (active, approved, has products).
+ */
+export function selectSellerForCoordinates(lat, lng, sellers = []) {
+  const candidates = [];
+  for (const seller of sellers) {
+    const coords = seller?.location?.coordinates;
+    if (!Array.isArray(coords) || coords.length < 2) continue;
+    const [sellerLng, sellerLat] = coords.map(Number);
+    if (!Number.isFinite(sellerLat) || !Number.isFinite(sellerLng)) continue;
+    if (sellerLng === 0 && sellerLat === 0) continue; // unset location
+    if (Math.abs(sellerLat) > 90 || Math.abs(sellerLng) > 180) continue;
+
+    candidates.push({
+      id: String(seller._id),
+      distanceKm: distanceMeters(lat, lng, sellerLat, sellerLng) / 1000,
+      radiusKm: normalizeServiceRadiusKm(seller.serviceRadius),
+    });
+  }
+  if (!candidates.length) return null;
+
+  const byDistance = (a, b) =>
+    a.distanceKm - b.distanceKm || a.id.localeCompare(b.id);
+
+  const covering = candidates.filter((c) => c.distanceKm <= c.radiusKm).sort(byDistance);
+  if (covering.length) {
+    const c = covering[0];
+    return { sellerId: c.id, distanceKm: c.distanceKm, withinRadius: true, fallback: false };
+  }
+  const nearest = candidates.sort(byDistance)[0];
+  return {
+    sellerId: nearest.id,
+    distanceKm: nearest.distanceKm,
+    withinRadius: false,
+    fallback: true,
+  };
+}
+
+/** Round lat/lng to 4 decimals (~11m) so nearby requests share a cache bucket. */
+function buildSelectedSellerKey(lat, lng) {
+  return cache.buildKey(
+    "sellers",
+    "selected",
+    `${Number(lat).toFixed(4)}:${Number(lng).toFixed(4)}`,
+  );
+}
+
+/** Drop cached selections (call when a seller's location/radius/status changes). */
+export async function invalidateSellerSelectionCache() {
+  try {
+    await cache.delPattern(cache.buildKey("sellers", "selected", "*"));
+  } catch (err) {
+    console.warn("[customerVisibility] selection cache invalidation failed:", err.message);
+  }
+}
+
+/**
+ * Single source of truth: which ONE seller serves a customer at (lat, lng).
+ * Returns { sellerId, distanceKm, withinRadius, fallback } or null when no
+ * eligible seller exists at all.
+ */
+export async function resolveSelectedSellerForCustomer(lat, lng) {
   const fetchFn = async () => {
-    // 1. Fetch active approved sellers matching 2dsphere near query
-    const geoSellers = await Seller.find({
+    const sellers = await Seller.find({
       isActive: true,
-      applicationStatus: { $ne: "rejected" },
+      applicationStatus: "approved",
       location: {
         $near: {
-          $geometry: {
-            type: "Point",
-            coordinates: [lng, lat],
-          },
+          $geometry: { type: "Point", coordinates: [lng, lat] },
           $maxDistance: MAX_SELLER_SEARCH_DISTANCE_M,
         },
       },
     })
-      .select("_id location serviceRadius isOnline isActive storeHours")
+      .select("_id location serviceRadius")
       .lean();
 
-    const matchedSellers = [];
+    if (!sellers.length) return null;
 
-    for (const seller of geoSellers) {
-      const coords = seller?.location?.coordinates;
-      if (!Array.isArray(coords) || coords.length < 2) continue;
-      const [sellerLng, sellerLat] = coords;
-      if (!Number.isFinite(sellerLat) || !Number.isFinite(sellerLng)) continue;
+    // A seller with nothing to sell must not capture the customer.
+    const sellerIdsWithProducts = new Set(
+      (
+        await Product.distinct("sellerId", {
+          sellerId: { $in: sellers.map((s) => s._id) },
+          status: "active",
+          ...getApprovedOrLegacyFilter(),
+        })
+      ).map(String),
+    );
 
-      // Skip invalid [0, 0] coordinates
-      if (sellerLng === 0 && sellerLat === 0) continue;
-
-      const distanceKm = calculateDistance(lat, lng, sellerLat, sellerLng);
-      const effectiveRadius = Math.max(Number(seller.serviceRadius) || 5, 1);
-
-      if (distanceKm <= effectiveRadius) {
-        matchedSellers.push({
-          id: String(seller._id),
-          distanceKm,
-          isOnline: seller.isOnline !== false,
-        });
-      }
-    }
-
-    // Sort sellers: 
-    // 1. Online stores first
-    // 2. Closest distance first (nearest outlet)
-    matchedSellers.sort((a, b) => {
-      if (a.isOnline !== b.isOnline) {
-        return a.isOnline ? -1 : 1;
-      }
-      return a.distanceKm - b.distanceKm;
-    });
-
-    return matchedSellers.map((s) => s.id);
+    return selectSellerForCoordinates(
+      lat,
+      lng,
+      sellers.filter((s) => sellerIdsWithProducts.has(String(s._id))),
+    );
   };
 
-  return getOrSet(buildNearbySellersKey(lat, lng), fetchFn, getTTL("nearbySellers"));
+  return cache.getOrSet(
+    buildSelectedSellerKey(lat, lng),
+    fetchFn,
+    cache.getTTL("nearbySellers"),
+  );
 }
 
 /**
- * Helper to get the single nearest active outlet for customer coordinates
+ * Backward-compatible: returns an array, now containing at most ONE seller id
+ * (the selected one). Empty only when no eligible seller exists anywhere.
  */
+export async function getNearbySellerIdsForCustomer(lat, lng) {
+  const selected = await resolveSelectedSellerForCustomer(lat, lng);
+  return selected ? [selected.sellerId] : [];
+}
+
+/** Helper to get the single selected outlet id for customer coordinates. */
 export async function getNearestSellerForCustomer(lat, lng) {
-  const nearbyIds = await getNearbySellerIdsForCustomer(lat, lng);
-  return nearbyIds.length > 0 ? nearbyIds[0] : null;
+  const selected = await resolveSelectedSellerForCustomer(lat, lng);
+  return selected ? selected.sellerId : null;
 }

@@ -1,7 +1,21 @@
 import axiosInstance from "@core/api/axios";
 import { getWithDedupe, invalidateCache } from "@core/api/dedupe";
+import { getJSON, STORAGE_KEYS } from "@core/utils/storage";
 
 import { filterChickenAndMuttonTree, filterChickenAndMuttonFlat } from "../utils/categoryFilter";
+
+// Every catalogue request must resolve the SAME serving seller on the backend,
+// which it derives from the customer's coordinates. Callers that forget to pass
+// lat/lng get the persisted delivery location added here so no screen can show
+// a different seller's catalogue than the rest of the app.
+const withCustomerLocation = (params = {}) => {
+  if (params && params.lat !== undefined && params.lng !== undefined) return params;
+  const stored = getJSON(STORAGE_KEYS.LOCATION, null);
+  const lat = Number(stored?.latitude);
+  const lng = Number(stored?.longitude);
+  if (!Number.isFinite(lat) || !Number.isFinite(lng)) return params;
+  return { ...params, lat, lng };
+};
 
 export const customerApi = {
   loginWithPassword: (data) =>
@@ -39,8 +53,10 @@ export const customerApi = {
     }
     return res;
   },
-  getProducts: (params, options) => getWithDedupe("/products", params, options),
-  getProductById: (id, params) => getWithDedupe(`/products/${id}`, params),
+  getProducts: (params, options) =>
+    getWithDedupe("/products", withCustomerLocation(params), options),
+  getProductById: (id, params) =>
+    getWithDedupe(`/products/${id}`, withCustomerLocation(params)),
 
   // Sellers & Location
   getNearbySellers: (params) => getWithDedupe("/seller/nearby", params),
@@ -167,7 +183,8 @@ export const customerApi = {
   // Public offers
   getOffers: () => getWithDedupe("/offers"),
   // Offer sections (category → products, banner + side image)
-  getOfferSections: (params) => getWithDedupe("/offer-sections", params),
+  getOfferSections: (params) =>
+    getWithDedupe("/offer-sections", withCustomerLocation(params)),
 
   // Coupons & Deals
   validateCoupon: (data) => axiosInstance.post("/coupons/validate", data),

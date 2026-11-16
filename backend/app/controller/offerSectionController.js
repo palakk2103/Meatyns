@@ -22,7 +22,7 @@ export const getPublicOfferSections = async (req, res) => {
     const cacheKey = buildKey(
       "offersections",
       "public",
-      `${coords.lat.toFixed(3)}:${coords.lng.toFixed(3)}`,
+      `${coords.lat.toFixed(4)}:${coords.lng.toFixed(4)}`,
     );
 
     const filteredSections = await getOrSet(

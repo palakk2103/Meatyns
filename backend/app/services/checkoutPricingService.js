@@ -17,6 +17,7 @@ import { computeOrderDiscount } from "./finance/couponService.js";
 import { getOrCreateFinanceSettings } from "./finance/financeSettingsService.js";
 import { validateCustomerDealLimit } from "./flashDealService.js";
 import { resolveDeliveryZoneForLocation } from "./deliveryZoneService.js";
+import { resolveSelectedSellerForCustomer } from "./customerVisibilityService.js";
 
 function normalizeLocation(location = null) {
   const lat = Number(location?.lat);
@@ -44,7 +45,7 @@ export function groupHydratedItemsBySeller(hydratedItems = []) {
   return grouped;
 }
 
-async function computeDistanceKmForSeller({ sellerId, addressLocation, session = null }) {
+async function computeDistanceKmForSeller({ sellerId, addressLocation, session = null, isSelectedSeller = false }) {
   const query = Seller.findById(sellerId)
     .select("location serviceRadius shopName isOnline isManualOverride storeHours isActive applicationStatus")
     .lean();
@@ -89,7 +90,10 @@ async function computeDistanceKmForSeller({ sellerId, addressLocation, session =
   );
   const distanceKm = Number((distanceInMeters / 1000).toFixed(3));
 
-  if (zoneResolution.fallbackToRadius) {
+  // The selected seller is, by construction, the one that serves this customer
+  // (nearest covering seller, or nearest overall when none covers them), so the
+  // raw radius check must not reject it.
+  if (zoneResolution.fallbackToRadius && !isSelectedSeller) {
     const radius = Number(seller.serviceRadius || 5);
     if (distanceKm > radius) {
       const err = new Error(
@@ -481,6 +485,29 @@ export async function buildCheckoutPricingSnapshot({
 
   const itemsBySeller = groupHydratedItemsBySeller(hydratedItems);
   const sellerIds = Array.from(itemsBySeller.keys()).sort((a, b) => a.localeCompare(b));
+
+  // One customer location is served by exactly ONE seller. Validate on the
+  // backend (never trust the client) that the whole cart belongs to it.
+  let selectedSellerId = null;
+  const checkoutLocation = normalizeLocation(address?.location);
+  if (checkoutLocation) {
+    const selected = await resolveSelectedSellerForCustomer(
+      checkoutLocation.lat,
+      checkoutLocation.lng,
+    );
+    if (selected) {
+      selectedSellerId = selected.sellerId;
+      const foreign = sellerIds.filter((id) => id !== selectedSellerId);
+      if (foreign.length > 0) {
+        const err = new Error(
+          "Some items in your cart are not available for your delivery location. Please clear your cart and add items again.",
+        );
+        err.statusCode = 409;
+        err.code = "CART_SELLER_MISMATCH";
+        throw err;
+      }
+    }
+  }
   const sellerBreakdownEntries = [];
 
   const globalHandling = await computeGlobalHandlingFeeForCheckout(hydratedItems, { session });
@@ -514,6 +541,7 @@ export async function buildCheckoutPricingSnapshot({
       sellerId,
       addressLocation: address?.location,
       session,
+      isSelectedSeller: sellerId === selectedSellerId,
     });
     const distanceKm = typeof distanceResult === "number" ? distanceResult : distanceResult.distanceKm;
     const zone = typeof distanceResult === "object" ? distanceResult.zone : null;

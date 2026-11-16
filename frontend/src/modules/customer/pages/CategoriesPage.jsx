@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight, Leaf, Search, ShieldCheck } from "lucide-react";
 import { customerApi } from "../services/customerApi";
 import { applyCloudinaryTransform } from "@/core/utils/imageUtils";
 import meatSeafoodBoard from "@/assets/meat_seafood_board.jpg";
+import { isChickenOrMutton } from "../utils/categoryFilter";
 
 // Grid icon with 4 rounded squares matching the reference screenshot
 const CategoryGridIcon = () => (
@@ -114,10 +115,7 @@ const resolveCategoryImage = (cat) => {
   return "https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&q=80&w=350&h=350";
 };
 
-const isMeat = (txt) =>
-  /chicken|poultry|murga|mutton|goat|lamb|gosht|bakra/i.test(
-    txt || ""
-  );
+const isMeat = (txt) => isChickenOrMutton(txt || "");
 
 const CategoriesPage = () => {
   const navigate = useNavigate();

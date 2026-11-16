@@ -20,14 +20,36 @@ const LOCATION_TTL_MS = 30 * 24 * 60 * 60 * 1000;
 
 export const LocationProvider = ({ children }) => {
   // Default location (used until we can resolve a better one)
-  const [currentLocation, setCurrentLocation] = useState({
-    name: "214, Rajshri Palace Colony, Pipliyahana, Indore, Madhya Pradesh 452018, India",
-    time: "12-15 mins",
-    city: "Indore",
-    state: "Madhya Pradesh",
-    pincode: "452018",
-    latitude: 22.711140989838025,
-    longitude: 75.9001552518043,
+  // Start from the persisted delivery location when there is one, so the very
+  // first catalogue request resolves the correct serving seller instead of
+  // briefly using the hardcoded default below.
+  const [currentLocation, setCurrentLocation] = useState(() => {
+    const stored = getJSON(STORAGE_KEY, null);
+    const storedName = stored?.address || stored?.name;
+    if (
+      storedName &&
+      Number.isFinite(Number(stored?.latitude)) &&
+      Number.isFinite(Number(stored?.longitude))
+    ) {
+      return {
+        name: storedName,
+        time: stored.time || "12-15 mins",
+        city: stored.city,
+        state: stored.state,
+        pincode: stored.pincode,
+        latitude: Number(stored.latitude),
+        longitude: Number(stored.longitude),
+      };
+    }
+    return {
+      name: "214, Rajshri Palace Colony, Pipliyahana, Indore, Madhya Pradesh 452018, India",
+      time: "12-15 mins",
+      city: "Indore",
+      state: "Madhya Pradesh",
+      pincode: "452018",
+      latitude: 22.711140989838025,
+      longitude: 75.9001552518043,
+    };
   });
 
   // Address list for drawer UI – will be hydrated from profile API.

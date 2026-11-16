@@ -670,26 +670,28 @@ const AddProduct = () => {
                       const matchedCat = categories.find((c) => (c._id || c.id) === activeCatId);
                       if (!matchedCat || !Array.isArray(matchedCat.children)) return null;
 
-                      const hasGrandchildren = matchedCat.children.some(
-                        (c) => Array.isArray(c.children) && c.children.length > 0
-                      );
-                      if (hasGrandchildren) {
-                        return matchedCat.children.map((group) => (
-                          <optgroup key={group._id || group.id} label={group.name}>
-                            {(group.children || []).map((sub) => (
-                              <option key={sub._id || sub.id} value={sub._id || sub.id}>
-                                {sub.name}
-                              </option>
-                            ))}
-                          </optgroup>
-                        ));
-                      }
+                      const hasKids = (c) => Array.isArray(c.children) && c.children.length > 0;
+                      const groups = matchedCat.children.filter(hasKids);
+                      const singles = matchedCat.children.filter((c) => !hasKids(c));
 
-                      return matchedCat.children.map((sub) => (
-                        <option key={sub._id || sub.id} value={sub._id || sub.id}>
-                          {sub.name}
-                        </option>
-                      ));
+                      return (
+                        <>
+                          {singles.map((sub) => (
+                            <option key={sub._id || sub.id} value={sub._id || sub.id}>
+                              {sub.name}
+                            </option>
+                          ))}
+                          {groups.map((group) => (
+                            <optgroup key={group._id || group.id} label={group.name}>
+                              {group.children.map((sub) => (
+                                <option key={sub._id || sub.id} value={sub._id || sub.id}>
+                                  {sub.name}
+                                </option>
+                              ))}
+                            </optgroup>
+                          ))}
+                        </>
+                      );
                     })()}
                   </select>
                 </div>

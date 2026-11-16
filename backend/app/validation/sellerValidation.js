@@ -27,7 +27,7 @@ export const sellerProfileUpdateSchema = Joi.object({
   shopName: trimmedString.min(2).max(200).optional(),
   address: trimmedString.max(500).optional(),
   shopBio: trimmedString.max(2000).optional(),
-  serviceRadius: Joi.number().min(0).max(100).optional(),
+  serviceRadius: Joi.number().min(1).max(100).optional(),
 });
 
 export const sellerPasswordChangeSchema = Joi.object({

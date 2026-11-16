@@ -1123,7 +1123,10 @@ const ProductManagement = () => {
                                     ].map((tab) => (
                                         <button
                                             key={tab.id}
-                                            onClick={() => setModalTab(tab.id)}
+                                            onClick={() => {
+                                                setModalTab(tab.id);
+                                                if (tab.id === 'category') fetchCategories();
+                                            }}
                                             className={cn(
                                                 "w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-bold transition-all",
                                                 modalTab === tab.id
@@ -1326,20 +1329,24 @@ const ProductManagement = () => {
                                                             const matchedCat = categories.find(c => c._id === activeCatId);
                                                             if (!matchedCat || !Array.isArray(matchedCat.children)) return null;
 
-                                                            const hasGrandchildren = matchedCat.children.some(c => Array.isArray(c.children) && c.children.length > 0);
-                                                            if (hasGrandchildren) {
-                                                                return matchedCat.children.map(group => (
-                                                                    <optgroup key={group._id} label={group.name}>
-                                                                        {(group.children || []).map(sub => (
-                                                                            <option key={sub._id} value={sub._id}>{sub.name}</option>
-                                                                        ))}
-                                                                    </optgroup>
-                                                                ));
-                                                            }
-
-                                                            return matchedCat.children.map(sub => (
-                                                                <option key={sub._id} value={sub._id}>{sub.name}</option>
-                                                            ));
+                                                            // Categories with sub-items become groups; childless
+                                                            // children stay selectable on their own.
+                                                            const groups = matchedCat.children.filter(c => Array.isArray(c.children) && c.children.length > 0);
+                                                            const singles = matchedCat.children.filter(c => !(Array.isArray(c.children) && c.children.length > 0));
+                                                            return (
+                                                                <>
+                                                                    {singles.map(sub => (
+                                                                        <option key={sub._id} value={sub._id}>{sub.name}</option>
+                                                                    ))}
+                                                                    {groups.map(group => (
+                                                                        <optgroup key={group._id} label={group.name}>
+                                                                            {group.children.map(sub => (
+                                                                                <option key={sub._id} value={sub._id}>{sub.name}</option>
+                                                                            ))}
+                                                                        </optgroup>
+                                                                    ))}
+                                                                </>
+                                                            );
                                                         })()}
                                                     </select>
                                                 </div>
