@@ -208,7 +208,12 @@ const ProductManagement = () => {
             if (formData.scheduleStartDate) data.append('scheduleStartDate', formData.scheduleStartDate);
             if (formData.scheduleEndDate) data.append('scheduleEndDate', formData.scheduleEndDate);
             data.append('headerId', formData.header || formData.categoryId);
-            data.append('categoryId', formData.categoryId || formData.header);
+            // 3-level trees: subcategory's parent is the middle category, not the header.
+            const headerNode = categories.find(c => c._id === (formData.header || formData.categoryId));
+            const parentGroup = (headerNode?.children || []).find(g =>
+                (g.children || []).some(s => s._id === formData.subcategoryId)
+            );
+            data.append('categoryId', parentGroup ? parentGroup._id : (formData.categoryId || formData.header));
             data.append('subcategoryId', formData.subcategoryId);
             data.append('status', formData.status);
             data.append('isFeatured', formData.isFeatured);

@@ -174,7 +174,13 @@ const AddProduct = () => {
 
       // Category IDs
       data.append("headerId", formData.header);
-      data.append("categoryId", formData.category);
+      // For 3-level trees (header > category > subcategory) the subcategory's
+      // parent is the middle category, not the header chosen in the dropdown.
+      const headerNode = categories.find((c) => (c._id || c.id) === formData.header);
+      const parentGroup = (headerNode?.children || []).find((g) =>
+        (g.children || []).some((s) => (s._id || s.id) === formData.subcategory)
+      );
+      data.append("categoryId", parentGroup ? (parentGroup._id || parentGroup.id) : formData.category);
       data.append("subcategoryId", formData.subcategory);
 
       // Tags
