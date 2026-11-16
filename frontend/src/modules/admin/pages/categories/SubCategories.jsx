@@ -31,6 +31,7 @@ const SubCategories = () => {
   const [categories, setCategories] = useState([]);
   const [level2Categories, setLevel2Categories] = useState([]);
   const [headerCategories, setHeaderCategories] = useState([]);
+  const [allCategories, setAllCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterLevel2, setFilterLevel2] = useState("all");
@@ -84,6 +85,7 @@ const SubCategories = () => {
         setCategories(subCats.length > 0 ? subCats : allCats.filter((c) => c.type === "subcategory"));
         setLevel2Categories(headers.length > 0 ? headers : level2);
         setHeaderCategories(headers);
+        setAllCategories(allCats);
       }
     } catch (error) {
       toast.error("Failed to fetch categories");
@@ -94,7 +96,7 @@ const SubCategories = () => {
 
   const getParentInfo = (parentId) => {
     const id = parentId?._id || parentId;
-    const parent = headerCategories.find((h) => (h._id || h.id) === id) || level2Categories.find((c) => (c._id || c.id) === id);
+    const parent = headerCategories.find((h) => (h._id || h.id) === id) || level2Categories.find((c) => (c._id || c.id) === id) || allCategories.find((c) => (c._id || c.id) === id);
     if (!parent) return { name: "Root", headerName: "Main" };
 
     const headerId = parent.parentId?._id || parent.parentId;

@@ -18,34 +18,14 @@ import SectionRenderer from "../components/experience/SectionRenderer";
 import { useLocation as useAppLocation } from '../context/LocationContext';
 import { useSettings } from '@core/context/SettingsContext';
 import Lottie from 'lottie-react';
+import { isChickenOrMutton as isAllowedCategory } from '../utils/categoryFilter';
 
+// Allow-by-default: only categories on the shared exclusion list are blocked,
+// so newly created categories render their products.
 const isMuttonOrChickenCategory = (catObj, paramId, stateName) => {
-    const text = [
-        catObj?.name,
-        catObj?.slug,
-        catObj?._id,
-        catObj?.id,
-        catObj?.parent?.name,
-        catObj?.parentId?.name,
-        paramId,
-        stateName
-    ]
-        .filter(Boolean)
-        .join(" ")
-        .toLowerCase();
-
-    if (text.includes("all")) return true;
-
-    return (
-        text.includes("chicken") ||
-        text.includes("mutton") ||
-        text.includes("goat") ||
-        text.includes("lamb") ||
-        text.includes("poultry") ||
-        text.includes("murga") ||
-        text.includes("gosht") ||
-        text.includes("bakra")
-    );
+    const candidate = catObj || stateName || paramId;
+    if (!candidate) return true;
+    return isAllowedCategory(candidate);
 };
 
 const CategoryProductsPage = () => {
