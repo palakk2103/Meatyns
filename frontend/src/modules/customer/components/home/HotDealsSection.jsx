@@ -66,7 +66,9 @@ const HotDealsSection = ({ products = [] }) => {
   // Merge real backend products if they have discounts, or fallback to curated defaults
   const displayItems = React.useMemo(() => {
     // Hot Deals shows Mutton products only
-    products = (products || []).filter((p) => getMeatType(p) === "mutton");
+    // Falls back to all products so the section never disappears when no mutton item exists
+    const muttonOnly = (products || []).filter((p) => getMeatType(p) === "mutton");
+    products = muttonOnly.length ? muttonOnly : (products || []);
     const discountedFromBackend = (products || [])
       .filter((p) => {
         const curr = Number(p.salePrice || p.price || 0);

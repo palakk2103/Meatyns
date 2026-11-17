@@ -91,7 +91,9 @@ const TopPicksSection = ({ products = [], title = "Top Picks for You", icon = "â
         .slice(0, 6);
     }
     // Top Picks shows Chicken products only
-    products = (products || []).filter((p) => getMeatType(p) === "chicken");
+    // Falls back to all products so the section never disappears when no chicken item exists
+    const chickenOnly = (products || []).filter((p) => getMeatType(p) === "chicken");
+    products = chickenOnly.length ? chickenOnly : (products || []);
     const MEAT_KEYWORDS = ["fish", "chicken", "mutton", "meat", "pomfret", "prawn", "seafood", "keema", "surmai", "rohu"];
     const validFromBackend = (products || [])
       .filter((p) => {
