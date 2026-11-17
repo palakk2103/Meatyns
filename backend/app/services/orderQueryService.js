@@ -7,7 +7,6 @@ import { distanceMeters } from "../utils/geoUtils.js";
 import {
   orderMatchQueryFlexible,
 } from "../utils/orderLookup.js";
-import { buildKey, getOrSet, getTTL } from "./cacheService.js";
 import { resolveWorkflowStatus } from "./orderWorkflowService.js";
 import mongoose from "mongoose";
 import { escapeRegex } from "../utils/regex.js";
@@ -402,19 +401,14 @@ export async function fetchAvailableOrdersForDelivery({
 }
 
 /**
- * Customer-facing paginated order list (cached).
+ * Customer-facing paginated order list (always live).
  * Replaces inline logic from orderController.getMyOrders.
  */
 export async function getCustomerOrders(customerId, pagination) {
   const { page, limit, skip } = pagination;
-  const cacheKey = buildKey(
-    "orders",
-    "customer",
-    `${customerId}:p${page}:l${limit}`,
-  );
-
-  return getOrSet(
-    cacheKey,
+  // Never cached: several order-creation paths don't invalidate this list, so
+  // a cached copy made freshly placed orders disappear intermittently.
+  return (
     async () => {
       const [orders, total] = await Promise.all([
         Order.find({ customer: customerId })
@@ -436,9 +430,8 @@ export async function getCustomerOrders(customerId, pagination) {
         total,
         totalPages: Math.ceil(total / limit) || 1,
       };
-    },
-    getTTL("orders"),
-  );
+    }
+  )();
 }
 
 /**
