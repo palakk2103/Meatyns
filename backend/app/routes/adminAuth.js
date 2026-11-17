@@ -84,6 +84,7 @@ import {
     adminBootstrapRateLimiter,
     authRouteRateLimiter,
     createContentLengthGuard,
+    otpRouteRateLimiter,
 } from "../middleware/securityMiddlewares.js";
 
 const router = express.Router();
@@ -95,8 +96,8 @@ const smallAdminPayload = createContentLengthGuard(
 router.post("/bootstrap", adminBootstrapRateLimiter, smallAdminPayload, bootstrapAdmin);
 router.post("/signup", adminBootstrapRateLimiter, smallAdminPayload, signupAdmin);
 router.post("/login", authRouteRateLimiter, smallAdminPayload, loginAdmin);
-router.post("/login-otp", authRouteRateLimiter, smallAdminPayload, sendAdminLoginOtp);
-router.post("/verify-login-otp", authRouteRateLimiter, smallAdminPayload, verifyAdminLoginOtp);
+router.post("/login-otp", authRouteRateLimiter, otpRouteRateLimiter, smallAdminPayload, sendAdminLoginOtp);
+router.post("/verify-login-otp", authRouteRateLimiter, otpRouteRateLimiter, smallAdminPayload, verifyAdminLoginOtp);
 
 // Profile routes
 router.get(

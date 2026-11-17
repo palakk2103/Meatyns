@@ -1,3 +1,4 @@
+import MascotTagline from "../components/shared/MascotTagline";
 import { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
@@ -53,8 +54,10 @@ import {
   onReturnDropOtp,
 } from "@/core/services/orderSocket";
 import { getLegacyStatusFromOrder } from "@/shared/utils/orderStatus";
+import { getPaymentInfo, PAYMENT_TONE_CLASSES } from "@/shared/utils/paymentInfo";
 import { createSocketTokenReader } from "@core/utils/authStorage";
 import { STORAGE_KEYS } from "@core/utils/storage";
+import { cleanProductName } from "@/core/utils/productName";
 
 const coordsToLatLng = (coords) => {
   if (!Array.isArray(coords) || coords.length < 2) return null;
@@ -979,6 +982,22 @@ const OrderDetailPage = () => {
             </span>
           </div>
 
+          {/* Payment method strip (visible right above the live map) */}
+          {(() => {
+            const pay = getPaymentInfo(order);
+            return (
+              <div className="bg-white rounded-2xl px-4 py-3 border border-slate-100 shadow-sm flex items-center justify-between gap-3">
+                <div className="min-w-0">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 block">Payment Method</span>
+                  <p className="text-xs font-bold text-slate-800">{pay.modeLabel}</p>
+                </div>
+                <span className={`text-[10px] font-extrabold px-2.5 py-1 rounded-full border shrink-0 ${PAYMENT_TONE_CLASSES[pay.tone]}`}>
+                  {pay.statusLabel}
+                </span>
+              </div>
+            );
+          })()}
+
           {/* Enhanced Map with Cleaner Design - Hide when delivered or cancelled */}
           {!isAwaitingOnlinePayment && status !== "delivered" && status !== "cancelled" && (
             <motion.div
@@ -1175,7 +1194,7 @@ const OrderDetailPage = () => {
                     {order.address?.type || "Delivery"}
                   </span>
                 </div>
-                <h4 className="font-bold text-slate-900 text-base mb-1">{order.address?.name || "Customer"}</h4>
+                <h4 className="font-bold text-slate-900 text-base mb-1">{order.address?.name || order.customer?.name || order.customerName || "Customer"}</h4>
                 <p className="text-sm text-slate-500 leading-relaxed">
                   {order.address?.address ? `${order.address.address}${order.address.city ? `, ${order.address.city}` : ""}` : (order.address?.fullAddress || order.address?.city || "Address not available")}
                 </p>
@@ -1197,15 +1216,32 @@ const OrderDetailPage = () => {
             </div>
           </motion.div>
 
+          {/* Payment Method Card */}
+          {(() => {
+            const pay = getPaymentInfo(order);
+            return (
+              <div className="bg-white rounded-3xl p-5 shadow-sm border border-slate-100 flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-xs font-bold text-brand-600 uppercase tracking-wider mb-1">Payment Method</p>
+                  <h4 className="font-bold text-slate-900 text-base">{pay.modeLabel}</h4>
+                </div>
+                <span className={`text-[11px] font-bold px-2.5 py-1 rounded-full border ${PAYMENT_TONE_CLASSES[pay.tone]}`}>
+                  {pay.statusLabel}
+                </span>
+              </div>
+            );
+          })()}
+
           {/* Branded Meatyns Chef Delivery Banner (matching mockup screen 7) */}
           <div className="rounded-2xl sm:rounded-3xl p-4 sm:p-5 bg-gradient-to-r from-[#FFF5ED] via-[#FFF1E8] to-[#FFEFE6] border border-[#FCD9C8] flex items-center gap-3.5 sm:gap-4 shadow-xs">
-            <div className="w-16 sm:w-20 h-16 sm:h-20 shrink-0 flex items-center justify-center">
+            <div className="relative w-16 sm:w-20 h-16 sm:h-20 shrink-0 flex items-center justify-center">
               <img
                 src="/mascot/chef_mascot.png"
                 alt="Meatyns Chef Mascot"
-                className="max-h-full max-w-full object-contain drop-shadow-[0_4px_10px_rgba(0,0,0,0.12)]"
+                className="max-h-[62%] max-w-full object-contain mb-4 drop-shadow-[0_4px_10px_rgba(0,0,0,0.12)]"
                 loading="lazy"
               />
+<MascotTagline size="sm" />
             </div>
             <div className="min-w-0">
               <h4 className="font-anton uppercase tracking-wide text-base sm:text-lg text-slate-900 leading-tight flex items-center gap-1.5">
@@ -1267,7 +1303,7 @@ const OrderDetailPage = () => {
                       </div>
                       <div>
                         <div className="flex items-center gap-2">
-                          <p className={`font-bold text-xs ${isUnavailable ? 'line-through text-slate-400' : 'text-slate-800'}`}>{item.name}</p>
+                          <p className={`font-bold text-xs ${isUnavailable ? 'line-through text-slate-400' : 'text-slate-800'}`}>{cleanProductName(item.name)}{item.variantName ? ` (${item.variantName})` : ""}</p>
                           {isUnavailable && (
                             <span className="bg-rose-50 text-rose-600 text-[9px] font-bold px-1.5 py-0.5 rounded border border-rose-100">
                               Out of Stock
@@ -1774,6 +1810,22 @@ const OrderDetailPage = () => {
                 </div>
               </div>
 
+              {/* Payment Method Card (Desktop) */}
+              {(() => {
+                const pay = getPaymentInfo(order);
+                return (
+                  <div className="bg-white rounded-2xl p-5 border border-[#ede5df] shadow-xs space-y-2">
+                    <h3 className="text-xs font-bold text-slate-700 tracking-tight">Payment Method</h3>
+                    <div className="flex items-center justify-between gap-2 pt-1">
+                      <p className="text-xs font-bold text-slate-900">{pay.modeLabel}</p>
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${PAYMENT_TONE_CLASSES[pay.tone]}`}>
+                        {pay.statusLabel}
+                      </span>
+                    </div>
+                  </div>
+                );
+              })()}
+
               {/* Freshness Guaranteed Card */}
               <div className="p-4 rounded-2xl bg-[#FFFBEB] border border-[#FDE68A] flex items-center gap-3">
                 <div className="w-9 h-9 rounded-full bg-white flex items-center justify-center text-[#1A1A1A] flex-shrink-0 shadow-xs border border-[#FDE68A]">
@@ -1787,13 +1839,14 @@ const OrderDetailPage = () => {
 
               {/* Branded Meatyns Chef Mascot Card (Desktop) */}
               <div className="rounded-2xl p-4 bg-gradient-to-r from-[#FFF5ED] via-[#FFF1E8] to-[#FFEFE6] border border-[#FCD9C8] flex items-center gap-3.5 shadow-xs">
-                <div className="w-14 h-14 shrink-0 flex items-center justify-center">
+                <div className="relative w-14 h-14 shrink-0 flex items-center justify-center">
                   <img
                     src="/mascot/chef_mascot.png"
                     alt="Meatyns Chef Mascot"
-                    className="max-h-full max-w-full object-contain drop-shadow-[0_4px_10px_rgba(0,0,0,0.12)]"
+                    className="max-h-[62%] max-w-full object-contain mb-4 drop-shadow-[0_4px_10px_rgba(0,0,0,0.12)]"
                     loading="lazy"
                   />
+<MascotTagline size="sm" />
                 </div>
                 <div className="min-w-0">
                   <h4 className="font-anton uppercase tracking-wide text-sm font-normal text-slate-900 leading-tight flex items-center gap-1">
@@ -1852,7 +1905,7 @@ const OrderDetailPage = () => {
                     />
                     <div className="flex-1">
                       <p className="text-sm font-bold text-slate-800">
-                        {item.name}
+                        {cleanProductName(item.name)}{item.variantName ? ` (${item.variantName})` : ""}
                       </p>
                       <p className="text-xs text-slate-500">
                         Qty: {item.quantity} • ₹{item.price * item.quantity}

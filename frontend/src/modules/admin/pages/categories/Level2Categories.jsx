@@ -225,7 +225,7 @@ const Level2Categories = () => {
       setDeleteTarget(null);
       fetchCategories();
     } catch (error) {
-      toast.error("Failed to delete category");
+      toast.error(error.response?.data?.message || "Failed to delete category");
     }
   };
 
@@ -834,7 +834,7 @@ const Level2Categories = () => {
                   <span className="font-semibold text-gray-900">
                     {deleteTarget?.name}
                   </span>
-                  ? This action cannot be undone.
+                  ? This will also permanently delete all its sub-categories and products. This action cannot be undone.
                 </p>
                 <div className="flex gap-3 justify-center">
                   <button

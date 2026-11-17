@@ -177,9 +177,10 @@ export function isWalletRedemptionReducesPayableEnabled() {
 // When the flag is OFF, the legacy buggy behaviour (client trust on
 // `discountTotal`, hard-coded user usage count, free-delivery silently
 // ignored at place-order) is preserved bit-for-bit so rollback is an
-// env flip. Default is OFF for production safety.
+// env flip. Default is now ON (client-supplied discounts are never trusted);
+// set SERVER_SIDE_COUPON_ENGINE=false to fall back to the legacy path.
 export function isServerSideCouponEngineEnabled() {
-  return String(process.env.SERVER_SIDE_COUPON_ENGINE || "").toLowerCase() === "true";
+  return String(process.env.SERVER_SIDE_COUPON_ENGINE || "").toLowerCase() !== "false";
 }
 
 export const ALL_PAYMENT_MODES = Object.values(PAYMENT_MODE);

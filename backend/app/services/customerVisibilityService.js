@@ -151,6 +151,72 @@ export async function resolveSelectedSellerForCustomer(lat, lng) {
 }
 
 /**
+ * Business rule: ONE delivery location is served by exactly ONE seller, and an
+ * order can only contain that seller's products. Given line items shaped like
+ * `{ productId, variantSku, productName, sellerId }`, returns the ones the
+ * selected seller does NOT own, enriched with seller names so the UI can say
+ * exactly which product is unavailable and who it belongs to.
+ */
+export async function findItemsOutsideSeller(items = [], selectedSellerId = null) {
+  const selectedId = selectedSellerId ? String(selectedSellerId) : null;
+  const foreign = (items || []).filter(
+    (item) => String(item?.sellerId || "") !== selectedId,
+  );
+  if (!foreign.length) return [];
+
+  const sellerIds = Array.from(new Set(foreign.map((i) => String(i.sellerId || "")).filter(Boolean)));
+  const sellerDocs = sellerIds.length
+    ? await Seller.find({ _id: { $in: sellerIds } }).select("_id shopName").lean()
+    : [];
+  const nameById = new Map(sellerDocs.map((s) => [String(s._id), s.shopName || "Another store"]));
+
+  return foreign.map((item) => ({
+    productId: String(item.productId || ""),
+    variantSku: String(item.variantSku || ""),
+    name: item.productName || item.name || "Item",
+    sellerId: String(item.sellerId || ""),
+    sellerName: nameById.get(String(item.sellerId || "")) || "Another store",
+  }));
+}
+
+/**
+ * Light-weight serviceability check of a stored cart against a delivery
+ * location. Reuses `resolveSelectedSellerForCustomer` (same rule checkout
+ * enforces) so the cart page and checkout can never disagree.
+ * `cartItems` are `{ productId, variantSku }`.
+ */
+export async function evaluateCartServiceability({ cartItems = [], lat, lng }) {
+  const selected = await resolveSelectedSellerForCustomer(lat, lng);
+  if (!cartItems.length) {
+    return { selectedSellerId: selected?.sellerId || null, serviceable: true, unavailableItems: [] };
+  }
+  const products = await Product.find({
+    _id: { $in: cartItems.map((i) => i.productId) },
+  })
+    .select("_id name sellerId")
+    .lean();
+  const byId = new Map(products.map((p) => [String(p._id), p]));
+  const lines = cartItems.map((i) => {
+    const p = byId.get(String(i.productId));
+    return {
+      productId: String(i.productId),
+      variantSku: i.variantSku || "",
+      productName: p?.name,
+      sellerId: p ? String(p.sellerId || "") : "",
+    };
+  });
+  // No eligible outlet at all -> nothing is deliverable here.
+  const unavailableItems = selected
+    ? await findItemsOutsideSeller(lines, selected.sellerId)
+    : await findItemsOutsideSeller(lines, null);
+  return {
+    selectedSellerId: selected?.sellerId || null,
+    serviceable: unavailableItems.length === 0,
+    unavailableItems,
+  };
+}
+
+/**
  * Backward-compatible: returns an array, now containing at most ONE seller id
  * (the selected one). Empty only when no eligible seller exists anywhere.
  */

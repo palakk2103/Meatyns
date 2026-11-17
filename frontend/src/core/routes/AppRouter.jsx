@@ -9,6 +9,7 @@ import { setActiveRole, ROLES } from '../auth/activeRoleStore';
 // Providers for Customer Module
 import { WishlistProvider } from '../../modules/customer/context/WishlistContext';
 import { CartProvider } from '../../modules/customer/context/CartContext';
+import CartServiceabilityWatcher from '../../modules/customer/components/shared/CartServiceabilityWatcher';
 import { CartAnimationProvider } from '../../modules/customer/context/CartAnimationContext';
 import { ProductDetailProvider } from '../../modules/customer/context/ProductDetailContext';
 import { LocationProvider } from '../../modules/customer/context/LocationContext';
@@ -109,6 +110,7 @@ const CustomerLayoutWrapper = () => {
             <CartProvider>
                 <CartAnimationProvider>
                     <ProductDetailProvider>
+                        <CartServiceabilityWatcher />
                         <CustomerLayout>
                             <Suspense fallback={<div className="flex h-screen items-center justify-center font-outfit">Loading...</div>}>
                                 <Outlet />
@@ -241,9 +243,9 @@ const AppRouter = () => {
                         { path: 'payment-status', element: <PaymentStatusPage /> },
                         { path: 'profile', element: <ProtectedRoute><ProfilePage /></ProtectedRoute> },
                         { path: 'profile/edit', element: <ProtectedRoute><EditProfilePage /></ProtectedRoute> },
-                        { path: 'wallet', element: <Navigate to="/" replace /> },
+                        { path: 'wallet', element: <ProtectedRoute><WalletPage /></ProtectedRoute> },
                         { path: 'subscriptions', element: <Navigate to="/" replace /> },
-                        { path: 'referrals', element: <Navigate to="/" replace /> },
+                        { path: 'referrals', element: <ProtectedRoute><ReferralsPage /></ProtectedRoute> },
                         { path: 'recipes', element: <Navigate to="/" replace /> },
                         { path: 'recipes/:id', element: <Navigate to="/" replace /> },
                         { path: 'combos', element: <Navigate to="/" replace /> },

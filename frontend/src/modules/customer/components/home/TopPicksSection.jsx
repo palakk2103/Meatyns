@@ -6,6 +6,8 @@ import { useCart } from "../../context/CartContext";
 import { useProductDetail } from "../../context/ProductDetailContext";
 import { toast } from "sonner";
 import { applyCloudinaryTransform } from "@/core/utils/imageUtils";
+import { getMeatType } from "../../utils/categoryFilter";
+import { cleanProductName } from "@/core/utils/productName";
 
 // 4 Curated Top Picks using real product IDs from database
 const DEFAULT_TOP_PICKS = [
@@ -55,7 +57,7 @@ const DEFAULT_TOP_PICKS = [
   },
 ];
 
-const TopPicksSection = ({ products = [] }) => {
+const TopPicksSection = ({ products = [], title = "Top Picks for You", icon = "★", viewAllPath = "/category/all", curated = false }) => {
   const navigate = useNavigate();
   const { isInWishlist, toggleWishlist } = useWishlist();
   const { cart, addToCart, updateQuantity, removeFromCart } = useCart();
@@ -63,6 +65,33 @@ const TopPicksSection = ({ products = [] }) => {
 
   // Prioritize meat & fish products matching the store identity or fallback to curated screenshot items
   const displayItems = React.useMemo(() => {
+    if (curated) {
+      // Pre-filtered list (e.g. Eggs): show as-is, one card per product name, real prices only
+      const seen = new Set();
+      return (products || [])
+        .reduce((acc, p) => {
+          const key = String(p.name || "").toLowerCase();
+          if (!key || seen.has(key)) return acc;
+          seen.add(key);
+          const curr = Number(p.salePrice || p.price || 0);
+          const orig = Number(p.originalPrice || 0);
+          const hasDiscount = orig > curr && curr > 0;
+          acc.push({
+            id: p._id || p.id,
+            _id: p._id || p.id,
+            name: p.name,
+            weight: p.weight || "",
+            price: curr,
+            originalPrice: hasDiscount ? orig : null,
+            discount: hasDiscount ? `${Math.round(((orig - curr) / orig) * 100)}% OFF` : null,
+            image: p.mainImage || p.image,
+          });
+          return acc;
+        }, [])
+        .slice(0, 6);
+    }
+    // Top Picks shows Chicken products only
+    products = (products || []).filter((p) => getMeatType(p) === "chicken");
     const MEAT_KEYWORDS = ["fish", "chicken", "mutton", "meat", "pomfret", "prawn", "seafood", "keema", "surmai", "rohu"];
     const validFromBackend = (products || [])
       .filter((p) => {
@@ -117,15 +146,8 @@ const TopPicksSection = ({ products = [] }) => {
       }
     }
 
-    for (const item of DEFAULT_TOP_PICKS) {
-      if (merged.length >= 4) break;
-      if (!existingNames.has(item.name.toLowerCase())) {
-        merged.push(item);
-        existingNames.add(item.name.toLowerCase());
-      }
-    }
     return merged.slice(0, 4);
-  }, [products]);
+  }, [products, curated]);
 
   const getQuantity = (product) => {
     const pId = String(product?.id || product?._id || "");
@@ -179,21 +201,23 @@ const TopPicksSection = ({ products = [] }) => {
     }
   };
 
+  if (!displayItems.length) return null;
+
   return (
     <section className="w-full mb-6 sm:mb-8 select-none">
       {/* Section Header */}
       <div className="flex items-center justify-between mb-3 sm:mb-4 px-1">
         <div className="flex items-center gap-2 sm:gap-2.5">
           <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#FDCE04]/20 flex items-center justify-center text-[#1A1A1A] font-bold">
-            <span className="text-base sm:text-lg leading-none">★</span>
+            <span className="text-base sm:text-lg leading-none">{icon}</span>
           </div>
           <h2 className="text-lg sm:text-xl md:text-2xl font-normal font-anton tracking-wide text-slate-900 uppercase">
-            Top Picks for You
+            {title}
           </h2>
         </div>
 
         <button
-          onClick={() => navigate("/category/all")}
+          onClick={() => navigate(viewAllPath)}
           className="text-xs sm:text-sm font-bold text-slate-700 hover:text-slate-900 flex items-center gap-1 cursor-pointer transition-colors border-0 bg-transparent p-0"
         >
           <span>View All</span>
@@ -211,7 +235,7 @@ const TopPicksSection = ({ products = [] }) => {
             <div
               key={product.id || product._id}
               onClick={() => handleCardClick(product)}
-              className="w-[142px] sm:w-[195px] md:w-[215px] lg:flex-1 shrink-0 lg:shrink bg-white rounded-xl sm:rounded-2xl border border-slate-100 shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-300 overflow-hidden flex flex-col cursor-pointer group"
+              className="w-[142px] sm:w-[195px] md:w-[215px] lg:flex-1 lg:max-w-[calc((100%-3rem)/4)] shrink-0 lg:shrink bg-white rounded-xl sm:rounded-2xl border border-slate-100 shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-300 overflow-hidden flex flex-col cursor-pointer group"
             >
               {/* Image Container with Wishlist */}
               <div className="relative w-full aspect-[4/3] bg-slate-50 overflow-hidden">
@@ -243,7 +267,7 @@ const TopPicksSection = ({ products = [] }) => {
               <div className="p-2 sm:p-3.5 flex flex-col justify-between flex-1 gap-1.5 sm:gap-2">
                 <div>
                   <h3 className="font-bold text-slate-900 text-[11.5px] sm:text-[14px] leading-snug line-clamp-1 group-hover:text-amber-600 transition-colors">
-                    {product.name}
+                    {cleanProductName(product.name)}
                   </h3>
                   <p className="text-[9.5px] sm:text-xs text-slate-400 font-medium mt-0.5">
                     {product.weight || "500 g"}
@@ -260,9 +284,11 @@ const TopPicksSection = ({ products = [] }) => {
                   <span className="text-[13px] sm:text-base md:text-lg font-black text-slate-900">
                     ₹{product.price}
                   </span>
-                  <span className="ml-auto bg-[#EF131F] text-white text-[8px] sm:text-[10.5px] font-bold px-1 sm:px-1.5 py-0.5 rounded shadow-xs tracking-tight">
-                    {product.discount || "20% OFF"}
-                  </span>
+                  {(curated ? product.discount : (product.discount || "20% OFF")) && (
+                    <span className="ml-auto bg-[#EF131F] text-white text-[8px] sm:text-[10.5px] font-bold px-1 sm:px-1.5 py-0.5 rounded shadow-xs tracking-tight">
+                      {product.discount || "20% OFF"}
+                    </span>
+                  )}
                 </div>
 
                 {/* Add to Cart / Quantity Stepper Button */}

@@ -1,0 +1,49 @@
+- generic [ref=e14]:
+  - generic [ref=e15]:
+    - generic [ref=e16]:
+      - img "Fresh Meat, Fish, and Seafood Selection" [ref=e18]
+      - generic [ref=e34]:
+        - generic [ref=e35]:
+          - generic [ref=e36]: Meatyns
+          - generic [ref=e37]: TM
+        - generic [ref=e38]: ADMIN CONTROL CENTER
+      - generic [ref=e42]:
+        - heading "Control & Excellence At Scale" [level=1] [ref=e43]: Control & ExcellenceAt Scale
+        - paragraph [ref=e44]: Enterprise management platform for Meatyns operations, sellers, orders, and real-time logistics.
+        - generic [ref=e45]:
+          - generic [ref=e46]: EnterpriseSecurity
+          - generic [ref=e52]: Real-TimeAnalytics
+          - generic [ref=e57]: InstantOperations
+      - generic [ref=e62]: Good FoodGood Health
+    - generic [ref=e65]:
+      - generic [ref=e66]:
+        - button "Go back" [ref=e67] [cursor=pointer]:
+          - generic [ref=e70]: Back
+        - generic [ref=e71]:
+          - text: Need an admin account?
+          - button "Register" [ref=e72]
+      - generic [ref=e75]:
+        - generic [ref=e76]:
+          - heading "Welcome Administrator" [level=2] [ref=e77]
+          - paragraph [ref=e79]: Enter your credentials to access the Meatyns control center.
+        - generic [ref=e80]:
+          - generic [ref=e81]:
+            - button "Email & Password" [ref=e82]
+            - button "Email OTP" [ref=e83]
+          - generic [ref=e84]:
+            - generic [ref=e85]: Admin Email
+            - textbox "Enter your admin email" [ref=e91]: palakpatel0342@gmail.com
+          - generic [ref=e92]:
+            - generic [ref=e93]: Password
+            - generic [ref=e94]:
+              - textbox "Enter your secure password" [ref=e99]: "123456"
+              - button [ref=e100]
+          - generic [ref=e113]:
+            - generic [ref=e114]: "!"
+            - generic [ref=e115]: Invalid credentials
+          - button "Login to Admin Dashboard" [ref=e104]
+      - generic [ref=e108]: Protected by Meatyns enterprise role-based security & audit logging.
+  - region "Notifications alt+T":
+    - list:
+      - listitem [ref=e119]:
+        - generic [ref=e123]: Invalid credentials

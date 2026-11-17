@@ -1,6 +1,7 @@
 import React from "react";
 import { Check } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import MascotTagline from "../../../components/shared/MascotTagline";
 import DesktopOrderConfirmation from "../../../components/order/DesktopOrderConfirmation";
 
 /**
@@ -23,6 +24,19 @@ const CheckoutOrderSuccess = React.memo(function CheckoutOrderSuccess({ orderId,
           {/* Mobile View - 100% Unchanged */}
           <div className="md:hidden min-h-screen bg-white flex flex-col items-center justify-center p-6 text-center">
             <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ type: "spring", damping: 14 }}
+              className="relative mb-12">
+              <img
+                src="/mascot/chef_mascot.png"
+                alt="Meatyns Chef Mascot"
+                className="h-40 w-auto object-contain drop-shadow-[0_8px_16px_rgba(0,0,0,0.15)]"
+                loading="eager"
+              />
+              <MascotTagline size="md" below />
+            </motion.div>
+            <motion.div
               initial={{ scale: 0.5, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ type: "spring", damping: 12 }}
@@ -36,6 +50,7 @@ const CheckoutOrderSuccess = React.memo(function CheckoutOrderSuccess({ orderId,
               className="text-3xl font-anton font-normal tracking-wide uppercase text-slate-800 mb-2">
               Order placed
             </motion.h2>
+            <p className="text-sm font-bold text-[#C81017] mb-3">Make Every Meal a Meatyns Meal.</p>
             <motion.p
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}

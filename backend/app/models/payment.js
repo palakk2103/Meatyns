@@ -140,6 +140,13 @@ const paymentSchema = new mongoose.Schema(
       type: String,
       default: null,
     },
+    // Keys of one-time side effects already applied for this payment
+    // (notifications, auto-refunds). Claimed atomically so duplicate
+    // webhooks / client verifies never repeat them.
+    sideEffectsApplied: {
+      type: [String],
+      default: [],
+    },
     refundedAmount: {
       type: Number,
       min: 0,

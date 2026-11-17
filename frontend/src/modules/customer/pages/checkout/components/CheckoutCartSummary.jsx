@@ -1,6 +1,7 @@
 import React from "react";
 import { Plus, Minus } from "lucide-react";
 import { applyCloudinaryTransform } from "@/core/utils/imageUtils";
+import { cleanProductName } from "@/core/utils/productName";
 
 /**
  * CheckoutCartSummary
@@ -34,7 +35,7 @@ const CheckoutCartSummary = React.memo(function CheckoutCartSummary({
             />
           </div>
           <div className="flex-1 min-w-0">
-            <h4 className="font-bold text-slate-800 mb-1">{item.name}</h4>
+            <h4 className="font-bold text-slate-800 mb-1">{cleanProductName(item.name)}</h4>
             {(item.variantName || item.variantSku) && (
               <p className="text-xs text-slate-500 mb-1">
                 Variant: {item.variantName || item.variantSku}

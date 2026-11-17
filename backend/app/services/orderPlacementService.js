@@ -78,6 +78,7 @@ function mapOrderItemsForPersistence(hydratedItems = []) {
     quantity: item.quantity,
     price: item.price,
     variantSlot: String(item.variantSku || item.variantSlot || "").trim() || undefined,
+    variantName: String(item.variantName || "").trim() || undefined,
     image: item.image || "",
     unit: item.unit || undefined,
     unitValue: item.unitValue || undefined,
@@ -380,6 +381,14 @@ export async function placeOrderAtomic({
     // we still need `user` further down for the legacy direct-debit path,
     // so we fetch both.
     const user = await User.findById(customerId).session(session);
+    // Ensure the delivery address always carries a recipient name/phone so the
+    // order detail screens don't fall back to a generic "Customer" label.
+    if (!String(normalizedAddress.name || "").trim() && user?.name) {
+      normalizedAddress.name = user.name;
+    }
+    if (!String(normalizedAddress.phone || "").trim() && user?.phone) {
+      normalizedAddress.phone = user.phone;
+    }
     if (walletAmount > 0) {
       if (!user) throw new Error("User not found");
       const canonicalBalance = await getCustomerBalance(customerId, { session });

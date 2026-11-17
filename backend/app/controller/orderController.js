@@ -339,6 +339,22 @@ export const cancelOrder = async (req, res) => {
     order.cancelReason = reason || "Cancelled by user";
     await order.save();
 
+    // Restore stock for the cancelled items (same as seller/admin cancel).
+    for (const item of order.items || []) {
+      if (!item?.product || !item?.quantity) continue;
+      await Product.findByIdAndUpdate(item.product, {
+        $inc: { stock: item.quantity },
+      });
+      await StockHistory.create({
+        product: item.product,
+        seller: order.seller,
+        type: "Correction",
+        quantity: item.quantity,
+        note: `Order #${order.orderId} Cancelled by customer`,
+        order: order._id,
+      });
+    }
+
     try {
       await invalidate(buildKey("orders", "customer", `${customerId}:*`));
     } catch (cacheErr) {
@@ -469,6 +485,44 @@ export const updateOrderStatus = async (req, res) => {
     // -----------------------------
 
     const oldStatus = order.status;
+
+    // --- Transition guard ---
+    // Sellers may only confirm, pack or cancel (before pickup). Marking an
+    // order out-for-delivery / delivered must go through the rider workflow
+    // (with delivery OTP) or an admin, otherwise a seller could trigger
+    // settlement + payouts for an order that was never delivered.
+    const ALLOWED_STATUSES = [
+      "pending",
+      "confirmed",
+      "packed",
+      "out_for_delivery",
+      "delivered",
+      "cancelled",
+    ];
+    const SELLER_ALLOWED_STATUSES = ["confirmed", "packed", "cancelled"];
+    const CANCELLABLE_FROM = ["pending", "confirmed", "packed"];
+
+    if (status && !ALLOWED_STATUSES.includes(status)) {
+      return handleResponse(res, 400, `Invalid order status: ${status}`);
+    }
+    if (isOwnerSeller && status && !SELLER_ALLOWED_STATUSES.includes(status)) {
+      return handleResponse(
+        res,
+        403,
+        "Sellers can only confirm, pack or cancel orders. Delivery status is updated by the delivery partner.",
+      );
+    }
+    if (deliveryBoyId && !isAdmin) {
+      return handleResponse(res, 403, "Only admin can assign a delivery partner");
+    }
+    if (status && status !== oldStatus && ["delivered", "cancelled"].includes(oldStatus)) {
+      return handleResponse(res, 409, `Order is already ${oldStatus} and cannot be changed`);
+    }
+    if (status === "cancelled" && !isAdmin && !CANCELLABLE_FROM.includes(oldStatus)) {
+      return handleResponse(res, 409, "Order cannot be cancelled after it has been picked up");
+    }
+    // -----------------------------
+
     if (status) {
       order.status = status;
       order.orderStatus = status;
@@ -509,6 +563,26 @@ export const updateOrderStatus = async (req, res) => {
         { reference: canonicalOrderId },
         { status: "Failed" },
       );
+
+      // 3. Reverse finance (refunds captured online payments / wallet usage).
+      // Idempotent via financeFlags.cancellationReversalApplied.
+      await order.save();
+      if (order.paymentBreakdown?.grandTotal != null) {
+        try {
+          await reverseOrderFinanceOnCancellation(order._id, {
+            actorId: userId,
+            reason: `Cancelled by ${role}`,
+          });
+        } catch (financeError) {
+          logger.error("updateOrderStatus finance reversal failed", {
+            scope: "updateOrderStatus",
+            orderId: canonicalOrderId,
+            role,
+            correlationId: req.correlationId,
+            error: financeError.message,
+          });
+        }
+      }
 
       emitNotificationEvent(NOTIFICATION_EVENTS.ORDER_CANCELLED, {
         orderId: canonicalOrderId,

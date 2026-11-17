@@ -1,3 +1,4 @@
+import MascotTagline from "../components/shared/MascotTagline";
 import React, { useState, useEffect, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, ArrowRight, Leaf, Search, ShieldCheck } from "lucide-react";
@@ -336,13 +337,14 @@ const CategoriesPage = () => {
           <div className="relative w-full rounded-2xl md:rounded-3xl overflow-hidden mt-4 mb-3 shadow-xs border border-red-900/15 bg-gradient-to-r from-[#8B0000] via-[#C81017] to-[#7A0000] text-white">
             <div className="relative z-10 px-4 py-4 sm:px-7 sm:py-5 flex items-center justify-between min-h-[135px] sm:min-h-[155px]">
               {/* Left: Chef Mascot */}
-              <div className="w-24 sm:w-32 h-28 sm:h-36 shrink-0 flex items-end justify-center pointer-events-none -mb-2">
+              <div className="relative w-24 sm:w-32 h-28 sm:h-36 shrink-0 flex items-end justify-center pointer-events-none -mb-2">
                 <img
                   src="/mascot/chef_mascot.png"
                   alt="Meatyns Chef Mascot"
-                  className="max-h-full max-w-full object-contain drop-shadow-[0_8px_16px_rgba(0,0,0,0.3)]"
+                  className="max-h-[78%] max-w-full object-contain drop-shadow-[0_8px_16px_rgba(0,0,0,0.3)] mb-5"
                   loading="eager"
                 />
+<MascotTagline size="md" />
               </div>
 
               {/* Center / Right Content */}

@@ -49,6 +49,8 @@ const adminSchema = new mongoose.Schema(
     },
 
     lastLogin: Date,
+    loginOtp: { type: String, select: false },
+    loginOtpExpiry: { type: Date, select: false },
   },
   { timestamps: true },
 );

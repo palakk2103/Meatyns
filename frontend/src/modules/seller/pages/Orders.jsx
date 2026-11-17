@@ -32,6 +32,7 @@ import ShimmerButton from '@/components/ui/shimmer-button';
 import { sellerApi } from '../services/sellerApi';
 import { useToast } from '@shared/components/ui/Toast';
 import { getLegacyStatusFromOrder } from '@/shared/utils/orderStatus';
+import { getPaymentInfo, PAYMENT_TONE_CLASSES } from '@/shared/utils/paymentInfo';
 import { Loader2 } from 'lucide-react';
 import Pagination from '@shared/components/ui/Pagination';
 import { DatePicker } from "@/components/ui/date-picker";
@@ -141,9 +142,8 @@ const Orders = () => {
                     ? `${order.address.address || ''}, ${order.address.city || ''}`.trim()
                     : '',
                 location: order.address?.location || null,
-                payment: order.payment?.method === 'cash' || order.payment?.method === 'cod'
-                    ? 'Cash on Delivery'
-                    : 'Online Paid',
+                paymentInfo: getPaymentInfo(order),
+                payment: `${getPaymentInfo(order).modeLabel} - ${getPaymentInfo(order).statusLabel}`,
                 deliveryMethod: order.deliveryMethod || 'NORMAL',
                 scheduledDate: order.scheduledDate || null,
                 scheduledStartTime: order.scheduledStartTime || null,
@@ -582,6 +582,9 @@ const Orders = () => {
                                                         </div>
                                                         <p className="text-xs font-bold text-slate-800 truncate">{order.customer.name}</p>
                                                     </div>
+                                                    <span className={`inline-flex items-center text-[10px] font-bold px-1.5 py-0.5 rounded border mt-1.5 ${PAYMENT_TONE_CLASSES[order.paymentInfo.tone]}`}>
+                                                        {order.paymentInfo.modeLabel} · {order.paymentInfo.statusLabel}
+                                                    </span>
                                                     <p className="text-sm font-black text-slate-900 mt-2">₹{order.total.toLocaleString()}</p>
                                                 </div>
                                                 <div className="flex flex-col items-end gap-2 shrink-0">
@@ -599,11 +602,11 @@ const Orders = () => {
                                                                     order.status === 'cancelled' ? "bg-rose-100 text-rose-700" : "bg-slate-100 text-slate-700"
                                                         )}
                                                     >
-                                                        <option value="pending">Pending</option>
+                                                        <option value="pending" disabled>Pending</option>
                                                         <option value="confirmed">Confirmed</option>
                                                         <option value="packed">Packed</option>
-                                                        <option value="out_for_delivery">Out</option>
-                                                        <option value="delivered">Delivered</option>
+                                                        <option value="out_for_delivery" disabled>Out</option>
+                                                        <option value="delivered" disabled>Delivered</option>
                                                         <option value="cancelled">Cancelled</option>
                                                     </select>
                                                     <button
@@ -682,6 +685,9 @@ const Orders = () => {
                                                         <div className="flex flex-col">
                                                             <span className="text-xs font-bold text-slate-900">₹{order.total.toLocaleString()}</span>
                                                             <span className="text-xs font-semibold text-slate-600">{order.items.length} items</span>
+                                                            <span className={`inline-flex w-fit items-center whitespace-nowrap text-[10px] font-bold px-1.5 py-0.5 rounded border mt-1${PAYMENT_TONE_CLASSES[order.paymentInfo.tone]}`}>
+                                                                {order.paymentInfo.modeLabel} · {order.paymentInfo.statusLabel}
+                                                            </span>
                                                         </div>
                                                     </td>
                                                     <td className="px-4 lg:px-6 py-3 lg:py-4">
@@ -700,11 +706,11 @@ const Orders = () => {
                                                                                             "bg-slate-100 text-slate-700 focus:ring-slate-200"
                                                                 )}
                                                             >
-                                                                <option value="pending">Pending</option>
+                                                                <option value="pending" disabled>Pending</option>
                                                                 <option value="confirmed">Confirmed</option>
                                                                 <option value="packed">Packed</option>
-                                                                <option value="out_for_delivery">Out for Delivery</option>
-                                                                <option value="delivered">Delivered</option>
+                                                                <option value="out_for_delivery" disabled>Out for Delivery</option>
+                                                                <option value="delivered" disabled>Delivered</option>
                                                                 <option value="cancelled">Cancelled</option>
                                                             </select>
                                                             <HiOutlineChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 pointer-events-none opacity-60" />
@@ -985,7 +991,7 @@ const Orders = () => {
                                                     </div>
                                                 </div>
                                                 <div className="bg-slate-900 p-3 sm:p-4 rounded-3xl text-white shadow-xl shadow-slate-900/10">
-                                                    <h4 className="text-xs font-black text-slate-600 uppercase tracking-widest mb-2">Payment Status</h4>
+                                                    <h4 className="text-xs font-black text-slate-600 uppercase tracking-widest mb-2">Payment Mode</h4>
                                                     <div className="flex items-center gap-2">
                                                         <HiOutlineBanknotes className="h-5 w-5 text-brand-400" />
                                                         <span className="text-xs font-bold tracking-tight">{selectedOrder.payment}</span>
@@ -1076,11 +1082,11 @@ const Orders = () => {
                                                                                 "bg-slate-100 text-slate-700 focus:ring-slate-200"
                                                     )}
                                                 >
-                                                    <option value="pending">Pending</option>
+                                                    <option value="pending" disabled>Pending</option>
                                                     <option value="confirmed">Confirmed</option>
                                                     <option value="packed">Packed</option>
-                                                    <option value="out_for_delivery">Out for Delivery</option>
-                                                    <option value="delivered">Delivered</option>
+                                                    <option value="out_for_delivery" disabled>Out for Delivery</option>
+                                                    <option value="delivered" disabled>Delivered</option>
                                                     <option value="cancelled">Cancelled</option>
                                                 </select>
                                                 <HiOutlineChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 pointer-events-none opacity-60" />

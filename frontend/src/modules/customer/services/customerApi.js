@@ -1,5 +1,5 @@
 import axiosInstance from "@core/api/axios";
-import { getWithDedupe, invalidateCache } from "@core/api/dedupe";
+import { getWithDedupe, invalidateCache, clearAllCache } from "@core/api/dedupe";
 import { getJSON, STORAGE_KEYS } from "@core/utils/storage";
 
 import { filterChickenAndMuttonTree, filterChickenAndMuttonFlat } from "../utils/categoryFilter";
@@ -24,7 +24,12 @@ export const customerApi = {
   sendSignupOtp: (data) =>
     axiosInstance.post("/customer/send-signup-otp", data),
   verifyOtp: (data) =>
-    axiosInstance.post("/customer/verify-otp", data, { withCredentials: true }),
+    axiosInstance
+      .post("/customer/verify-otp", data, { withCredentials: true })
+      .then((res) => {
+        clearAllCache(); // never reuse another account's cached responses
+        return res;
+      }),
   getProfile: () => getWithDedupe("/customer/profile", {}, { ttl: 5000 }), // Short cache for profile
   updateProfile: (data) => axiosInstance.put("/customer/profile", data),
   deleteAccount: () => axiosInstance.delete("/customer/profile"),
@@ -63,6 +68,9 @@ export const customerApi = {
 
   // Cart
   getCart: () => getWithDedupe("/cart", {}, { ttl: 2000 }), // Very short cache for cart
+  // Re-validates the server cart against a delivery location (single-seller rule).
+  getCartServiceability: (lat, lng) =>
+    axiosInstance.get("/cart/serviceability", { params: { lat, lng } }),
   addToCart: (data) => {
     invalidateCache("/cart"); // Invalidate cart cache
     return axiosInstance.post("/cart/add", data);
@@ -107,9 +115,13 @@ export const customerApi = {
   checkoutPreview: (data) =>
     axiosInstance.post("/orders/checkout/preview", data, { timeout: 120000 }),
   createOrder: (data) =>
-    axiosInstance.post("/orders", data, { timeout: 120000 }),
+    axiosInstance
+      .post("/orders", data, { timeout: 120000 })
+      .finally(() => invalidateCache("/orders")),
   verifyOnlineOrderPayment: (orderId, data) =>
-    axiosInstance.post(`/orders/${orderId}/payment/verify-online`, data),
+    axiosInstance
+      .post(`/orders/${orderId}/payment/verify-online`, data)
+      .finally(() => invalidateCache("/orders")),
   markOrderDelivered: (orderId, data) =>
     axiosInstance.post(`/orders/${orderId}/delivered`, data || {}),
   markOrderCodCollected: (orderId, data) =>
@@ -117,8 +129,11 @@ export const customerApi = {
   reconcileOrderCod: (orderId, data) =>
     axiosInstance.post(`/orders/${orderId}/cod/reconcile`, data),
   placeOrder: (data) =>
-    axiosInstance.post("/orders/place", data, { timeout: 120000 }),
-  getMyOrders: () => getWithDedupe("/orders/my-orders"),
+    axiosInstance
+      .post("/orders/place", data, { timeout: 120000 })
+      .finally(() => invalidateCache("/orders")),
+  // Never serve a cached list: a stale/empty response hid freshly placed orders.
+  getMyOrders: (params = {}) => getWithDedupe("/orders/my-orders", params, { ttl: 0 }),
   /**
    * Order details must reflect live workflow, but we still dedupe in-flight requests to avoid
    * network spam when multiple effects/events trigger refresh simultaneously.
@@ -133,7 +148,9 @@ export const customerApi = {
   getOrderRoute: (orderId, params) =>
     axiosInstance.get(`/orders/workflow/${orderId}/route`, { params }),
   cancelOrder: (orderId, data) =>
-    axiosInstance.put(`/orders/cancel/${orderId}`, data),
+    axiosInstance
+      .put(`/orders/cancel/${orderId}`, data)
+      .finally(() => invalidateCache("/orders")),
   requestReturn: (orderId, data) =>
     axiosInstance.post(`/orders/${orderId}/returns`, data),
   getReturnDetails: (orderId) =>

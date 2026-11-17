@@ -4,6 +4,7 @@ import { Package, ChevronRight, CheckCircle, Loader2, ChevronLeft, RotateCcw } f
 import { customerApi } from '../services/customerApi';
 import { useToast } from '@/shared/components/ui/Toast';
 import { getOrderStatusLabel, getLegacyStatusFromOrder } from '@/shared/utils/orderStatus';
+import { getPaymentInfo, PAYMENT_TONE_CLASSES } from '@/shared/utils/paymentInfo';
 import { applyCloudinaryTransform } from '@/core/utils/imageUtils';
 
 const OrdersPage = () => {
@@ -212,6 +213,14 @@ const OrdersPage = () => {
                                                 <span className="text-xs font-extrabold text-[#1A1A1A] block">
                                                     ₹{orderTotal}
                                                 </span>
+                                                {(() => {
+                                                    const pay = getPaymentInfo(order);
+                                                    return (
+                                                        <span className={`mt-0.5 inline-block text-[9.5px] font-bold px-1.5 py-0.5 rounded border ${PAYMENT_TONE_CLASSES[pay.tone]}`}>
+                                                            {pay.isCod ? 'COD' : pay.isWallet ? 'Wallet' : 'Online'} · {pay.statusLabel}
+                                                        </span>
+                                                    );
+                                                })()}
                                             </div>
                                             <button
                                                 type="button"

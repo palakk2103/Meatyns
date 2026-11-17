@@ -1,3 +1,4 @@
+import MascotTagline from "../shared/MascotTagline";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Check, Leaf, ShieldCheck, Zap } from "lucide-react";
@@ -43,13 +44,16 @@ const DesktopOrderConfirmation = ({
           <div className="col-span-7 xl:col-span-8 space-y-4">
             {/* Main Success Box */}
             <div className="bg-white rounded-2xl p-8 border border-[#ede5df] shadow-xs text-center">
-              <div className="flex items-center justify-center gap-4 mb-4">
+              <div className="flex items-center justify-center gap-4 mb-9">
+                <div className="relative">
                 <img
                   src="/mascot/chef_mascot.png"
                   alt="Meatyns Chef Mascot"
                   className="h-28 w-auto object-contain drop-shadow-md"
                   loading="eager"
                 />
+<MascotTagline size="md" below />
+</div>
                 <div className="w-14 h-14 rounded-full bg-[#15803D] text-white flex items-center justify-center shadow-sm shrink-0">
                   <Check size={32} strokeWidth={3} />
                 </div>
@@ -58,6 +62,7 @@ const DesktopOrderConfirmation = ({
               <h2 className="text-xl lg:text-2xl font-anton font-normal tracking-wide uppercase text-slate-900 mb-1.5">
                 Order Placed Successfully!
               </h2>
+              <p className="text-sm font-bold text-[#C81017] mb-2">Make Every Meal a Meatyns Meal.</p>
 
               <p className="text-xs text-slate-600 font-medium mb-1">
                 Your order <span className="font-bold text-slate-800">{displayOrderId}</span> has been confirmed.

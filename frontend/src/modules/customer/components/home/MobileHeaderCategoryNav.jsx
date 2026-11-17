@@ -48,12 +48,12 @@ const resolveImage = (cat) => {
   return "/categories/chicken.png";
 };
 
-import { isChickenOrMutton } from "../../utils/categoryFilter";
+import { isChickenOrMutton, sortMeatFirst } from "../../utils/categoryFilter";
 
 // Default categories matching reference screenshot
 const DEFAULT_HEADER_CATEGORIES = [
-  { id: "chicken", _id: "chicken", name: "Chicken", image: "/categories/chicken.png" },
   { id: "mutton", _id: "mutton", name: "Mutton", image: "/categories/mutton.png" },
+  { id: "chicken", _id: "chicken", name: "Chicken", image: "/categories/chicken.png" },
 ];
 
 const MobileHeaderCategoryNav = ({
@@ -75,7 +75,8 @@ const MobileHeaderCategoryNav = ({
       if (id === "all" || slug === "all" || name === "all") return false;
       return isChickenOrMutton(c);
     });
-    return valid.length > 0 ? valid : DEFAULT_HEADER_CATEGORIES;
+    // Mutton first, Chicken second, then the rest in their original order
+    return valid.length > 0 ? sortMeatFirst(valid, "mutton") : DEFAULT_HEADER_CATEGORIES;
   }, [categories]);
 
   const checkScroll = () => {

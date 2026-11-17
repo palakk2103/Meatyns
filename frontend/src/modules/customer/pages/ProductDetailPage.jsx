@@ -13,6 +13,7 @@ import { useSettings } from '@core/context/SettingsContext';
 import Lottie from 'lottie-react';
 import ProductSeo from '../components/seo/ProductSeo';
 import { trackViewContent } from '@/core/meta/pixelService';
+import { cleanProductName } from "@/core/utils/productName";
 
 const ProductDetailPage = () => {
     const { id } = useParams();
@@ -237,7 +238,7 @@ const ProductDetailPage = () => {
                         </div>
 
                         <h1 className="text-3xl md:text-4xl font-black text-slate-800 leading-tight mb-3">
-                            {product.name}
+                            {cleanProductName(product.name)}
                         </h1>
 
                         <div className="flex items-baseline gap-4 mb-5">

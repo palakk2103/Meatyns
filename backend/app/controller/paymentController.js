@@ -22,6 +22,7 @@ import crypto from "crypto";
 import Payment from "../models/payment.js";
 import { PAYMENT_STATUS, PAYMENT_GATEWAY, PAYMENT_EVENT_SOURCE } from "../constants/payment.js";
 import getPagination from "../utils/pagination.js";
+import { escapeRegex } from "../utils/regex.js";
 
 function resolvePaymentErrorMessage(error) {
   const directMessage = String(error?.message || "").trim();
@@ -324,6 +325,7 @@ export const handlePaymentWebhook = async (req, res) => {
       rawBody,
       authorization,
       signature,
+      eventIdHeader: req.headers["x-razorpay-event-id"] || null,
       correlationId: req.correlationId || null,
     });
 
@@ -365,7 +367,7 @@ export const getAdminPayments = async (req, res) => {
     }
 
     if (search) {
-      const searchTrim = String(search).trim();
+      const searchTrim = escapeRegex(String(search).trim().slice(0, 100));
       query.$or = [
         { gatewayOrderId: { $regex: searchTrim, $options: "i" } },
         { gatewayPaymentId: { $regex: searchTrim, $options: "i" } },

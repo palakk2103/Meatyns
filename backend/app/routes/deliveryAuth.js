@@ -20,6 +20,7 @@ import {
 import { getRiderWalletSummaryController } from "../controller/adminFinanceController.js";
 
 import { verifyToken, allowRoles } from "../middleware/authMiddleware.js";
+import { authRouteRateLimiter, otpRouteRateLimiter } from "../middleware/securityMiddlewares.js";
 import multer from "multer";
 
 const router = express.Router();
@@ -27,12 +28,14 @@ const upload = multer({ storage: multer.memoryStorage() });
 
 router.post(
   "/send-signup-otp",
+  authRouteRateLimiter,
+  otpRouteRateLimiter,
   upload.any(),
   signupDelivery,
 );
-router.post("/send-login-otp", loginDelivery);
-router.post("/verify-otp", verifyDeliveryOTP);
-router.post("/login-password", loginDeliveryWithPassword);
+router.post("/send-login-otp", authRouteRateLimiter, otpRouteRateLimiter, loginDelivery);
+router.post("/verify-otp", authRouteRateLimiter, otpRouteRateLimiter, verifyDeliveryOTP);
+router.post("/login-password", authRouteRateLimiter, loginDeliveryWithPassword);
 
 // Profile routes
 router.get("/profile", verifyToken, getDeliveryProfile);

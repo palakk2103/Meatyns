@@ -7,6 +7,8 @@ import {
   loginAdminSchema,
   validateSchema,
 } from "../validation/adminAuthValidation.js";
+import { checkLoginOtp, createLoginOtp, LOGIN_OTP_TTL_MINUTES } from "../utils/loginOtp.js";
+import { sendLoginOtpEmail } from "../services/emailService.js";
 
 const PUBLIC_ADMIN_SIGNUP_ENABLED = () =>
   process.env.ENABLE_PUBLIC_ADMIN_SIGNUP === "true";
@@ -155,10 +157,15 @@ export const sendAdminLoginOtp = async (req, res) => {
     if (!admin) {
       return handleResponse(res, 404, "Admin not found with this email");
     }
-    admin.loginOtp = "1234";
-    admin.loginOtpExpiry = Date.now() + 10 * 60 * 1000;
+    const { otp, isTest, expiresAt } = createLoginOtp(normalizedEmail);
+    admin.loginOtp = otp;
+    admin.loginOtpExpiry = expiresAt;
     await admin.save();
-    return handleResponse(res, 200, "OTP sent to your email", { mockOtp: "1234" });
+    if (isTest) {
+      return handleResponse(res, 200, "OTP sent to your email", { mockOtp: otp });
+    }
+    await sendLoginOtpEmail({ email: normalizedEmail, otp, expiresInMinutes: LOGIN_OTP_TTL_MINUTES });
+    return handleResponse(res, 200, "OTP sent to your email", {});
   } catch (error) {
     return handleResponse(res, 500, error.message);
   }
@@ -171,12 +178,18 @@ export const verifyAdminLoginOtp = async (req, res) => {
       return handleResponse(res, 400, "Email and OTP are required");
     }
     const normalizedEmail = String(email).trim().toLowerCase();
-    const admin = await Admin.findOne({ email: normalizedEmail });
+    const admin = await Admin.findOne({ email: normalizedEmail }).select("+loginOtp +loginOtpExpiry");
     if (!admin) {
       return handleResponse(res, 404, "Admin not found");
     }
-    if (otp !== "1234" && admin.loginOtp !== otp) {
-      return handleResponse(res, 400, "Invalid or expired OTP");
+    const check = checkLoginOtp({
+      identifier: normalizedEmail,
+      submitted: otp,
+      stored: admin.loginOtp,
+      expiresAt: admin.loginOtpExpiry,
+    });
+    if (!check.ok) {
+      return handleResponse(res, 400, check.message);
     }
     admin.loginOtp = undefined;
     admin.loginOtpExpiry = undefined;

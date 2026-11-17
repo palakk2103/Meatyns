@@ -80,9 +80,8 @@ const SubCategories = () => {
               : [];
         const headers = allCats.filter((c) => c.type === "header");
         const level2 = allCats.filter((c) => c.type === "category");
-        // Show all child cuts / subcategories (both 2-tier child categories and subcategories)
-        const subCats = allCats.filter((c) => c.type === "subcategory" || (c.type === "category" && c.parentId != null));
-        setCategories(subCats.length > 0 ? subCats : allCats.filter((c) => c.type === "subcategory"));
+        // Only true level-3 subcategories belong in this list
+        setCategories(allCats.filter((c) => c.type === "subcategory"));
         setLevel2Categories(headers.length > 0 ? headers : level2);
         setHeaderCategories(headers);
         setAllCategories(allCats);
@@ -239,7 +238,7 @@ const SubCategories = () => {
       setDeleteTarget(null);
       fetchCategories();
     } catch (error) {
-      toast.error("Failed to delete subcategory");
+      toast.error(error.response?.data?.message || "Failed to delete subcategory");
     }
   };
 
@@ -701,7 +700,7 @@ const SubCategories = () => {
                   <span className="font-semibold text-gray-900">
                     {deleteTarget?.name}
                   </span>
-                  ? This action cannot be undone.
+                  ? This will also permanently delete all its products. This action cannot be undone.
                 </p>
                 <div className="flex gap-3 justify-center">
                   <button

@@ -178,6 +178,35 @@ export async function sendSellerVerificationOtpEmail({
   };
 }
 
+/**
+ * Send a login OTP by email (customer / seller / admin / delivery login).
+ * In mock mode (USE_REAL_EMAIL_OTP off) nothing is sent.
+ */
+export async function sendLoginOtpEmail({ email, otp, expiresInMinutes = 10 }) {
+  if (!useRealEmailOTP()) {
+    logger.info("Login email OTP generated in mock mode (not sent)", { email, mode: "mock" });
+    return { delivered: false, mode: "mock" };
+  }
+
+  const appName = String(process.env.APP_NAME || "Meatyns").trim();
+  const transporter = getTransporter();
+  await transporter.sendMail({
+    from: getMailFrom(),
+    to: email,
+    subject: `${appName} — Your login code is ${otp}`,
+    text: `Hi,\n\nYour ${appName} login code is: ${otp}\n\nThis code expires in ${expiresInMinutes} minutes.\n\nIf you did not request this, please ignore this email.\n\nRegards,\n${appName} Team`,
+    html: `<div style="font-family:Arial,sans-serif;max-width:480px;margin:auto;padding:24px;color:#374151">
+      <h2 style="margin:0 0 16px;color:#111827">${appName}</h2>
+      <p>Your login code is:</p>
+      <p style="font-size:30px;font-weight:700;letter-spacing:8px;margin:16px 0">${otp}</p>
+      <p>This code expires in <strong>${expiresInMinutes} minutes</strong>.</p>
+      <p style="color:#6b7280;font-size:13px">If you did not request this code, you can safely ignore this email.</p>
+    </div>`,
+  });
+
+  return { delivered: true, mode: "real" };
+}
+
 export function __resetEmailTransportForTests() {
   cachedTransporter = null;
 }

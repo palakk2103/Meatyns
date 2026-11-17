@@ -46,8 +46,8 @@ import { isChickenOrMutton } from "../../utils/categoryFilter";
 
 // Default items if backend categories are empty or loading
 const DEFAULT_HEADER_ITEMS = [
-  { id: "chicken", name: "Chicken", image: "/categories/chicken.png" },
   { id: "mutton", name: "Mutton", image: "/categories/mutton.png" },
+  { id: "chicken", name: "Chicken", image: "/categories/chicken.png" },
 ];
 
 const HeaderCategoryNav = ({
@@ -98,7 +98,15 @@ const HeaderCategoryNav = ({
       if (id === "all" || slug === "all" || name === "all") return false;
       return isChickenOrMutton(c);
     });
-    return valid.length > 0 ? valid : DEFAULT_HEADER_ITEMS;
+    // Mutton first, Chicken second
+    const rank = (c) => {
+      const text = `${c.slug || ""} ${c.name || ""}`.toLowerCase();
+      if (text.includes("mutton")) return 0;
+      if (text.includes("chicken")) return 1;
+      return 2;
+    };
+    const sorted = [...valid].sort((a, b) => rank(a) - rank(b));
+    return sorted.length > 0 ? sorted : DEFAULT_HEADER_ITEMS;
   }, [categories]);
 
   // Is "All" button currently active?

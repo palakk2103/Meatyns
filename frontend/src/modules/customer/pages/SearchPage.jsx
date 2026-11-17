@@ -1,3 +1,4 @@
+import MascotTagline from "../components/shared/MascotTagline";
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate, useLocation as useRouterLocation, Link } from 'react-router-dom';
 import { Search, Mic, ArrowLeft, X, TrendingUp, ChevronRight, History, ShoppingCart, MapPin, ChevronDown, Zap, CircleUserRound } from 'lucide-react';
@@ -553,17 +554,19 @@ const SearchPage = () => {
                                 </div>
                             ) : (
                                 <div className="py-12 md:py-16 flex flex-col items-center text-center px-4">
-                                    <div className="w-44 h-52 sm:w-52 sm:h-60 mb-4 flex items-center justify-center">
+                                    <div className="relative w-44 h-52 sm:w-52 sm:h-60 mb-10 flex items-center justify-center">
                                         <img
                                             src="/mascot/chef_mascot.png"
                                             alt="Meatyns Chef Mascot"
                                             className="max-h-full max-w-full object-contain drop-shadow-[0_12px_24px_rgba(0,0,0,0.12)] hover:scale-105 transition-transform duration-300"
                                             loading="eager"
                                         />
+<MascotTagline size="lg" below />
                                     </div>
                                     <h3 className="text-xl md:text-2xl font-normal font-anton tracking-wide text-slate-800 mb-2 uppercase">
                                         No results found
                                     </h3>
+                                    <p className="text-sm font-bold text-[#C81017] mb-2">Shop Fresh. Simply.</p>
                                     <p className="text-slate-500 font-medium max-w-sm text-xs sm:text-sm leading-relaxed mb-6">
                                         We couldn&apos;t find anything for &ldquo;<span className="text-slate-700 font-bold">{query}</span>&rdquo;. Try checking the spelling or browse our fresh categories.
                                     </p>

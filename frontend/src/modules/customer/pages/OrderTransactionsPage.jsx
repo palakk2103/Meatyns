@@ -27,22 +27,51 @@ const OrderTransactionsPage = () => {
     const { currentLocation, refreshLocation, isFetchingLocation } = useAppLocation();
     const [isLocationOpen, setIsLocationOpen] = useState(false);
 
-    useEffect(() => {
-        const fetchOrders = async () => {
-            try {
-                const res = await customerApi.getMyOrders();
-                // Handle both paginated (result.items) and legacy (results) formats
-                const orderData = res.data.result?.items || res.data.results || [];
-                setOrders(orderData);
-            } catch (error) {
-                console.error('Failed to fetch orders for transaction history:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
+    const [walletTxns, setWalletTxns] = useState([]);
+    const [loadError, setLoadError] = useState('');
 
-        fetchOrders();
+    const fetchAll = async () => {
+        setLoading(true);
+        setLoadError('');
+        const [ordersRes, walletRes] = await Promise.allSettled([
+            customerApi.getMyOrders({ limit: 100 }),
+            customerApi.getWalletTransactions({ page: 1, limit: 50 }),
+        ]);
+
+        if (ordersRes.status === 'fulfilled') {
+            const body = ordersRes.value?.data;
+            const items = body?.result?.items || body?.results || [];
+            setOrders(Array.isArray(items) ? items : []);
+        } else {
+            console.error('Failed to fetch orders for transaction history:', ordersRes.reason);
+            setOrders([]);
+            setLoadError(
+                ordersRes.reason?.response?.data?.message ||
+                    'Could not load your transactions. Please try again.',
+            );
+        }
+
+        if (walletRes.status === 'fulfilled') {
+            const body = walletRes.value?.data;
+            const data = body?.result ?? body?.data ?? body;
+            setWalletTxns(Array.isArray(data?.items) ? data.items : []);
+        } else {
+            setWalletTxns([]);
+        }
+        setLoading(false);
+    };
+
+    useEffect(() => {
+        fetchAll();
     }, []);
+
+    // Wallet "Order Payment" rows duplicate the order rows, so skip them.
+    const entries = [
+        ...orders.map((order) => ({ kind: 'order', key: `o-${order._id}`, date: order.createdAt, order })),
+        ...walletTxns
+            .filter((t) => t.title !== 'Order Payment')
+            .map((t) => ({ kind: 'wallet', key: `w-${t._id}`, date: t.date, txn: t })),
+    ].sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
 
     return (
         <div className="min-h-screen bg-[#FFF9F4] pb-24 font-poppins">
@@ -197,7 +226,21 @@ const OrderTransactionsPage = () => {
                             <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-[#FDCE04]"></div>
                             <span>Loading transactions...</span>
                         </div>
-                    ) : orders.length === 0 ? (
+                    ) : loadError ? (
+                        <div className="py-16 flex flex-col items-center justify-center text-center px-6">
+                            <p className="text-base font-bold text-slate-700 mb-1">
+                                Couldn&apos;t load transactions
+                            </p>
+                            <p className="text-xs text-slate-500 max-w-xs mb-4">{loadError}</p>
+                            <button
+                                type="button"
+                                onClick={fetchAll}
+                                className="px-5 py-2 rounded-full bg-[#FDCE04] text-[#1A1A1A] text-sm font-bold cursor-pointer"
+                            >
+                                Retry
+                            </button>
+                        </div>
+                    ) : entries.length === 0 ? (
                         <div className="py-16 flex flex-col items-center justify-center text-center px-6">
                             <div className="w-14 h-14 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 mb-3">
                                 <ReceiptIndianRupee size={26} />
@@ -211,14 +254,71 @@ const OrderTransactionsPage = () => {
                         </div>
                     ) : (
                         <div className="divide-y divide-slate-100">
-                            {orders.map((order) => {
-                                const isRefund = order.paymentStatus === 'refunded';
-                                const amount = order.totalAmount || order.payableAmount || 0;
+                            {entries.map((entry) => {
+                                if (entry.kind === 'wallet') {
+                                    const t = entry.txn;
+                                    const credit = t.type === 'credit';
+                                    const when = t.date ? new Date(t.date) : null;
+                                    return (
+                                        <div
+                                            key={entry.key}
+                                            className="px-5 py-4 flex items-center justify-between hover:bg-slate-50/70 transition-colors"
+                                        >
+                                            <div className="flex items-center gap-4">
+                                                <div
+                                                    className={`h-11 w-11 rounded-xl flex items-center justify-center shrink-0 ${
+                                                        credit ? 'bg-emerald-50 text-emerald-600' : 'bg-[#FDCE04]/20 text-[#1A1A1A]'
+                                                    }`}
+                                                >
+                                                    {credit ? (
+                                                        <ArrowUpRight size={20} strokeWidth={2.2} />
+                                                    ) : (
+                                                        <ArrowDownLeft size={20} strokeWidth={2.2} />
+                                                    )}
+                                                </div>
+                                                <div>
+                                                    <h4 className="font-bold text-slate-800 text-sm">{t.title}</h4>
+                                                    <p className="text-xs text-slate-500 mt-0.5">
+                                                        Wallet
+                                                        {t.orderId ? <> &bull; #{t.orderId}</> : null}
+                                                    </p>
+                                                    {when && (
+                                                        <p className="text-[11px] text-slate-400 mt-0.5">
+                                                            {when.toLocaleDateString()},{' '}
+                                                            {when.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                                        </p>
+                                                    )}
+                                                </div>
+                                            </div>
+                                            <div className={`text-base font-bold ${credit ? 'text-emerald-600' : 'text-slate-900'}`}>
+                                                {credit ? '+' : '-'}₹{Number(t.amount || 0).toLocaleString('en-IN')}
+                                            </div>
+                                        </div>
+                                    );
+                                }
+                                const order = entry.order;
+                                const payStatus = String(order.payment?.status || '').toLowerCase();
+                                const orderStatus = String(order.status || '').toLowerCase();
+                                const isRefund =
+                                    payStatus === 'refunded' ||
+                                    String(order.paymentStatus || '').toUpperCase() === 'REFUNDED' ||
+                                    order.returnStatus === 'refund_completed';
+                                const isCancelled = orderStatus === 'cancelled' && !isRefund;
+                                const method = String(order.payment?.method || order.paymentMode || '').toLowerCase();
+                                const methodLabel =
+                                    method === 'cash' || method === 'cod'
+                                        ? 'Cash on Delivery'
+                                        : method === 'wallet'
+                                            ? 'Wallet'
+                                            : 'Online';
+                                const amount = Number(
+                                    order.paymentBreakdown?.grandTotal ?? order.pricing?.total ?? 0,
+                                );
                                 const createdAt = order.createdAt ? new Date(order.createdAt) : null;
 
                                 return (
                                     <div
-                                        key={order._id}
+                                        key={entry.key}
                                         className="px-5 py-4 flex items-center justify-between hover:bg-slate-50/70 transition-colors"
                                     >
                                         <div className="flex items-center gap-4">
@@ -237,12 +337,12 @@ const OrderTransactionsPage = () => {
                                             </div>
                                             <div>
                                                 <h4 className="font-bold text-slate-800 text-sm">
-                                                    {isRefund ? 'Refund Issued' : 'Order Payment'}
+                                                    {isRefund ? 'Refund Issued' : isCancelled ? 'Order Cancelled' : 'Order Payment'}
                                                 </h4>
                                                 <p className="text-xs text-slate-500 mt-0.5">
                                                     #{order.orderId || order._id?.slice(-8)} &bull;{' '}
                                                     <span className="font-medium text-slate-600">
-                                                        {order.paymentMethod || 'Online'}
+                                                        {methodLabel}
                                                     </span>
                                                 </p>
                                                 {createdAt && (
@@ -261,7 +361,7 @@ const OrderTransactionsPage = () => {
                                                 isRefund ? 'text-emerald-600' : 'text-slate-900'
                                             }`}
                                         >
-                                            {isRefund ? '+' : '-'}₹{amount}
+                                            {isRefund ? '+' : isCancelled ? '' : '-'}₹{amount.toLocaleString('en-IN')}
                                         </div>
                                     </div>
                                 );

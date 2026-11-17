@@ -43,6 +43,7 @@ import LowestPriceSection from "../components/home/LowestPriceSection";
 import OfferSections from "../components/home/OfferSections";
 import HotDealsSection from "../components/home/HotDealsSection";
 import TopPicksSection from "../components/home/TopPicksSection";
+import EggsSection from "../components/home/EggsSection";
 import TrendingCategoriesSection from "../components/home/TrendingCategoriesSection";
 import TrustFeaturesBanner from "../components/home/TrustFeaturesBanner";
 import MobileHeroBanner from "../components/home/MobileHeroBanner";
@@ -536,6 +537,9 @@ const Home = () => {
 
                   {/* 2. ⭐ Top Picks for You */}
                   <TopPicksSection products={effectiveLowestPriceProducts.length ? effectiveLowestPriceProducts : products} />
+
+                  {/* 2b. 🥚 Fresh Eggs */}
+                  <EggsSection categories={categories} />
 
                   {/* 3. 📈 Trending Now */}
                   <TrendingCategoriesSection categories={categories} />

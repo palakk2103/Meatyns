@@ -130,9 +130,11 @@ export const LocationProvider = ({ children }) => {
       const fallbackFromCoords = (latitude, longitude) => ({
         name: `Lat ${Number(latitude).toFixed(5)}, Lng ${Number(longitude).toFixed(5)}`,
         time: "12-15 mins",
-        city: currentLocation?.city || "Indore",
-        state: currentLocation?.state || "Madhya Pradesh",
-        pincode: currentLocation?.pincode || "452018",
+        // Never inherit the previous/default (Indore) city, state or pincode:
+        // the coordinates are the new location, so stale labels would be wrong.
+        city: "",
+        state: "",
+        pincode: "",
         latitude,
         longitude,
       });
@@ -169,7 +171,10 @@ export const LocationProvider = ({ children }) => {
                   "sublocality_level_1",
                   "sublocality",
                 ]);
-                const locality = getComponent(["locality"]);
+                const locality =
+                  getComponent(["locality"]) ||
+                  getComponent(["administrative_area_level_2"]) ||
+                  getComponent(["administrative_area_level_3"]);
                 const state = getComponent(["administrative_area_level_1"]);
                 const pincode = getComponent(["postal_code"]);
                 const country = getComponent(["country"]);
@@ -277,6 +282,13 @@ export const LocationProvider = ({ children }) => {
         setIsFetchingLocation(false);
         if (toastId) {
           toast.error(message, { id: toastId, position: "bottom-center" });
+        } else {
+          // Auto-detect failed (e.g. permission denied): tell the user why they
+          // are still seeing the default area instead of silently showing it.
+          toast.error(
+            "Couldn't detect your location. Showing the default area — please allow location access or set your address.",
+            { position: "bottom-center" },
+          );
         }
         resolve({ ok: false, error: message });
       };

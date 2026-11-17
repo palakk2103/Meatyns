@@ -1,20 +1,20 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { isChickenOrMutton } from "../../utils/categoryFilter";
+import { isChickenOrMutton, sortMeatFirst } from "../../utils/categoryFilter";
 
 const DEFAULT_CATEGORIES = [
-  {
-    id: "chicken",
-    label: "Chicken",
-    query: "chicken",
-    image: "/categories/chicken.png",
-  },
   {
     id: "mutton",
     label: "Mutton",
     query: "mutton",
     image: "/categories/mutton.png",
+  },
+  {
+    id: "chicken",
+    label: "Chicken",
+    query: "chicken",
+    image: "/categories/chicken.png",
   },
 ];
 
@@ -35,7 +35,7 @@ const QuickCategoryRow = ({ categories = [], singleRow = false }) => {
     );
 
     if (valid.length > 0) {
-      return valid.map((cat) => ({
+      return sortMeatFirst(valid, "mutton").map((cat) => ({
         id: cat._id || cat.id,
         label: cat.name,
         query: cat.name,

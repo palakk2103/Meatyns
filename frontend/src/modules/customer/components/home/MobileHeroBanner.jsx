@@ -1,3 +1,4 @@
+import MascotTagline from "../shared/MascotTagline";
 import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -135,9 +136,10 @@ const MobileHeroBanner = ({ heroConfig }) => {
               <img
                 src="/mascot/chef_mascot.png"
                 alt="Meatyns Chef Mascot"
-                className="h-[95%] w-auto object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.18)] group-hover:scale-105 transition-transform duration-500"
+                className="h-[78%] w-auto object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.18)] group-hover:scale-105 transition-transform duration-500"
                 loading="eager"
               />
+<MascotTagline size="sm" />
             </div>
 
             <div className="relative z-10 w-[60%] sm:w-[62%] pl-3.5 sm:pl-5 pr-1 flex flex-col justify-center gap-1.5 sm:gap-2">

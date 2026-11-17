@@ -2,6 +2,7 @@ import React from 'react';
 import { X, Printer, Download, Share2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSettings } from '@core/context/SettingsContext';
+import { cleanProductName } from "@/core/utils/productName";
 
 const InvoiceModal = ({ isOpen, onClose, order }) => {
     const { settings } = useSettings();
@@ -68,7 +69,7 @@ const InvoiceModal = ({ isOpen, onClose, order }) => {
                                         <tbody className="divide-y divide-slate-50">
                                             {order.items.map((item, idx) => (
                                                 <tr key={idx}>
-                                                    <td className="px-4 py-3 text-slate-700 font-medium">{item.name}</td>
+                                                    <td className="px-4 py-3 text-slate-700 font-medium">{cleanProductName(item.name)}</td>
                                                     <td className="px-4 py-3 text-slate-500 text-right">{item.qty}</td>
                                                     <td className="px-4 py-3 text-slate-800 font-bold text-right">₹{item.price}</td>
                                                 </tr>

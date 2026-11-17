@@ -43,7 +43,9 @@ const TRANSITIONS = {
     PAYMENT_STATUS.REFUNDED,
   ]),
   [PAYMENT_STATUS.CAPTURED]: new Set([PAYMENT_STATUS.REFUNDED]),
-  [PAYMENT_STATUS.FAILED]: new Set(),
+  // Razorpay lets a customer retry inside the same order after a failed
+  // attempt, so a later successful capture must still be recorded.
+  [PAYMENT_STATUS.FAILED]: new Set([PAYMENT_STATUS.CAPTURED]),
   [PAYMENT_STATUS.CANCELLED]: new Set(),
   [PAYMENT_STATUS.REFUNDED]: new Set(),
 };

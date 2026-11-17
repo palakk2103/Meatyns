@@ -22,6 +22,22 @@ import { buildCheckoutPricingSnapshot } from "../services/checkoutPricingService
 import { validateBody as validateWithJoi } from "../middleware/validate.js";
 import { trackServerPurchase } from "../services/meta/metaCapiService.js";
 
+// Surface the structured "which items are unavailable" list (CART_SELLER_MISMATCH)
+// so the client can remove just those items instead of clearing the cart.
+const respondWithCheckoutError = (res, error) =>
+  handleResponse(
+    res,
+    error.statusCode || 500,
+    error.message,
+    error.code === "CART_SELLER_MISMATCH"
+      ? {
+          code: error.code,
+          unavailableItems: error.unavailableItems || [],
+          selectedSellerId: error.selectedSellerId || null,
+        }
+      : undefined,
+  );
+
 export const previewCheckoutFinance = async (req, res) => {
   try {
     const payload = validateWithJoi(checkoutPreviewSchema, req.body || {});
@@ -74,7 +90,7 @@ export const previewCheckoutFinance = async (req, res) => {
       ...(distanceDebug ? { distanceDebug } : {}),
     });
   } catch (error) {
-    return handleResponse(res, error.statusCode || 500, error.message);
+    return respondWithCheckoutError(res, error);
   }
 };
 
@@ -145,7 +161,7 @@ export const createOrderWithFinancialSnapshot = async (req, res) => {
       },
     );
   } catch (error) {
-    return handleResponse(res, error.statusCode || 500, error.message);
+    return respondWithCheckoutError(res, error);
   }
 };
 

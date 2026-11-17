@@ -386,6 +386,9 @@ const CustomerAuth = () => {
                                         <p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest leading-none">
                                             Enter your mobile number to get OTP
                                         </p>
+                                        <p className="text-sm font-bold text-[#C81017] pt-1">
+                                            Tap. Order. Enjoy Freshness.
+                                        </p>
                                     </div>
 
                                     <form onSubmit={handleSendOtp} className="space-y-4 sm:space-y-3">

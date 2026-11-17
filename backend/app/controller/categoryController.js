@@ -669,23 +669,14 @@ export const deleteCategory = async (req, res) => {
 
     const allIds = await collectDescendantIds(targetObjectId);
 
-    // CRITICAL PRODUCT SAFETY CHECK:
-    // Check if any product references this category, header, or subcategory
-    const linkedProductCount = await Product.countDocuments({
+    // Cascade: delete all products linked to this category or any descendant
+    await Product.deleteMany({
       $or: [
         { categoryId: { $in: allIds } },
         { subcategoryId: { $in: allIds } },
         { headerId: { $in: allIds } }
       ]
     });
-
-    if (linkedProductCount > 0) {
-      return handleResponse(
-        res,
-        400,
-        `Cannot delete: This category (or its subcategories) contains ${linkedProductCount} associated product(s). Please reassign or remove the products before deleting.`
-      );
-    }
 
     const deleteWithChildren = async (parentId) => {
       const children = await Category.find({ parentId });

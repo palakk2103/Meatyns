@@ -14,6 +14,9 @@ import { Clock } from "lucide-react";
 
 import { useProductDetail } from "../../context/ProductDetailContext";
 
+const cleanProductName = (n) =>
+  String(n ?? "").replace(/[\s(\-–,]*\b\d+\s*packs?\b[\s)]*/gi, " ").replace(/\s{2,}/g, " ").trim() || String(n ?? "");
+
 const ProductCard = React.memo(
   ({ product, badge, className, compact = false, neutralBg = false, variant }) => {
     const { toggleWishlist: toggleWishlistGlobal, isInWishlist } =
@@ -211,7 +214,7 @@ const ProductCard = React.memo(
             <img
               ref={imageRef}
               src={applyCloudinaryTransform(product.image || product.mainImage)}
-              alt={product.name}
+              alt={cleanProductName(product.name)}
               loading="lazy"
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             />
@@ -242,14 +245,22 @@ const ProductCard = React.memo(
           <div className="p-1.5 sm:p-2.5 flex flex-col justify-between flex-1 gap-1 sm:gap-1.5">
             <div>
               <h4 className="font-bold text-slate-800 text-[11px] sm:text-xs leading-snug line-clamp-1 group-hover:text-amber-800 transition-colors">
-                {product.name}
+                {cleanProductName(product.name)}
               </h4>
               <div className="flex items-center gap-1.5 flex-wrap mt-0.5">
-                <p className="text-[9px] sm:text-[10px] text-slate-500 font-medium">
-                  {product.unit && product.unitValue
-                    ? `${product.unitValue} ${product.unit}`
-                    : (product.weight || "500 g")}
-                </p>
+                {(() => {
+                  const label = String(
+                    product.unit && product.unitValue
+                      ? `${product.unitValue} ${product.unit}`
+                      : (product.weight || "500 g"),
+                  ).trim();
+                  if (/^1\s*pack$/i.test(label)) return null;
+                  return (
+                    <p className="text-[9px] sm:text-[10px] text-slate-500 font-medium">
+                      {label}
+                    </p>
+                  );
+                })()}
                 {product.isScheduled && (
                   <span className="text-[8px] sm:text-[9px] px-1 py-0.2 bg-amber-50 text-amber-700 border border-amber-200 rounded font-semibold leading-tight">
                     {product.availableFromTime && product.availableToTime
@@ -416,7 +427,7 @@ const ProductCard = React.memo(
             <img
               ref={imageRef}
               src={applyCloudinaryTransform(product.image)}
-              alt={product.name}
+              alt={cleanProductName(product.name)}
               loading="lazy"
               className="w-full h-full object-cover mix-blend-multiply"
             />
@@ -446,7 +457,7 @@ const ProductCard = React.memo(
                 style={{ backgroundColor: "#EF131F" }}
               />
             </div>
-            {product.weight && (
+            {product.weight && !/^1\s*pack$/i.test(String(product.weight).trim()) && (
               <div
                 className={cn(
                   "bg-brand-50 text-brand-600 font-bold rounded px-1.5 py-0 tracking-wide",
@@ -463,7 +474,7 @@ const ProductCard = React.memo(
                 "font-[600] text-[#1A1A1A] leading-tight line-clamp-2",
                 compact ? "text-[10.5px]" : "text-[12px] sm:text-[13px]",
               )}>
-              {product.name}
+              {cleanProductName(product.name)}
             </h4>
           </div>
 

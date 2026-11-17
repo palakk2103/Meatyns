@@ -129,8 +129,10 @@ const AdminAuth = () => {
         try {
             const res = await adminApi.sendLoginOtp({ email: emailToUse });
             setLoginOtpSent(true);
-            const mockOtp = res.data?.result?.mockOtp || '1234';
-            toast.success(`Mock OTP: ${mockOtp}`, { duration: 10000 });
+            const mockOtp = res.data?.result?.mockOtp;
+            if (mockOtp) {
+                toast.success(`Mock OTP: ${mockOtp}`, { duration: 10000 });
+            }
             toast.info(`OTP sent to ${emailToUse}`);
         } catch (err) {
             const msg = err.response?.data?.message || 'Failed to send OTP.';

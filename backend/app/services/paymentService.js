@@ -365,26 +365,52 @@ async function updateCheckoutGroupPaymentStatus(checkoutGroupId, nextStatus) {
   }
 }
 
+/**
+ * Atomically claim a one-time side effect for a payment. Returns true only
+ * for the first caller, so duplicate webhooks / client verifies skip it.
+ */
+async function claimPaymentSideEffect(paymentId, key) {
+  const result = await Payment.updateOne(
+    { _id: paymentId, sideEffectsApplied: { $ne: key } },
+    { $addToSet: { sideEffectsApplied: key } },
+  );
+  return result.modifiedCount === 1;
+}
+
+function isOrderCancelled(order) {
+  return order.status === "cancelled" || order.workflowStatus === WORKFLOW_STATUS.CANCELLED;
+}
+
 export async function handleOrderSideEffectsFromPaymentStatus(payment, nextStatus, reason) {
   if (payment.paymentType === "WALLET_RECHARGE") {
     if (nextStatus === PAYMENT_STATUS.CAPTURED) {
       const idempotencyKey = `WLT-RECH-${payment.gatewayOrderId}`;
       const existingLedger = await LedgerEntry.findOne({ idempotencyKey });
       if (existingLedger) {
-        console.log(`[WalletRecharge] Payment ${payment.gatewayOrderId} already credited. Skipping duplicate check.`);
+        logger.info("Wallet recharge already credited; skipping duplicate", { gatewayOrderId: payment.gatewayOrderId });
         return;
       }
 
-      await creditWallet({
-        ownerType: OWNER_TYPE.CUSTOMER,
-        ownerId: payment.customer,
-        amount: payment.amount / 100,
-        bucket: "available",
-        ledgerType: LEDGER_TRANSACTION_TYPE.WALLET_RECHARGE,
-        ledgerReference: payment.gatewayOrderId,
-        ledgerDescription: "Wallet recharge via Razorpay",
-        idempotencyKey,
-      });
+      try {
+        await creditWallet({
+          ownerType: OWNER_TYPE.CUSTOMER,
+          ownerId: payment.customer,
+          amount: payment.amount / 100,
+          bucket: "available",
+          ledgerType: LEDGER_TRANSACTION_TYPE.WALLET_RECHARGE,
+          ledgerReference: payment.gatewayOrderId,
+          ledgerDescription: "Wallet recharge via Razorpay",
+          idempotencyKey,
+        });
+      } catch (error) {
+        // Webhook and client verify raced: the other one already credited
+        // (unique idempotencyKey). Treat as success, not an error.
+        if (error?.code === 11000) {
+          logger.info("Wallet recharge credited concurrently; skipping duplicate", { gatewayOrderId: payment.gatewayOrderId });
+          return;
+        }
+        throw error;
+      }
 
       await Transaction.create([{
         user: payment.customer,
@@ -403,7 +429,40 @@ export async function handleOrderSideEffectsFromPaymentStatus(payment, nextStatu
   if (!orders.length) return;
 
   if (nextStatus === PAYMENT_STATUS.CAPTURED) {
-    for (const order of orders) {
+    const liveOrders = orders.filter((order) => !isOrderCancelled(order));
+    const cancelledOrders = orders.filter((order) => isOrderCancelled(order));
+
+    // Payment arrived after (some of) the orders were already cancelled,
+    // e.g. by the payment-timeout job. Refund that part automatically
+    // instead of keeping the customer's money.
+    if (cancelledOrders.length > 0 && (await claimPaymentSideEffect(payment._id, "LATE_CAPTURE_REFUND"))) {
+      const refundRupees = liveOrders.length === 0
+        ? null // full refund
+        : cancelledOrders.reduce(
+            (sum, order) => sum + Number(order?.paymentBreakdown?.grandTotal ?? order?.pricing?.total ?? 0),
+            0,
+          );
+      try {
+        await initiateRazorpayRefund({
+          paymentId: payment._id.toString(),
+          amount: refundRupees,
+          reason: "Payment received after order was cancelled",
+        });
+      } catch (error) {
+        logger.error("Auto-refund for late capture failed; needs manual refund", {
+          paymentId: payment._id.toString(),
+          gatewayOrderId: payment.gatewayOrderId,
+          error: error.message,
+        });
+      }
+    }
+
+    if (liveOrders.length === 0) return;
+
+    // Finance + workflow steps are idempotent; notifications and purchase
+    // tracking must only fire once per payment.
+    const shouldNotify = await claimPaymentSideEffect(payment._id, "CAPTURED_NOTIFY");
+    for (const order of liveOrders) {
       await handleOnlineOrderFinance(order._id, {
         actorId: null,
         transactionId: payment.gatewayPaymentId || "",
@@ -413,6 +472,7 @@ export async function handleOrderSideEffectsFromPaymentStatus(payment, nextStatu
         },
       });
       await moveOrderToSellerPendingAfterPayment(order._id);
+      if (!shouldNotify) continue;
       emitNotificationEvent(NOTIFICATION_EVENTS.PAYMENT_SUCCESS, {
         orderId: order.orderId,
         checkoutGroupId: payment.checkoutGroupId,
@@ -432,7 +492,21 @@ export async function handleOrderSideEffectsFromPaymentStatus(payment, nextStatu
     return;
   }
 
-  if (nextStatus === PAYMENT_STATUS.FAILED || nextStatus === PAYMENT_STATUS.CANCELLED) {
+  if (nextStatus === PAYMENT_STATUS.FAILED) {
+    // A failed attempt does NOT cancel the order: Razorpay lets the customer
+    // retry, and the payment-timeout job (orderAutoCancelJob) cancels the
+    // order and releases stock if it is never paid.
+    await Order.updateMany(
+      {
+        _id: { $in: orders.map((order) => order._id) },
+        paymentStatus: { $ne: ORDER_PAYMENT_STATUS.PAID },
+      },
+      { $set: { paymentStatus: ORDER_PAYMENT_STATUS.FAILED } },
+    );
+    return;
+  }
+
+  if (nextStatus === PAYMENT_STATUS.CANCELLED) {
     const session = await mongoose.startSession();
     try {
       session.startTransaction();
@@ -489,6 +563,7 @@ export async function handleOrderSideEffectsFromPaymentStatus(payment, nextStatu
       },
     );
     await updateCheckoutGroupPaymentStatus(payment.checkoutGroupId, nextStatus);
+    if (!(await claimPaymentSideEffect(payment._id, "REFUNDED_NOTIFY"))) return;
     for (const order of orders) {
       emitNotificationEvent(NOTIFICATION_EVENTS.REFUND_COMPLETED, {
         orderId: order.orderId,
@@ -679,6 +754,7 @@ export async function processPaymentWebhook({
   rawBody,
   authorization,
   signature,
+  eventIdHeader = null,
   correlationId = null,
 }) {
   const provider = getActivePaymentProvider();
@@ -692,11 +768,13 @@ export async function processPaymentWebhook({
 
   const decoded = await provider.decodeWebhookPayload({ rawBody });
 
-  const eventId = decoded.eventId;
   const payloadHash = crypto
     .createHash("sha256")
     .update(JSON.stringify(decoded.raw))
     .digest("hex");
+  const eventId = String(
+    eventIdHeader || decoded.eventId || `${provider.providerName}-${payloadHash}`,
+  );
   const eventType = decoded.state || "unknown";
 
   try {
@@ -713,6 +791,17 @@ export async function processPaymentWebhook({
     throw error;
   }
 
+  try {
+    return await applyWebhookEvent({ provider, decoded, eventId, correlationId });
+  } catch (error) {
+    // Un-record the event so Razorpay's retry is processed instead of
+    // being swallowed as a duplicate.
+    await PaymentWebhookEvent.deleteOne({ eventId }).catch(() => {});
+    throw error;
+  }
+}
+
+async function applyWebhookEvent({ provider, decoded, eventId, correlationId }) {
   const merchantOrderId = decoded.merchantOrderId;
   let payment = merchantOrderId ? await Payment.findOne({ gatewayOrderId: merchantOrderId }) : null;
   if (!payment && decoded.transactionId) {
@@ -728,9 +817,49 @@ export async function processPaymentWebhook({
 
   if (decoded.refundId) {
     payment.gatewayRefundId = decoded.refundId;
-    if (decoded.amount) {
-      payment.refundedAmount = Math.max(payment.refundedAmount || 0, decoded.amount / 100);
+    // Cumulative refunded amount in paise (prefer gateway's own total).
+    const refundedPaise =
+      decoded.amountRefunded != null
+        ? Number(decoded.amountRefunded)
+        : Math.round((payment.refundedAmount || 0) * 100) + Number(decoded.refundAmount || 0);
+    payment.refundedAmount = Math.max(payment.refundedAmount || 0, refundedPaise / 100);
+
+    // Partial refund (e.g. one unavailable item): record it but keep the
+    // payment CAPTURED and the orders as they are.
+    if (nextStatus === PAYMENT_STATUS.REFUNDED && refundedPaise < Number(payment.amount || 0)) {
+      payment.statusHistory.push({
+        fromStatus: payment.status,
+        toStatus: payment.status,
+        source: PAYMENT_EVENT_SOURCE.WEBHOOK,
+        reason: `Partial refund recorded. Total refunded: ₹${payment.refundedAmount}`,
+        changedAt: new Date(),
+      });
+      payment.correlationId = correlationId || payment.correlationId;
+      await payment.save();
+      await PaymentWebhookEvent.updateOne(
+        { eventId },
+        { $set: { payment: payment._id, publicOrderId: payment.publicOrderId } },
+      );
+      return {
+        accepted: true,
+        duplicate: false,
+        partialRefund: true,
+        paymentStatus: payment.status,
+        publicOrderId: payment.publicOrderId,
+      };
     }
+  }
+
+  if (!canTransitionPaymentStatus(payment.status || PAYMENT_STATUS.CREATED, nextStatus)) {
+    // Out-of-order / stale event (e.g. payment.authorized arriving after
+    // capture). Acknowledge it so Razorpay stops retrying, but change nothing.
+    logger.info("Ignoring stale payment webhook", {
+      eventId,
+      gatewayOrderId: payment.gatewayOrderId,
+      currentStatus: payment.status,
+      eventStatus: nextStatus,
+    });
+    return { accepted: true, ignored: true, reason: "Stale event", paymentStatus: payment.status };
   }
 
   await transitionPaymentState(payment, {

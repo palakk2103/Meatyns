@@ -79,6 +79,9 @@ const Footer = () => {
                             />
                         </div>
 
+                        <p className="text-base font-extrabold text-[#FAB82C] tracking-wide">
+                            Good Food Starts with Meatyns.
+                        </p>
                         <p className="text-sm leading-relaxed text-slate-400 font-medium">
                             Your trusted destination for farm-fresh chicken, tender mutton, ocean-fresh fish &amp; coastal seafood. Hygienically packed, temperature-controlled, and delivered fresh to your door.
                         </p>

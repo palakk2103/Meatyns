@@ -6,6 +6,7 @@ import {
     removeFromCart,
     clearCart,
     reorderPreviousOrder,
+    getCartServiceability,
 } from "../controller/cartController.js";
 import { verifyToken } from "../middleware/authMiddleware.js";
 import { validate } from "../middleware/validate.js";
@@ -23,6 +24,7 @@ router.use(verifyToken); // All cart routes require auth
 // Schemas in cartValidation.js were updated in the same phase to use
 // the canonical `variantSku` field name (was `variantSlot`).
 router.get("/", getCart);
+router.get("/serviceability", getCartServiceability);
 router.post("/add", validate(addToCartSchema), addToCart);
 router.put("/update", validate(updateCartItemSchema), updateQuantity);
 router.delete(

@@ -46,6 +46,7 @@ const orderSchema = new mongoose.Schema(
           required: true,
         },
         variantSlot: String,
+        variantName: String,
         image: String,
         unit: {
           type: String,

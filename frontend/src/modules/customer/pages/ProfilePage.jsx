@@ -1,3 +1,4 @@
+import MascotTagline from "../components/shared/MascotTagline";
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
@@ -242,12 +243,28 @@ const ProfilePage = () => {
                                 bg="#FEF3C7"
                             />
                             <MenuItem
+                                icon={Wallet}
+                                label="Wallet"
+                                sub="Balance & return refunds"
+                                path="/wallet"
+                                color="#047857"
+                                bg="#ECFDF5"
+                            />
+                            <MenuItem
                                 icon={Heart}
                                 label="Your Wishlist"
                                 sub="Your saved items"
                                 path="/wishlist"
                                 color="#EF131F"
                                 bg="#FEE2E2"
+                            />
+                            <MenuItem
+                                icon={Gift}
+                                label="Refer & Earn"
+                                sub="Invite friends, get wallet rewards"
+                                path="/referrals"
+                                color="#7C3AED"
+                                bg="#F5F3FF"
                             />
                             <MenuItem
                                 icon={MapPin}
@@ -346,13 +363,14 @@ const ProfilePage = () => {
 
                 {/* Branded Thank You Mascot Banner (matching mockup screen 8) */}
                 <div className="rounded-2xl p-4 bg-gradient-to-r from-[#FFF5ED] via-[#FFF1E8] to-[#FFEFE6] border border-[#FCD9C8] flex items-center gap-3.5 shadow-2xs mt-4">
-                    <div className="w-16 h-16 shrink-0 flex items-center justify-center">
+                    <div className="relative w-16 h-16 shrink-0 flex items-center justify-center">
                         <img
                             src="/mascot/chef_mascot.png"
                             alt="Meatyns Chef Mascot"
-                            className="max-h-full max-w-full object-contain drop-shadow-[0_4px_10px_rgba(0,0,0,0.12)]"
+                            className="max-h-[62%] max-w-full object-contain mb-4 drop-shadow-[0_4px_10px_rgba(0,0,0,0.12)]"
                             loading="lazy"
                         />
+<MascotTagline size="sm" />
                     </div>
                     <div className="min-w-0">
                         <p className="font-serif italic text-xs text-slate-500">

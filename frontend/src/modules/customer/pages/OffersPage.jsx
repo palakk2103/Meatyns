@@ -1,3 +1,4 @@
+import MascotTagline from "../components/shared/MascotTagline";
 import React, { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Tag, Sparkles, Clock, ArrowRight, ArrowLeft, Flame, Heart, ShoppingCart, Plus, Minus } from "lucide-react";
@@ -9,6 +10,7 @@ import { useProductDetail } from "../context/ProductDetailContext";
 import { toast } from "sonner";
 import { applyCloudinaryTransform } from "@/core/utils/imageUtils";
 import { DEFAULT_HOT_DEALS } from "../components/home/HotDealsSection";
+import { cleanProductName } from "@/core/utils/productName";
 
 const OffersPage = () => {
   const navigate = useNavigate();
@@ -208,7 +210,7 @@ const OffersPage = () => {
             Special Offers &amp; Deals
           </h1>
           <p className="text-gray-500 text-sm md:text-lg font-medium">
-            Grab these exclusive discounts curated daily for you!
+            Good Cuts. Great Meals. Grab these exclusive discounts curated daily for you!
           </p>
         </div>
       </motion.div>
@@ -250,9 +252,10 @@ const OffersPage = () => {
             <img
               src="/mascot/chef_mascot.png"
               alt="Meatyns Chef Mascot"
-              className="h-[105%] max-h-[220px] w-auto object-contain drop-shadow-[0_8px_20px_rgba(0,0,0,0.35)] -mb-1"
+              className="h-[80%] max-h-[190px] w-auto object-contain drop-shadow-[0_8px_20px_rgba(0,0,0,0.35)] mb-5"
               loading="eager"
             />
+<MascotTagline size="md" />
           </div>
         </div>
       </div>
@@ -347,7 +350,7 @@ const OffersPage = () => {
                 <div className="p-2 sm:p-3.5 flex flex-col justify-between flex-1 gap-1.5 sm:gap-2">
                   <div>
                     <h3 className="font-bold text-slate-900 text-[11.5px] sm:text-[14px] leading-snug line-clamp-1 group-hover:text-amber-600 transition-colors">
-                      {product.name}
+                      {cleanProductName(product.name)}
                     </h3>
                     <p className="text-[9.5px] sm:text-xs text-slate-400 font-medium mt-0.5">
                       {product.weight || "500 g"}

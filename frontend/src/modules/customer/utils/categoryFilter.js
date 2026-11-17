@@ -6,7 +6,41 @@
 const CHICKEN_MUTTON_REGEX = /chicken|poultry|murga|mutton|goat|lamb|gosht|bakra/i;
 const EXCLUDED_REGEX = /fish|seafood|prawn|shrimp|crab|egg|anda|machli|cold cut|cold-cut|salami|sausage|ready-to-cook|ready to cook|spread|ready-to-eat|grocery|dairy|fruit|vegetable/i;
 
+const MUTTON_REGEX = /mutton|goat|lamb|gosht|bakra/i;
+const CHICKEN_REGEX = /chicken|poultry|murga/i;
+
+const meatText = (item) => {
+  if (!item) return "";
+  if (typeof item === "string") return item;
+  const cat = item.category;
+  const catName = typeof cat === "string" ? "" : cat?.name || "";
+  return `${item.name || ""} ${catName}`;
+};
+
+// Returns "mutton" | "chicken" | "other" for a category or product
+export const getMeatType = (item) => {
+  const text = meatText(item);
+  if (MUTTON_REGEX.test(text)) return "mutton";
+  if (CHICKEN_REGEX.test(text)) return "chicken";
+  return "other";
+};
+
+// Stable sort: items of `first` type come first, then the other meat, then the rest.
+export const sortMeatFirst = (list = [], first = "mutton") => {
+  const second = first === "mutton" ? "chicken" : "mutton";
+  const rank = (item) => {
+    const t = getMeatType(item);
+    return t === first ? 0 : t === second ? 1 : 2;
+  };
+  return [...(list || [])]
+    .map((item, i) => ({ item, i, r: rank(item) }))
+    .sort((a, b) => a.r - b.r || a.i - b.i)
+    .map((x) => x.item);
+};
+
 export const isChickenOrMutton = (categoryOrName) => {
+  return true; // show every category created from the admin panel
+  // eslint-disable-next-line no-unreachable
   if (!categoryOrName) return false;
   
   if (typeof categoryOrName === 'string') {
@@ -33,6 +67,8 @@ export const isChickenOrMutton = (categoryOrName) => {
 
 export const filterChickenAndMuttonTree = (tree = []) => {
   if (!Array.isArray(tree)) return [];
+  return tree;
+  // eslint-disable-next-line no-unreachable
 
   return tree
     .filter((header) => {
@@ -62,6 +98,8 @@ export const filterChickenAndMuttonTree = (tree = []) => {
 
 export const filterChickenAndMuttonFlat = (list = []) => {
   if (!Array.isArray(list)) return [];
+  return list;
+  // eslint-disable-next-line no-unreachable
 
   // Identify chicken and mutton headers/parents
   const allowedHeaderIds = new Set();

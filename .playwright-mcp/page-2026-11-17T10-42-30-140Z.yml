@@ -1,0 +1,173 @@
+- generic [ref=f1e2]:
+  - generic [ref=f1e3]:
+    - main [ref=f1e4]:
+      - generic [ref=f1e5]:
+        - generic [ref=f1e7]:
+          - img "Meatyns" [ref=f1e9] [cursor=pointer]
+          - generic [ref=f1e11]:
+            - textbox "Search for chicken, mutton, cuts..." [ref=f1e15]: Chicken Breast
+            - button [ref=f1e16] [cursor=pointer]
+            - button [ref=f1e21] [cursor=pointer]
+          - generic [ref=f1e25]:
+            - button "Deliver to Jabalpur, Madhya Pradesh, 482001" [ref=f1e26] [cursor=pointer]:
+              - generic [ref=f1e30]:
+                - generic [ref=f1e31]: Deliver to
+                - generic [ref=f1e32]: Jabalpur, Madhya Pradesh, 482001
+            - generic [ref=f1e39]:
+              - generic [ref=f1e40]: Delivery in
+              - generic [ref=f1e41]: 12-15 mins
+            - button "Profile" [ref=f1e42] [cursor=pointer]
+            - button "Shopping Cart" [ref=f1e47] [cursor=pointer]:
+              - generic [ref=f1e52]: "0"
+        - generic [ref=f1e55]:
+          - generic [ref=f1e56]:
+            - heading "Search Results for \"Chicken Breast\"" [level=2] [ref=f1e57]:
+              - text: Search Results for
+              - generic [ref=f1e58]: "\"Chicken Breast\""
+            - generic [ref=f1e59]: 1 found
+          - generic [ref=f1e60]:
+            - button "All Cuts" [ref=f1e61] [cursor=pointer]
+            - button "Curry Cut" [ref=f1e62] [cursor=pointer]
+            - button "Biryani Cut" [ref=f1e63] [cursor=pointer]
+            - button "Boneless" [ref=f1e64] [cursor=pointer]
+            - button "Bone-In" [ref=f1e65] [cursor=pointer]
+          - generic [ref=f1e68] [cursor=pointer]:
+            - generic [ref=f1e69]:
+              - img "Meatyns Chicken Breast - Boneless" [ref=f1e70]
+              - button [ref=f1e71]
+            - generic [ref=f1e74]:
+              - heading "Meatyns Chicken Breast - Boneless" [level=4] [ref=f1e76]
+              - generic [ref=f1e77]:
+                - generic [ref=f1e78]: ₹415
+                - button "Add to Cart" [ref=f1e81]
+    - generic [ref=f1e89]:
+      - generic [ref=f1e90]:
+        - generic [ref=f1e91]:
+          - button [ref=f1e92]
+          - button [ref=f1e95]
+        - img "Meatyns Chicken Breast - Boneless 1" [ref=f1e100]
+      - generic [ref=f1e102]:
+        - generic [ref=f1e103]:
+          - generic [ref=f1e104]: 8-15 mins
+          - generic [ref=f1e108]:
+            - text: "4.8"
+            - generic [ref=f1e111]: (120+)
+        - heading "Meatyns Chicken Breast - Boneless" [level=1] [ref=f1e113]
+        - generic [ref=f1e117]:
+          - generic [ref=f1e118]: ₹415
+          - button "Add to Cart" [ref=f1e122] [cursor=pointer]
+        - generic [ref=f1e126]:
+          - heading "Select Variant" [level=4] [ref=f1e127]
+          - generic [ref=f1e128]:
+            - button "1 kg" [ref=f1e129]
+            - button "750 g" [ref=f1e130]
+            - button "500 g" [ref=f1e131]
+            - button "250 g" [ref=f1e132]
+        - generic [ref=f1e133]:
+          - generic [ref=f1e134]:
+            - button "Product Description" [ref=f1e135]
+            - generic [ref=f1e145]: Tender boneless chicken breast, prepared for easy cooking and versatile recipes. Ideal for grilling, roasting, stir-fries, salads, meal preparation and protein-focused meals.
+          - button "Product Details" [ref=f1e149]
+          - button "Customer Reviews (120+)" [ref=f1e160]
+    - contentinfo [ref=f1e171]:
+      - generic [ref=f1e172]:
+        - generic [ref=f1e173]:
+          - generic [ref=f1e179]:
+            - heading "100% Fresh & Hygienic" [level=4] [ref=f1e180]
+            - paragraph [ref=f1e181]: Sourced daily from certified farms
+          - generic [ref=f1e197]:
+            - heading "Chilled, Never Frozen" [level=4] [ref=f1e198]
+            - paragraph [ref=f1e199]: Stored strictly at 0–4°C always
+          - generic [ref=f1e204]:
+            - heading "15–30 Mins Express" [level=4] [ref=f1e205]
+            - paragraph [ref=f1e206]: Fast temperature-controlled delivery
+        - generic [ref=f1e207]:
+          - generic [ref=f1e208]:
+            - img "Meatyns" [ref=f1e210]
+            - paragraph [ref=f1e211]: Good Food Starts with Meatyns.
+            - paragraph [ref=f1e212]: Your trusted destination for farm-fresh chicken, tender mutton, ocean-fresh fish & coastal seafood. Hygienically packed, temperature-controlled, and delivered fresh to your door.
+            - generic [ref=f1e213]:
+              - link "Facebook" [ref=f1e214] [cursor=pointer]:
+                - /url: "#"
+              - link "Twitter" [ref=f1e217] [cursor=pointer]:
+                - /url: "#"
+              - link "Instagram" [ref=f1e220] [cursor=pointer]:
+                - /url: "#"
+              - link "YouTube" [ref=f1e224] [cursor=pointer]:
+                - /url: "#"
+          - generic [ref=f1e228]:
+            - heading "Quick Links" [level=3] [ref=f1e229]
+            - list [ref=f1e231]:
+              - listitem [ref=f1e232]:
+                - link "Home" [ref=f1e233] [cursor=pointer]:
+                  - /url: /
+              - listitem [ref=f1e234]:
+                - link "About Meatyns" [ref=f1e235] [cursor=pointer]:
+                  - /url: /about
+              - listitem [ref=f1e236]:
+                - link "Franchise Opportunities" [ref=f1e237] [cursor=pointer]:
+                  - /url: /franchise
+              - listitem [ref=f1e238]:
+                - link "What We Deliver" [ref=f1e239] [cursor=pointer]:
+                  - /url: /what-we-deliver
+              - listitem [ref=f1e240]:
+                - link "All Categories" [ref=f1e241] [cursor=pointer]:
+                  - /url: /category/all
+              - listitem [ref=f1e242]:
+                - link "Offers & Deals" [ref=f1e243] [cursor=pointer]:
+                  - /url: /offers
+              - listitem [ref=f1e244]:
+                - link "Customer Support" [ref=f1e245] [cursor=pointer]:
+                  - /url: /support
+              - listitem [ref=f1e246]:
+                - link "Contact Us" [ref=f1e247] [cursor=pointer]:
+                  - /url: /contact
+          - generic [ref=f1e248]:
+            - heading "Categories" [level=3] [ref=f1e249]
+            - list [ref=f1e251]:
+              - listitem [ref=f1e252]:
+                - link "Fresh Chicken" [ref=f1e253] [cursor=pointer]:
+                  - /url: /search?q=chicken
+              - listitem [ref=f1e254]:
+                - link "Tender Mutton" [ref=f1e255] [cursor=pointer]:
+                  - /url: /search?q=mutton
+              - listitem [ref=f1e256]:
+                - link "Chicken Curry Cut" [ref=f1e257] [cursor=pointer]:
+                  - /url: /search?q=chicken
+              - listitem [ref=f1e258]:
+                - link "Goat Curry Cut" [ref=f1e259] [cursor=pointer]:
+                  - /url: /search?q=mutton
+              - listitem [ref=f1e260]:
+                - link "All Meat Cuts" [ref=f1e261] [cursor=pointer]:
+                  - /url: /categories
+          - generic [ref=f1e262]:
+            - heading "Contact Us" [level=3] [ref=f1e263]
+            - list [ref=f1e265]:
+              - listitem [ref=f1e266]:
+                - generic [ref=f1e271]: Unit-A, Shop No. 11, Sharda Vihar Apartment, Isolation Ring Road, Near Dhyan Chand Hockey Stadium, Kolhapur
+              - listitem [ref=f1e272]:
+                - generic [ref=f1e276]:
+                  - link "1800-233-8590" [ref=f1e277] [cursor=pointer]:
+                    - /url: tel:18002338590
+                  - generic [ref=f1e278]: "|"
+                  - link "75585 98590" [ref=f1e279] [cursor=pointer]:
+                    - /url: tel:7558598590
+              - listitem [ref=f1e280]:
+                - link "contact@meatyns.com" [ref=f1e285] [cursor=pointer]:
+                  - /url: mailto:contact@meatyns.com
+        - generic [ref=f1e286]:
+          - paragraph [ref=f1e287]: © 2026 Meatyns. All rights reserved.
+          - generic [ref=f1e288]:
+            - link "Our Policies" [ref=f1e289] [cursor=pointer]:
+              - /url: /policy
+            - link "Quality Policy" [ref=f1e290] [cursor=pointer]:
+              - /url: /quality-policy
+            - link "Delivery Policy" [ref=f1e291] [cursor=pointer]:
+              - /url: /shipping-policy
+            - link "Refund & Replacement" [ref=f1e292] [cursor=pointer]:
+              - /url: /refund-policy
+            - link "Privacy Policy" [ref=f1e293] [cursor=pointer]:
+              - /url: /privacy
+            - link "Terms of Service" [ref=f1e294] [cursor=pointer]:
+              - /url: /terms
+  - region "Notifications alt+T"

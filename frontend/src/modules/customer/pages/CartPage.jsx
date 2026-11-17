@@ -1,3 +1,4 @@
+import MascotTagline from "../components/shared/MascotTagline";
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Lottie from 'lottie-react';
@@ -20,12 +21,20 @@ import { useSettings } from '@core/context/SettingsContext';
 import { applyCloudinaryTransform } from '@/core/utils/imageUtils';
 import DesktopSidebarNav from '../components/shared/DesktopSidebarNav';
 import FishEmptyCartIllustration from '../components/shared/FishEmptyCartIllustration';
+import UnavailableItemsNotice from './checkout/components/UnavailableItemsNotice';
+import { useCartServiceability } from '../hooks/useCartServiceability';
+import { useLocation as useAppLocation } from '../context/LocationContext';
+import { cleanProductName } from "@/core/utils/productName";
 
 const CartPage = () => {
     const navigate = useNavigate();
     const { cart, removeFromCart, updateQuantity, cartTotal, clearCart, resolveItemEffectivePrice } = useCart();
     const { settings } = useSettings();
     const { showToast } = useToast();
+    const { currentLocation } = useAppLocation();
+    const unavailableItems = useCartServiceability(currentLocation?.latitude, currentLocation?.longitude);
+    const removeUnavailable = (id, sku) => removeFromCart(id, String(sku || '').trim());
+    const removeAllUnavailable = () => unavailableItems.forEach((u) => removeUnavailable(u.productId, u.variantSku));
     const itemCount = cart.reduce((count, item) => count + item.quantity, 0);
     const [emptyBoxData, setEmptyBoxData] = useState(null);
 
@@ -47,6 +56,11 @@ const CartPage = () => {
     const [appliedCoupon, setAppliedCoupon] = useState('');
 
     const handleProceedToCheckout = (e) => {
+        if (unavailableItems.length > 0) {
+            e?.preventDefault?.();
+            showToast('Remove the unavailable items to continue to checkout.', 'error');
+            return;
+        }
         if (isBelowMinimum) {
             e?.preventDefault?.();
             showToast(`Minimum order amount is ₹${minimumOrderValue}. Please add ₹${minimumOrderValue - cartTotal} more to checkout.`, 'warning');
@@ -90,17 +104,19 @@ const CartPage = () => {
 
                         {/* Center Content */}
                         <div className="flex-1 flex flex-col items-center justify-center px-6 py-10 text-center -mt-4 sm:-mt-6">
-                            <div className="w-48 sm:w-56 h-56 sm:h-64 mb-4 flex items-center justify-center">
+                            <div className="relative w-48 sm:w-56 h-56 sm:h-64 mb-10 flex items-center justify-center">
                                 <img
                                     src="/mascot/chef_mascot.png"
                                     alt="Meatyns Chef Mascot"
                                     className="max-h-full max-w-full object-contain drop-shadow-[0_12px_24px_rgba(0,0,0,0.12)] hover:scale-105 transition-transform duration-300"
                                     loading="eager"
                                 />
+<MascotTagline size="lg" below />
                             </div>
                             <h2 className="text-[20px] sm:text-[22px] font-normal font-anton uppercase tracking-wide text-slate-800 mb-1.5">
                                 Your cart is empty!
                             </h2>
+                            <p className="text-sm font-bold text-[#C81017] mb-2">Order Fresh. Cook Happy.</p>
                             <p className="text-xs sm:text-[13px] text-slate-500 font-medium max-w-xs mb-6 leading-relaxed">
                                 Looks like you haven&apos;t added anything yet. Let&apos;s fill it with some fresh and healthy meat.
                             </p>
@@ -133,6 +149,7 @@ const CartPage = () => {
                         </header>
                         <div className="relative mx-auto w-full max-w-[1440px] px-4 py-6">
                             <section className="space-y-4">
+                                <UnavailableItemsNotice items={unavailableItems} onRemove={removeUnavailable} onRemoveAll={removeAllUnavailable} />
                                 <div className="flex items-center justify-between px-1">
                                     <h2 className="text-lg font-black text-slate-900 tracking-tight">
                                         Your items
@@ -159,10 +176,10 @@ const CartPage = () => {
                                                     <div className="flex items-start justify-between gap-3">
                                                         <div className="min-w-0 flex-1">
                                                             <h3 className="truncate text-base font-bold text-slate-900">
-                                                                {item.name}
+                                                                {cleanProductName(item.name)}
                                                             </h3>
                                                             <p className="mt-0.5 text-xs text-slate-500">
-                                                                {item.weight || '500 g'}
+                                                                {item.variantName || item.weight || '500 g'}
                                                             </p>
                                                         </div>
                                                         <button
@@ -275,13 +292,14 @@ const CartPage = () => {
                         <div className="flex-1 min-w-0">
                             {cart.length === 0 ? (
                                 <div className="bg-white rounded-2xl p-10 lg:p-12 border border-[#ede5df] shadow-xs text-center flex flex-col items-center">
-                                    <div className="w-48 h-56 mb-4 flex items-center justify-center">
+                                    <div className="relative w-48 h-56 mb-10 flex items-center justify-center">
                                         <img
                                             src="/mascot/chef_mascot.png"
                                             alt="Meatyns Chef Mascot"
                                             className="max-h-full max-w-full object-contain drop-shadow-[0_12px_24px_rgba(0,0,0,0.14)]"
                                             loading="eager"
                                         />
+<MascotTagline size="lg" below />
                                     </div>
                                     <h2 className="text-2xl font-normal font-anton uppercase tracking-wide text-slate-900 mb-1.5">Your cart is empty!</h2>
                                     <p className="text-xs sm:text-sm text-slate-500 mb-6 max-w-md mx-auto leading-relaxed">
@@ -296,6 +314,7 @@ const CartPage = () => {
                                 </div>
                             ) : (
                                 <div className="space-y-4">
+                                    <UnavailableItemsNotice items={unavailableItems} onRemove={removeUnavailable} onRemoveAll={removeAllUnavailable} />
                                     {/* Cart Header: Your Cart (X Items) + Clear Cart */}
                                     <div className="flex items-center justify-between">
                                         <h1 className="text-xl lg:text-2xl font-normal font-anton tracking-wide text-slate-900 uppercase">
@@ -327,10 +346,10 @@ const CartPage = () => {
                                                     </div>
                                                     <div className="min-w-0 space-y-1">
                                                         <h3 className="text-sm font-bold text-slate-900 truncate">
-                                                            {item.name}
+                                                            {cleanProductName(item.name)}
                                                         </h3>
                                                         <p className="text-xs text-slate-500">
-                                                            {item.weight || item.netWeight || '500 g'}
+                                                            {item.variantName || item.weight || item.netWeight || '500 g'}
                                                         </p>
                                                         {(() => {
                                                             const effective = resolveItemEffectivePrice ? resolveItemEffectivePrice(item, item.quantity) : { unitPrice: item.price, appliedTier: null };

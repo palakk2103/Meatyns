@@ -6,6 +6,8 @@ import { useCart } from "../../context/CartContext";
 import { useProductDetail } from "../../context/ProductDetailContext";
 import { toast } from "sonner";
 import { applyCloudinaryTransform } from "@/core/utils/imageUtils";
+import { getMeatType } from "../../utils/categoryFilter";
+import { cleanProductName } from "@/core/utils/productName";
 
 // 4 Curated Hot Deals using real product IDs from database
 export const DEFAULT_HOT_DEALS = [
@@ -63,6 +65,8 @@ const HotDealsSection = ({ products = [] }) => {
 
   // Merge real backend products if they have discounts, or fallback to curated defaults
   const displayItems = React.useMemo(() => {
+    // Hot Deals shows Mutton products only
+    products = (products || []).filter((p) => getMeatType(p) === "mutton");
     const discountedFromBackend = (products || [])
       .filter((p) => {
         const curr = Number(p.salePrice || p.price || 0);
@@ -114,14 +118,6 @@ const HotDealsSection = ({ products = [] }) => {
       }
     }
 
-    // Only if total products in DB are less than 4, fill remaining from curated
-    for (const item of DEFAULT_HOT_DEALS) {
-      if (merged.length >= 4) break;
-      if (!existingNames.has(item.name.toLowerCase())) {
-        merged.push(item);
-        existingNames.add(item.name.toLowerCase());
-      }
-    }
     return merged.slice(0, 4);
   }, [products]);
 
@@ -176,6 +172,8 @@ const HotDealsSection = ({ products = [] }) => {
       updateQuantity(product.id || product._id, -1);
     }
   };
+
+  if (!displayItems.length) return null;
 
   return (
     <section className="w-full mb-6 sm:mb-8 select-none">
@@ -245,7 +243,7 @@ const HotDealsSection = ({ products = [] }) => {
               <div className="p-2 sm:p-3.5 flex flex-col justify-between flex-1 gap-1.5 sm:gap-2">
                 <div>
                   <h3 className="font-bold text-slate-900 text-[11.5px] sm:text-[14px] leading-snug line-clamp-1 group-hover:text-amber-600 transition-colors">
-                    {product.name}
+                    {cleanProductName(product.name)}
                   </h3>
                   <p className="text-[9.5px] sm:text-xs text-slate-400 font-medium mt-0.5">
                     {product.weight || "500 g"}

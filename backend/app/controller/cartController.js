@@ -5,6 +5,10 @@ import Order from "../models/order.js";
 import handleResponse from "../utils/helper.js";
 import { getApprovedOrLegacyFilter } from "../services/productModerationService.js";
 import { evaluateProductAvailability } from "../services/productSchedulingService.js";
+import {
+  evaluateCartServiceability,
+  parseCustomerCoordinates,
+} from "../services/customerVisibilityService.js";
 
 const CART_POPULATE_FIELDS =
   "name slug price salePrice mainImage stock status headerId categoryId subcategoryId sellerId variants unit unitValue orderIncrement minOrderQty maxOrderQty isScheduled scheduleDays availableFromTime availableToTime tieredPricing";
@@ -419,3 +423,29 @@ export const reorderPreviousOrder = async (req, res) => {
   }
 };
 
+
+/* ===============================
+   CART SERVICEABILITY FOR A LOCATION
+   Re-validates the stored cart against a delivery location using the same
+   single-seller rule checkout enforces, and names the unavailable items.
+================================ */
+export const getCartServiceability = async (req, res) => {
+  try {
+    const coords = parseCustomerCoordinates(req.query || {});
+    if (!coords.valid) {
+      return handleResponse(res, 400, "Valid lat and lng are required");
+    }
+    const cart = await Cart.findOne({ customerId: req.user.id }).lean();
+    const cartItems = (cart?.items || [])
+      .filter((i) => i?.productId)
+      .map((i) => ({ productId: i.productId, variantSku: i.variantSku || "" }));
+    const result = await evaluateCartServiceability({
+      cartItems,
+      lat: coords.lat,
+      lng: coords.lng,
+    });
+    return handleResponse(res, 200, "Cart serviceability evaluated", result);
+  } catch (error) {
+    return handleResponse(res, 500, error.message);
+  }
+};

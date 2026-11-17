@@ -46,9 +46,9 @@ router.post(
     upload.any(),
     signupSeller
 );
-router.post("/login", loginSeller);
-router.post("/login-otp", sendSellerLoginOtp);
-router.post("/verify-login-otp", verifySellerLoginOtp);
+router.post("/login", authRouteRateLimiter, loginSeller);
+router.post("/login-otp", authRouteRateLimiter, otpRouteRateLimiter, sendSellerLoginOtp);
+router.post("/verify-login-otp", authRouteRateLimiter, otpRouteRateLimiter, verifySellerLoginOtp);
 router.get("/nearby", getNearbySellers);
 
 // Profile routes

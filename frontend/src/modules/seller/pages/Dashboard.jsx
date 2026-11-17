@@ -35,6 +35,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { cn } from "@/lib/utils";
+import { getPaymentInfo } from "@/shared/utils/paymentInfo";
 import { sellerApi } from "../services/sellerApi";
 import { toast } from "sonner";
 import { useSellerOrders } from "../context/SellerOrdersContext";
@@ -215,10 +216,7 @@ const Dashboard = () => {
       items,
       total: Number(order.pricing?.total ?? 0),
       status: order.status || "pending",
-      payment:
-        order.payment?.method === "cash" || order.payment?.method === "cod"
-          ? "Cash on Delivery"
-          : "Online Paid",
+      payment: `${getPaymentInfo(order).modeLabel} - ${getPaymentInfo(order).statusLabel}`,
     };
   };
 
@@ -693,11 +691,11 @@ const Dashboard = () => {
                                     : "bg-slate-100 text-slate-700 focus:ring-slate-200"
                       )}
                     >
-                      <option value="pending">Pending</option>
+                      <option value="pending" disabled>Pending</option>
                       <option value="confirmed">Confirmed</option>
                       <option value="packed">Packed</option>
-                      <option value="out_for_delivery">Out for Delivery</option>
-                      <option value="delivered">Delivered</option>
+                      <option value="out_for_delivery" disabled>Out for Delivery</option>
+                      <option value="delivered" disabled>Delivered</option>
                       <option value="cancelled">Cancelled</option>
                     </select>
                     <HiOutlineChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 pointer-events-none opacity-60" />

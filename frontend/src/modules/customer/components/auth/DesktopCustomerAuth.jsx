@@ -272,6 +272,9 @@ const DesktopCustomerAuth = ({
                             <h2 className="text-2xl lg:text-3xl font-normal font-anton text-stone-900 tracking-wide uppercase">
                                 {showOtp ? 'Enter Verification Code' : 'Login with Phone'}
                             </h2>
+                            {!showOtp && (
+                                <p className="text-[#C81017] text-sm font-bold">Tap. Order. Enjoy Freshness.</p>
+                            )}
                             <p className="text-stone-500 text-sm">
                                 {showOtp
                                     ? `We have sent a 4-digit code to +91 ${formData.phone}`

@@ -7,6 +7,8 @@ import {
     verifySellerVerificationToken,
 } from "../services/sellerVerificationService.js";
 import { uploadToCloudinary } from "../services/mediaService.js";
+import { checkLoginOtp, createLoginOtp, LOGIN_OTP_TTL_MINUTES } from "../utils/loginOtp.js";
+import { sendLoginOtpEmail } from "../services/emailService.js";
 
 /* ===============================
    Utils
@@ -346,10 +348,15 @@ export const sendSellerLoginOtp = async (req, res) => {
         if (!seller) {
             return handleResponse(res, 404, "Seller account not found with this email");
         }
-        seller.loginOtp = "1234";
-        seller.loginOtpExpiry = Date.now() + 10 * 60 * 1000;
+        const { otp, isTest, expiresAt } = createLoginOtp(normalizedEmail);
+        seller.loginOtp = otp;
+        seller.loginOtpExpiry = expiresAt;
         await seller.save();
-        return handleResponse(res, 200, "OTP sent to your email", { mockOtp: "1234" });
+        if (isTest) {
+            return handleResponse(res, 200, "OTP sent to your email", { mockOtp: otp });
+        }
+        await sendLoginOtpEmail({ email: normalizedEmail, otp, expiresInMinutes: LOGIN_OTP_TTL_MINUTES });
+        return handleResponse(res, 200, "OTP sent to your email", {});
     } catch (error) {
         return handleResponse(res, 500, error.message);
     }
@@ -362,12 +369,18 @@ export const verifySellerLoginOtp = async (req, res) => {
             return handleResponse(res, 400, "Email and OTP are required");
         }
         const normalizedEmail = String(email).trim().toLowerCase();
-        const seller = await Seller.findOne({ email: normalizedEmail });
+        const seller = await Seller.findOne({ email: normalizedEmail }).select("+loginOtp +loginOtpExpiry");
         if (!seller) {
             return handleResponse(res, 404, "Seller not found");
         }
-        if (otp !== "1234" && seller.loginOtp !== otp) {
-            return handleResponse(res, 400, "Invalid or expired OTP");
+        const check = checkLoginOtp({
+            identifier: normalizedEmail,
+            submitted: otp,
+            stored: seller.loginOtp,
+            expiresAt: seller.loginOtpExpiry,
+        });
+        if (!check.ok) {
+            return handleResponse(res, 400, check.message);
         }
         seller.loginOtp = undefined;
         seller.loginOtpExpiry = undefined;

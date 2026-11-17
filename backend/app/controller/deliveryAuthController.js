@@ -3,7 +3,9 @@ import Order from "../models/order.js";
 import jwt from "jsonwebtoken";
 import handleResponse from "../utils/helper.js";
 import { sendSmsIndiaHubOtp } from "../services/smsIndiaHubService.js";
-import { generateOTP, useRealSMS } from "../utils/otp.js";
+import { generateOTP, useRealSMS, MOCK_OTP } from "../utils/otp.js";
+import { checkLoginOtp, createLoginOtp, isTestOtpIdentifier, LOGIN_OTP_TTL_MINUTES } from "../utils/loginOtp.js";
+import { sendLoginOtpEmail, useRealEmailOTP } from "../services/emailService.js";
 import { uploadToCloudinary } from "../services/mediaService.js";
 import { clearRiderPresence } from "../services/firebaseService.js";
 
@@ -37,8 +39,8 @@ export const signupDelivery = async (req, res) => {
         }
 
         let otp = generateOTP();
-        if (phone === "6268423925" || phone === "+916268423925" || phone === "9111966732" || phone === "+919111966732") {
-            otp = "1234";
+        if (isTestOtpIdentifier(phone)) {
+            otp = MOCK_OTP;
         }
 
         let aadharUrl = delivery?.documents?.aadhar || "";
@@ -131,8 +133,8 @@ export const loginDelivery = async (req, res) => {
         if (email) {
             const normalizedEmail = String(email).trim().toLowerCase();
             delivery = await Delivery.findOne({ email: normalizedEmail });
-            if (!delivery) {
-                // Auto-create/seed delivery partner for email testing if doesn't exist
+            if (!delivery && isTestOtpIdentifier(normalizedEmail)) {
+                // Auto-create a delivery partner ONLY for configured test accounts
                 delivery = await Delivery.create({
                     name: normalizedEmail.split('@')[0],
                     email: normalizedEmail,
@@ -150,16 +152,27 @@ export const loginDelivery = async (req, res) => {
             return handleResponse(res, 404, "Delivery partner not found");
         }
 
-        let otp = "1234";
+        const identifier = email ? String(email).trim().toLowerCase() : phone;
+        const { otp, isTest, expiresAt } = createLoginOtp(identifier);
         delivery.otp = otp;
-        delivery.otpExpiry = Date.now() + 10 * 60 * 1000;
+        delivery.otpExpiry = expiresAt;
         await delivery.save();
 
-        if (phone && useRealSMS()) {
-            await sendSmsIndiaHubOtp({ phone, otp });
+        if (isTest) {
+            return handleResponse(res, 200, "OTP sent successfully", { mockOtp: otp });
         }
 
-        return handleResponse(res, 200, "OTP sent successfully", { mockOtp: otp });
+        let realDelivery = false;
+        if (email) {
+            await sendLoginOtpEmail({ email: identifier, otp, expiresInMinutes: LOGIN_OTP_TTL_MINUTES });
+            realDelivery = useRealEmailOTP();
+        } else if (useRealSMS()) {
+            await sendSmsIndiaHubOtp({ phone, otp });
+            realDelivery = true;
+        }
+
+        // Only expose the code when no real SMS/email channel is configured (local dev).
+        return handleResponse(res, 200, "OTP sent successfully", realDelivery ? {} : { mockOtp: otp });
     } catch (error) {
         return handleResponse(res, 500, error.message);
     }
@@ -179,17 +192,23 @@ export const verifyDeliveryOTP = async (req, res) => {
         let delivery;
         if (email) {
             const normalizedEmail = String(email).trim().toLowerCase();
-            delivery = await Delivery.findOne({ email: normalizedEmail });
+            delivery = await Delivery.findOne({ email: normalizedEmail }).select("+otp +otpExpiry");
         } else {
-            delivery = await Delivery.findOne({ phone });
+            delivery = await Delivery.findOne({ phone }).select("+otp +otpExpiry");
         }
 
         if (!delivery) {
             return handleResponse(res, 400, "Delivery partner not found");
         }
 
-        if (otp !== "1234" && delivery.otp !== otp) {
-            return handleResponse(res, 400, "Invalid or expired OTP");
+        const check = checkLoginOtp({
+            identifier: email ? String(email).trim().toLowerCase() : phone,
+            submitted: otp,
+            stored: delivery.otp,
+            expiresAt: delivery.otpExpiry,
+        });
+        if (!check.ok) {
+            return handleResponse(res, 400, check.message);
         }
 
         delivery.isVerified = true;

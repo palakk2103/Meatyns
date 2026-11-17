@@ -17,7 +17,10 @@ import { computeOrderDiscount } from "./finance/couponService.js";
 import { getOrCreateFinanceSettings } from "./finance/financeSettingsService.js";
 import { validateCustomerDealLimit } from "./flashDealService.js";
 import { resolveDeliveryZoneForLocation } from "./deliveryZoneService.js";
-import { resolveSelectedSellerForCustomer } from "./customerVisibilityService.js";
+import {
+  resolveSelectedSellerForCustomer,
+  findItemsOutsideSeller,
+} from "./customerVisibilityService.js";
 
 function normalizeLocation(location = null) {
   const lat = Number(location?.lat);
@@ -463,11 +466,14 @@ export async function buildCheckoutPricingSnapshot({
   // cannot self-credit themselves a discount by editing the payload.
   // When the flag is OFF, the legacy client-trust path is preserved
   // bit-for-bit so rollback is an env flip.
-  let effectiveDiscount = round2(discountTotal);
+  // Never trust a client-supplied discount: the only discount source is a
+  // coupon validated server-side below.
+  void discountTotal;
+  let effectiveDiscount = 0;
   let resolvedCouponSnapshot = null;
   let resolvedCoupon = null;
   let applyFreeDelivery = false;
-  if (isServerSideCouponEngineEnabled() && (couponCode || couponId)) {
+  if (couponCode || couponId) {
     const couponResult = await computeOrderDiscount({
       couponCode,
       couponId,
@@ -499,11 +505,15 @@ export async function buildCheckoutPricingSnapshot({
       selectedSellerId = selected.sellerId;
       const foreign = sellerIds.filter((id) => id !== selectedSellerId);
       if (foreign.length > 0) {
+        const unavailableItems = await findItemsOutsideSeller(hydratedItems, selectedSellerId);
+        const names = unavailableItems.map((i) => i.name).join(", ");
         const err = new Error(
-          "Some items in your cart are not available for your delivery location. Please clear your cart and add items again.",
+          `${names} ${unavailableItems.length > 1 ? "are" : "is"} not available for your delivery location. Please remove ${unavailableItems.length > 1 ? "them" : "it"} from your cart to continue.`,
         );
         err.statusCode = 409;
         err.code = "CART_SELLER_MISMATCH";
+        err.unavailableItems = unavailableItems;
+        err.selectedSellerId = selectedSellerId;
         throw err;
       }
     }

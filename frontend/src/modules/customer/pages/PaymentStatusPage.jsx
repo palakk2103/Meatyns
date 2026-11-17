@@ -1,3 +1,4 @@
+import MascotTagline from "../components/shared/MascotTagline";
 import React, { useEffect, useState, useRef } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
@@ -116,12 +117,13 @@ const PaymentStatusPage = () => {
                         className="max-w-md w-full bg-white rounded-[2rem] p-6 shadow-2xl shadow-slate-200 border border-slate-100 text-center relative overflow-hidden"
                     >
                         {/* Meatyns Brand Logo */}
-                        <div className="flex justify-center mb-3">
+                        <div className="flex justify-center mb-8">
                             <img src="/meatyns_logo.png" alt="Meatyns" className="h-7 object-contain" />
                         </div>
 
                         {/* Official Meatyns Chef Mascot Illustration */}
-                        <div className="flex justify-center mb-3">
+                        <div className="flex justify-center mb-8">
+                            <div className="relative">
                             <motion.img 
                                 initial={{ scale: 0.8, opacity: 0 }}
                                 animate={{ scale: 1, opacity: 1 }}
@@ -130,6 +132,8 @@ const PaymentStatusPage = () => {
                                 alt="Meatyns Chef Mascot" 
                                 className="h-36 w-auto object-contain drop-shadow-[0_8px_16px_rgba(0,0,0,0.15)]"
                             />
+<MascotTagline size="md" below />
+</div>
                         </div>
 
                         <div className="mb-1.5 flex items-center justify-center gap-2">

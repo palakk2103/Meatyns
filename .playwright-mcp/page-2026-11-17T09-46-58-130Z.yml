@@ -1,0 +1,9 @@
+- generic [active]:
+  - generic:
+    - region "Notifications alt+T":
+      - list
+      - list:
+        - listitem [ref=e1]:
+          - generic [ref=e5]: Couldn't detect your location. Showing the default area — please allow location access or set your address.
+        - listitem [ref=e7]:
+          - generic [ref=e11]: Couldn't detect your location. Showing the default area — please allow location access or set your address.

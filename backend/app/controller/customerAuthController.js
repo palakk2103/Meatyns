@@ -20,8 +20,22 @@ import {
     validateSchema,
     verifyOtpSchema,
 } from "../validation/customerAuthValidation.js";
+import { checkLoginOtp, createLoginOtp, LOGIN_OTP_TTL_MINUTES } from "../utils/loginOtp.js";
+import { sendLoginOtpEmail } from "../services/emailService.js";
 
 const generateToken = signCustomerAccessToken;
+
+// Email OTP: real random code sent by email; fixed test OTP only for
+// configured test accounts (see utils/loginOtp.js).
+const issueEmailOtpForCustomer = async (customer, email) => {
+    const { otp, isTest, expiresAt } = createLoginOtp(email);
+    customer.otp = otp;
+    customer.otpExpiry = expiresAt;
+    await customer.save();
+    if (isTest) return { mockOtp: otp };
+    await sendLoginOtpEmail({ email, otp, expiresInMinutes: LOGIN_OTP_TTL_MINUTES });
+    return {};
+};
 
 // Persist the login: HttpOnly refresh cookie + server-side session record.
 // A failure here must never block an otherwise successful login.
@@ -49,14 +63,11 @@ export const signupCustomer = async (req, res) => {
                     name: payload.name || "Customer",
                     email: normalizedEmail,
                     phone: placeholderPhone,
-                    isVerified: true,
+                    isVerified: false,
                 });
             }
-            customer.otp = "1234";
-            customer.otpExpiry = Date.now() + 10 * 60 * 1000;
-            await customer.save();
-
-            return handleResponse(res, 200, "OTP has been sent to your email", { mockOtp: "1234" });
+            const result = await issueEmailOtpForCustomer(customer, normalizedEmail);
+            return handleResponse(res, 200, "OTP has been sent to your email", result);
         }
 
         const otpResponse = await issueCustomerOtp({
@@ -89,14 +100,11 @@ export const loginCustomer = async (req, res) => {
                     name: normalizedEmail.split('@')[0],
                     email: normalizedEmail,
                     phone: placeholderPhone,
-                    isVerified: true,
+                    isVerified: false,
                 });
             }
-            customer.otp = "1234";
-            customer.otpExpiry = Date.now() + 10 * 60 * 1000;
-            await customer.save();
-
-            return handleResponse(res, 200, "OTP has been sent to your email", { mockOtp: "1234" });
+            const result = await issueEmailOtpForCustomer(customer, normalizedEmail);
+            return handleResponse(res, 200, "OTP has been sent to your email", result);
         }
 
         const otpResponse = await issueCustomerOtp({
@@ -120,12 +128,18 @@ export const verifyCustomerOTP = async (req, res) => {
 
         if (payload.email) {
             const normalizedEmail = payload.email.trim().toLowerCase();
-            const customer = await Customer.findOne({ email: normalizedEmail });
+            const customer = await Customer.findOne({ email: normalizedEmail }).select("+otp +otpExpiry");
             if (!customer) {
                 return handleResponse(res, 404, "Customer account not found");
             }
-            if (payload.otp !== "1234" && customer.otp !== payload.otp) {
-                return handleResponse(res, 400, "Invalid or expired OTP");
+            const check = checkLoginOtp({
+                identifier: normalizedEmail,
+                submitted: payload.otp,
+                stored: customer.otp,
+                expiresAt: customer.otpExpiry,
+            });
+            if (!check.ok) {
+                return handleResponse(res, 400, check.message);
             }
 
             customer.isVerified = true;

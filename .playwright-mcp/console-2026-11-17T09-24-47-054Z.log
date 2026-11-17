@@ -1,0 +1,201 @@
+[     683ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[    1016ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[    1446ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[    2016ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[    2086ms] [LOG] [orderSocket] Socket connected, ID: nnEVoqeU2dZB1LDUAAAJ @ http://localhost:5173/src/core/services/orderSocket.js:49
+[    2892ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[    8942ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[   18374ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[   18647ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[   19661ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[   20124ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://maps.googleapis.com/maps/api/geocode/json?latlng=19.076%2C72.8777&key=AIzaSyCIqh3rJtNAXkBUHLKhHPILnNNnjVlz_N0:1
+[   20125ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://maps.googleapis.com/maps/api/geocode/json?latlng=19.076%2C72.8777&key=AIzaSyCIqh3rJtNAXkBUHLKhHPILnNNnjVlz_N0:1
+[   20127ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://maps.googleapis.com/maps/api/geocode/json?latlng=19.076%2C72.8777&key=AIzaSyCIqh3rJtNAXkBUHLKhHPILnNNnjVlz_N0:1
+[   20228ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://nominatim.openstreetmap.org/reverse?lat=19.076&lon=72.8777&format=json:1
+[   20233ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://nominatim.openstreetmap.org/reverse?lat=19.076&lon=72.8777&format=json:1
+[   20234ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://nominatim.openstreetmap.org/reverse?lat=19.076&lon=72.8777&format=json:1
+[   20320ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[   20556ms] [LOG] [orderSocket] Socket connected, ID: GssfTQolBt836hMGAAAP @ http://localhost:5173/src/core/services/orderSocket.js:49
+[   20622ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[   25108ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[   29496ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[   42749ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[   42923ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[   43035ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://maps.googleapis.com/maps/api/geocode/json?latlng=19.076%2C72.8777&key=AIzaSyCIqh3rJtNAXkBUHLKhHPILnNNnjVlz_N0:1
+[   43040ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://maps.googleapis.com/maps/api/geocode/json?latlng=19.076%2C72.8777&key=AIzaSyCIqh3rJtNAXkBUHLKhHPILnNNnjVlz_N0:1
+[   43510ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[   43757ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://maps.googleapis.com/maps/api/geocode/json?latlng=19.076%2C72.8777&key=AIzaSyCIqh3rJtNAXkBUHLKhHPILnNNnjVlz_N0:1
+[   43758ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://maps.googleapis.com/maps/api/geocode/json?latlng=19.076%2C72.8777&key=AIzaSyCIqh3rJtNAXkBUHLKhHPILnNNnjVlz_N0:1
+[   43761ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://maps.googleapis.com/maps/api/geocode/json?latlng=19.076%2C72.8777&key=AIzaSyCIqh3rJtNAXkBUHLKhHPILnNNnjVlz_N0:1
+[   43789ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://nominatim.openstreetmap.org/reverse?lat=19.076&lon=72.8777&format=json:1
+[   43799ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://nominatim.openstreetmap.org/reverse?lat=19.076&lon=72.8777&format=json:1
+[   43799ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://nominatim.openstreetmap.org/reverse?lat=19.076&lon=72.8777&format=json:1
+[   43917ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[   44057ms] [LOG] [orderSocket] Socket connected, ID: u10cvg504gZMKwrYAAAT @ http://localhost:5173/src/core/services/orderSocket.js:49
+[   44207ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[   49392ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[  351998ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[  352209ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[  352327ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://maps.googleapis.com/maps/api/geocode/json?latlng=19.076%2C72.8777&key=AIzaSyCIqh3rJtNAXkBUHLKhHPILnNNnjVlz_N0:1
+[  352328ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://maps.googleapis.com/maps/api/geocode/json?latlng=19.076%2C72.8777&key=AIzaSyCIqh3rJtNAXkBUHLKhHPILnNNnjVlz_N0:1
+[  352398ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://nominatim.openstreetmap.org/reverse?lat=19.076&lon=72.8777&format=json:1
+[  352399ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://nominatim.openstreetmap.org/reverse?lat=19.076&lon=72.8777&format=json:1
+[  352465ms] [LOG] [orderSocket] Socket connected, ID: IUYGBdAhj0toNuniAAAV @ http://localhost:5173/src/core/services/orderSocket.js:49
+[  353602ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[  358334ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[  361383ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[  591455ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[  724968ms] [LOG] [orderSocket] Socket disconnected, reason: transport close @ http://localhost:5173/src/core/services/orderSocket.js:60
+[  727137ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=i09t2l2y:1
+[  727137ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[  730140ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[  731801ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=i0dei1mw:1
+[  731801ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[  734811ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[  736427ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=i0gz6yxv:1
+[  736428ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[  739432ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[  746446ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=i0opcto5:1
+[  746447ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[  749453ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[  756497ms] [LOG] [orderSocket] Socket connected, ID: XTWCy-1JOe1DWdZ2AAAF @ http://localhost:5173/src/core/services/orderSocket.js:49
+[  759719ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[  759929ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[  759996ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://maps.googleapis.com/maps/api/geocode/json?latlng=23.1815%2C79.9864&key=AIzaSyCIqh3rJtNAXkBUHLKhHPILnNNnjVlz_N0:1
+[  759996ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://maps.googleapis.com/maps/api/geocode/json?latlng=23.1815%2C79.9864&key=AIzaSyCIqh3rJtNAXkBUHLKhHPILnNNnjVlz_N0:1
+[  760410ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[  760556ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://maps.googleapis.com/maps/api/geocode/json?latlng=23.1815%2C79.9864&key=AIzaSyCIqh3rJtNAXkBUHLKhHPILnNNnjVlz_N0:1
+[  760556ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://maps.googleapis.com/maps/api/geocode/json?latlng=23.1815%2C79.9864&key=AIzaSyCIqh3rJtNAXkBUHLKhHPILnNNnjVlz_N0:1
+[  760557ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://maps.googleapis.com/maps/api/geocode/json?latlng=23.1815%2C79.9864&key=AIzaSyCIqh3rJtNAXkBUHLKhHPILnNNnjVlz_N0:1
+[  760578ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://nominatim.openstreetmap.org/reverse?lat=23.1815&lon=79.9864&format=json:1
+[  760581ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://nominatim.openstreetmap.org/reverse?lat=23.1815&lon=79.9864&format=json:1
+[  760583ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://nominatim.openstreetmap.org/reverse?lat=23.1815&lon=79.9864&format=json:1
+[  760768ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[  760833ms] [LOG] [orderSocket] Socket connected, ID: V1BKNgAKdv258F0UAAAJ @ http://localhost:5173/src/core/services/orderSocket.js:49
+[  763123ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[  766673ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[  768052ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[  768248ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[  768334ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://maps.googleapis.com/maps/api/geocode/json?latlng=23.2599%2C77.4126&key=AIzaSyCIqh3rJtNAXkBUHLKhHPILnNNnjVlz_N0:1
+[  768348ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://maps.googleapis.com/maps/api/geocode/json?latlng=23.2599%2C77.4126&key=AIzaSyCIqh3rJtNAXkBUHLKhHPILnNNnjVlz_N0:1
+[  768682ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[  768887ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://maps.googleapis.com/maps/api/geocode/json?latlng=23.2599%2C77.4126&key=AIzaSyCIqh3rJtNAXkBUHLKhHPILnNNnjVlz_N0:1
+[  768888ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://maps.googleapis.com/maps/api/geocode/json?latlng=23.2599%2C77.4126&key=AIzaSyCIqh3rJtNAXkBUHLKhHPILnNNnjVlz_N0:1
+[  768889ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://maps.googleapis.com/maps/api/geocode/json?latlng=23.2599%2C77.4126&key=AIzaSyCIqh3rJtNAXkBUHLKhHPILnNNnjVlz_N0:1
+[  768907ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://nominatim.openstreetmap.org/reverse?lat=23.2599&lon=77.4126&format=json:1
+[  768916ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://nominatim.openstreetmap.org/reverse?lat=23.2599&lon=77.4126&format=json:1
+[  768939ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://nominatim.openstreetmap.org/reverse?lat=23.2599&lon=77.4126&format=json:1
+[  769073ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[  769145ms] [LOG] [orderSocket] Socket connected, ID: q67pGOMVGJEL47NEAAAN @ http://localhost:5173/src/core/services/orderSocket.js:49
+[  770054ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[  773940ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[  776299ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[  776465ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[  776568ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://maps.googleapis.com/maps/api/geocode/json?latlng=22.7196%2C75.8577&key=AIzaSyCIqh3rJtNAXkBUHLKhHPILnNNnjVlz_N0:1
+[  776569ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://maps.googleapis.com/maps/api/geocode/json?latlng=22.7196%2C75.8577&key=AIzaSyCIqh3rJtNAXkBUHLKhHPILnNNnjVlz_N0:1
+[  776959ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[  777186ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://maps.googleapis.com/maps/api/geocode/json?latlng=22.7196%2C75.8577&key=AIzaSyCIqh3rJtNAXkBUHLKhHPILnNNnjVlz_N0:1
+[  777196ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://maps.googleapis.com/maps/api/geocode/json?latlng=22.7196%2C75.8577&key=AIzaSyCIqh3rJtNAXkBUHLKhHPILnNNnjVlz_N0:1
+[  777198ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://maps.googleapis.com/maps/api/geocode/json?latlng=22.7196%2C75.8577&key=AIzaSyCIqh3rJtNAXkBUHLKhHPILnNNnjVlz_N0:1
+[  777239ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://nominatim.openstreetmap.org/reverse?lat=22.7196&lon=75.8577&format=json:1
+[  777239ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://nominatim.openstreetmap.org/reverse?lat=22.7196&lon=75.8577&format=json:1
+[  777240ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://nominatim.openstreetmap.org/reverse?lat=22.7196&lon=75.8577&format=json:1
+[  777363ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[  777444ms] [LOG] [orderSocket] Socket connected, ID: QbocetOca031qkbVAAAR @ http://localhost:5173/src/core/services/orderSocket.js:49
+[  778215ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[  783658ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[  784642ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[  784848ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[  784925ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://maps.googleapis.com/maps/api/geocode/json?latlng=19.076%2C72.8777&key=AIzaSyCIqh3rJtNAXkBUHLKhHPILnNNnjVlz_N0:1
+[  784926ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://maps.googleapis.com/maps/api/geocode/json?latlng=19.076%2C72.8777&key=AIzaSyCIqh3rJtNAXkBUHLKhHPILnNNnjVlz_N0:1
+[  785371ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[  785733ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://maps.googleapis.com/maps/api/geocode/json?latlng=19.076%2C72.8777&key=AIzaSyCIqh3rJtNAXkBUHLKhHPILnNNnjVlz_N0:1
+[  785733ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://maps.googleapis.com/maps/api/geocode/json?latlng=19.076%2C72.8777&key=AIzaSyCIqh3rJtNAXkBUHLKhHPILnNNnjVlz_N0:1
+[  785741ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://maps.googleapis.com/maps/api/geocode/json?latlng=19.076%2C72.8777&key=AIzaSyCIqh3rJtNAXkBUHLKhHPILnNNnjVlz_N0:1
+[  785775ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://nominatim.openstreetmap.org/reverse?lat=19.076&lon=72.8777&format=json:1
+[  785776ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[  785796ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://nominatim.openstreetmap.org/reverse?lat=19.076&lon=72.8777&format=json:1
+[  785798ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://nominatim.openstreetmap.org/reverse?lat=19.076&lon=72.8777&format=json:1
+[  785893ms] [LOG] [orderSocket] Socket connected, ID: 0i0MQ3Mbz69OoFsjAAAV @ http://localhost:5173/src/core/services/orderSocket.js:49
+[  786492ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[  794839ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[  798434ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[  798613ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[  798960ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[  799288ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[  799392ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[  799517ms] [LOG] [orderSocket] Socket connected, ID: bzTn9ZdiqSlyQWe-AAAZ @ http://localhost:5173/src/core/services/orderSocket.js:49
+[  805180ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[  807312ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[  807425ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[  807743ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[  808085ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[  808115ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[  808229ms] [LOG] [orderSocket] Socket connected, ID: SFGw4wNOXi0IAB-hAAAd @ http://localhost:5173/src/core/services/orderSocket.js:49
+[  812924ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[  816102ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[  816255ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[  816637ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[  816972ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[  817012ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[  817223ms] [LOG] [orderSocket] Socket connected, ID: aZ7GIN9KFo261LTmAAAh @ http://localhost:5173/src/core/services/orderSocket.js:49
+[  821861ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[  825109ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[  825270ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[  825683ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[  826045ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[  826090ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[  826276ms] [LOG] [orderSocket] Socket connected, ID: i9kLJh5hBur1GuqLAAAl @ http://localhost:5173/src/core/services/orderSocket.js:49
+[  830874ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[  839471ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[  839549ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[  839736ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[  839976ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[  840054ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[  840108ms] [LOG] [orderSocket] Socket connected, ID: rqSMUnomxVYVbhRuAAAr @ http://localhost:5173/src/core/services/orderSocket.js:49
+[  844858ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[  863159ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 1076318ms] [LOG] [orderSocket] Socket disconnected, reason: transport close @ http://localhost:5173/src/core/services/orderSocket.js:60
+[ 1079259ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=i7ti845o:1
+[ 1079260ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[ 1081586ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=i7vaoayj:1
+[ 1081587ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[ 1084592ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 1088548ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=i80oc3pq:1
+[ 1088548ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[ 1091563ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1

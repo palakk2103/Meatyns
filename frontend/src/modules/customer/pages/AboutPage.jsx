@@ -37,6 +37,7 @@ const AboutPage = () => {
                         </div>
                         <h2 className="text-xl font-normal font-anton tracking-wide text-slate-900 uppercase">About Meatyns</h2>
                     </div>
+                    <p className="text-[#C81017] font-bold text-base mb-2">Your Meat. Your Choice. Your Meatyns.</p>
                     <p className="text-slate-700 leading-relaxed text-base">
                         Meatyns is Maharashtra’s first premium meat brand specializing in goat, sheep, and lamb meat. Our goal is to revolutionize the meat industry with hygiene, freshness, and trust.
                     </p>
@@ -53,6 +54,17 @@ const AboutPage = () => {
                     <p className="text-slate-700 leading-relaxed text-base font-medium">
                         To be India’s most trusted premium fresh meat brand.
                     </p>
+                    <div className="mt-4 space-y-3 text-slate-700 leading-relaxed text-base">
+                        <p>
+                            At Meatyns, our vision is to become one of India&apos;s most trusted and preferred meat and food-protein brands by transforming the way people discover, choose and purchase fresh meat products. We aspire to build a modern, technology-driven platform that brings freshness, quality, hygiene and convenience together, making everyday shopping simpler and more reliable for every customer.
+                        </p>
+                        <p>
+                            We envision a future where customers can access their preferred chicken, mutton and other available products through a seamless digital experience, with the freedom to choose their preferred cuts, explore product options and place orders with confidence. By combining customer convenience, professional handling, consistent quality standards and a growing digital ecosystem, we aim to make Meatyns a trusted name in households and businesses across India.
+                        </p>
+                        <p>
+                            Our goal is not just to sell products, but to build lasting relationships through transparency, dependable service and a commitment to customer satisfaction.
+                        </p>
+                    </div>
                 </div>
 
                 {/* Our Mission Card */}
@@ -77,6 +89,23 @@ const AboutPage = () => {
                             <span>Promoting healthy, hygienic, and transparent meat practices.</span>
                         </li>
                     </ul>
+                    <div className="mt-5 space-y-3 text-slate-700 leading-relaxed text-base">
+                        <p>
+                            Our mission is to make purchasing fresh, hygienically handled meat products easier, more convenient and more accessible through the Meatyns application and website.
+                        </p>
+                        <p>
+                            We are committed to providing customers with a smooth online ordering experience, a range of product choices and professionally handled products prepared with attention to cleanliness, quality and customer requirements. From selecting the preferred cuts to placing an order and receiving it at the doorstep, we aim to make every step simple, efficient and customer-friendly.
+                        </p>
+                        <p>
+                            Through technology, operational guidance and a customer-first approach, we continuously strive to improve accessibility, service reliability and the overall shopping experience. We also aim to create meaningful opportunities for business growth by strengthening our franchise and B2B partnerships and building a dependable supply network.
+                        </p>
+                        <p>
+                            At Meatyns, our mission is driven by three core values: Freshness, Hygiene and Trust. Every order is an opportunity to deliver on these values and make our customers&apos; experience better.
+                        </p>
+                        <p className="font-bold text-slate-900">
+                            MEATYNS – Fresh. Hygienic. Trusted.
+                        </p>
+                    </div>
                 </div>
 
                 {/* Footer Copyright */}

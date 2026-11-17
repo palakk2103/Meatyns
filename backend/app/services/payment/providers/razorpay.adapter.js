@@ -120,7 +120,10 @@ export class RazorpayAdapter extends PaymentProviderPort {
     }
 
     const event = String(parsed.event || "").toLowerCase();
-    const eventId = String(parsed.id || parsed.event_id || `rzp-evt-${Date.now()}-${crypto.randomUUID()}`);
+    // Razorpay sends the event id in the `x-razorpay-event-id` header (the
+    // body has no id). The caller prefers the header; when neither exists it
+    // falls back to a payload hash so retries of the same event dedupe.
+    const eventId = parsed.id || parsed.event_id ? String(parsed.id || parsed.event_id) : null;
 
     const paymentEntity = parsed.payload?.payment?.entity || null;
     const orderEntity = parsed.payload?.order?.entity || null;
@@ -158,6 +161,9 @@ export class RazorpayAdapter extends PaymentProviderPort {
       responseCode: event,
       raw: parsed,
       amount: paymentEntity?.amount || refundEntity?.amount || orderEntity?.amount || null,
+      // Refund events: per-refund amount and cumulative refunded amount (paise).
+      refundAmount: refundEntity?.amount ?? null,
+      amountRefunded: paymentEntity?.amount_refunded ?? null,
       currency: paymentEntity?.currency || orderEntity?.currency || "INR",
     };
   }

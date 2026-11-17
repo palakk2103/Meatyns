@@ -184,6 +184,8 @@ const sellerSchema = new mongoose.Schema(
       default: 5, // Default 5km
     },
     lastLogin: Date,
+    loginOtp: { type: String, select: false },
+    loginOtpExpiry: { type: Date, select: false },
   },
   { timestamps: true },
 );

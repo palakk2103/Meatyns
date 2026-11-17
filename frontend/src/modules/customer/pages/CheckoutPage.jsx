@@ -72,6 +72,7 @@ import { Label } from "@/components/ui/label";
 import CheckoutAddressSection from "./checkout/components/CheckoutAddressSection";
 import CheckoutDeliverySelector from "./checkout/components/CheckoutDeliverySelector";
 import CheckoutCartSummary from "./checkout/components/CheckoutCartSummary";
+import UnavailableItemsNotice from "./checkout/components/UnavailableItemsNotice";
 import CheckoutPricingBreakdown from "./checkout/components/CheckoutPricingBreakdown";
 import CheckoutPaymentSelector from "./checkout/components/CheckoutPaymentSelector";
 import CheckoutCouponSection from "./checkout/components/CheckoutCouponSection";
@@ -79,6 +80,7 @@ import CheckoutRecommendedProducts from "./checkout/components/CheckoutRecommend
 import CheckoutWishlistSection from "./checkout/components/CheckoutWishlistSection";
 import CheckoutOrderSuccess from "./checkout/components/CheckoutOrderSuccess";
 import FishEmptyCartIllustration from "../components/shared/FishEmptyCartIllustration";
+import { cleanProductName } from "@/core/utils/productName";
 
 const CheckoutPage = () => {
   const {
@@ -164,6 +166,8 @@ const CheckoutPage = () => {
   const [showSuccess, setShowSuccess] = useState(false);
   const [orderId, setOrderId] = useState(null);
   const [pricingPreview, setPricingPreview] = useState(null);
+  // Items the selected address's seller can't deliver (server: CART_SELLER_MISMATCH).
+  const [unavailableItems, setUnavailableItems] = useState([]);
   const [isPreviewLoading, setIsPreviewLoading] = useState(false);
   const postOrderNavigateRef = useRef(null);
   const previewDebounceRef = useRef(null);
@@ -250,9 +254,7 @@ const CheckoutPage = () => {
     }
   }, [cart.length, finalAmountToPay]);
 
-  // Online payment temporarily hidden
   const paymentMethods = [
-    /*
     ...(settings?.onlineEnabled === false
       ? []
       : [
@@ -263,13 +265,16 @@ const CheckoutPage = () => {
             sublabel: "Cards, UPI, NetBanking",
           },
         ]),
-    */
-    {
-      id: "cash",
-      label: "Cash on Delivery",
-      icon: Banknote,
-      sublabel: "Pay after delivery",
-    },
+    ...(settings?.codEnabled === false
+      ? []
+      : [
+          {
+            id: "cash",
+            label: "Cash on Delivery",
+            icon: Banknote,
+            sublabel: "Pay after delivery",
+          },
+        ]),
   ];
 
   const tipAmounts = [
@@ -321,9 +326,19 @@ const CheckoutPage = () => {
       Number.isFinite(addrLoc.lat) &&
       Number.isFinite(addrLoc.lng);
 
+    // No coordinates on the chosen address -> fall back to the selected
+    // delivery location, so the backend can always verify which seller serves it.
+    const hasCurrentLoc =
+      Number.isFinite(Number(currentLocation?.latitude)) &&
+      Number.isFinite(Number(currentLocation?.longitude));
+
     return {
       ...currentAddress,
-      location: hasAddrLoc ? { lat: addrLoc.lat, lng: addrLoc.lng } : undefined,
+      location: hasAddrLoc
+        ? { lat: addrLoc.lat, lng: addrLoc.lng }
+        : hasCurrentLoc
+          ? { lat: Number(currentLocation.latitude), lng: Number(currentLocation.longitude) }
+          : undefined,
     };
   };
 
@@ -784,6 +799,8 @@ const CheckoutPage = () => {
       })),
       address: buildAddressForOrder(),
       discountTotal: discountAmount,
+      // Server validates the coupon and computes the real discount.
+      couponCode: selectedCoupon?.code || null,
       taxTotal: 0,
       tipAmount: selectedTip,
       paymentMode: (selectedPayment === "razorpay") ? "ONLINE" : "COD",
@@ -801,9 +818,16 @@ const CheckoutPage = () => {
         const res = await customerApi.checkoutPreview(buildPreviewPayload());
         if (res.data?.success) {
           setPricingPreview(res.data.result?.breakdown ?? null);
+          setUnavailableItems([]);
         }
       } catch (error) {
-        console.error("Checkout preview failed", error);
+        const data = error.response?.data?.result;
+        if (data?.code === "CART_SELLER_MISMATCH") {
+          setUnavailableItems(Array.isArray(data.unavailableItems) ? data.unavailableItems : []);
+          setPricingPreview(null);
+        } else {
+          console.error("Checkout preview failed", error);
+        }
       } finally {
         setIsPreviewLoading(false);
       }
@@ -851,6 +875,21 @@ const CheckoutPage = () => {
       .catch(() => {});
   }, [cartProductIdKey]);
 
+  // Only items still in the cart (the list can be stale right after a removal).
+  const visibleUnavailableItems = unavailableItems.filter((u) =>
+    cart.some(
+      (c) =>
+        String(c.id || c._id) === String(u.productId) &&
+        String(c.variantSku || "").trim() === String(u.variantSku || "").trim(),
+    ),
+  );
+  const handleRemoveUnavailable = (productId, variantSku) => {
+    removeFromCart(productId, String(variantSku || "").trim());
+  };
+  const handleRemoveAllUnavailable = () => {
+    visibleUnavailableItems.forEach((u) => handleRemoveUnavailable(u.productId, u.variantSku));
+  };
+
   const handlePlaceOrder = async () => {
     if (!isAuthenticated) {
       showToast("Please log in to place your order.", "warning");
@@ -868,6 +907,11 @@ const CheckoutPage = () => {
       return;
     }
 
+    if (visibleUnavailableItems.length > 0) {
+      showToast("Remove the unavailable items from your cart to continue.", "error");
+      return;
+    }
+
     setIsPlacingOrder(true);
     try {
       const taxAmount = pricingPreview?.taxTotal || 0;
@@ -875,6 +919,8 @@ const CheckoutPage = () => {
         address: buildAddressForOrder(),
         paymentMode: (selectedPayment === "razorpay") ? "ONLINE" : "COD",
         discountTotal: discountAmount,
+        // Server validates the coupon and computes the real discount.
+        couponCode: selectedCoupon?.code || null,
         taxTotal: taxAmount,
         tipAmount: selectedTip,
         deliveryMethod,
@@ -1057,6 +1103,12 @@ const CheckoutPage = () => {
         );
         navigate("/login?redirect=/checkout");
         return;
+      }
+
+      const mismatch = error.response?.data?.result;
+      if (mismatch?.code === "CART_SELLER_MISMATCH") {
+        setUnavailableItems(Array.isArray(mismatch.unavailableItems) ? mismatch.unavailableItems : []);
+        setPricingPreview(null);
       }
 
       showToast(
@@ -1284,6 +1336,12 @@ const CheckoutPage = () => {
               error={deliverySlotError}
             />
 
+            <UnavailableItemsNotice
+              items={visibleUnavailableItems}
+              onRemove={handleRemoveUnavailable}
+              onRemoveAll={handleRemoveAllUnavailable}
+            />
+
             {/* Cart Summary */}
             <CheckoutCartSummary
               cart={cart}
@@ -1377,8 +1435,8 @@ const CheckoutPage = () => {
             <SlideToPay
               amount={finalAmountToPay}
               onSuccess={handlePlaceOrder}
-              isLoading={isPlacingOrder || isPreviewLoading || !pricingPreview || !isDeliveryServiceable}
-              text={!isDeliveryServiceable ? "Delivery Unavailable" : finalAmountToPay === 0 ? "Place Free Order" : "Slide to Pay"}
+              isLoading={isPlacingOrder || isPreviewLoading || !pricingPreview || !isDeliveryServiceable || visibleUnavailableItems.length > 0}
+              text={!isDeliveryServiceable ? "Delivery Unavailable" : visibleUnavailableItems.length > 0 ? "Remove unavailable items" : finalAmountToPay === 0 ? "Place Free Order" : "Slide to Pay"}
             />
           </div>
         </div>
@@ -1448,8 +1506,7 @@ const CheckoutPage = () => {
                 </h2>
 
                 <div className="bg-white rounded-2xl p-5 border border-[#ede5df] shadow-xs space-y-3">
-                  {/* Option 1: Online Payment (Razorpay) - Temporarily hidden */}
-                  {/*
+                  {/* Option 1: Online Payment (Razorpay) */}
                   {settings?.onlineEnabled !== false && (
                     <label
                       onClick={() => setSelectedPayment("razorpay")}
@@ -1483,7 +1540,6 @@ const CheckoutPage = () => {
                       </div>
                     </label>
                   )}
-                  */}
 
                   {/* Option 2: Cash on Delivery */}
                   {settings?.codEnabled !== false && (
@@ -1522,7 +1578,7 @@ const CheckoutPage = () => {
               <div>
                 <button
                   onClick={handlePlaceOrder}
-                  disabled={isPlacingOrder || isPreviewLoading || !isDeliveryServiceable}
+                  disabled={isPlacingOrder || isPreviewLoading || !isDeliveryServiceable || visibleUnavailableItems.length > 0}
                   className={`w-full py-4 rounded-xl font-extrabold text-sm flex items-center justify-center gap-2 shadow-md active:scale-[0.99] transition-all ${
                     !isDeliveryServiceable
                       ? "bg-slate-200 text-slate-500 cursor-not-allowed"
@@ -1557,6 +1613,12 @@ const CheckoutPage = () => {
                   </span>
                 </div>
 
+                <UnavailableItemsNotice
+                  items={visibleUnavailableItems}
+                  onRemove={handleRemoveUnavailable}
+                  onRemoveAll={handleRemoveAllUnavailable}
+                />
+
                 {/* Mini Item List */}
                 <div className="space-y-3 max-h-56 overflow-y-auto pr-1">
                   {cart.map((item) => (
@@ -1568,10 +1630,10 @@ const CheckoutPage = () => {
                       />
                       <div className="flex-1 min-w-0">
                         <h4 className="text-xs font-bold text-slate-900 truncate">
-                          {item.name}
+                          {cleanProductName(item.name)}
                         </h4>
                         <p className="text-[11px] text-slate-400">
-                          {item.weight || "500 g"}
+                          {item.variantName || item.weight || "500 g"}
                         </p>
                       </div>
                       <span className="text-xs font-bold text-slate-900 flex-shrink-0">

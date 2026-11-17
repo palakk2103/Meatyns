@@ -10,6 +10,9 @@ import { useSettings } from '@core/context/SettingsContext';
 import { cn } from '@/lib/utils';
 import { applyCloudinaryTransform } from '@/core/utils/imageUtils';
 import { customerApi } from '../../services/customerApi';
+
+const cleanProductName = (n) =>
+    String(n ?? '').replace(/[\s(\-–,]*\b\d+\s*packs?\b[\s)]*/gi, ' ').replace(/\s{2,}/g, ' ').trim() || String(n ?? '');
 import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
 
@@ -572,7 +575,7 @@ const ProductDetailSheet = () => {
                                             transition={{ delay: 0.15 }}
                                         >
                                             <h1 className="text-[19px] lg:text-[22px] font-black text-[#111827] leading-[1.2] tracking-tight mb-1">
-                                                {selectedProduct.name}
+                                                {cleanProductName(selectedProduct.name)}
                                             </h1>
                                             {selectedProduct.weight && (
                                                 <span className="text-[12px] bg-slate-100 text-slate-700 font-bold px-2 py-0.5 rounded-md uppercase tracking-wider inline-block mb-1.5">{selectedProduct.weight}</span>
@@ -978,7 +981,7 @@ const ProductDetailSheet = () => {
                                 </div>
 
                                 <h2 className="text-xl font-black text-[#1A1A1A] leading-tight mb-1">
-                                    {selectedProduct.name}
+                                    {cleanProductName(selectedProduct.name)}
                                 </h2>
                                 {selectedProduct.weight && (
                                     <span className="text-[11px] bg-slate-100 text-slate-700 font-bold px-2 py-0.5 rounded-md uppercase tracking-wider inline-block mb-1.5">

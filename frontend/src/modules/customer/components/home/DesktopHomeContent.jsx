@@ -1,3 +1,4 @@
+import MascotTagline from "../shared/MascotTagline";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -14,6 +15,7 @@ import { useCart } from "../../context/CartContext";
 import { toast } from "sonner";
 import HotDealsSection from "./HotDealsSection";
 import TopPicksSection from "./TopPicksSection";
+import EggsSection from "./EggsSection";
 import TrendingCategoriesSection from "./TrendingCategoriesSection";
 import TrustFeaturesBanner from "./TrustFeaturesBanner";
 import QuickCategoryRow from "./QuickCategoryRow";
@@ -225,9 +227,10 @@ const DesktopHomeContent = ({ products = [], categories = [], heroConfig }) => {
                 <img
                   src="/mascot/chef_mascot.png"
                   alt="Meatyns Chef Mascot"
-                  className="h-[88%] lg:h-[94%] max-w-[220px] lg:max-w-[270px] object-contain drop-shadow-[0_12px_24px_rgba(0,0,0,0.22)] group-hover:scale-105 transition-transform duration-500"
+                  className="h-[76%] lg:h-[80%] max-w-[220px] lg:max-w-[270px] object-contain drop-shadow-[0_12px_24px_rgba(0,0,0,0.22)] group-hover:scale-105 transition-transform duration-500"
                   loading="eager"
                 />
+<MascotTagline size="lg" />
               </div>
 
               {/* Hero Left Content */}
@@ -334,6 +337,9 @@ const DesktopHomeContent = ({ products = [], categories = [], heroConfig }) => {
 
         {/* ──── 2. ⭐ TOP PICKS FOR YOU SECTION ──── */}
         <TopPicksSection products={products} />
+
+        {/* ──── 2b. 🥚 FRESH EGGS SECTION ──── */}
+        <EggsSection categories={categories} />
 
         {/* ──── 3. 📈 TRENDING NOW SECTION ──── */}
         <TrendingCategoriesSection categories={categories} />

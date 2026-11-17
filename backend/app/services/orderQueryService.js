@@ -419,7 +419,7 @@ export async function getCustomerOrders(customerId, pagination) {
       const [orders, total] = await Promise.all([
         Order.find({ customer: customerId })
           .select(
-            "orderId checkoutGroupId customer seller items address payment pricing status workflowStatus workflowVersion returnStatus timeSlot deliveryMethod scheduledDate scheduledStartTime scheduledEndTime estimatedDeliveryStart estimatedDeliveryEnd deliverySlotId createdAt",
+            "orderId checkoutGroupId customer seller items address payment paymentMode paymentStatus pricing status workflowStatus workflowVersion returnStatus timeSlot deliveryMethod scheduledDate scheduledStartTime scheduledEndTime estimatedDeliveryStart estimatedDeliveryEnd deliverySlotId createdAt",
           )
           .sort({ createdAt: -1, _id: -1 })
           .skip(skip)
