@@ -16,7 +16,7 @@ export const DEFAULT_DELIVERY_CONFIG = Object.freeze({
   normal: {
     enabled: true,
     deliveryFee: null,
-    estimatedLabel: "1–2 hours",
+    estimatedLabel: "Within 1 hour",
     minMinutes: 60,
     maxMinutes: 120,
   },
@@ -125,7 +125,10 @@ export function normalizeFinanceSettings(raw = {}) {
       deliveryFee: rawNormal.deliveryFee != null && Number.isFinite(Number(rawNormal.deliveryFee))
         ? roundCurrency(Number(rawNormal.deliveryFee))
         : null,
-      estimatedLabel: String(rawNormal.estimatedLabel || DEFAULT_DELIVERY_CONFIG.normal.estimatedLabel),
+      // Legacy "1–2 hours" labels saved in DB are replaced by the current default.
+      estimatedLabel: !rawNormal.estimatedLabel || /^\s*1\s*[–-]\s*2\s*hours?\s*$/i.test(rawNormal.estimatedLabel)
+        ? DEFAULT_DELIVERY_CONFIG.normal.estimatedLabel
+        : String(rawNormal.estimatedLabel),
       minMinutes: Number.isFinite(Number(rawNormal.minMinutes))
         ? Math.max(1, Number(rawNormal.minMinutes))
         : DEFAULT_DELIVERY_CONFIG.normal.minMinutes,

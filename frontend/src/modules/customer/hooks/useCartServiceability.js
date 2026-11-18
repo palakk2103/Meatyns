@@ -14,7 +14,7 @@ import { useCart } from "../context/CartContext";
  */
 export function useCartServiceability(lat, lng, enabled = true) {
   const { isAuthenticated } = useAuth();
-  const { cart } = useCart();
+  const { cart, refreshCart } = useCart();
   const [unavailable, setUnavailable] = useState([]);
 
   const cartKey = useMemo(
@@ -38,6 +38,11 @@ export function useCartServiceability(lat, lng, enabled = true) {
       .then((res) => {
         if (cancelled) return;
         setUnavailable(res.data?.result?.unavailableItems || []);
+        // The server swapped items to the same product at the outlet serving
+        // this location; reload the cart so ids/prices match the new outlet.
+        if (Number(res.data?.result?.remappedCount || 0) > 0 && typeof refreshCart === "function") {
+          refreshCart();
+        }
       })
       .catch(() => {
         if (!cancelled) setUnavailable([]);

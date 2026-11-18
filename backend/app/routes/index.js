@@ -31,6 +31,10 @@ import referralRoute from "./referralRoutes.js";
 import recipeRoute from "./recipeRoutes.js";
 import comboRoute from "./comboRoutes.js";
 import deliveryZoneRoute from "./deliveryZoneRoutes.js";
+import {
+    galleryPublicRouter as galleryPublicRoute,
+    galleryAdminRouter as galleryAdminRoute,
+} from "./galleryRoutes.js";
 
 import express from "express";
 
@@ -48,6 +52,9 @@ const setupRoutes = (app) => {
     //   /categories       → public category browsing (read-only handlers)
     // Same router, two URL surfaces. Do not deduplicate without coordinated frontend changes.
     router.use("/admin/categories", categoryRoute);
+    // Must precede the generic "/admin" mount so gallery admin paths resolve here.
+    router.use("/admin/gallery", galleryAdminRoute);
+    router.use("/gallery", galleryPublicRoute);
     router.use("/admin", adminRoute);
     router.use("/seller", sellerRoute);
     router.use("/settings", settingsRoute);

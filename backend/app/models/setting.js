@@ -183,7 +183,7 @@ const settingSchema = new mongoose.Schema(
             normal: {
                 enabled: { type: Boolean, default: true },
                 deliveryFee: { type: Number, default: null, min: 0 },
-                estimatedLabel: { type: String, default: "1–2 hours" },
+                estimatedLabel: { type: String, default: "Within 1 hour" },
                 minMinutes: { type: Number, default: 60, min: 0 },
                 maxMinutes: { type: Number, default: 120, min: 0 },
             },

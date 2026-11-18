@@ -246,6 +246,13 @@ export const customerApi = {
     return axiosInstance.post(`/recipes/${id}/add-to-cart`, data);
   },
 
+  // Gallery (public, published content only). Short TTL so admin changes surface quickly.
+  getGallerySettings: () => getWithDedupe("/gallery/settings", {}, { ttl: 15000 }),
+  getGalleryCategories: () => getWithDedupe("/gallery/categories", {}, { ttl: 15000 }),
+  getHomeGallery: () => getWithDedupe("/gallery/home", {}, { ttl: 15000 }),
+  getGalleries: (params) => getWithDedupe("/gallery", params, { ttl: 15000 }),
+  getGalleryDetail: (slugOrId) => getWithDedupe(`/gallery/${encodeURIComponent(slugOrId)}`, {}, { ttl: 15000 }),
+
   // Phase 5: Meal Prep Combos
   getCombos: (params) => getWithDedupe("/combos", params, { ttl: 30000 }),
   getComboDetails: (slugOrId) => getWithDedupe(`/combos/${encodeURIComponent(slugOrId)}`),

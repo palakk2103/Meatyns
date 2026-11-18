@@ -961,7 +961,7 @@ const OrderDetailPage = () => {
                     ? "Deliver as soon as possible"
                     : order.deliveryMethod === "SCHEDULED"
                     ? `${order.scheduledDate ? order.scheduledDate : ""}${order.timeSlot && order.timeSlot !== "now" ? `, ${order.timeSlot}` : ""}`
-                    : "Estimated arrival: 1–2 hours"}
+                    : "Estimated arrival: within 1 hour"}
                 </p>
               </div>
             </div>
@@ -1164,7 +1164,7 @@ const OrderDetailPage = () => {
                       ? `Slot: ${order.timeSlot || "Scheduled Slot"}`
                       : order.deliveryMethod === "EXPRESS"
                       ? `Priority Dispatch (ETA: ${order.timeSlot || "15–30 mins"})`
-                      : `Standard SLA: ${order.timeSlot || "1–2 hours"}`}
+                      : `Standard SLA: ${order.timeSlot || "Within 1 hour"}`}
                   </h4>
                   {order.scheduledDate && (
                     <p className="text-sm text-slate-600 font-medium">
@@ -1509,7 +1509,7 @@ const OrderDetailPage = () => {
                         ? "Deliver as soon as possible"
                         : order.deliveryMethod === "SCHEDULED"
                         ? `${order.scheduledDate ? order.scheduledDate : ""}${order.timeSlot && order.timeSlot !== "now" ? `, ${order.timeSlot}` : ""}`
-                        : "Estimated delivery: 1–2 hours"}
+                        : "Estimated delivery: within 1 hour"}
                     </p>
                   </div>
                 </div>

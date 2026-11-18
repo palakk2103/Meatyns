@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
  * 
  * Provides selection between:
  * 1. Express Delivery (dynamic ASAP ETA)
- * 2. Normal Delivery (1-2 hours)
+ * 2. Normal Delivery (within 1 hour)
  * 3. Scheduled Delivery (Future Date + 1-hour Time Slot)
  */
 const CheckoutDeliverySelector = ({
@@ -32,8 +32,8 @@ const CheckoutDeliverySelector = ({
   const normal = deliveryOptions?.NORMAL || {
     available: true,
     title: "Normal Delivery",
-    tagline: "Delivery within 1–2 hours",
-    estimatedLabel: "1–2 hours",
+    tagline: "Delivery within 1 hour",
+    estimatedLabel: "Within 1 hour",
   };
 
   const scheduled = deliveryOptions?.SCHEDULED || {
@@ -174,7 +174,7 @@ const CheckoutDeliverySelector = ({
 
           <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between">
             <span className="text-[11px] font-bold text-blue-800 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-200/60 flex items-center gap-1">
-              <Clock size={11} /> {normal.estimatedLabel || "1–2 hours"}
+              <Clock size={11} /> {normal.estimatedLabel || "Within 1 hour"}
             </span>
             <span className="text-[10px] text-slate-400 font-medium">Standard</span>
           </div>

@@ -49,6 +49,8 @@ import TrustFeaturesBanner from "../components/home/TrustFeaturesBanner";
 import MobileHeroBanner from "../components/home/MobileHeroBanner";
 import MobileHeaderCategoryNav from "../components/home/MobileHeaderCategoryNav";
 import ExploreTopCategoriesSection from "../components/home/ExploreTopCategoriesSection";
+import GalleryPreviewSection from "../components/gallery/GalleryPreviewSection";
+import { sortByDisplayOrder } from "../utils/productDisplayOrder";
 
 const DEFAULT_CATEGORY_THEME = {
   gradient: "linear-gradient(to bottom, var(--primary), var(--brand-400))",
@@ -229,7 +231,7 @@ const Home = () => {
 
   const [categories, setCategories] = useState(() => cachedHomePageData?.categories || [ALL_CATEGORY]);
   const [activeCategory, setActiveCategory] = useState(() => cachedHomePageData?.activeCategory || ALL_CATEGORY);
-  const [products, setProducts] = useState(() => cachedHomePageData?.products || []);
+  const [products, setProducts] = useState(() => sortByDisplayOrder(cachedHomePageData?.products || []));
   const productsRef = useRef(cachedHomePageData?.products || []);
   const [quickCategories, setQuickCategories] = useState(() => cachedHomePageData?.quickCategories || []);
   const [isLoading, setIsLoading] = useState(() => !cachedHomePageData);
@@ -260,7 +262,7 @@ const Home = () => {
     setSubcategoryMap(data.subcategoryMap || {});
     setCategories(data.categories || [ALL_CATEGORY]);
     setQuickCategories(data.quickCategories || []);
-    setProducts(data.products || []);
+    setProducts(sortByDisplayOrder(data.products || []));
     setExperienceSections(data.experienceSections || []);
     setOfferSections(data.offerSections || []);
     if (persist) {
@@ -344,7 +346,7 @@ const Home = () => {
       if (prodRes.data.success) {
         const rawResult = prodRes.data.result;
         const dbProds = Array.isArray(prodRes.data.results) ? prodRes.data.results : Array.isArray(rawResult?.items) ? rawResult.items : Array.isArray(rawResult) ? rawResult : [];
-        nextHomeData.products = dbProds.map((p) => ({ ...p, id: p._id, image: p.mainImage || p.image || "https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&q=80&w=400&h=400", price: p.salePrice || p.price, originalPrice: p.price, weight: p.weight || "", deliveryTime: "8-15 mins" }));
+        nextHomeData.products = sortByDisplayOrder(dbProds).map((p) => ({ ...p, id: p._id, image: p.mainImage || p.image || "https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?auto=format&fit=crop&q=80&w=400&h=400", price: p.salePrice || p.price, originalPrice: p.price, weight: p.weight || "", deliveryTime: "8-15 mins" }));
       }
       if (expRes?.data?.success) nextHomeData.experienceSections = Array.isArray(expRes.data.result || expRes.data.results) ? (expRes.data.result || expRes.data.results) : [];
       const sectionsList = sectionsRes?.data?.results || sectionsRes?.data?.result || sectionsRes?.data;
@@ -534,6 +536,9 @@ const Home = () => {
                 <div className="px-3 sm:px-4 pt-3 pb-6 flex flex-col gap-1">
                   {/* 1. 🔥 Hot Deals */}
                   <HotDealsSection products={effectiveLowestPriceProducts.length ? effectiveLowestPriceProducts : products} />
+
+                  {/* 1b. 📸 Our Journey & Moments (admin-managed; hides itself when disabled/empty) */}
+                  <GalleryPreviewSection />
 
                   {/* 2. ⭐ Top Picks for You */}
                   <TopPicksSection products={effectiveLowestPriceProducts.length ? effectiveLowestPriceProducts : products} />

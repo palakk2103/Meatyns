@@ -47,21 +47,84 @@ const swallow = (fn) => {
     }
 };
 
+/**
+ * Auth token keys are mirrored to sessionStorage and a cookie in addition to
+ * localStorage. Reads fall back to sessionStorage, then the cookie, if the
+ * localStorage copy is missing; removal clears all three copies.
+ */
+const AUTH_TOKEN_KEYS = new Set([
+    STORAGE_KEYS.AUTH_CUSTOMER,
+    STORAGE_KEYS.AUTH_SELLER,
+    STORAGE_KEYS.AUTH_ADMIN,
+    STORAGE_KEYS.AUTH_DELIVERY,
+    STORAGE_KEYS.AUTH_LEGACY,
+]);
+const AUTH_COOKIE_MAX_AGE_SECONDS = 30 * 24 * 60 * 60; // 30 days
+
+const isMirroredAuthKey = (key, storage) => storage === 'local' && AUTH_TOKEN_KEYS.has(key);
+
+function readCookie(name) {
+    if (!isBrowser() || typeof document === 'undefined') return null;
+    try {
+        const prefix = `${name}=`;
+        const match = document.cookie
+            .split(';')
+            .map((c) => c.trim())
+            .find((c) => c.startsWith(prefix));
+        return match ? decodeURIComponent(match.slice(prefix.length)) : null;
+    } catch {
+        return null;
+    }
+}
+
+function writeCookie(name, value, maxAgeSeconds) {
+    if (!isBrowser() || typeof document === 'undefined') return;
+    try {
+        const secure = window.location?.protocol === 'https:' ? ';Secure' : '';
+        document.cookie = `${name}=${encodeURIComponent(value)};path=/;max-age=${maxAgeSeconds};SameSite=Lax${secure}`;
+    } catch {
+        /* ignore */
+    }
+}
+
+function setAuthMirrors(key, value) {
+    const session = resolveStorage('session');
+    swallow(() => session && session.setItem(key, value));
+    writeCookie(key, value, AUTH_COOKIE_MAX_AGE_SECONDS);
+}
+
+function removeAuthMirrors(key) {
+    const session = resolveStorage('session');
+    swallow(() => session && session.removeItem(key));
+    writeCookie(key, '', 0);
+}
+
 /** Safe read of a raw string value. Returns null on any failure. */
 export function rawGet(key, { storage = 'local' } = {}) {
     const store = resolveStorage(storage);
     if (!store || !key) return null;
+    let value = null;
     try {
-        return store.getItem(key);
+        value = store.getItem(key);
     } catch {
-        return null;
+        value = null;
     }
+    if (value == null && isMirroredAuthKey(key, storage)) {
+        const session = resolveStorage('session');
+        value = swallow(() => session && session.getItem(key)) ?? readCookie(key);
+        if (value != null) {
+            // Heal the primary localStorage copy from the mirror.
+            swallow(() => store.setItem(key, value));
+        }
+    }
+    return value;
 }
 
 /** Safe write of a raw string value. Returns true on success. */
 export function rawSet(key, value, { storage = 'local' } = {}) {
     const store = resolveStorage(storage);
     if (!store || !key) return false;
+    if (isMirroredAuthKey(key, storage)) setAuthMirrors(key, value);
     try {
         store.setItem(key, value);
         return true;
@@ -83,6 +146,7 @@ export function rawSet(key, value, { storage = 'local' } = {}) {
 export function rawRemove(key, { storage = 'local' } = {}) {
     const store = resolveStorage(storage);
     if (!store || !key) return false;
+    if (isMirroredAuthKey(key, storage)) removeAuthMirrors(key);
     try {
         store.removeItem(key);
         return true;

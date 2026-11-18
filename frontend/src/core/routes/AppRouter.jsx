@@ -65,6 +65,8 @@ const ReferralsPage = lazy(() => import('../../modules/customer/pages/ReferralsP
 const RecipesPage = lazy(() => import('../../modules/customer/pages/RecipesPage'));
 const RecipeDetailPage = lazy(() => import('../../modules/customer/pages/RecipeDetailPage'));
 const CombosPage = lazy(() => import('../../modules/customer/pages/CombosPage'));
+const GalleryPage = lazy(() => import('../../modules/customer/pages/GalleryPage'));
+const GalleryDetailPage = lazy(() => import('../../modules/customer/pages/GalleryDetailPage'));
 
 // Lazy load heavy modules
 const SellerModule = lazy(() => import('../../modules/seller/routes/index'));
@@ -230,6 +232,8 @@ const AppRouter = () => {
                         { path: 'quality-policy', element: <QualityPolicyPage /> },
                         { path: 'offers', element: <OffersPage /> },
                         { path: 'shop-by-store', element: <ShopByStorePage /> },
+                        { path: 'gallery', element: <GalleryPage /> },
+                        { path: 'gallery/:slug', element: <GalleryDetailPage /> },
                         { path: 'wishlist', element: <ProtectedRoute><WishlistPage /></ProtectedRoute> },
                         { path: 'orders', element: <ProtectedRoute><OrdersPage /></ProtectedRoute> },
                         { path: 'orders/:orderId', element: <ProtectedRoute><OrderDetailPage /></ProtectedRoute> },

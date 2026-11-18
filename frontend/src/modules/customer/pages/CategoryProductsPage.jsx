@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
 import { useToast } from '@shared/components/ui/Toast';
+import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import { applyCloudinaryTransform } from '@/core/utils/imageUtils';
 
@@ -19,6 +20,7 @@ import { useLocation as useAppLocation } from '../context/LocationContext';
 import { useSettings } from '@core/context/SettingsContext';
 import Lottie from 'lottie-react';
 import { isChickenOrMutton as isAllowedCategory } from '../utils/categoryFilter';
+import { sortByDisplayOrder } from '../utils/productDisplayOrder';
 
 // Allow-by-default: only categories on the shared exclusion list are blocked,
 // so newly created categories render their products.
@@ -249,7 +251,7 @@ const CategoryProductsPage = () => {
                     prodRes.data.message === "No products available in your area";
                 setIsOutOfService(isOutOfServiceMsg);
 
-                const formattedProds = dbProds.map(p => ({
+                const formattedProds = sortByDisplayOrder(dbProds).map(p => ({
                     ...p,
                     id: p._id,
                     image:

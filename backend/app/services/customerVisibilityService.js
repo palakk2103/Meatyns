@@ -179,6 +179,97 @@ export async function findItemsOutsideSeller(items = [], selectedSellerId = null
   }));
 }
 
+function normalizeProductName(value) {
+  return String(value || "").trim().toLowerCase().replace(/\s+/g, " ");
+}
+
+function findMatchingVariantSku(sourceProduct, targetProduct, variantSku) {
+  const sku = String(variantSku || "").trim();
+  if (!sku) return "";
+  const targetVariants = Array.isArray(targetProduct?.variants) ? targetProduct.variants : [];
+  if (targetVariants.some((v) => String(v?.sku || "").trim() === sku)) return sku;
+  const sourceVariant = (sourceProduct?.variants || []).find(
+    (v) => String(v?.sku || "").trim() === sku,
+  );
+  const variantName = normalizeProductName(sourceVariant?.name);
+  if (!variantName) return null;
+  const match = targetVariants.find((v) => normalizeProductName(v?.name) === variantName);
+  return match ? String(match.sku || "").trim() : null;
+}
+
+/**
+ * Every outlet keeps its own copy of the catalogue (same product name, a
+ * different _id). When a customer's location is served by a different outlet
+ * than the one an item was added from, swap that cart line for the SAME
+ * product (same name + same weight variant) of the outlet that serves them.
+ * Lines with no equivalent at the selected outlet are left untouched, so they
+ * still surface as "unavailable".
+ *
+ * `cart` is a Mongoose Cart document; it is saved only when something changed.
+ * Returns the number of lines swapped.
+ */
+export async function remapCartItemsToSeller(cart, selectedSellerId) {
+  if (!cart || !Array.isArray(cart.items) || !cart.items.length || !selectedSellerId) return 0;
+  const selectedId = String(selectedSellerId);
+
+  const sourceProducts = await Product.find({
+    _id: { $in: cart.items.map((i) => i.productId) },
+  })
+    .select("_id name sellerId variants")
+    .lean();
+  const sourceById = new Map(sourceProducts.map((p) => [String(p._id), p]));
+
+  const foreignLines = cart.items.filter((item) => {
+    const p = sourceById.get(String(item.productId));
+    return p && String(p.sellerId || "") !== selectedId;
+  });
+  if (!foreignLines.length) return 0;
+
+  const targetProducts = await Product.find({
+    sellerId: selectedId,
+    status: "active",
+    ...getApprovedOrLegacyFilter(),
+  })
+    .select("_id name variants")
+    .lean();
+  const targetByName = new Map();
+  for (const p of targetProducts) {
+    const key = normalizeProductName(p.name);
+    if (key && !targetByName.has(key)) targetByName.set(key, p);
+  }
+
+  let swapped = 0;
+  for (const item of foreignLines) {
+    const source = sourceById.get(String(item.productId));
+    const target = targetByName.get(normalizeProductName(source?.name));
+    if (!target) continue;
+    const newSku = findMatchingVariantSku(source, target, item.variantSku);
+    if (newSku === null) continue; // weight variant not sold at this outlet
+
+    // Merge into an existing identical line instead of duplicating it.
+    const existing = cart.items.find(
+      (other) =>
+        other !== item &&
+        String(other.productId) === String(target._id) &&
+        String(other.variantSku || "").trim() === newSku,
+    );
+    if (existing) {
+      existing.quantity = Number((Number(existing.quantity || 0) + Number(item.quantity || 0)).toFixed(3));
+      item.quantity = 0; // marked for removal below
+    } else {
+      item.productId = target._id;
+      item.variantSku = newSku;
+    }
+    swapped += 1;
+  }
+
+  if (swapped > 0) {
+    cart.items = cart.items.filter((i) => Number(i.quantity) > 0);
+    await cart.save();
+  }
+  return swapped;
+}
+
 /**
  * Light-weight serviceability check of a stored cart against a delivery
  * location. Reuses `resolveSelectedSellerForCustomer` (same rule checkout

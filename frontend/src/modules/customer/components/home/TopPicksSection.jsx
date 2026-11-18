@@ -90,12 +90,11 @@ const TopPicksSection = ({ products = [], title = "Top Picks for You", icon = "â
         }, [])
         .slice(0, 6);
     }
-    // Top Picks shows Chicken products only.
-    // Falls back to other non-egg meat when the serving store has no chicken;
-    // eggs are never shown here (they have their own "Fresh Eggs" section).
-    const nonEgg = (products || []).filter((p) => !isEggProduct(p));
-    const chickenOnly = nonEgg.filter((p) => getMeatType(p) === "chicken");
-    products = chickenOnly.length ? chickenOnly : nonEgg;
+    // Top Picks shows Chicken products ONLY. No fallback to other products:
+    // if the serving store has no chicken, the section is hidden.
+    products = (products || []).filter(
+      (p) => !isEggProduct(p) && getMeatType(p) === "chicken"
+    );
     const MEAT_KEYWORDS = ["fish", "chicken", "mutton", "meat", "pomfret", "prawn", "seafood", "keema", "surmai", "rohu"];
     const validFromBackend = (products || [])
       .filter((p) => {

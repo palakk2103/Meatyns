@@ -30,7 +30,7 @@ const LocationDrawer = ({ isOpen, onClose }) => {
 
   const mapsReadyRef = React.useRef(false);
   const autocompleteServiceRef = React.useRef(null);
-  const geocoderRef = React.useRef(null);
+  const placesServiceRef = React.useRef(null);
   const latestPlacesRequestRef = React.useRef(0);
   const autocompleteSessionTokenRef = React.useRef(null);
   const placesCacheRef = React.useRef(new Map());
@@ -72,7 +72,9 @@ const LocationDrawer = ({ isOpen, onClose }) => {
       }
       autocompleteServiceRef.current =
         new window.google.maps.places.AutocompleteService();
-      geocoderRef.current = new window.google.maps.Geocoder();
+      placesServiceRef.current = new window.google.maps.places.PlacesService(
+        document.createElement("div"),
+      );
       mapsReadyRef.current = true;
       return true;
     } catch (err) {
@@ -219,37 +221,22 @@ const LocationDrawer = ({ isOpen, onClose }) => {
         return;
       }
 
-      const geocoder = geocoderRef.current;
-      if (!geocoder || !prediction?.place_id) return;
+      if (!prediction?.place_id) return;
 
-      geocoder.geocode({ placeId: prediction.place_id }, (results, status) => {
-        if (status !== "OK" || !Array.isArray(results) || !results[0]) {
-          setPlacesError("Could not resolve selected location");
-          return;
-        }
-
-        const result = results[0];
-        const geometry = result.geometry?.location;
-        const components = result.address_components || [];
-
-        if (!geometry) {
-          setPlacesError("Location coordinates not available");
-          return;
-        }
-
+      const applyResolved = ({ name, components = [], lat, lng }) => {
         const city = getComponent(components, ["locality"]);
         const state = getComponent(components, ["administrative_area_level_1"]);
         const pincode = getComponent(components, ["postal_code"]);
 
         updateLocation(
           {
-            name: result.formatted_address || prediction.description,
+            name: name || prediction.description,
             time: "12-15 mins",
             city: city || currentLocation.city,
             state: state || currentLocation.state,
             pincode: pincode || currentLocation.pincode,
-            latitude: geometry.lat(),
-            longitude: geometry.lng(),
+            latitude: lat,
+            longitude: lng,
           },
           { persist: true, updateSavedHome: false },
         );
@@ -260,7 +247,62 @@ const LocationDrawer = ({ isOpen, onClose }) => {
         setIsSearchFocused(false);
         resetAutocompleteSession();
         onClose();
-      });
+      };
+
+      // Last resort: backend geocoding of the prediction text.
+      const resolveViaBackend = () => {
+        const text = prediction.description || "";
+        customerApi
+          .geocodeAddress(text)
+          .then((resp) => {
+            const loc = resp.data?.result?.location;
+            if (
+              loc &&
+              typeof loc.lat === "number" &&
+              typeof loc.lng === "number"
+            ) {
+              setCachedGeocode(`addr:${text}`, {
+                location: { lat: loc.lat, lng: loc.lng },
+              });
+              applyResolved({ name: text, lat: loc.lat, lng: loc.lng });
+              return;
+            }
+            setPlacesError("Could not resolve selected location");
+          })
+          .catch(() => setPlacesError("Could not resolve selected location"));
+      };
+
+      // Primary: Places Details (same API as autocomplete, closes the session).
+      const placesService = placesServiceRef.current;
+      if (!placesService) {
+        resolveViaBackend();
+        return;
+      }
+
+      placesService.getDetails(
+        {
+          placeId: prediction.place_id,
+          fields: ["geometry", "address_components", "formatted_address"],
+          sessionToken: autocompleteSessionTokenRef.current || undefined,
+        },
+        (place, status) => {
+          const geometry = place?.geometry?.location;
+          if (
+            status !== window.google.maps.places.PlacesServiceStatus.OK ||
+            !geometry
+          ) {
+            console.warn("[LocationDrawer] Place details failed:", status);
+            resolveViaBackend();
+            return;
+          }
+          applyResolved({
+            name: place.formatted_address,
+            components: place.address_components || [],
+            lat: geometry.lat(),
+            lng: geometry.lng(),
+          });
+        },
+      );
     },
     [
       currentLocation.city,

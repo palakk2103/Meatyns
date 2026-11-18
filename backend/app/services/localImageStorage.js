@@ -32,6 +32,7 @@ const FOLDER_MAP = {
   brands: "brands",
   offers: "offers",
   settings: "settings",
+  gallery: "gallery",
   docs: "docs",
   "delivery/documents": "kyc",
 };

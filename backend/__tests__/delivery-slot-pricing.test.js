@@ -29,7 +29,7 @@ describe("Delivery Slot Management & Dynamic Delivery Pricing", () => {
       normal: {
         enabled: true,
         deliveryFee: null,
-        estimatedLabel: "1–2 hours",
+        estimatedLabel: "Within 1 hour",
       },
       advance: {
         enabled: true,

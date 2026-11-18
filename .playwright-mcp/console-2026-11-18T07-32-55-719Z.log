@@ -1,0 +1,181 @@
+[     864ms] [ERROR] Failed to load resource: the server responded with a status of 401 () @ https://meatyns.com/api/customer/refresh:1
+[    4838ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://meatyns.com/:1
+[   12837ms] [ERROR] Failed to load resource: the server responded with a status of 401 () @ https://meatyns.com/api/customer/refresh:1
+[   17187ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://meatyns.com/:1
+[   23890ms] [ERROR] Failed to load resource: the server responded with a status of 401 () @ https://meatyns.com/api/customer/refresh:1
+[   28201ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://meatyns.com/:1
+[  108924ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5199/node_modules/.vite/deps/react-dom_client.js?v=7e801e64:20103
+[  109700ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5199/node_modules/.vite/deps/react-dom_client.js?v=7e801e64:20103
+[  110100ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5199/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:36
+[  110311ms] [LOG] [orderSocket] Socket connected, ID: dRrP7iBAACdrD39nAAAJ @ http://localhost:5199/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:49
+[  110822ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[  114967ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5199/:1
+[  118283ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5199/:1
+[  127318ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5199/node_modules/.vite/deps/react-dom_client.js?v=7e801e64:20103
+[  127492ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5199/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:36
+[  127710ms] [LOG] [orderSocket] Socket connected, ID: 7DxEEk2pYXlm0GMuAAAL @ http://localhost:5199/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:49
+[  128163ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[  132604ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5199/:1
+[  174351ms] [LOG] [vite] server connection lost. Polling for restart... @ http://localhost:5199/@vite/client:865
+[  180295ms] [LOG] [orderSocket] Socket disconnected, reason: transport close @ http://localhost:5199/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:60
+[  181826ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=t4l7pyfx:1
+[  181826ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:960:33)
+    at _Request.<anonymous> (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1243:12)
+    at Emitter.emit (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:819:20)
+    at _Request._onError (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1341:10)
+    at http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1319:18 @ http://localhost:5199/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  184187ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=t4n1a5e1:1
+[  184187ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:960:33)
+    at _Request.<anonymous> (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1243:12)
+    at Emitter.emit (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:819:20)
+    at _Request._onError (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1341:10)
+    at http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1319:18 @ http://localhost:5199/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  187198ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5199/:1
+[  194246ms] [LOG] [orderSocket] Socket connected, ID: vnZuX0Q6t9hkw1_IAAAB @ http://localhost:5199/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:49
+[  197349ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5199/:1
+[  358918ms] [LOG] [orderSocket] Socket disconnected, reason: transport close @ http://localhost:5199/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:60
+[  360943ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=t8feuuzk:1
+[  360944ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:960:33)
+    at _Request.<anonymous> (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1243:12)
+    at Emitter.emit (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:819:20)
+    at _Request._onError (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1341:10)
+    at http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1319:18 @ http://localhost:5199/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  363960ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5199/:1
+[  365720ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=t8j3ssdr:1
+[  365720ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:960:33)
+    at _Request.<anonymous> (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1243:12)
+    at Emitter.emit (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:819:20)
+    at _Request._onError (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1341:10)
+    at http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1319:18 @ http://localhost:5199/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  368725ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5199/:1
+[  373426ms] [LOG] [orderSocket] Socket connected, ID: nuGawRm78CVe0DRUAAAD @ http://localhost:5199/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:49
+[  376428ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5199/:1
+[  377647ms] [LOG] [orderSocket] Socket disconnected, reason: transport close @ http://localhost:5199/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:60
+[  379491ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5199/:1
+[  379594ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=t8tt9rqm:1
+[  379594ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:960:33)
+    at _Request.<anonymous> (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1243:12)
+    at Emitter.emit (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:819:20)
+    at _Request._onError (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1341:10)
+    at http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1319:18 @ http://localhost:5199/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  382225ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=t8vu253q:1
+[  382226ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:960:33)
+    at _Request.<anonymous> (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1243:12)
+    at Emitter.emit (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:819:20)
+    at _Request._onError (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1341:10)
+    at http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1319:18 @ http://localhost:5199/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  385227ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5199/:1
+[  388348ms] [LOG] [orderSocket] Socket connected, ID: xGBZgkx8it3j-VQIAAAB @ http://localhost:5199/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:49
+[  391357ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5199/:1
+[  394591ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5199/:1
+[  746681ms] [LOG] [orderSocket] Socket disconnected, reason: transport close @ http://localhost:5199/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:60
+[  748235ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=tgq99hj7:1
+[  748235ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:960:33)
+    at _Request.<anonymous> (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1243:12)
+    at Emitter.emit (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:819:20)
+    at _Request._onError (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1341:10)
+    at http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1319:18 @ http://localhost:5199/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  751250ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5199/:1
+[  753671ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=tgugayep:1
+[  753672ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:960:33)
+    at _Request.<anonymous> (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1243:12)
+    at Emitter.emit (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:819:20)
+    at _Request._onError (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1341:10)
+    at http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1319:18 @ http://localhost:5199/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  756682ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5199/:1
+[  758187ms] [LOG] [orderSocket] Socket connected, ID: 48-g2C3YuUMqrDy0AAAB @ http://localhost:5199/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:49
+[  761188ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5199/:1
+[  764578ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5199/:1
+[ 1179451ms] [LOG] [orderSocket] Socket disconnected, reason: transport close @ http://localhost:5199/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:60
+[ 1181566ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=tq0m7ukl:1
+[ 1181566ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:960:33)
+    at _Request.<anonymous> (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1243:12)
+    at Emitter.emit (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:819:20)
+    at _Request._onError (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1341:10)
+    at http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1319:18 @ http://localhost:5199/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[ 1184215ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=tq2nv6vw:1
+[ 1184216ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:960:33)
+    at _Request.<anonymous> (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1243:12)
+    at Emitter.emit (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:819:20)
+    at _Request._onError (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1341:10)
+    at http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1319:18 @ http://localhost:5199/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[ 1187222ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5199/:1
+[ 1192942ms] [LOG] [orderSocket] Socket connected, ID: JQmargRDHAG5-6D3AAAB @ http://localhost:5199/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:49
+[ 1197359ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5199/:1
+[ 1198052ms] [LOG] [orderSocket] Socket disconnected, reason: transport close @ http://localhost:5199/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:60
+[ 1199448ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=tqeewtlf:1
+[ 1199448ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:960:33)
+    at _Request.<anonymous> (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1243:12)
+    at Emitter.emit (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:819:20)
+    at _Request._onError (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1341:10)
+    at http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1319:18 @ http://localhost:5199/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[ 1201746ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=tqg6sbpq:1
+[ 1201746ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:960:33)
+    at _Request.<anonymous> (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1243:12)
+    at Emitter.emit (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:819:20)
+    at _Request._onError (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1341:10)
+    at http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1319:18 @ http://localhost:5199/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[ 1204752ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5199/:1
+[ 1211277ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=tqnjlez8:1
+[ 1211277ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:960:33)
+    at _Request.<anonymous> (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1243:12)
+    at Emitter.emit (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:819:20)
+    at _Request._onError (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1341:10)
+    at http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1319:18 @ http://localhost:5199/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[ 1214284ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5199/:1
+[ 1221315ms] [LOG] [orderSocket] Socket connected, ID: xjlzzipJPh6MnXLYAAAB @ http://localhost:5199/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:49
+[ 1224315ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5199/:1
+[ 1227710ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5199/:1
+[ 1258016ms] [LOG] [orderSocket] Socket disconnected, reason: transport close @ http://localhost:5199/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:60
+[ 1259549ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=trosfars:1
+[ 1259549ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:960:33)
+    at _Request.<anonymous> (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1243:12)
+    at Emitter.emit (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:819:20)
+    at _Request._onError (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1341:10)
+    at http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1319:18 @ http://localhost:5199/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[ 1262559ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5199/:1
+[ 1263111ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=trrj1bv3:1
+[ 1263112ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:960:33)
+    at _Request.<anonymous> (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1243:12)
+    at Emitter.emit (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:819:20)
+    at _Request._onError (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1341:10)
+    at http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1319:18 @ http://localhost:5199/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[ 1266123ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5199/:1
+[ 1273146ms] [LOG] [orderSocket] Socket connected, ID: a3SJ05VXsMOi-udkAAAD @ http://localhost:5199/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:49
+[ 1276161ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5199/:1
+[ 1279664ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5199/:1
+[ 1376362ms] [LOG] [orderSocket] Socket disconnected, reason: transport close @ http://localhost:5199/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:60
+[ 1379167ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=tu93104n:1
+[ 1379168ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:960:33)
+    at _Request.<anonymous> (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1243:12)
+    at Emitter.emit (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:819:20)
+    at _Request._onError (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1341:10)
+    at http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1319:18 @ http://localhost:5199/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[ 1382180ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5199/:1
+[ 1383419ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=tucd8aog:1
+[ 1383420ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:960:33)
+    at _Request.<anonymous> (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1243:12)
+    at Emitter.emit (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:819:20)
+    at _Request._onError (http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1341:10)
+    at http://localhost:5199/node_modules/.vite/deps/socket__io-client.js?v=63c12cc2:1319:18 @ http://localhost:5199/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[ 1386433ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5199/:1
+[ 1393454ms] [LOG] [orderSocket] Socket connected, ID: A0ChGcC0lJ0afkbwAAAD @ http://localhost:5199/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:49
+[ 1396458ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5199/:1
+[ 1400366ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5199/:1

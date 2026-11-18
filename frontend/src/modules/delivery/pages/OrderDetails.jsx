@@ -695,7 +695,7 @@ const OrderDetails = () => {
                     ? `📅 Date: ${order.scheduledDate || "N/A"} • Slot Window: ${order.timeSlot || "N/A"}`
                     : order.deliveryMethod === "EXPRESS"
                     ? `⚡ Dispatch immediately (ASAP ETA: ${order.timeSlot || "15–30 mins"})`
-                    : `🚚 Standard window: ${order.timeSlot || "1–2 hours"}`}
+                    : `🚚 Standard window: ${order.timeSlot || "Within 1 hour"}`}
                 </p>
               </div>
             </div>

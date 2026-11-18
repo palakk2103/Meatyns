@@ -24,7 +24,51 @@
 </head>
 
 <body>
-  <div id="root"></div>
+  <!--
+    Boot splash + watchdog. Plain ES5 with inline styles on purpose: it must work
+    even on outdated Android WebViews where the main bundle or Tailwind CSS fail.
+    React replaces #root's children on mount; main.jsx then calls
+    window.__meatynsBooted(). If that never happens (bundle failed to parse/load),
+    the user gets a visible, actionable screen instead of a stuck blank one.
+  -->
+  <div id="root">
+    <div id="boot-splash" style="position:fixed;top:0;left:0;right:0;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#FAF5EE;font-family:sans-serif;text-align:center;padding:16px;">
+      <img src="/meatyns_logo.png" alt="Meatyns" style="width:140px;max-width:50%;height:auto;margin-bottom:16px;" />
+      <div id="boot-status" style="color:#7A1F2B;font-size:14px;">Loading…</div>
+    </div>
+  </div>
+  <script>
+    (function () {
+      var booted = false;
+      var errors = [];
+      window.__meatynsBooted = function () { booted = true; };
+      window.addEventListener('error', function (e) {
+        if (booted) return;
+        var t = e && e.target;
+        if (t && t !== window && (t.src || t.href)) errors.push('Failed to load ' + (t.src || t.href));
+        else errors.push((e && e.message) || 'Script error');
+      }, true);
+      window.addEventListener('unhandledrejection', function (e) {
+        if (!booted) errors.push('Unhandled: ' + ((e && e.reason && e.reason.message) || e.reason));
+      });
+      setTimeout(function () {
+        if (booted) return;
+        var splash = document.getElementById('boot-splash');
+        var status = document.getElementById('boot-status');
+        if (!splash || !status) return;
+        var chrome = (navigator.userAgent.match(/Chrome\/(\d+)/) || [])[1] || 'unknown';
+        status.innerHTML =
+          '<div style="font-size:18px;font-weight:bold;color:#222;margin-bottom:8px;">Meatyns could not start</div>' +
+          '<div style="color:#444;font-size:14px;line-height:1.5;max-width:340px;margin:0 auto 16px;">' +
+          'Please check your internet connection and tap Retry. If this keeps happening, update ' +
+          '<b>Android System WebView</b> and <b>Google Chrome</b> from the Play Store, then reopen the app.</div>' +
+          '<button onclick="location.reload()" style="background:#7A1F2B;color:#fff;border:0;border-radius:10px;padding:12px 28px;font-size:15px;margin:4px;">Retry</button>' +
+          '<a href="https://play.google.com/store/apps/details?id=com.google.android.webview" style="display:inline-block;border:1px solid #7A1F2B;color:#7A1F2B;border-radius:10px;padding:11px 18px;font-size:15px;margin:4px;text-decoration:none;">Update WebView</a>' +
+          '<div style="color:#999;font-size:11px;margin-top:16px;word-break:break-all;">Engine ' + chrome +
+          (errors.length ? ' · ' + errors.slice(0, 3).join(' · ').replace(/</g, '&lt;') : '') + '</div>';
+      }, 15000);
+    })();
+  </script>
   <script type="module" src="/src/main.jsx"></script>
 </body>
 

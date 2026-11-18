@@ -12,6 +12,7 @@ import {
   calculateHandlingFee,
   generateOrderPaymentBreakdown,
   hydrateOrderItems,
+  normalizeExpressDistanceSlabs,
 } from "./finance/pricingService.js";
 import { computeOrderDiscount } from "./finance/couponService.js";
 import { getOrCreateFinanceSettings } from "./finance/financeSettingsService.js";
@@ -562,6 +563,18 @@ export async function buildCheckoutPricingSnapshot({
       );
       err.statusCode = 400;
       throw err;
+    }
+
+    if (String(deliveryMethod).toUpperCase() === "EXPRESS" && zone) {
+      const expressSlabs = normalizeExpressDistanceSlabs(zone.expressDistanceSlabs);
+      const maxExpressKm = expressSlabs.length > 0 ? expressSlabs[expressSlabs.length - 1].toKm : null;
+      if (maxExpressKm != null && Number(distanceKm) > maxExpressKm) {
+        const err = new Error(
+          `Express delivery is available only within ${maxExpressKm} km in ${zone.name}. Please choose another delivery option.`,
+        );
+        err.statusCode = 400;
+        throw err;
+      }
     }
 
     // Distribute discount proportionally by seller subtotal

@@ -1272,7 +1272,7 @@ const CheckoutPage = () => {
                     {deliveryMethod === "EXPRESS"
                       ? `Express: ${deliveryOptions?.EXPRESS?.estimatedLabel || "20-30 mins"}`
                       : deliveryMethod === "NORMAL"
-                      ? "Normal: 1–2 hours"
+                      ? "Normal: within 1 hour"
                       : selectedSlot
                       ? `Scheduled: ${selectedSlot.label}`
                       : "Scheduled Delivery"}
@@ -1663,7 +1663,7 @@ const CheckoutPage = () => {
                 ) : (
                   <div className="flex items-center justify-between text-[11px] font-semibold text-blue-800 bg-blue-50/80 px-2.5 py-1.5 rounded-xl border border-blue-200/70">
                     <span className="flex items-center gap-1.5">🚚 Standard Delivery</span>
-                    <span>1–2 hours</span>
+                    <span>Within 1 hour</span>
                   </div>
                 )}
 

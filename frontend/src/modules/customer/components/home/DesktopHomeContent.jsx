@@ -19,6 +19,7 @@ import EggsSection from "./EggsSection";
 import TrendingCategoriesSection from "./TrendingCategoriesSection";
 import TrustFeaturesBanner from "./TrustFeaturesBanner";
 import QuickCategoryRow from "./QuickCategoryRow";
+import GalleryPreviewSection from "../gallery/GalleryPreviewSection";
 
 const DesktopHomeContent = ({ products = [], categories = [], heroConfig }) => {
   const navigate = useNavigate();
@@ -331,6 +332,9 @@ const DesktopHomeContent = ({ products = [], categories = [], heroConfig }) => {
         <div className="-mt-1">
           <QuickCategoryRow categories={categories} singleRow={true} />
         </div>
+
+        {/* ──── 📸 GALLERY – OUR JOURNEY & MOMENTS (admin-managed; hides itself when disabled/empty) ──── */}
+        <GalleryPreviewSection />
 
         {/* ──── 1. 🔥 HOT DEALS SECTION ──── */}
         <HotDealsSection products={products} />

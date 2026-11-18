@@ -27,3 +27,10 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <App />
     </React.StrictMode>
 );
+
+// Tell the boot watchdog in index.html that the bundle parsed and React started.
+try {
+    window.__meatynsBooted?.();
+} catch {
+    // ignore
+}

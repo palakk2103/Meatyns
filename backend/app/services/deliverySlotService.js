@@ -387,7 +387,8 @@ export async function getDeliveryOptionsAndSlots({
   const expressEtaLabel = `${minEta}–${maxEta} mins`;
 
   const isExpressEnabled = expressConfig.enabled !== false && (matchedZone ? matchedZone.expressAvailable !== false : true);
-  const expressAvailable = isServiceable && (expressConfig.operatingHoursOnly ? isCurrentlyOpen : true) && isExpressEnabled;
+  const expressOutOfRange = Boolean(expressPricing.expressSlabExceeded);
+  const expressAvailable = isServiceable && (expressConfig.operatingHoursOnly ? isCurrentlyOpen : true) && isExpressEnabled && !expressOutOfRange;
 
   const expressOption = {
     method: DELIVERY_METHODS.EXPRESS,
@@ -404,6 +405,8 @@ export async function getDeliveryOptionsAndSlots({
       ? "Express delivery is currently disabled."
       : !isServiceable
       ? unserviceableReason
+      : expressOutOfRange
+      ? `Express delivery is available only within ${expressPricing.expressMaxDistanceKm} km.`
       : !isCurrentlyOpen && expressConfig.operatingHoursOnly
       ? "Store is currently closed for Express delivery."
       : null,
@@ -416,10 +419,10 @@ export async function getDeliveryOptionsAndSlots({
   const normalOption = {
     method: DELIVERY_METHODS.NORMAL,
     title: "Normal Delivery",
-    tagline: "Delivery within 1–2 hours",
+    tagline: "Delivery within 1 hour",
     available: normalAvailable,
     enabled: isNormalEnabled,
-    estimatedLabel: normalConfig.estimatedLabel || "1–2 hours",
+    estimatedLabel: normalConfig.estimatedLabel || "Within 1 hour",
     minMinutes: normalConfig.minMinutes || DELIVERY_SLOT_CONFIG.NORMAL_MIN_MINUTES,
     maxMinutes: normalConfig.maxMinutes || DELIVERY_SLOT_CONFIG.NORMAL_MAX_MINUTES,
     deliveryFee: normalPricing.deliveryFeeCharged,
@@ -474,6 +477,7 @@ export async function getDeliveryOptionsAndSlots({
       priority: matchedZone.priority,
       deliveryFee: matchedZone.deliveryFee,
       surcharge: matchedZone.surcharge,
+      expressDistanceSlabs: matchedZone.expressDistanceSlabs || [],
     } : null,
     deliveryOptions: {
       [DELIVERY_METHODS.EXPRESS]: expressOption,

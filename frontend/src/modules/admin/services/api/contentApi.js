@@ -54,6 +54,37 @@ export const adminContentApi = {
     reorderOfferSections: (items) =>
         axiosInstance.put('/admin-offer-sections/reorder', { items }),
 
+    // Gallery Management
+    getGalleryStats: () => axiosInstance.get('/admin/gallery/stats'),
+    getGalleries: (params) => axiosInstance.get('/admin/gallery', { params }),
+    getGallery: (id) => axiosInstance.get(`/admin/gallery/${id}`),
+    createGallery: (data) => axiosInstance.post('/admin/gallery', data),
+    updateGallery: (id, data) => axiosInstance.put(`/admin/gallery/${id}`, data),
+    updateGalleryStatus: (id, data) =>
+        axiosInstance.patch(`/admin/gallery/${id}/status`, data),
+    deleteGallery: (id) => axiosInstance.delete(`/admin/gallery/${id}`),
+    reorderGalleries: (items) =>
+        axiosInstance.put('/admin/gallery/reorder', { items }),
+    uploadGalleryImages: (formData, onUploadProgress) =>
+        axiosInstance.post('/admin/gallery/upload', formData, {
+            headers: { 'Content-Type': 'multipart/form-data' },
+            onUploadProgress,
+        }),
+    getGalleryCategories: () => axiosInstance.get('/admin/gallery/categories'),
+    createGalleryCategory: (data) =>
+        axiosInstance.post('/admin/gallery/categories', data),
+    updateGalleryCategory: (id, data) =>
+        axiosInstance.put(`/admin/gallery/categories/${id}`, data),
+    deleteGalleryCategory: (id, reassignTo) =>
+        axiosInstance.delete(`/admin/gallery/categories/${id}`, {
+            params: reassignTo ? { reassignTo } : undefined,
+        }),
+    reorderGalleryCategories: (items) =>
+        axiosInstance.put('/admin/gallery/categories/reorder', { items }),
+    getGallerySettings: () => axiosInstance.get('/admin/gallery/settings'),
+    updateGallerySettings: (data) =>
+        axiosInstance.put('/admin/gallery/settings', data),
+
     // Coupons & Promos
     getCoupons: (params) => axiosInstance.get('/admin/coupons', { params }),
     createCoupon: (data) => axiosInstance.post('/admin/coupons', data),

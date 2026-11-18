@@ -5,7 +5,7 @@ import {
     User, MapPin, Package, CreditCard, Wallet, ChevronRight,
     LogOut, ShieldCheck, Heart, HelpCircle, Info, Edit2, ChevronLeft, Bell,
     ScrollText, RotateCcw, Truck, Coins, Sparkles, Store, Phone, Mail, Clock, Award,
-    Calendar, Gift, UtensilsCrossed, Boxes, Trash2, AlertTriangle, Loader2, Camera
+    Calendar, Gift, UtensilsCrossed, Boxes, Trash2, AlertTriangle, Loader2, Camera, Images
 } from 'lucide-react';
 import { useAuth } from '@core/context/AuthContext';
 import { useSettings } from '@core/context/SettingsContext';
@@ -29,6 +29,16 @@ const ProfilePage = () => {
     const [showDeleteModal, setShowDeleteModal] = React.useState(false);
     const [isDeleting, setIsDeleting] = React.useState(false);
     const [isUploadingPhoto, setIsUploadingPhoto] = React.useState(false);
+    // Gallery entry is admin-controlled; stays hidden until the setting confirms it is enabled.
+    const [showGallery, setShowGallery] = React.useState(false);
+
+    React.useEffect(() => {
+        let alive = true;
+        customerApi.getGallerySettings()
+            .then((res) => { if (alive) setShowGallery(Boolean(res?.data?.result?.profileGalleryEnabled)); })
+            .catch(() => {});
+        return () => { alive = false; };
+    }, []);
 
     const handlePhotoUpload = async (e) => {
         const file = e.target.files?.[0];
@@ -283,6 +293,16 @@ const ProfilePage = () => {
                             <p className="text-[11px] font-bold text-[#1A1A1A] uppercase tracking-wider">Help & Settings</p>
                         </div>
                         <div className="divide-y divide-[#F6F1EA]">
+                            {showGallery && (
+                                <MenuItem
+                                    icon={Images}
+                                    label="Gallery"
+                                    sub="Explore our journey, milestones and memorable moments."
+                                    path="/gallery"
+                                    color="#C81017"
+                                    bg="#FEE2E2"
+                                />
+                            )}
                             <MenuItem
                                 icon={HelpCircle}
                                 label="Help & Support"

@@ -8,6 +8,8 @@ import { evaluateProductAvailability } from "../services/productSchedulingServic
 import {
   evaluateCartServiceability,
   parseCustomerCoordinates,
+  remapCartItemsToSeller,
+  resolveSelectedSellerForCustomer,
 } from "../services/customerVisibilityService.js";
 
 const CART_POPULATE_FIELDS =
@@ -435,7 +437,18 @@ export const getCartServiceability = async (req, res) => {
     if (!coords.valid) {
       return handleResponse(res, 400, "Valid lat and lng are required");
     }
-    const cart = await Cart.findOne({ customerId: req.user.id }).lean();
+    const cart = await Cart.findOne({ customerId: req.user.id });
+
+    // Swap items added from another outlet for the same product at the outlet
+    // that serves this location, so only truly unavailable items are flagged.
+    let remappedCount = 0;
+    if (cart?.items?.length) {
+      const selected = await resolveSelectedSellerForCustomer(coords.lat, coords.lng);
+      if (selected?.sellerId) {
+        remappedCount = await remapCartItemsToSeller(cart, selected.sellerId);
+      }
+    }
+
     const cartItems = (cart?.items || [])
       .filter((i) => i?.productId)
       .map((i) => ({ productId: i.productId, variantSku: i.variantSku || "" }));
@@ -444,7 +457,10 @@ export const getCartServiceability = async (req, res) => {
       lat: coords.lat,
       lng: coords.lng,
     });
-    return handleResponse(res, 200, "Cart serviceability evaluated", result);
+    return handleResponse(res, 200, "Cart serviceability evaluated", {
+      ...result,
+      remappedCount,
+    });
   } catch (error) {
     return handleResponse(res, 500, error.message);
   }

@@ -55,6 +55,20 @@ const deliveryZoneSchema = new mongoose.Schema(
       default: 0,
       min: 0,
     },
+    // Distance-based Express delivery charges for this zone.
+    // When set, the slab fee replaces the global (normal fee + express surcharge) for EXPRESS orders.
+    // Example (Kolhapur): [{0,1,30}, {1,3,45}, {3,5,70}]
+    expressDistanceSlabs: {
+      type: [
+        {
+          _id: false,
+          fromKm: { type: Number, required: true, min: 0 },
+          toKm: { type: Number, required: true, min: 0 },
+          fee: { type: Number, required: true, min: 0 },
+        },
+      ],
+      default: [],
+    },
     isDeleted: {
       type: Boolean,
       default: false,

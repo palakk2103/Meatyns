@@ -952,7 +952,7 @@ const Orders = () => {
                                                                 ? '⚡ Express Delivery (Deliver ASAP)'
                                                                 : selectedOrder.deliveryMethod === 'SCHEDULED'
                                                                 ? `📅 Scheduled Delivery: ${selectedOrder.scheduledDate || ''} (${selectedOrder.timeSlot || ''})`
-                                                                : '🚚 Normal Delivery (1–2 hours)'}
+                                                                : '🚚 Normal Delivery (within 1 hour)'}
                                                         </p>
                                                         {selectedOrder.deliveryMethod === 'SCHEDULED' && (
                                                             <p className="text-[11px] text-emerald-800 font-semibold mt-1">

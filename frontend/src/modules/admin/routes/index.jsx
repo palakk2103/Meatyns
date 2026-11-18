@@ -25,6 +25,7 @@ import {
   Megaphone,
   Calendar,
   Gift,
+  Images,
 } from "lucide-react";
 import { useAuth } from "@core/context/AuthContext";
 
@@ -106,6 +107,7 @@ const ReferralsManagement = React.lazy(() => import("../pages/ReferralsManagemen
 const RecipesManagement = React.lazy(() => import("../pages/RecipesManagement"));
 const CombosManagement = React.lazy(() => import("../pages/CombosManagement"));
 const DeliveryManagement = React.lazy(() => import("../pages/DeliveryManagement"));
+const GalleryManagement = React.lazy(() => import("../pages/GalleryManagement"));
 
 const navItems = [
   {
@@ -155,6 +157,13 @@ const navItems = [
       { label: "Recipes-to-Cart", path: "/admin/recipes" },
       { label: "Meal Combos", path: "/admin/combos" },
     ],
+  },
+  {
+    label: "Content Management",
+    icon: Images,
+    color: "rose",
+    roles: ["super_admin", "admin", "marketing_manager"],
+    children: [{ label: "Gallery", path: "/admin/gallery" }],
   },
   {
     label: "Marketing & Meta Ads",
@@ -354,6 +363,7 @@ const AdminRoutes = () => {
         <Route path="/referrals" element={<ReferralsManagement />} />
         <Route path="/recipes" element={<RecipesManagement />} />
         <Route path="/combos" element={<CombosManagement />} />
+        <Route path="/gallery" element={<GalleryManagement />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </DashboardLayout>

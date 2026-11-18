@@ -65,41 +65,16 @@ const HotDealsSection = ({ products = [] }) => {
 
   // Merge real backend products if they have discounts, or fallback to curated defaults
   const displayItems = React.useMemo(() => {
-    // Hot Deals shows Mutton products only.
-    // Falls back to other non-egg meat when the serving store has no mutton;
-    // eggs are never shown here (they have their own "Fresh Eggs" section).
-    const nonEgg = (products || []).filter((p) => !isEggProduct(p));
-    const muttonOnly = nonEgg.filter((p) => getMeatType(p) === "mutton");
-    products = muttonOnly.length ? muttonOnly : nonEgg;
-    const discountedFromBackend = (products || [])
-      .filter((p) => {
-        const curr = Number(p.salePrice || p.price || 0);
-        const orig = Number(p.originalPrice || p.price || 0);
-        return orig > curr && curr > 0;
-      })
-      .map((p) => {
-        const curr = Number(p.salePrice || p.price || 0);
-        const orig = Number(p.originalPrice || p.price || 0);
-        const pct = orig > curr ? Math.round(((orig - curr) / orig) * 100) : 0;
-        return {
-          id: p._id || p.id,
-          _id: p._id || p.id,
-          name: p.name,
-          weight: p.weight || "500 g",
-          price: curr,
-          originalPrice: orig,
-          discount: `${pct}% OFF`,
-          image: p.mainImage || p.image || DEFAULT_HOT_DEALS[0].image,
-        };
-      });
+    // Hot Deals shows Mutton products ONLY. No fallback to other products:
+    // if the serving store has no mutton, the section is hidden.
+    // Products arrive already sorted in the client's front-page sequence
+    // (see utils/productDisplayOrder), so keep that order here.
+    products = (products || []).filter(
+      (p) => !isEggProduct(p) && getMeatType(p) === "mutton"
+    );
 
-    if (discountedFromBackend.length >= 4) {
-      return discountedFromBackend.slice(0, 4);
-    }
-
-    // Merge backend discounted with other real database products first
-    const merged = [...discountedFromBackend];
-    const existingNames = new Set(merged.map((m) => m.name.toLowerCase()));
+    const merged = [];
+    const existingNames = new Set();
 
     for (const p of (products || [])) {
       if (merged.length >= 4) break;

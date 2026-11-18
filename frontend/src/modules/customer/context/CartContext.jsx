@@ -393,6 +393,7 @@ export const CartProvider = ({ children }) => {
     cartCount,
     loading,
     resolveItemEffectivePrice,
+    refreshCart: fetchCart,
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }), [cart, cartTotal, cartCount, loading]);
 

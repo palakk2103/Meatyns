@@ -272,6 +272,38 @@ export function calculateHandlingFee(cartItems, options = {}) {
   };
 }
 
+/**
+ * Normalizes a zone's express distance slabs: drops invalid rows and sorts by toKm.
+ * Each slab is { fromKm, toKm, fee } and covers distances in (fromKm, toKm]
+ * (the first slab also includes 0 km).
+ */
+export function normalizeExpressDistanceSlabs(slabs) {
+  if (!Array.isArray(slabs)) return [];
+  return slabs
+    .map((slab) => ({
+      fromKm: Number(slab?.fromKm),
+      toKm: Number(slab?.toKm),
+      fee: Number(slab?.fee),
+    }))
+    .filter(
+      (slab) =>
+        Number.isFinite(slab.fromKm) &&
+        Number.isFinite(slab.toKm) &&
+        Number.isFinite(slab.fee) &&
+        slab.fromKm >= 0 &&
+        slab.toKm > slab.fromKm &&
+        slab.fee >= 0,
+    )
+    .sort((a, b) => a.toKm - b.toKm);
+}
+
+export function findExpressDistanceSlab(slabs, distanceKm) {
+  const distance = Math.max(Number(distanceKm) || 0, 0);
+  // Slabs are sorted by toKm, so the first slab whose upper bound covers the
+  // distance wins (this also tolerates small gaps between admin-entered slabs).
+  return slabs.find((slab) => distance <= slab.toKm) || null;
+}
+
 export function calculateCustomerDeliveryFee(distanceKm, deliverySettings, options = {}) {
   const deliveryMethod = typeof options === "string" ? options : (options?.deliveryMethod || "NORMAL");
   const zone = typeof options === "object" ? options?.zone : null;
@@ -329,7 +361,22 @@ export function calculateCustomerDeliveryFee(distanceKm, deliverySettings, optio
   let advanceBookingFee = 0;
   let finalDeliveryFee = standardNormalFee;
 
-  if (deliveryMethod === "EXPRESS") {
+  let expressSlab = null;
+  let expressSlabExceeded = false;
+  const expressSlabs = normalizeExpressDistanceSlabs(zone?.expressDistanceSlabs);
+
+  if (deliveryMethod === "EXPRESS" && expressSlabs.length > 0) {
+    // Zone-specific distance slabs (e.g. Kolhapur: 0-1km ₹30, 1-3km ₹45, 3-5km ₹70).
+    // The slab fee is the complete express delivery charge for this zone.
+    expressSlab = findExpressDistanceSlab(expressSlabs, normalizedDistance);
+    if (!expressSlab) {
+      expressSlabExceeded = true;
+      expressSlab = expressSlabs[expressSlabs.length - 1];
+    }
+    expressSurcharge = roundCurrency(expressSlab.fee);
+    methodSurcharge = expressSurcharge;
+    finalDeliveryFee = expressSurcharge;
+  } else if (deliveryMethod === "EXPRESS") {
     expressSurcharge = roundCurrency(Number(expressConfig?.surcharge ?? 40));
     methodSurcharge = expressSurcharge;
     finalDeliveryFee = addMoney(standardNormalFee, expressSurcharge);
@@ -365,9 +412,13 @@ export function calculateCustomerDeliveryFee(distanceKm, deliverySettings, optio
     zoneSurcharge,
     matchedZoneId: zone?._id || null,
     matchedZoneName: zone?.name || null,
+    expressSlab,
+    expressSlabExceeded,
+    expressMaxDistanceKm: expressSlabs.length > 0 ? expressSlabs[expressSlabs.length - 1].toKm : null,
     breakdown: {
       standardNormalFee,
       expressSurcharge,
+      expressSlab,
       advanceBookingFee,
       finalDeliveryFee,
       zoneFeeOverride: hasZoneFeeOverride ? Number(zone.deliveryFee) : null,

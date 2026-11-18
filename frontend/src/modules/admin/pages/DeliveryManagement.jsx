@@ -65,7 +65,7 @@ const DeliveryManagement = () => {
     const [normalConfig, setNormalConfig] = useState({
         enabled: true,
         deliveryFee: null, // null = uses base/distance pricing
-        estimatedLabel: '1–2 hours',
+        estimatedLabel: 'Within 1 hour',
         minMinutes: 60,
         maxMinutes: 120,
     });
@@ -123,7 +123,7 @@ const DeliveryManagement = () => {
                     setNormalConfig({
                         enabled: dc.normal.enabled !== false,
                         deliveryFee: dc.normal.deliveryFee,
-                        estimatedLabel: dc.normal.estimatedLabel || '1–2 hours',
+                        estimatedLabel: dc.normal.estimatedLabel || 'Within 1 hour',
                         minMinutes: dc.normal.minMinutes ?? 60,
                         maxMinutes: dc.normal.maxMinutes ?? 120,
                     });
@@ -204,7 +204,7 @@ const DeliveryManagement = () => {
                         deliveryFee: normalConfig.deliveryFee != null && normalConfig.deliveryFee !== ''
                             ? Number(normalConfig.deliveryFee)
                             : null,
-                        estimatedLabel: normalConfig.estimatedLabel || '1–2 hours',
+                        estimatedLabel: normalConfig.estimatedLabel || 'Within 1 hour',
                         minMinutes: Number(normalConfig.minMinutes) || 60,
                         maxMinutes: Number(normalConfig.maxMinutes) || 120,
                     },
@@ -948,7 +948,7 @@ const DeliveryManagement = () => {
                                     }}
                                     className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-slate-900 focus:bg-white focus:ring-2 focus:ring-black outline-none"
                                 />
-                                <p className="text-[11px] text-slate-400">Display label shown to customers on checkout (e.g. 1–2 hours).</p>
+                                <p className="text-[11px] text-slate-400">Display label shown to customers on checkout (e.g. Within 1 hour).</p>
                             </div>
                         </div>
                     </Card>

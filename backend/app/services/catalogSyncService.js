@@ -152,31 +152,20 @@ export async function syncCatalogToAllSellers({ dryRun = false } = {}) {
 }
 
 /**
- * A newly created (approved, active) product is copied to every other
- * approved seller that doesn't already have a product with that name.
+ * A newly created (approved, active) product must reach every approved seller.
+ *
+ * This backfills the WHOLE catalogue, not just the new product: copying only
+ * the new product to a store that never received the rest of the catalogue
+ * leaves it selling just that one item. Because a customer is served by
+ * exactly one (nearest) store, such a partial store hides the full catalogue
+ * from everyone it captures. (That is how stores holding only the two egg
+ * products ended up serving Indore customers.)
  */
 export async function syncProductToAllSellers(productId) {
-  const template = await Product.findById(productId).lean();
+  const template = await Product.findById(productId).select("status approvalStatus").lean();
   if (!template || template.status !== "active" || template.approvalStatus !== "approved") {
     return { created: 0 };
   }
-  const key = normalizeName(template.name);
-  const sellers = await Seller.find({
-    applicationStatus: "approved",
-    _id: { $ne: template.sellerId },
-  })
-    .select("_id")
-    .lean();
-
-  const copies = [];
-  for (const seller of sellers) {
-    // eslint-disable-next-line no-await-in-loop
-    const owned = await Product.find({ sellerId: seller._id }).select("name").lean();
-    if (owned.some((p) => normalizeName(p.name) === key)) continue;
-    // eslint-disable-next-line no-await-in-loop
-    copies.push(await buildCopy(template, seller._id));
-  }
-  const created = await insertCopies(copies);
-  if (created.length) await invalidateCatalogCaches();
-  return { created: created.length };
+  const results = await syncCatalogToAllSellers();
+  return { created: results.reduce((sum, r) => sum + (r.created || 0), 0) };
 }

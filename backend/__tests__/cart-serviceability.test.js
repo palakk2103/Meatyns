@@ -14,7 +14,10 @@ const sellerFind = jest.fn((query = {}) => ({
     lean: async () => (query._id ? sellerNames : sellerRows),
   }),
 }));
-const productFind = jest.fn(() => ({ select: () => ({ lean: async () => productRows }) }));
+let outletCatalogue = []; // products of the selected seller (remap lookup)
+const productFind = jest.fn((query = {}) => ({
+  select: () => ({ lean: async () => (query.sellerId ? outletCatalogue : productRows) }),
+}));
 
 jest.unstable_mockModule("../app/models/seller.js", () => ({ default: { find: sellerFind } }));
 jest.unstable_mockModule("../app/models/product.js", () => ({
@@ -30,7 +33,7 @@ jest.unstable_mockModule("../app/services/productModerationService.js", () => ({
   getApprovedOrLegacyFilter: () => ({}),
 }));
 
-const { findItemsOutsideSeller, evaluateCartServiceability } = await import(
+const { findItemsOutsideSeller, evaluateCartServiceability, remapCartItemsToSeller } = await import(
   "../app/services/customerVisibilityService.js"
 );
 
@@ -110,5 +113,44 @@ describe("evaluateCartServiceability", () => {
     });
     expect(r.selectedSellerId).toBe("B");
     expect(r.unavailableItems.map((i) => i.productId)).toEqual(["p1"]);
+  });
+});
+
+describe("remapCartItemsToSeller (same product at the serving outlet)", () => {
+  const makeCart = (items) => ({ items, save: jest.fn(async () => {}) });
+
+  beforeEach(() => {
+    productRows = [
+      { _id: "meatyns-goat", name: "Goat Curry Cut", sellerId: "MEATYNS", variants: [{ sku: "M-500", name: "500 g" }] },
+      { _id: "raj-goat", name: "Goat Curry Cut", sellerId: "RAJ", variants: [{ sku: "R-500", name: "500 g" }] },
+      { _id: "meatyns-fish", name: "Rohu Fish", sellerId: "MEATYNS", variants: [] },
+    ];
+    outletCatalogue = [
+      { _id: "jag-goat", name: "goat  curry cut ", variants: [{ sku: "J-500", name: "500 G" }, { sku: "J-1kg", name: "1 kg" }] },
+    ];
+  });
+
+  test("swaps lines from other outlets to the serving outlet and merges duplicates", async () => {
+    const cart = makeCart([
+      { productId: "meatyns-goat", variantSku: "M-500", quantity: 1 },
+      { productId: "raj-goat", variantSku: "R-500", quantity: 2 },
+    ]);
+    const swapped = await remapCartItemsToSeller(cart, "JAG");
+    expect(swapped).toBe(2);
+    expect(cart.items).toEqual([{ productId: "jag-goat", variantSku: "J-500", quantity: 3 }]);
+    expect(cart.save).toHaveBeenCalledTimes(1);
+  });
+
+  test("leaves items the serving outlet does not sell untouched", async () => {
+    const cart = makeCart([{ productId: "meatyns-fish", variantSku: "", quantity: 1 }]);
+    expect(await remapCartItemsToSeller(cart, "JAG")).toBe(0);
+    expect(cart.items[0].productId).toBe("meatyns-fish");
+    expect(cart.save).not.toHaveBeenCalled();
+  });
+
+  test("does not swap when the weight variant is not sold at the serving outlet", async () => {
+    productRows[0].variants = [{ sku: "M-2kg", name: "2 kg" }];
+    const cart = makeCart([{ productId: "meatyns-goat", variantSku: "M-2kg", quantity: 1 }]);
+    expect(await remapCartItemsToSeller(cart, "JAG")).toBe(0);
   });
 });

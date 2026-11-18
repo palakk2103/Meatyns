@@ -1,6 +1,7 @@
 import DeliveryZone from "../models/deliveryZone.js";
 import Order from "../models/order.js";
 import { validateAndNormalizePolygon, isPointInPolygon } from "../utils/polygonValidator.js";
+import { normalizeExpressDistanceSlabs } from "./finance/pricingService.js";
 
 /**
  * Normalizes customer coordinates into { lat, lng } numbers.
@@ -159,6 +160,7 @@ export async function createDeliveryZone(zoneData, adminUser = null) {
       : null,
     expressAvailable: zoneData.expressAvailable !== false,
     surcharge: Math.max(0, Number(zoneData.surcharge || 0)),
+    expressDistanceSlabs: normalizeExpressDistanceSlabs(zoneData.expressDistanceSlabs),
     createdBy: adminUser?._id || adminUser?.id || null,
     updatedBy: adminUser?._id || adminUser?.id || null,
   });
@@ -243,6 +245,10 @@ export async function updateDeliveryZone(id, zoneData, adminUser = null) {
 
   if (zoneData.surcharge !== undefined) {
     zone.surcharge = Math.max(0, Number(zoneData.surcharge || 0));
+  }
+
+  if (zoneData.expressDistanceSlabs !== undefined) {
+    zone.expressDistanceSlabs = normalizeExpressDistanceSlabs(zoneData.expressDistanceSlabs);
   }
 
   zone.updatedBy = adminUser?._id || adminUser?.id || null;
