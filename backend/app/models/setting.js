@@ -13,11 +13,11 @@ const settingSchema = new mongoose.Schema(
         },
         supportEmail: {
             type: String,
-            default: "support@meatyns.com",
+            default: "meatyns2023@gmail.com",
         },
         supportPhone: {
             type: String,
-            default: "02269621920",
+            default: "+91 7558598590",
         },
         currencySymbol: {
             type: String,
@@ -45,11 +45,14 @@ const settingSchema = new mongoose.Schema(
         },
 
         // Legal
-        companyName: String,
+        companyName: {
+            type: String,
+            default: "Meatyns Farmer Producer Company Limited",
+        },
         taxId: String,
         address: {
             type: String,
-            default: "Ramkrishna Nagar patna 800020",
+            default: "",
         },
 
         // Social
@@ -171,6 +174,29 @@ const settingSchema = new mongoose.Schema(
         lowStockAlertsEnabled: {
             type: Boolean,
             default: true,
+        },
+        // City-wise distance slabs for NORMAL + SCHEDULED delivery, matched on
+        // the serving outlet's city (e.g. Kolhapur: 0-1km ₹30, 1-3km ₹45, 3-5km ₹70).
+        cityDeliverySlabs: {
+            type: [
+                {
+                    _id: false,
+                    city: { type: String, required: true, trim: true },
+                    enabled: { type: Boolean, default: true },
+                    slabs: {
+                        type: [
+                            {
+                                _id: false,
+                                fromKm: { type: Number, required: true, min: 0 },
+                                toKm: { type: Number, required: true, min: 0 },
+                                fee: { type: Number, required: true, min: 0 },
+                            },
+                        ],
+                        default: [],
+                    },
+                },
+            ],
+            default: [],
         },
         deliveryConfig: {
             express: {

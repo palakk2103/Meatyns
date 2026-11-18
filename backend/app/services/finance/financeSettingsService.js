@@ -58,6 +58,28 @@ const DEFAULT_FINANCE_SETTINGS = {
   deliveryConfig: DEFAULT_DELIVERY_CONFIG,
 };
 
+function normalizeCityDeliverySlabs(rules) {
+  if (!Array.isArray(rules)) return [];
+  const seen = new Set();
+  const out = [];
+  for (const rule of rules) {
+    const city = String(rule?.city || "").trim().replace(/\s+/g, " ");
+    const key = city.toLowerCase();
+    if (!city || seen.has(key)) continue;
+    const slabs = (Array.isArray(rule?.slabs) ? rule.slabs : [])
+      .map((s) => ({ fromKm: Number(s?.fromKm), toKm: Number(s?.toKm), fee: Number(s?.fee) }))
+      .filter((s) =>
+        Number.isFinite(s.fromKm) && Number.isFinite(s.toKm) && Number.isFinite(s.fee) &&
+        s.fromKm >= 0 && s.toKm > s.fromKm && s.fee >= 0)
+      .map((s) => ({ fromKm: s.fromKm, toKm: s.toKm, fee: roundCurrency(s.fee) }))
+      .sort((a, b) => a.toKm - b.toKm);
+    if (!slabs.length) continue;
+    seen.add(key);
+    out.push({ city, enabled: rule?.enabled !== false, slabs });
+  }
+  return out;
+}
+
 export function normalizeFinanceSettings(raw = {}) {
   const deliveryPricingMode =
     raw.deliveryPricingMode ||
@@ -186,6 +208,7 @@ export function normalizeFinanceSettings(raw = {}) {
     handlingFeeStrategy,
     codEnabled: raw.codEnabled ?? DEFAULT_FINANCE_SETTINGS.codEnabled,
     onlineEnabled: raw.onlineEnabled ?? DEFAULT_FINANCE_SETTINGS.onlineEnabled,
+    cityDeliverySlabs: normalizeCityDeliverySlabs(raw.cityDeliverySlabs),
     deliveryConfig,
   };
 }

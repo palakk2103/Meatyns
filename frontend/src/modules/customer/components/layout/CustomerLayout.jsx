@@ -79,12 +79,12 @@ const CustomerLayout = ({ children, showHeader: showHeaderProp, fullHeight = fal
     // Route-based visibility logic
     const path = location.pathname.replace(/\/$/, '') || '/';
 
-    const hideHeaderRoutes = ['/', '/categories', '/orders', '/transactions', '/profile', '/profile/edit', '/wishlist', '/addresses', '/wallet', '/support', '/privacy', '/about', '/franchise', '/contact', '/contact-us', '/terms', '/return-policy', '/shipping-policy', '/delivery-policy', '/refund-policy', '/refund-replacement-policy', '/policy', '/policies', '/quality-policy', '/checkout', '/cart', '/search', '/chat', '/offers', '/what-we-deliver', '/products'];
+    const hideHeaderRoutes = ['/', '/categories', '/orders', '/transactions', '/profile', '/profile/edit', '/wishlist', '/addresses', '/wallet', '/support', '/privacy', '/about', '/franchise', '/contact', '/contact-us', '/terms', '/return-policy', '/shipping-policy', '/delivery-policy', '/refund-policy', '/refund-replacement-policy', '/policy', '/policies', '/quality-policy', '/checkout', '/cart', '/search', '/chat', '/offers', '/what-we-deliver', '/products', '/gallery'];
     const hideBottomNavRoutes = ['/checkout', '/cart', '/search', '/chat', '/terms', '/privacy', '/about', '/franchise', '/contact', '/contact-us', '/return-policy', '/shipping-policy', '/delivery-policy', '/refund-policy', '/refund-replacement-policy', '/policy', '/policies', '/quality-policy', '/profile/edit', '/what-we-deliver', '/products'];
     const hideCartRoutes = ['/checkout', '/cart', '/search', '/chat', '/profile/edit'];
 
     // If props are passed, use them. Otherwise, use route-based logic.
-    const showHeader = showHeaderProp !== undefined ? showHeaderProp : (!hideHeaderRoutes.includes(path) && !path.startsWith('/category') && !path.startsWith('/orders') && !path.startsWith('/product'));
+    const showHeader = showHeaderProp !== undefined ? showHeaderProp : (!hideHeaderRoutes.includes(path) && !path.startsWith('/category') && !path.startsWith('/orders') && !path.startsWith('/product') && !path.startsWith('/gallery'));
     const showBottomNav = showBottomNavProp !== undefined ? showBottomNavProp : !hideBottomNavRoutes.includes(path);
     const showCart = showCartProp !== undefined ? showCartProp : (!hideCartRoutes.includes(path) && !path.startsWith('/orders'));
 

@@ -248,9 +248,9 @@ const Header = () => {
                             aria-label="Cart"
                             className="relative flex flex-col items-center justify-center text-[#111111] bg-transparent border-0 p-0 cursor-pointer active:scale-90 transition-transform select-none no-underline"
                         >
-                            <div className="relative inline-flex items-center justify-center">
+                            <div className="relative inline-flex items-center justify-center pt-2 pr-2.5">
                                 <ShoppingCart size={19} className="text-[#111111] stroke-[2.2]" />
-                                <span className="absolute -top-1.5 -right-2 min-w-[15px] h-[15px] px-0.5 bg-[#C81017] text-white text-[9px] font-bold rounded-full flex items-center justify-center shadow-xs leading-none">
+                                <span className="absolute top-0 right-0 min-w-[15px] h-[15px] px-0.5 bg-[#C81017] text-white text-[9px] font-bold rounded-full flex items-center justify-center ring-2 ring-white leading-none">
                                     {cartCount || 0}
                                 </span>
                             </div>

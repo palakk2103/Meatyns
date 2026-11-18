@@ -25,7 +25,7 @@ const ContactUsPage = () => {
     const address = "Unit-A, Shop No. 11, Sharda Vihar Apartment, Isolation Ring Road, Near Dhyan Chand Hockey Stadium, Kolhapur";
     const tollFreePhone = "1800-233-8590";
     const directPhone = "75585 98590";
-    const email = "contact@meatyns.com";
+    const email = "meatyns2023@gmail.com";
     const timings = "8:00 AM – 9:00 PM (All Days)";
 
     const [formData, setFormData] = useState({

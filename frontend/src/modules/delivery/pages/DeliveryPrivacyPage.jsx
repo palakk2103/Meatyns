@@ -21,8 +21,8 @@ const DeliveryPrivacyPage = () => {
   const navigate = useNavigate();
   const { settings } = useSettings();
   const appName = settings?.appName || "Meatyns";
-  const supportEmail = settings?.supportEmail || "support@meatyns.com";
-  const supportPhone = settings?.supportPhone || "02269621920";
+  const supportEmail = settings?.supportEmail || "meatyns2023@gmail.com";
+  const supportPhone = settings?.supportPhone || "+91 7558598590";
 
   return (
     <div className="min-h-screen bg-[#F0F4FF] font-['Outfit',_sans-serif] pb-16">

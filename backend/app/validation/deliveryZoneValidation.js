@@ -1,17 +1,5 @@
 import Joi from "joi";
 
-const expressDistanceSlabsSchema = Joi.array()
-  .items(
-    Joi.object({
-      fromKm: Joi.number().min(0).required(),
-      toKm: Joi.number().greater(Joi.ref("fromKm")).required().messages({
-        "number.greater": "Express slab 'To km' must be greater than 'From km'",
-      }),
-      fee: Joi.number().min(0).required(),
-    }),
-  )
-  .max(20);
-
 export const createDeliveryZoneSchema = Joi.object({
   name: Joi.string().trim().min(2).max(100).required().messages({
     "string.empty": "Zone name is required",
@@ -29,7 +17,6 @@ export const createDeliveryZoneSchema = Joi.object({
   minOrderValue: Joi.number().min(0).allow(null).optional(),
   expressAvailable: Joi.boolean().default(true),
   surcharge: Joi.number().min(0).default(0),
-  expressDistanceSlabs: expressDistanceSlabsSchema.default([]),
 }).or("polygon", "coordinates").messages({
   "object.missing": "Either polygon or coordinates must be provided.",
 });
@@ -48,7 +35,6 @@ export const updateDeliveryZoneSchema = Joi.object({
   minOrderValue: Joi.number().min(0).allow(null).optional(),
   expressAvailable: Joi.boolean().optional(),
   surcharge: Joi.number().min(0).optional(),
-  expressDistanceSlabs: expressDistanceSlabsSchema.optional(),
 });
 
 export const checkDeliveryZoneSchema = Joi.object({

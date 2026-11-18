@@ -66,7 +66,6 @@ const DeliveryZoneManager = () => {
     minOrderValue: "",
     surcharge: "",
     expressAvailable: true,
-    expressDistanceSlabs: [], // [{ fromKm, toKm, fee }] as strings for inputs
     isActive: true,
     coordinates: [], // [{ lat, lng }]
     manualCoordsText: "",
@@ -118,7 +117,6 @@ const DeliveryZoneManager = () => {
       minOrderValue: "",
       surcharge: "",
       expressAvailable: true,
-      expressDistanceSlabs: [],
       isActive: true,
       coordinates: [],
       manualCoordsText: "",
@@ -148,11 +146,6 @@ const DeliveryZoneManager = () => {
       minOrderValue: zone.minOrderValue != null ? String(zone.minOrderValue) : "",
       surcharge: zone.surcharge != null ? String(zone.surcharge) : "",
       expressAvailable: zone.expressAvailable !== false,
-      expressDistanceSlabs: (zone.expressDistanceSlabs || []).map((s) => ({
-        fromKm: String(s.fromKm),
-        toKm: String(s.toKm),
-        fee: String(s.fee),
-      })),
       isActive: zone.isActive !== false,
       coordinates: editablePoints,
       manualCoordsText: JSON.stringify(
@@ -262,21 +255,6 @@ const DeliveryZoneManager = () => {
       return;
     }
 
-    const expressDistanceSlabs = [];
-    for (const slab of formData.expressDistanceSlabs) {
-      const isBlank = slab.fromKm === "" && slab.toKm === "" && slab.fee === "";
-      if (isBlank) continue;
-      const fromKm = Number(slab.fromKm || 0);
-      const toKm = Number(slab.toKm);
-      const fee = Number(slab.fee);
-      if (slab.toKm === "" || slab.fee === "" || !Number.isFinite(toKm) || !Number.isFinite(fee) || toKm <= fromKm || fee < 0) {
-        showToast("Each express slab needs a valid From km, a larger To km and a charge.", "error");
-        return;
-      }
-      expressDistanceSlabs.push({ fromKm, toKm, fee });
-    }
-    expressDistanceSlabs.sort((a, b) => a.toKm - b.toKm);
-
     // Convert coordinates to GeoJSON format [[ [lng, lat], ... ]]
     const ringCoords = formData.coordinates.map((pt) => [pt.lng, pt.lat]);
     // Ensure closure
@@ -294,7 +272,6 @@ const DeliveryZoneManager = () => {
       minOrderValue: formData.minOrderValue !== "" ? Number(formData.minOrderValue) : null,
       surcharge: formData.surcharge !== "" ? Number(formData.surcharge) : 0,
       expressAvailable: formData.expressAvailable,
-      expressDistanceSlabs,
       isActive: formData.isActive,
       polygon: {
         type: "Polygon",
@@ -492,13 +469,6 @@ const DeliveryZoneManager = () => {
                               Min Order: ₹{zone.minOrderValue}
                             </div>
                           )}
-                          {Array.isArray(zone.expressDistanceSlabs) && zone.expressDistanceSlabs.length > 0 && (
-                            <div className="text-[10px] text-amber-700 font-semibold">
-                              ⚡ {zone.expressDistanceSlabs
-                                .map((s) => `${s.fromKm}-${s.toKm}km ₹${s.fee}`)
-                                .join(", ")}
-                            </div>
-                          )}
                         </div>
                       </td>
 
@@ -684,88 +654,6 @@ const DeliveryZoneManager = () => {
               <span>Allow Express Delivery in this Zone</span>
             </label>
           </div>
-
-          {/* Express Distance Slabs */}
-          {formData.expressAvailable && (
-            <div className="space-y-2 p-3 bg-amber-50/60 rounded-2xl border border-amber-200/80">
-              <div className="flex items-center justify-between gap-2">
-                <div>
-                  <div className="text-[11px] font-black uppercase tracking-wider text-slate-900">
-                    ⚡ Express Delivery Charges by Distance
-                  </div>
-                  <div className="text-[10px] text-slate-500">
-                    Distance from store to customer. Leave empty to use the global express fee. Beyond the last slab, Express is not offered.
-                  </div>
-                </div>
-                <button
-                  type="button"
-                  onClick={() =>
-                    setFormData((prev) => {
-                      const lastTo = prev.expressDistanceSlabs.length
-                        ? prev.expressDistanceSlabs[prev.expressDistanceSlabs.length - 1].toKm
-                        : "0";
-                      return {
-                        ...prev,
-                        expressDistanceSlabs: [
-                          ...prev.expressDistanceSlabs,
-                          { fromKm: String(lastTo || 0), toKm: "", fee: "" },
-                        ],
-                      };
-                    })
-                  }
-                  className="shrink-0 inline-flex items-center gap-1 px-2.5 py-1.5 bg-slate-900 text-white rounded-lg text-[11px] font-bold hover:bg-slate-800"
-                >
-                  <Plus size={12} /> Add Slab
-                </button>
-              </div>
-
-              {formData.expressDistanceSlabs.length > 0 && (
-                <div className="space-y-1.5">
-                  <div className="grid grid-cols-[1fr_1fr_1fr_auto] gap-2 text-[10px] font-bold text-slate-500 uppercase px-1">
-                    <span>From (km)</span>
-                    <span>To (km)</span>
-                    <span>Charge (₹)</span>
-                    <span className="w-7" />
-                  </div>
-                  {formData.expressDistanceSlabs.map((slab, idx) => (
-                    <div key={idx} className="grid grid-cols-[1fr_1fr_1fr_auto] gap-2 items-center">
-                      {["fromKm", "toKm", "fee"].map((field) => (
-                        <input
-                          key={field}
-                          type="number"
-                          min="0"
-                          step="0.1"
-                          value={slab[field]}
-                          onChange={(e) =>
-                            setFormData((prev) => ({
-                              ...prev,
-                              expressDistanceSlabs: prev.expressDistanceSlabs.map((s, i) =>
-                                i === idx ? { ...s, [field]: e.target.value } : s
-                              ),
-                            }))
-                          }
-                          className="w-full min-w-0 px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-semibold"
-                        />
-                      ))}
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setFormData((prev) => ({
-                            ...prev,
-                            expressDistanceSlabs: prev.expressDistanceSlabs.filter((_, i) => i !== idx),
-                          }))
-                        }
-                        className="w-7 h-7 flex items-center justify-center text-red-500 hover:bg-red-50 rounded-lg"
-                        title="Remove slab"
-                      >
-                        <Trash2 size={13} />
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
 
           {/* Polygon Drawing Controls */}
           <div className="space-y-2">

@@ -170,8 +170,8 @@ const Footer = () => {
                                 <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-[#FAB82C] shrink-0 group-hover:bg-[#C81017] group-hover:text-white transition-colors">
                                     <Mail size={18} />
                                 </div>
-                                <a href={`mailto:${settings?.contactEmail || settings?.email || "contact@meatyns.com"}`} className="text-sm md:text-[14.5px] text-slate-300 font-medium hover:text-[#FAB82C] transition-colors">
-                                    {settings?.contactEmail || settings?.email || "contact@meatyns.com"}
+                                <a href={`mailto:${settings?.contactEmail || settings?.email || "meatyns2023@gmail.com"}`} className="text-sm md:text-[14.5px] text-slate-300 font-medium hover:text-[#FAB82C] transition-colors">
+                                    {settings?.contactEmail || settings?.email || "meatyns2023@gmail.com"}
                                 </a>
                             </li>
                         </ul>

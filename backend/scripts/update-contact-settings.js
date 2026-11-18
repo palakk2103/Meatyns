@@ -8,6 +8,13 @@ dotenv.config();
 // Apply public DNS resolvers to resolve MongoDB Atlas SRV addresses
 dns.setServers(['8.8.8.8', '8.8.4.4', '1.1.1.1']);
 
+const CONTACT_DETAILS = {
+    companyName: "Meatyns Farmer Producer Company Limited",
+    supportEmail: "meatyns2023@gmail.com",
+    supportPhone: "+91 7558598590",
+    address: "",
+};
+
 async function run() {
     try {
         console.log("Connecting to MongoDB (using public DNS resolvers)...");
@@ -20,21 +27,11 @@ async function run() {
 
         if (settingsCount === 0) {
             console.log("No settings document found. Creating a new one with new contact details...");
-            const newSettings = await Setting.create({
-                supportEmail: "anitamegamart@gmail.com",
-                supportPhone: "02269621920",
-                address: "Ramkrishna Nagar patna 800020"
-            });
+            const newSettings = await Setting.create(CONTACT_DETAILS);
             console.log("Created settings:", newSettings);
         } else {
             console.log("Updating existing settings document(s) with new contact details...");
-            const result = await Setting.updateMany({}, {
-                $set: {
-                    supportEmail: "anitamegamart@gmail.com",
-                    supportPhone: "02269621920",
-                    address: "Ramkrishna Nagar patna 800020"
-                }
-            });
+            const result = await Setting.updateMany({}, { $set: CONTACT_DETAILS });
             console.log(`Updated ${result.modifiedCount} document(s).`);
         }
 

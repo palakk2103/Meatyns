@@ -369,9 +369,11 @@ export async function getDeliveryOptionsAndSlots({
   }
 
   // Calculate pricing for each delivery method with matchedZone
-  const expressPricing = calculateCustomerDeliveryFee(distanceKm, financeSettings, { deliveryMethod: DELIVERY_METHODS.EXPRESS, zone: matchedZone });
-  const normalPricing = calculateCustomerDeliveryFee(distanceKm, financeSettings, { deliveryMethod: DELIVERY_METHODS.NORMAL, zone: matchedZone });
-  const advancePricing = calculateCustomerDeliveryFee(distanceKm, financeSettings, { deliveryMethod: DELIVERY_METHODS.SCHEDULED, zone: matchedZone });
+  // City distance slabs (e.g. Kolhapur) apply to NORMAL + SCHEDULED, matched on the outlet's city.
+  const sellerCity = primarySeller?.city || null;
+  const expressPricing = calculateCustomerDeliveryFee(distanceKm, financeSettings, { deliveryMethod: DELIVERY_METHODS.EXPRESS, zone: matchedZone, sellerCity });
+  const normalPricing = calculateCustomerDeliveryFee(distanceKm, financeSettings, { deliveryMethod: DELIVERY_METHODS.NORMAL, zone: matchedZone, sellerCity });
+  const advancePricing = calculateCustomerDeliveryFee(distanceKm, financeSettings, { deliveryMethod: DELIVERY_METHODS.SCHEDULED, zone: matchedZone, sellerCity });
 
   // 2. Express Delivery Calculation
   const isCurrentlyOpen = primarySeller
@@ -387,8 +389,7 @@ export async function getDeliveryOptionsAndSlots({
   const expressEtaLabel = `${minEta}–${maxEta} mins`;
 
   const isExpressEnabled = expressConfig.enabled !== false && (matchedZone ? matchedZone.expressAvailable !== false : true);
-  const expressOutOfRange = Boolean(expressPricing.expressSlabExceeded);
-  const expressAvailable = isServiceable && (expressConfig.operatingHoursOnly ? isCurrentlyOpen : true) && isExpressEnabled && !expressOutOfRange;
+  const expressAvailable = isServiceable && (expressConfig.operatingHoursOnly ? isCurrentlyOpen : true) && isExpressEnabled;
 
   const expressOption = {
     method: DELIVERY_METHODS.EXPRESS,
@@ -405,8 +406,6 @@ export async function getDeliveryOptionsAndSlots({
       ? "Express delivery is currently disabled."
       : !isServiceable
       ? unserviceableReason
-      : expressOutOfRange
-      ? `Express delivery is available only within ${expressPricing.expressMaxDistanceKm} km.`
       : !isCurrentlyOpen && expressConfig.operatingHoursOnly
       ? "Store is currently closed for Express delivery."
       : null,
@@ -477,7 +476,6 @@ export async function getDeliveryOptionsAndSlots({
       priority: matchedZone.priority,
       deliveryFee: matchedZone.deliveryFee,
       surcharge: matchedZone.surcharge,
-      expressDistanceSlabs: matchedZone.expressDistanceSlabs || [],
     } : null,
     deliveryOptions: {
       [DELIVERY_METHODS.EXPRESS]: expressOption,

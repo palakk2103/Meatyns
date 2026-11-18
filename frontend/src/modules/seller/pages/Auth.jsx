@@ -127,10 +127,6 @@ const Auth = () => {
   const signupStep = parseInt(searchParams.get("step") || "1", 10);
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [sellerLoginMode, setSellerLoginMode] = useState("password"); // "password" | "otp"
-  const [loginOtpSent, setLoginOtpSent] = useState(false);
-  const [loginOtp, setLoginOtp] = useState("");
-  const [isSendingLoginOtp, setIsSendingLoginOtp] = useState(false);
 
   const setIsLogin = (newIsLoginOrFn) => {
     const nextIsLogin = typeof newIsLoginOrFn === "function" ? newIsLoginOrFn(isLogin) : newIsLoginOrFn;
@@ -367,79 +363,8 @@ const Auth = () => {
     panel.scrollTop += e.deltaY;
   };
 
-  const handleSendSellerLoginOtp = async () => {
-    const emailToUse = (formData.email || "").trim().toLowerCase();
-    if (!emailToUse || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailToUse)) {
-      toast.error("Please enter a valid business email address.");
-      return;
-    }
-    setIsSendingLoginOtp(true);
-    try {
-      const res = await sellerApi.sendLoginOtp({ email: emailToUse });
-      setLoginOtpSent(true);
-      const mockOtp = res.data?.result?.mockOtp;
-      if (mockOtp) {
-        toast.success(`Mock OTP: ${mockOtp}`, { duration: 10000 });
-      }
-      toast.info(`OTP sent to ${emailToUse}`);
-    } catch (err) {
-      toast.error(err.response?.data?.message || "Failed to send OTP.");
-    } finally {
-      setIsSendingLoginOtp(false);
-    }
-  };
-
-  const handleVerifySellerLoginOtp = async (e) => {
-    e?.preventDefault();
-    const emailToUse = (formData.email || "").trim().toLowerCase();
-    if (!loginOtp || loginOtp.length !== 4) {
-      toast.error("Please enter a valid 4-digit OTP.");
-      return;
-    }
-    setIsLoading(true);
-    try {
-      const res = await sellerApi.verifyLoginOtp({ email: emailToUse, otp: loginOtp });
-      const { token, seller } = res.data.result;
-      login({
-        ...seller,
-        token,
-        role: "seller",
-      });
-      toast.success("Welcome back, Partner!");
-      navigate("/seller");
-    } catch (err) {
-      if (err.response?.status === 403) {
-        const applicationStatus =
-          err.response?.data?.result?.applicationStatus || "pending";
-        const rejectionReason =
-          err.response?.data?.result?.rejectionReason || "";
-        navigate("/seller/pending-approval", {
-          replace: true,
-          state: {
-            approvalRequired: true,
-            applicationStatus,
-            rejectionReason,
-          },
-        });
-        return;
-      }
-      toast.error(err.response?.data?.message || "Invalid OTP");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (isLogin && sellerLoginMode === "otp") {
-      if (!loginOtpSent) {
-        handleSendSellerLoginOtp();
-      } else {
-        handleVerifySellerLoginOtp(e);
-      }
-      return;
-    }
 
     try {
       // Basic client-side validation for signup
@@ -799,39 +724,6 @@ const Auth = () => {
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-4">
-                {/* Mode Selector for Seller Login: Email & Password vs Email OTP */}
-                {isLogin && (
-                  <div className="flex bg-stone-100 rounded-xl p-1 gap-1 border border-stone-200/60 mb-2">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setSellerLoginMode("password");
-                        setLoginOtpSent(false);
-                      }}
-                      className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${
-                        sellerLoginMode === "password"
-                          ? "bg-white text-stone-900 shadow-sm"
-                          : "text-stone-500 hover:text-stone-700"
-                      }`}
-                    >
-                      Email &amp; Password
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setSellerLoginMode("otp");
-                      }}
-                      className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${
-                        sellerLoginMode === "otp"
-                          ? "bg-white text-stone-900 shadow-sm"
-                          : "text-stone-500 hover:text-stone-700"
-                      }`}
-                    >
-                      Email OTP
-                    </button>
-                  </div>
-                )}
-
                 {/* LOGIN OR SIGNUP STEP 1 */}
                 {(isLogin || signupStep === 1) && (
                   <>
@@ -1012,9 +904,8 @@ const Auth = () => {
                       </>
                     )}
 
-                    {/* Password Field (Shown for signup step 1 or login with password mode) */}
-                    {(!isLogin || (isLogin && sellerLoginMode === "password")) && (
-                      <div className="relative group">
+                    {/* Password Field */}
+                    <div className="relative group">
                         <div className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-violet-600 transition-colors">
                           <Lock size={18} />
                         </div>
@@ -1037,32 +928,7 @@ const Auth = () => {
                           {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                         </button>
                       </div>
-                    )}
 
-                    {/* Email OTP Field for Seller Login */}
-                    {isLogin && sellerLoginMode === "otp" && loginOtpSent && (
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-2 rounded-lg border border-amber-200 bg-amber-50/60 px-3.5 py-2.5">
-                          <input
-                            type="text"
-                            inputMode="numeric"
-                            maxLength={4}
-                            placeholder="Enter 4-digit Mock OTP"
-                            value={loginOtp}
-                            onChange={(e) => setLoginOtp(e.target.value.replace(/\D/g, "").slice(0, 4))}
-                            className="flex-1 bg-transparent text-sm font-bold text-slate-800 outline-none placeholder:text-slate-400"
-                          />
-                          <button
-                            type="button"
-                            onClick={handleSendSellerLoginOtp}
-                            disabled={isSendingLoginOtp}
-                            className="text-[11px] font-bold text-amber-800 hover:underline disabled:opacity-50"
-                          >
-                            {isSendingLoginOtp ? "Sending..." : "Resend OTP"}
-                          </button>
-                        </div>
-                      </div>
-                    )}
                   </>
                 )}
 
@@ -1250,16 +1116,12 @@ const Auth = () => {
                   )}
                   <button
                     type="submit"
-                    disabled={isLoading || isSendingLoginOtp}
+                    disabled={isLoading}
                     className={`${!isLogin && signupStep > 1 ? "w-2/3" : "w-full"} bg-[#FDCE04] hover:bg-[#E5B800] text-[#1A1A1A] rounded-xl py-3.5 text-sm font-extrabold tracking-wide shadow-md hover:shadow-lg transition-all active:scale-[0.99] disabled:opacity-50 flex items-center justify-center gap-2 group border border-[#E5B800]`}>
-                    {isLoading || isSendingLoginOtp
+                    {isLoading
                       ? "Working..."
                       : isLogin
-                        ? sellerLoginMode === "otp"
-                          ? loginOtpSent
-                            ? "Verify OTP & Login"
-                            : "Send Mock OTP"
-                          : "Login to Seller Dashboard"
+                        ? "Login to Seller Dashboard"
                         : signupStep < 3
                           ? "Continue to Next Step"
                           : "Submit Partner Application"}

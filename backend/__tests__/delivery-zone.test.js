@@ -247,45 +247,6 @@ describe("Sprint 3B: Polygon-Based Delivery Zones", () => {
       expect(res.expressSurcharge).toBe(40);
       expect(res.zoneSurcharge).toBe(5);
     });
-
-    describe("Kolhapur express distance slabs", () => {
-      const kolhapur = {
-        _id: "zone-kop",
-        name: "Kolhapur",
-        expressDistanceSlabs: [
-          { fromKm: 3, toKm: 5, fee: 70 },
-          { fromKm: 0, toKm: 1, fee: 30 },
-          { fromKm: 1, toKm: 3, fee: 45 },
-        ],
-      };
-      const express = (km) =>
-        calculateCustomerDeliveryFee(km, deliverySettings, { deliveryMethod: "EXPRESS", zone: kolhapur });
-
-      it.each([
-        [0, 30],
-        [0.6, 30],
-        [1, 30],
-        [1.01, 45],
-        [3, 45],
-        [3.4, 70],
-        [5, 70],
-      ])("charges the slab fee for %s km", (km, fee) => {
-        const res = express(km);
-        expect(res.deliveryFeeCharged).toBe(fee);
-        expect(res.expressSlabExceeded).toBe(false);
-      });
-
-      it("flags express as out of range beyond the last slab", () => {
-        const res = express(6.2);
-        expect(res.expressSlabExceeded).toBe(true);
-        expect(res.expressMaxDistanceKm).toBe(5);
-      });
-
-      it("does not affect normal delivery in the zone", () => {
-        const res = calculateCustomerDeliveryFee(4.5, deliverySettings, { deliveryMethod: "NORMAL", zone: kolhapur });
-        expect(res.deliveryFeeCharged).toBe(60);
-      });
-    });
   });
 
   describe("Overlapping Zones Deterministic Precedence Logic", () => {

@@ -266,7 +266,7 @@ const GalleryFormModal = ({ open, galleryId, categories, onClose, onSaved }) => 
 
   return (
     <div className="fixed inset-0 z-[300] flex items-center justify-center bg-slate-950/50 backdrop-blur-sm p-3 sm:p-4">
-      <div className="bg-white rounded-2xl w-full max-w-4xl max-h-[92vh] overflow-y-auto shadow-xl" data-testid="gallery-form-modal">
+      <div className="bg-white rounded-2xl w-full max-w-4xl max-h-[92vh] overflow-y-auto overscroll-contain shadow-xl" data-testid="gallery-form-modal" data-lenis-prevent>
         <div className="sticky top-0 z-10 bg-white flex items-center justify-between border-b border-slate-100 px-5 py-3.5">
           <h2 className="text-base font-bold text-slate-900">{galleryId ? "Edit Gallery" : "Add New Gallery"}</h2>
           <button type="button" onClick={onClose} aria-label="Close" className="p-1 text-slate-400 hover:text-slate-700">

@@ -273,11 +273,10 @@ export function calculateHandlingFee(cartItems, options = {}) {
 }
 
 /**
- * Normalizes a zone's express distance slabs: drops invalid rows and sorts by toKm.
- * Each slab is { fromKm, toKm, fee } and covers distances in (fromKm, toKm]
- * (the first slab also includes 0 km).
+ * Normalizes distance slabs: drops invalid rows and sorts by toKm.
+ * Each slab is { fromKm, toKm, fee } and covers distances up to toKm.
  */
-export function normalizeExpressDistanceSlabs(slabs) {
+export function normalizeDistanceSlabs(slabs) {
   if (!Array.isArray(slabs)) return [];
   return slabs
     .map((slab) => ({
@@ -297,16 +296,38 @@ export function normalizeExpressDistanceSlabs(slabs) {
     .sort((a, b) => a.toKm - b.toKm);
 }
 
-export function findExpressDistanceSlab(slabs, distanceKm) {
+export function findDistanceSlab(slabs, distanceKm) {
   const distance = Math.max(Number(distanceKm) || 0, 0);
-  // Slabs are sorted by toKm, so the first slab whose upper bound covers the
-  // distance wins (this also tolerates small gaps between admin-entered slabs).
+  // Sorted by toKm: the first slab whose upper bound covers the distance wins
+  // (also tolerates small gaps between admin-entered slabs).
   return slabs.find((slab) => distance <= slab.toKm) || null;
+}
+
+function normalizeCityName(value) {
+  return String(value || "").trim().toLowerCase().replace(/\s+/g, " ");
+}
+
+/**
+ * City-wise distance slabs for NORMAL and SCHEDULED delivery
+ * (e.g. Kolhapur: 0-1km ₹30, 1-3km ₹45, 3-5km ₹70), matched on the
+ * serving outlet's city. Returns normalized slabs or [] when none apply.
+ */
+export function getCityDeliverySlabs(deliverySettings, sellerCity) {
+  const city = normalizeCityName(sellerCity);
+  if (!city) return [];
+  const rules = Array.isArray(deliverySettings?.cityDeliverySlabs)
+    ? deliverySettings.cityDeliverySlabs
+    : [];
+  const rule = rules.find(
+    (r) => r?.enabled !== false && normalizeCityName(r?.city) === city,
+  );
+  return rule ? normalizeDistanceSlabs(rule.slabs) : [];
 }
 
 export function calculateCustomerDeliveryFee(distanceKm, deliverySettings, options = {}) {
   const deliveryMethod = typeof options === "string" ? options : (options?.deliveryMethod || "NORMAL");
   const zone = typeof options === "object" ? options?.zone : null;
+  const sellerCity = typeof options === "object" ? options?.sellerCity : null;
   const mode =
     deliverySettings?.deliveryPricingMode || DELIVERY_PRICING_MODE.DISTANCE_BASED;
   const actualDistance = Number(distanceKm || 0);
@@ -361,25 +382,21 @@ export function calculateCustomerDeliveryFee(distanceKm, deliverySettings, optio
   let advanceBookingFee = 0;
   let finalDeliveryFee = standardNormalFee;
 
-  let expressSlab = null;
-  let expressSlabExceeded = false;
-  const expressSlabs = normalizeExpressDistanceSlabs(zone?.expressDistanceSlabs);
+  // City distance slab (NORMAL + SCHEDULED only; EXPRESS keeps its own pricing).
+  // Beyond the last slab the standard platform distance pricing applies.
+  const citySlabs = getCityDeliverySlabs(deliverySettings, sellerCity);
+  const citySlab =
+    deliveryMethod !== "EXPRESS" && citySlabs.length > 0
+      ? findDistanceSlab(citySlabs, normalizedDistance)
+      : null;
+  const citySlabFee = citySlab ? roundCurrency(citySlab.fee) : null;
 
-  if (deliveryMethod === "EXPRESS" && expressSlabs.length > 0) {
-    // Zone-specific distance slabs (e.g. Kolhapur: 0-1km ₹30, 1-3km ₹45, 3-5km ₹70).
-    // The slab fee is the complete express delivery charge for this zone.
-    expressSlab = findExpressDistanceSlab(expressSlabs, normalizedDistance);
-    if (!expressSlab) {
-      expressSlabExceeded = true;
-      expressSlab = expressSlabs[expressSlabs.length - 1];
-    }
-    expressSurcharge = roundCurrency(expressSlab.fee);
-    methodSurcharge = expressSurcharge;
-    finalDeliveryFee = expressSurcharge;
-  } else if (deliveryMethod === "EXPRESS") {
+  if (deliveryMethod === "EXPRESS") {
     expressSurcharge = roundCurrency(Number(expressConfig?.surcharge ?? 40));
     methodSurcharge = expressSurcharge;
     finalDeliveryFee = addMoney(standardNormalFee, expressSurcharge);
+  } else if (citySlab) {
+    finalDeliveryFee = citySlabFee;
   } else if (deliveryMethod === "SCHEDULED") {
     if (advanceConfig?.deliveryFee != null && Number.isFinite(Number(advanceConfig.deliveryFee))) {
       advanceBookingFee = roundCurrency(Number(advanceConfig.deliveryFee));
@@ -412,13 +429,14 @@ export function calculateCustomerDeliveryFee(distanceKm, deliverySettings, optio
     zoneSurcharge,
     matchedZoneId: zone?._id || null,
     matchedZoneName: zone?.name || null,
-    expressSlab,
-    expressSlabExceeded,
-    expressMaxDistanceKm: expressSlabs.length > 0 ? expressSlabs[expressSlabs.length - 1].toKm : null,
+    citySlabApplied: Boolean(citySlab),
+    citySlab,
+    citySlabCity: citySlab ? String(sellerCity || "").trim() : null,
     breakdown: {
       standardNormalFee,
       expressSurcharge,
-      expressSlab,
+      citySlabApplied: Boolean(citySlab),
+      citySlab,
       advanceBookingFee,
       finalDeliveryFee,
       zoneFeeOverride: hasZoneFeeOverride ? Number(zone.deliveryFee) : null,
@@ -687,6 +705,7 @@ export async function generateOrderPaymentBreakdown({
   handlingFeeStrategy,
   session = null,
   zone = null,
+  sellerCity = null,
 }) {
   const normalizedItems = Array.isArray(preHydratedItems) && preHydratedItems.length > 0
     ? preHydratedItems
@@ -758,7 +777,7 @@ export async function generateOrderPaymentBreakdown({
     handlingFeeStrategy: effectiveHandlingStrategy,
     categoryById,
   });
-  const delivery = calculateCustomerDeliveryFee(distanceKm, effectiveSettings, { deliveryMethod, zone });
+  const delivery = calculateCustomerDeliveryFee(distanceKm, effectiveSettings, { deliveryMethod, zone, sellerCity });
   const rider = calculateRiderPayout(distanceKm, effectiveSettings);
 
   const normalizedDiscount = roundCurrency(discountTotal || 0);

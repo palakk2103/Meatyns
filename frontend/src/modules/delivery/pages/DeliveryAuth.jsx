@@ -53,7 +53,6 @@ const DeliveryAuth = () => {
   const [step, setStep] = useState("form"); // "form" | "otp"
 
   // Login state
-  const [loginMethod, setLoginMethod] = useState("password"); // "password" | "otp"
   const [loginPhone, setLoginPhone] = useState("");
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
@@ -930,33 +929,6 @@ const DeliveryAuth = () => {
                   {/* ────────── LOGIN MODE ────────── */}
                   {mode === "login" && (
                     <div className="space-y-4">
-                      {/* Switch between Password and OTP */}
-                      <div className="flex bg-gray-100 rounded-xl p-1 gap-1">
-                        <button
-                          type="button"
-                          onClick={() => setLoginMethod("password")}
-                          className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${
-                            loginMethod === "password"
-                              ? "bg-white text-gray-900 shadow-sm"
-                              : "text-gray-500 hover:text-gray-700"
-                          }`}
-                        >
-                          Email & Password
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setLoginMethod("otp")}
-                          className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${
-                            loginMethod === "otp"
-                              ? "bg-white text-gray-900 shadow-sm"
-                              : "text-gray-500 hover:text-gray-700"
-                          }`}
-                        >
-                          Email OTP
-                        </button>
-                      </div>
-
-                      {loginMethod === "password" ? (
                         <form onSubmit={handlePasswordLogin} className="space-y-3.5">
                           {/* Email */}
                           <div className="space-y-1.5">
@@ -1013,39 +985,6 @@ const DeliveryAuth = () => {
                             )}
                           </button>
                         </form>
-                      ) : (
-                        <div className="space-y-4">
-                          {/* Email for OTP */}
-                          <div className="space-y-1.5">
-                            <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">
-                              Email Address
-                            </label>
-                            <div className="relative">
-                              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 w-4 h-4" />
-                              <input
-                                required
-                                type="email"
-                                value={loginEmail}
-                                onChange={(e) => setLoginEmail(e.target.value)}
-                                className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-100 rounded-2xl text-sm font-bold text-gray-900 focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-400 transition-all placeholder:text-gray-300"
-                                placeholder="Enter your email address"
-                              />
-                            </div>
-                          </div>
-
-                          <button
-                            onClick={handleSendOtp}
-                            disabled={loading}
-                            className="w-full py-4 bg-black text-white rounded-2xl text-sm font-black tracking-widest uppercase shadow-lg shadow-brand-200 hover:bg-brand-700 hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-2 mt-2 disabled:opacity-60"
-                          >
-                            {loading ? (
-                              <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                            ) : (
-                              <>Send Mock OTP <ArrowRight className="w-4 h-4" /></>
-                            )}
-                          </button>
-                        </div>
-                      )}
 
                       {/* Legal Agreement Footer for Login */}
                       <p className="text-center text-xs text-gray-400 font-semibold pt-4">

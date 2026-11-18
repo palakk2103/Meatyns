@@ -1,8 +1,8 @@
 /** Default fallbacks when settings are not yet loaded or API fails */
 export const DEFAULT_SETTINGS = {
   appName: "Meatyns",
-  supportEmail: "support@meatyns.com",
-  supportPhone: "02269621920",
+  supportEmail: "meatyns2023@gmail.com",
+  supportPhone: "+91 7558598590",
   currencySymbol: "\u20B9",
   currencyCode: "INR",
   timezone: "Asia/Kolkata",
@@ -10,7 +10,7 @@ export const DEFAULT_SETTINGS = {
   faviconUrl: "/favicon-144x144.png",
   primaryColor: "#0284c7",
   secondaryColor: "#64748b",
-  companyName: "Meatyns",
+  companyName: "Meatyns Farmer Producer Company Limited",
   taxId: "",
   address: "Indore, Madhya Pradesh, India",
   facebook: "",

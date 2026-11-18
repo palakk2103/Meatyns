@@ -1686,6 +1686,12 @@ const CheckoutPage = () => {
                       <p className="text-[10px] text-slate-400">
                         {activeEffectiveDeliveryFee === 0
                           ? `Free delivery applied (orders above ₹${pricingPreview?.freeDeliveryThreshold || 499})`
+                          : pricingPreview?.citySlabApplied
+                          ? `Distance-based delivery charge${
+                              typeof pricingPreview?.distanceKmActual === "number"
+                                ? ` (${pricingPreview.distanceKmActual.toFixed(1)} km)`
+                                : ""
+                            }`
                           : deliveryMethod === "EXPRESS" && isFreeDeliveryForSubtotal
                           ? "Base fee waived • Express priority fee applied"
                           : pricingPreview?.freeDeliveryThreshold

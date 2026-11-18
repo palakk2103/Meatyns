@@ -12,7 +12,6 @@ import {
   calculateHandlingFee,
   generateOrderPaymentBreakdown,
   hydrateOrderItems,
-  normalizeExpressDistanceSlabs,
 } from "./finance/pricingService.js";
 import { computeOrderDiscount } from "./finance/couponService.js";
 import { getOrCreateFinanceSettings } from "./finance/financeSettingsService.js";
@@ -51,7 +50,7 @@ export function groupHydratedItemsBySeller(hydratedItems = []) {
 
 async function computeDistanceKmForSeller({ sellerId, addressLocation, session = null, isSelectedSeller = false }) {
   const query = Seller.findById(sellerId)
-    .select("location serviceRadius shopName isOnline isManualOverride storeHours isActive applicationStatus")
+    .select("location serviceRadius shopName city isOnline isManualOverride storeHours isActive applicationStatus")
     .lean();
   if (session) query.session(session);
   const seller = await query;
@@ -70,7 +69,7 @@ async function computeDistanceKmForSeller({ sellerId, addressLocation, session =
   }
 
   const normalizedLocation = normalizeLocation(addressLocation);
-  if (!normalizedLocation) return { distanceKm: 0, zone: null };
+  if (!normalizedLocation) return { distanceKm: 0, zone: null, sellerCity: seller.city || null };
 
   // Validate polygon delivery zone serviceability
   const zoneResolution = await resolveDeliveryZoneForLocation(normalizedLocation);
@@ -83,7 +82,7 @@ async function computeDistanceKmForSeller({ sellerId, addressLocation, session =
   }
 
   const coords = seller?.location?.coordinates;
-  if (!Array.isArray(coords) || coords.length < 2) return { distanceKm: 0, zone: zoneResolution.zone };
+  if (!Array.isArray(coords) || coords.length < 2) return { distanceKm: 0, zone: zoneResolution.zone, sellerCity: seller.city || null };
 
   const [sellerLng, sellerLat] = coords;
   const distanceInMeters = distanceMeters(
@@ -108,7 +107,7 @@ async function computeDistanceKmForSeller({ sellerId, addressLocation, session =
     }
   }
 
-  return { distanceKm, zone: zoneResolution.zone };
+  return { distanceKm, zone: zoneResolution.zone, sellerCity: seller.city || null };
 }
 
 function sumField(rows, field) {
@@ -318,10 +317,19 @@ function applyGlobalHandlingFeeToSellerBreakdowns(
 // and `platformLogisticsMargin`. Runs AFTER handling-fee allocation
 // (so `grossTotal` exists) and BEFORE tip/wallet allocation (so they
 // allocate against the post-rebate grandTotal).
-export function applyFreeDeliveryToSellerBreakdowns(sellerBreakdownEntries = []) {
+export function applyFreeDeliveryToSellerBreakdowns(
+  sellerBreakdownEntries = [],
+  { keepCitySlabFees = false } = {},
+) {
   for (const entry of sellerBreakdownEntries) {
     const breakdown = entry?.breakdown;
     if (!breakdown) continue;
+    // City distance-slab charges (e.g. Kolhapur Normal/Scheduled) are always
+    // payable on top of the product total; only a free-delivery coupon waives them.
+    if (keepCitySlabFees && breakdown.snapshots?.deliveryFeeBreakdown?.citySlabApplied) {
+      breakdown.snapshots.freeDeliveryRebate = 0;
+      continue;
+    }
     const oldDeliveryFee = round2(Number(breakdown.deliveryFeeCharged || 0));
     if (oldDeliveryFee <= 0) {
       breakdown.snapshots = breakdown.snapshots && typeof breakdown.snapshots === "object"
@@ -556,6 +564,7 @@ export async function buildCheckoutPricingSnapshot({
     });
     const distanceKm = typeof distanceResult === "number" ? distanceResult : distanceResult.distanceKm;
     const zone = typeof distanceResult === "object" ? distanceResult.zone : null;
+    const sellerCity = typeof distanceResult === "object" ? distanceResult.sellerCity : null;
 
     if (zone?.minOrderValue != null && totalSubtotal < Number(zone.minOrderValue)) {
       const err = new Error(
@@ -563,18 +572,6 @@ export async function buildCheckoutPricingSnapshot({
       );
       err.statusCode = 400;
       throw err;
-    }
-
-    if (String(deliveryMethod).toUpperCase() === "EXPRESS" && zone) {
-      const expressSlabs = normalizeExpressDistanceSlabs(zone.expressDistanceSlabs);
-      const maxExpressKm = expressSlabs.length > 0 ? expressSlabs[expressSlabs.length - 1].toKm : null;
-      if (maxExpressKm != null && Number(distanceKm) > maxExpressKm) {
-        const err = new Error(
-          `Express delivery is available only within ${maxExpressKm} km in ${zone.name}. Please choose another delivery option.`,
-        );
-        err.statusCode = 400;
-        throw err;
-      }
     }
 
     // Distribute discount proportionally by seller subtotal
@@ -593,6 +590,7 @@ export async function buildCheckoutPricingSnapshot({
       deliverySettings: financeSettings,
       session,
       zone,
+      sellerCity,
     });
     sellerBreakdownEntries.push({
       sellerId,
@@ -616,7 +614,9 @@ export async function buildCheckoutPricingSnapshot({
     totalSubtotal >= financeSettings.freeDeliveryThreshold;
 
   if (applyFreeDelivery || qualifiesForPlatformFreeDelivery) {
-    applyFreeDeliveryToSellerBreakdowns(sellerBreakdownEntries);
+    applyFreeDeliveryToSellerBreakdowns(sellerBreakdownEntries, {
+      keepCitySlabFees: !applyFreeDelivery,
+    });
   }
   allocateCheckoutTipToSellerBreakdowns(sellerBreakdownEntries, tipAmount);
   // Audit Phase 4 (C-1): subtract wallet redemption from each seller's
@@ -640,7 +640,17 @@ export async function buildCheckoutPricingSnapshot({
   );
   aggregateBreakdown.freeDeliveryThreshold = financeSettings.freeDeliveryThreshold;
   aggregateBreakdown.minimumOrderValue = financeSettings.minimumOrderValue;
-  aggregateBreakdown.isFreeDeliveryApplied = Boolean(applyFreeDelivery || qualifiesForPlatformFreeDelivery);
+  const citySlabFeeKept = !applyFreeDelivery && sellerBreakdownEntries.some(
+    (entry) => entry?.breakdown?.snapshots?.deliveryFeeBreakdown?.citySlabApplied,
+  );
+  aggregateBreakdown.isFreeDeliveryApplied =
+    Boolean(applyFreeDelivery || qualifiesForPlatformFreeDelivery) && !citySlabFeeKept;
+  // True when a city distance-slab charge (Normal/Scheduled) is in the bill.
+  aggregateBreakdown.citySlabApplied =
+    Number(aggregateBreakdown.deliveryFeeCharged || 0) > 0 &&
+    sellerBreakdownEntries.some(
+      (entry) => entry?.breakdown?.snapshots?.deliveryFeeBreakdown?.citySlabApplied,
+    );
   aggregateBreakdown.deliveryMethod = deliveryMethod;
 
   return {

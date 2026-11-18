@@ -1,0 +1,29 @@
+- generic [ref=f1e2]:
+  - generic [ref=f1e3]:
+    - main [ref=f1e4]:
+      - generic [ref=f1e5]: Loading...
+    - generic [ref=f1e8]:
+      - heading "Freshness You Can Count On.❤️" [level=2] [ref=f1e9]:
+        - text: Freshness You
+        - generic [ref=f1e10]: Can Count On.❤️
+      - generic [ref=f1e12]:
+        - generic [ref=f1e13]: Meatyns
+        - generic [ref=f1e14]: Fresh. Fast. Reliable.
+    - generic [ref=f1e15]:
+      - link "Home" [ref=f1e16] [cursor=pointer]:
+        - /url: /
+      - link "Categories" [ref=f1e24] [cursor=pointer]:
+        - /url: /categories
+      - link "Cart" [ref=f1e33] [cursor=pointer]:
+        - /url: /cart
+      - link "Orders" [ref=f1e41] [cursor=pointer]:
+        - /url: /orders
+      - link "Account" [ref=f1e48] [cursor=pointer]:
+        - /url: /profile
+  - region "Notifications alt+T":
+    - list
+    - list:
+      - listitem [ref=f1e55]:
+        - generic [ref=f1e59]: Couldn't detect your location. Location permission is blocked. Allow location for this site from the address bar (lock icon) and try again. Showing the default area for now.
+      - listitem [ref=f1e61]:
+        - generic [ref=f1e65]: Couldn't detect your location. Location permission is blocked. Allow location for this site from the address bar (lock icon) and try again. Showing the default area for now.

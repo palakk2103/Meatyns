@@ -62,9 +62,9 @@ const SellerSupportPage = () => {
   const navigate = useNavigate();
   const { settings } = useSettings();
   const appName = settings?.appName || "Meatyns";
-  const supportEmail = settings?.supportEmail || "support@meatyns.com";
-  const supportPhone = settings?.supportPhone || "02269621920";
-  const storeAddress = settings?.address || "Meatyns Merchant Office, Ramkrishna Nagar, Patna 800020";
+  const supportEmail = settings?.supportEmail || "meatyns2023@gmail.com";
+  const supportPhone = settings?.supportPhone || "+91 7558598590";
+  const storeAddress = settings?.address || "";
 
   const [openIndex, setOpenIndex] = useState(null);
 
@@ -179,6 +179,7 @@ const SellerSupportPage = () => {
         </div>
 
         {/* Regional Hub & Merchant Desk */}
+        {storeAddress && (
         <div className="bg-white rounded-2xl p-5 border border-stone-200 shadow-xs flex items-start gap-4">
           <div className="h-11 w-11 rounded-xl bg-[#3B0710]/10 flex items-center justify-center text-[#3B0710] shrink-0">
             <MapPin size={22} />
@@ -193,6 +194,7 @@ const SellerSupportPage = () => {
             </p>
           </div>
         </div>
+        )}
 
         {/* Seller FAQs */}
         <div>

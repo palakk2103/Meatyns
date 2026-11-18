@@ -45,9 +45,10 @@ const SupportPage = () => {
     const { currentLocation, refreshLocation, isFetchingLocation } = useAppLocation();
     const [isLocationOpen, setIsLocationOpen] = useState(false);
 
-    const supportEmail = settings?.supportEmail || 'support@meatyns.com';
-    const supportPhone = settings?.supportPhone || '02269621920';
-    const supportEmailShort = supportEmail ? (supportEmail.length > 18 ? supportEmail.slice(0, 15) + '...' : supportEmail) : 'support@...';
+    const supportEmail = settings?.supportEmail || 'meatyns2023@gmail.com';
+    const supportPhone = settings?.supportPhone || '+91 7558598590';
+    const supportEmailShort = supportEmail;
+    const companyName = settings?.companyName || 'Meatyns Farmer Producer Company Limited';
     const [isTicketModalOpen, setIsTicketModalOpen] = useState(false);
     const [ticketLoading, setTicketLoading] = useState(false);
     const [ticketData, setTicketData] = useState({
@@ -274,14 +275,18 @@ const SupportPage = () => {
                     />
                 </div>
 
-                {/* Store Address */}
+                {/* Company Contact */}
                 <div className="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-xs flex items-start gap-4">
                     <div className="h-11 w-11 rounded-xl bg-[#FDCE04]/20 flex items-center justify-center text-[#1A1A1A] shrink-0">
-                        <MapPin size={22} />
+                        <Headphones size={22} />
                     </div>
                     <div>
-                        <h3 className="font-bold text-slate-800 text-sm">Store Address</h3>
-                        <p className="text-sm text-slate-600 mt-1 leading-relaxed">{settings?.address || 'Ramkrishna Nagar patna 800020'}</p>
+                        <h3 className="font-bold text-slate-800 text-sm">{companyName}</h3>
+                        <p className="text-xs text-slate-600 mt-1">
+                            <a href={`tel:${supportPhone}`} className="font-semibold text-slate-700 hover:text-amber-800">{supportPhone}</a>
+                            {' · '}
+                            <a href={`mailto:${supportEmail}`} className="font-semibold text-slate-700 hover:text-amber-800 break-all">{supportEmail}</a>
+                        </p>
                     </div>
                 </div>
 
@@ -432,7 +437,7 @@ const ContactCard = ({ icon: Icon, label, sub, to, onClick }) => {
             </div>
             <div>
                 <h3 className="font-bold text-slate-800 text-sm whitespace-nowrap group-hover:text-amber-800 transition-colors">{label}</h3>
-                <p className="text-[10.5px] text-slate-500 font-medium mt-0.5">{sub}</p>
+                <p className="text-[10.5px] text-slate-500 font-medium mt-0.5 break-all">{sub}</p>
             </div>
         </div>
     );

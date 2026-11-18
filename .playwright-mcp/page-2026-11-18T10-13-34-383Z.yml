@@ -1,0 +1,112 @@
+- generic [ref=f5e2]:
+  - generic [ref=f5e3]:
+    - main [ref=f5e4]:
+      - generic [ref=f5e5]: Loading...
+    - contentinfo [ref=f5e7]:
+      - generic [ref=f5e8]:
+        - generic [ref=f5e9]:
+          - generic [ref=f5e15]:
+            - heading "100% Fresh & Hygienic" [level=4] [ref=f5e16]
+            - paragraph [ref=f5e17]: Sourced daily from certified farms
+          - generic [ref=f5e33]:
+            - heading "Chilled, Never Frozen" [level=4] [ref=f5e34]
+            - paragraph [ref=f5e35]: Stored strictly at 0–4°C always
+          - generic [ref=f5e40]:
+            - heading "15–30 Mins Express" [level=4] [ref=f5e41]
+            - paragraph [ref=f5e42]: Fast temperature-controlled delivery
+        - generic [ref=f5e43]:
+          - generic [ref=f5e44]:
+            - img "Meatyns" [ref=f5e46]
+            - paragraph [ref=f5e47]: Good Food Starts with Meatyns.
+            - paragraph [ref=f5e48]: Your trusted destination for farm-fresh chicken, tender mutton, ocean-fresh fish & coastal seafood. Hygienically packed, temperature-controlled, and delivered fresh to your door.
+            - generic [ref=f5e49]:
+              - link "Facebook" [ref=f5e50] [cursor=pointer]:
+                - /url: "#"
+              - link "Twitter" [ref=f5e53] [cursor=pointer]:
+                - /url: "#"
+              - link "Instagram" [ref=f5e56] [cursor=pointer]:
+                - /url: "#"
+              - link "YouTube" [ref=f5e60] [cursor=pointer]:
+                - /url: "#"
+          - generic [ref=f5e64]:
+            - heading "Quick Links" [level=3] [ref=f5e65]
+            - list [ref=f5e67]:
+              - listitem [ref=f5e68]:
+                - link "Home" [ref=f5e69] [cursor=pointer]:
+                  - /url: /
+              - listitem [ref=f5e70]:
+                - link "About Meatyns" [ref=f5e71] [cursor=pointer]:
+                  - /url: /about
+              - listitem [ref=f5e72]:
+                - link "Franchise Opportunities" [ref=f5e73] [cursor=pointer]:
+                  - /url: /franchise
+              - listitem [ref=f5e74]:
+                - link "What We Deliver" [ref=f5e75] [cursor=pointer]:
+                  - /url: /what-we-deliver
+              - listitem [ref=f5e76]:
+                - link "All Categories" [ref=f5e77] [cursor=pointer]:
+                  - /url: /category/all
+              - listitem [ref=f5e78]:
+                - link "Offers & Deals" [ref=f5e79] [cursor=pointer]:
+                  - /url: /offers
+              - listitem [ref=f5e80]:
+                - link "Customer Support" [ref=f5e81] [cursor=pointer]:
+                  - /url: /support
+              - listitem [ref=f5e82]:
+                - link "Contact Us" [ref=f5e83] [cursor=pointer]:
+                  - /url: /contact
+          - generic [ref=f5e84]:
+            - heading "Categories" [level=3] [ref=f5e85]
+            - list [ref=f5e87]:
+              - listitem [ref=f5e88]:
+                - link "Fresh Chicken" [ref=f5e89] [cursor=pointer]:
+                  - /url: /search?q=chicken
+              - listitem [ref=f5e90]:
+                - link "Tender Mutton" [ref=f5e91] [cursor=pointer]:
+                  - /url: /search?q=mutton
+              - listitem [ref=f5e92]:
+                - link "Chicken Curry Cut" [ref=f5e93] [cursor=pointer]:
+                  - /url: /search?q=chicken
+              - listitem [ref=f5e94]:
+                - link "Goat Curry Cut" [ref=f5e95] [cursor=pointer]:
+                  - /url: /search?q=mutton
+              - listitem [ref=f5e96]:
+                - link "All Meat Cuts" [ref=f5e97] [cursor=pointer]:
+                  - /url: /categories
+          - generic [ref=f5e98]:
+            - heading "Contact Us" [level=3] [ref=f5e99]
+            - list [ref=f5e101]:
+              - listitem [ref=f5e102]:
+                - generic [ref=f5e107]: Indore, Madhya Pradesh, India
+              - listitem [ref=f5e108]:
+                - generic [ref=f5e112]:
+                  - link "1800-233-8590" [ref=f5e113] [cursor=pointer]:
+                    - /url: tel:18002338590
+                  - generic [ref=f5e114]: "|"
+                  - link "75585 98590" [ref=f5e115] [cursor=pointer]:
+                    - /url: tel:7558598590
+              - listitem [ref=f5e116]:
+                - link "contact@meatyns.com" [ref=f5e121] [cursor=pointer]:
+                  - /url: mailto:contact@meatyns.com
+        - generic [ref=f5e122]:
+          - paragraph [ref=f5e123]: © 2026 Meatyns. All rights reserved.
+          - generic [ref=f5e124]:
+            - link "Our Policies" [ref=f5e125] [cursor=pointer]:
+              - /url: /policy
+            - link "Quality Policy" [ref=f5e126] [cursor=pointer]:
+              - /url: /quality-policy
+            - link "Delivery Policy" [ref=f5e127] [cursor=pointer]:
+              - /url: /shipping-policy
+            - link "Refund & Replacement" [ref=f5e128] [cursor=pointer]:
+              - /url: /refund-policy
+            - link "Privacy Policy" [ref=f5e129] [cursor=pointer]:
+              - /url: /privacy
+            - link "Terms of Service" [ref=f5e130] [cursor=pointer]:
+              - /url: /terms
+  - region "Notifications alt+T":
+    - list
+    - list:
+      - listitem [ref=f5e131]:
+        - generic [ref=f5e135]: Couldn't detect your location. Location permission is blocked. Allow location for this site from the address bar (lock icon) and try again. Showing the default area for now.
+      - listitem [ref=f5e137]:
+        - generic [ref=f5e141]: Couldn't detect your location. Location permission is blocked. Allow location for this site from the address bar (lock icon) and try again. Showing the default area for now.

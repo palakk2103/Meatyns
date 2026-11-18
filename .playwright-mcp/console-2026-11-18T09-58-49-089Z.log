@@ -1,0 +1,72 @@
+[     560ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[     878ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[     922ms] [WARNING] Geolocation permission has been blocked as the user has ignored the permission prompt several times. This can be reset in Page Info which can be accessed by clicking the tune icon next to the URL. See https://www.chromestatus.com/feature/6443143280984064 for more information. @ http://localhost:5173/gallery:1
+[    1091ms] [LOG] [orderSocket] Socket connected, ID: kbfV6ZziErz7gZ1mAAAH @ http://localhost:5173/src/core/services/orderSocket.js:49
+[    1472ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[  184286ms] [LOG] [orderSocket] Socket disconnected, reason: transport close @ http://localhost:5173/src/core/services/orderSocket.js:60
+[  545788ms] [LOG] [vite] server connection lost. Polling for restart... @ http://localhost:5173/@vite/client:865
+[  546278ms] [ERROR] [orderSocket] Socket connection error: Error: Unauthorized
+    at Socket2.onpacket (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:3128:21)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:3721:12 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[  547029ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[  547414ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[  547464ms] [WARNING] Geolocation permission has been blocked as the user has ignored the permission prompt several times. This can be reset in Page Info which can be accessed by clicking the tune icon next to the URL. See https://www.chromestatus.com/feature/6443143280984064 for more information. @ http://localhost:5173/gallery:1
+[  547572ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://localhost:7000/api/cart:1
+[  547576ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://localhost:7000/api/wishlist?idsOnly=true:1
+[  547581ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://localhost:7000/api/customer/profile:1
+[  547587ms] [WARNING] WebSocket connection to 'ws://localhost:7000/socket.io/?EIO=4&transport=websocket&sid=-XKrZgTRNtg-ZtMMAAAK' failed: WebSocket is closed before the connection is established. @ http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1500
+[  547588ms] [ERROR] [orderSocket] Socket connection error: Error: Unauthorized
+    at Socket2.onpacket (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:3128:21)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:3721:12 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[  547615ms] [ERROR] Failed to load resource: the server responded with a status of 400 (Bad Request) @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=yk1kxjmw&sid=-XKrZgTRNtg-ZtMMAAAK:1
+[  550751ms] [ERROR] Failed to load resource: net::ERR_NETWORK_IO_SUSPENDED @ http://localhost:7000/api/gallery/categories:1
+[  604842ms] [ERROR] Failed to load resource: net::ERR_NETWORK_IO_SUSPENDED @ http://localhost:7000/api/gallery/settings:1
+[  604843ms] [ERROR] Failed to fetch settings AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41) @ http://localhost:5173/src/core/context/SettingsContext.jsx:33
+[  604843ms] [ERROR] Failed to fetch settings AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41) @ http://localhost:5173/src/core/context/SettingsContext.jsx:33
+[  604846ms] [ERROR] Failed to load resource: net::ERR_NETWORK_IO_SUSPENDED @ http://localhost:7000/api/settings:1
+[  604846ms] [ERROR] Failed to load resource: net::ERR_NETWORK_IO_SUSPENDED @ http://localhost:7000/api/gallery?page=1&limit=12:1
+[  604847ms] [LOG] [vite] server connection lost. Polling for restart... @ http://localhost:5173/@vite/client:865
+[  604851ms] [ERROR] Failed to fetch cart from backend AxiosError: Request failed with status code 401
+    at settle (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1281:12)
+    at XMLHttpRequest.onloadend (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1638:7)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41) @ http://localhost:5173/src/modules/customer/context/CartContext.jsx:145
+[  604851ms] [ERROR] Failed to fetch cart from backend AxiosError: Request failed with status code 401
+    at settle (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1281:12)
+    at XMLHttpRequest.onloadend (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1638:7)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41) @ http://localhost:5173/src/modules/customer/context/CartContext.jsx:145
+[  604853ms] [ERROR] Failed to fetch wishlist from backend AxiosError: Request failed with status code 401
+    at settle (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1281:12)
+    at XMLHttpRequest.onloadend (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1638:7)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41) @ http://localhost:5173/src/modules/customer/context/WishlistContext.jsx:46
+[  604853ms] [ERROR] Failed to fetch wishlist from backend AxiosError: Request failed with status code 401
+    at settle (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1281:12)
+    at XMLHttpRequest.onloadend (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1638:7)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41) @ http://localhost:5173/src/modules/customer/context/WishlistContext.jsx:46
+[  604854ms] [ERROR] Failed to load resource: net::ERR_NETWORK_IO_SUSPENDED @ http://localhost:7000/api/customer/refresh:1
+[  604854ms] [ERROR] Failed to load resource: net::ERR_NETWORK_IO_SUSPENDED @ http://localhost:7000/api/meta/pixel-config:1
+[  604855ms] [ERROR] Failed to load resource: net::ERR_NETWORK_IO_SUSPENDED @ http://localhost:7000/api/meta/pixel-config:1
+[  604958ms] [ERROR] Failed to load resource: net::ERR_NETWORK_CHANGED @ http://localhost:7000/api/customer/refresh:1
+[  604963ms] [ERROR] Failed to fetch profile: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41)
+    at async fetchProfile (http://localhost:5173/src/core/context/AuthContext.jsx:171:28) @ http://localhost:5173/src/core/context/AuthContext.jsx:174
+[  604963ms] [ERROR] Failed to load resource: net::ERR_NETWORK_CHANGED @ http://localhost:7000/api/customer/profile:1
+[  607324ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[  607472ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[  607499ms] [WARNING] Geolocation permission has been blocked as the user has ignored the permission prompt several times. This can be reset in Page Info which can be accessed by clicking the tune icon next to the URL. See https://www.chromestatus.com/feature/6443143280984064 for more information. @ http://localhost:5173/gallery:1
+[  607561ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://localhost:7000/api/cart:1
+[  607579ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://localhost:7000/api/wishlist?idsOnly=true:1
+[  607581ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://localhost:7000/api/customer/profile:1
+[  607585ms] [WARNING] WebSocket connection to 'ws://localhost:7000/socket.io/?EIO=4&transport=websocket&sid=H9DnntebG4O9pkNOAAAO' failed: WebSocket is closed before the connection is established. @ http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1500
+[  607586ms] [ERROR] [orderSocket] Socket connection error: Error: Unauthorized
+    at Socket2.onpacket (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:3128:21)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:3721:12 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[  610615ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[  613742ms] [LOG] [orderSocket] Socket connected, ID: jvwbH7R7I9gXzrrTAAAT @ http://localhost:5173/src/core/services/orderSocket.js:49

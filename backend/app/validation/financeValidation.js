@@ -138,6 +138,28 @@ export const updateDeliverySettingsSchema = Joi.object({
     .optional(),
   codEnabled: Joi.boolean().optional(),
   onlineEnabled: Joi.boolean().optional(),
+  cityDeliverySlabs: Joi.array()
+    .items(
+      Joi.object({
+        city: Joi.string().trim().min(2).max(80).required(),
+        enabled: Joi.boolean().default(true),
+        slabs: Joi.array()
+          .items(
+            Joi.object({
+              fromKm: Joi.number().min(0).required(),
+              toKm: Joi.number().greater(Joi.ref("fromKm")).required().messages({
+                "number.greater": "Slab 'To km' must be greater than 'From km'",
+              }),
+              fee: Joi.number().min(0).required(),
+            }),
+          )
+          .min(1)
+          .max(20)
+          .required(),
+      }),
+    )
+    .max(50)
+    .optional(),
   deliveryConfig: Joi.object({
     express: Joi.object({
       enabled: Joi.boolean().optional(),
@@ -189,5 +211,6 @@ export const updateDeliverySettingsSchema = Joi.object({
   "handlingFeeStrategy",
   "codEnabled",
   "onlineEnabled",
+  "cityDeliverySlabs",
   "deliveryConfig",
 );

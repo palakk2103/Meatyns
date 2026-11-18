@@ -152,10 +152,7 @@ const navItems = [
     color: "amber",
     roles: ["super_admin", "admin", "marketing_manager"],
     children: [
-      { label: "Subscriptions", path: "/admin/subscriptions" },
       { label: "Referrals & Invites", path: "/admin/referrals" },
-      { label: "Recipes-to-Cart", path: "/admin/recipes" },
-      { label: "Meal Combos", path: "/admin/combos" },
     ],
   },
   {

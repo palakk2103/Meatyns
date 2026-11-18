@@ -86,7 +86,7 @@ const ProductDetailSheet = () => {
     const { toggleWishlist: toggleWishlistGlobal, isInWishlist } = useWishlist();
     const { showToast } = useToast();
     const { settings } = useSettings();
-    const supportEmail = settings?.supportEmail || 'support@example.com';
+    const supportEmail = settings?.supportEmail || 'meatyns2023@gmail.com';
 
     // Controls for sheet animation
     const controls = useAnimation();

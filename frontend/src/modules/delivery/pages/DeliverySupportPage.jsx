@@ -62,9 +62,9 @@ const DeliverySupportPage = () => {
   const navigate = useNavigate();
   const { settings } = useSettings();
   const appName = settings?.appName || "Meatyns";
-  const supportEmail = settings?.supportEmail || "support@meatyns.com";
-  const supportPhone = settings?.supportPhone || "02269621920";
-  const hubAddress = settings?.address || "Meatyns Logistics Hub, Ramkrishna Nagar, Patna 800020";
+  const supportEmail = settings?.supportEmail || "meatyns2023@gmail.com";
+  const supportPhone = settings?.supportPhone || "+91 7558598590";
+  const hubAddress = settings?.address || "";
 
   const [openIndex, setOpenIndex] = useState(null);
 
@@ -174,6 +174,7 @@ const DeliverySupportPage = () => {
         </div>
 
         {/* Fleet Depot / Central Hub Address */}
+        {hubAddress && (
         <div className="bg-white rounded-2xl p-5 border border-indigo-100 shadow-xs flex items-start gap-4">
           <div className="h-11 w-11 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600 shrink-0">
             <MapPin size={22} />
@@ -188,6 +189,7 @@ const DeliverySupportPage = () => {
             </p>
           </div>
         </div>
+        )}
 
         {/* FAQs */}
         <div>
