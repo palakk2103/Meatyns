@@ -25,6 +25,16 @@ export const getMeatType = (item) => {
   return "other";
 };
 
+const EGG_REGEX = /\beggs?\b|\banda\b/i;
+
+// True for egg products (they have their own "Fresh Eggs" home section).
+export const isEggProduct = (item) => {
+  if (!item) return false;
+  const header = item.headerId;
+  const headerName = typeof header === "object" && header ? header.name || "" : "";
+  return EGG_REGEX.test(`${meatText(item)} ${headerName}`);
+};
+
 // Stable sort: items of `first` type come first, then the other meat, then the rest.
 export const sortMeatFirst = (list = [], first = "mutton") => {
   const second = first === "mutton" ? "chicken" : "mutton";

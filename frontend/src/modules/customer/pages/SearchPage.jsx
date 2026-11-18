@@ -10,7 +10,7 @@ import { LeafLogo } from '../components/shared/MainLocationHeader';
 import { useProductDetail } from '../context/ProductDetailContext';
 import { useSettings } from '@core/context/SettingsContext';
 import { cn } from '@/lib/utils';
-import { useLocation as useAppLocation } from '../context/LocationContext';
+import { useLocation as useAppLocation, getLocationLabel } from '../context/LocationContext';
 import { useCart } from '../context/CartContext';
 import { getJSON, setJSON, STORAGE_KEYS } from '@core/utils/storage';
 import Lottie from 'lottie-react';
@@ -352,7 +352,7 @@ const SearchPage = () => {
                                     <span className="max-w-[110px] lg:max-w-[140px] truncate">
                                         {isFetchingLocation
                                             ? "Detecting..."
-                                            : (currentLocation?.name || "Indore")}
+                                            : getLocationLabel(currentLocation)}
                                     </span>
                                     <ChevronDown size={13} className="text-slate-500 shrink-0" />
                                 </div>

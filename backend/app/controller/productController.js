@@ -14,6 +14,7 @@ import {
   enqueueProductIndex,
   enqueueProductRemoval,
 } from "../services/searchSyncService.js";
+import { syncProductToAllSellers } from "../services/catalogSyncService.js";
 import { buildKey, getOrSet, getTTL, invalidate } from "../services/cacheService.js";
 import { uploadToCloudinary } from "../services/mediaService.js";
 import logger from "../services/logger.js";
@@ -995,6 +996,15 @@ export const createProduct = async (req, res) => {
       // Enqueue search indexing asynchronously
       await enqueueProductIndex(product._id.toString());
       await invalidate(`cache:catalog:product:${product._id.toString()}`);
+
+      // Admin catalogue products are sold by every store: copy to all sellers.
+      if (role === "admin") {
+        try {
+          await syncProductToAllSellers(product._id);
+        } catch (syncErr) {
+          logger.error("Catalogue sync error", { scope: "createProduct", error: syncErr });
+        }
+      }
     }
 
     try {

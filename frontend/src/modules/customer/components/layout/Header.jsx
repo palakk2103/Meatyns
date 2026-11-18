@@ -4,7 +4,7 @@ import { Search, ShoppingCart, Heart, User, Menu, MapPin, ChevronDown, Zap, Circ
 import { Button } from '@/components/ui/button';
 import { useWishlist } from '../../context/WishlistContext';
 import { useCart } from '../../context/CartContext';
-import { useLocation as useAppLocation } from "../../context/LocationContext";
+import { useLocation as useAppLocation, getLocationLabel } from "../../context/LocationContext";
 import { useSettings } from '@core/context/SettingsContext';
 import LocationDrawer from '../shared/LocationDrawer';
 
@@ -149,7 +149,9 @@ const Header = () => {
                                     </span>
                                     <div className="flex items-center gap-1 text-[13px] lg:text-sm font-bold text-[#1A1A1A] leading-tight">
                                         <span className="max-w-[110px] lg:max-w-[140px] truncate">
-                                            {currentLocation?.name || 'Indore'}
+                                            {isFetchingLocation
+                                                ? "Detecting..."
+                                                : getLocationLabel(currentLocation)}
                                         </span>
                                         <ChevronDown size={13} className="text-stone-800 shrink-0" />
                                     </div>
@@ -220,7 +222,7 @@ const Header = () => {
                                 <span className="text-[10.5px] font-bold text-[#111111] leading-tight truncate">
                                     {isFetchingLocation
                                         ? "Detecting..."
-                                        : (currentLocation?.name || "Corporate Ho...")}
+                                        : getLocationLabel(currentLocation)}
                                 </span>
                                 <ChevronDown size={11} className="text-slate-500 shrink-0" />
                             </div>

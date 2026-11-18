@@ -11,7 +11,7 @@ import {
   Mic,
 } from "lucide-react";
 import LocationDrawer from "./LocationDrawer";
-import { useLocation } from "../../context/LocationContext";
+import { useLocation, getLocationLabel } from "../../context/LocationContext";
 import { useProductDetail } from "../../context/ProductDetailContext";
 import { useSettings } from "@core/context/SettingsContext";
 import { useCart } from "../../context/CartContext";
@@ -303,7 +303,7 @@ const MainLocationHeader = ({
                     <span className="max-w-[110px] lg:max-w-[140px] truncate">
                       {isFetchingLocation
                         ? "Detecting..."
-                        : (currentLocation?.name || "Indore")}
+                        : getLocationLabel(currentLocation)}
                     </span>
                     <ChevronDown size={13} className="shrink-0 text-slate-500" />
                   </div>
@@ -389,7 +389,7 @@ const MainLocationHeader = ({
                       <span className="text-[10.5px] font-bold text-[#111111] leading-tight truncate">
                         {isFetchingLocation
                           ? "Detecting..."
-                          : (currentLocation?.name || "Corporate Ho...")}
+                          : getLocationLabel(currentLocation)}
                       </span>
                       <ChevronDown size={11} className="text-slate-500 shrink-0" />
                     </div>

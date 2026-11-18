@@ -6,7 +6,7 @@ import { useCart } from "../../context/CartContext";
 import { useProductDetail } from "../../context/ProductDetailContext";
 import { toast } from "sonner";
 import { applyCloudinaryTransform } from "@/core/utils/imageUtils";
-import { getMeatType } from "../../utils/categoryFilter";
+import { getMeatType, isEggProduct } from "../../utils/categoryFilter";
 import { cleanProductName } from "@/core/utils/productName";
 
 // 4 Curated Top Picks using real product IDs from database
@@ -90,10 +90,12 @@ const TopPicksSection = ({ products = [], title = "Top Picks for You", icon = "â
         }, [])
         .slice(0, 6);
     }
-    // Top Picks shows Chicken products only
-    // Falls back to all products so the section never disappears when no chicken item exists
-    const chickenOnly = (products || []).filter((p) => getMeatType(p) === "chicken");
-    products = chickenOnly.length ? chickenOnly : (products || []);
+    // Top Picks shows Chicken products only.
+    // Falls back to other non-egg meat when the serving store has no chicken;
+    // eggs are never shown here (they have their own "Fresh Eggs" section).
+    const nonEgg = (products || []).filter((p) => !isEggProduct(p));
+    const chickenOnly = nonEgg.filter((p) => getMeatType(p) === "chicken");
+    products = chickenOnly.length ? chickenOnly : nonEgg;
     const MEAT_KEYWORDS = ["fish", "chicken", "mutton", "meat", "pomfret", "prawn", "seafood", "keema", "surmai", "rohu"];
     const validFromBackend = (products || [])
       .filter((p) => {

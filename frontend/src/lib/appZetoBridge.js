@@ -1,23 +1,78 @@
 /**
  * AppZeto JS Bridge Helper
- * This script should be included in your React application (MERN frontend).
- * It enables bidirectional communication between the React web app and the
- * Flutter native wrapper via the WebView JavaScript channel.
+ * Bidirectional communication between the React web app and the Flutter
+ * native wrapper via the WebView JavaScript channel.
+ *
+ * Flutter answers by calling `window.onFlutterResponse({ type, data })`.
+ * A single dispatcher routes each response to every waiter for that `type`,
+ * so concurrent requests (e.g. FCM token + location on app start) can no
+ * longer overwrite each other's handler and lose a reply.
  */
 
-const AppZetoBridge = {
-  /**
-   * Check if the app is running inside the Flutter WebView
-   * @returns {boolean}
-   */
-  isFlutterApp: () => {
-    return !!window.Flutter;
-  },
+const waiters = new Map(); // type -> Set<(data) => void>
+let genericListener = null;
+let dispatcherInstalled = false;
 
-  /**
-   * Send a message to Flutter
-   * @param {string} action - Action name (open_camera, get_location, pick_file, get_fcm_token)
-   */
+const normalizeResponse = (response) => {
+  if (typeof response === "string") {
+    try {
+      return JSON.parse(response);
+    } catch {
+      return null;
+    }
+  }
+  return response;
+};
+
+const installDispatcher = () => {
+  if (dispatcherInstalled || typeof window === "undefined") return;
+  dispatcherInstalled = true;
+  window.onFlutterResponse = (raw) => {
+    const response = normalizeResponse(raw);
+    if (!response) return;
+    const set = waiters.get(response.type);
+    if (set && set.size) {
+      const callbacks = Array.from(set);
+      set.clear();
+      callbacks.forEach((cb) => cb(response.data));
+    }
+    if (genericListener) genericListener(response);
+  };
+};
+
+// Post `action` and resolve with the data of the first `responseType` reply,
+// or null after `timeoutMs`.
+const request = (action, responseType, timeoutMs) =>
+  new Promise((resolve) => {
+    if (typeof window === "undefined" || !window.Flutter) {
+      resolve(null);
+      return;
+    }
+    installDispatcher();
+    let done = false;
+    const set = waiters.get(responseType) || new Set();
+    waiters.set(responseType, set);
+    const finish = (data) => {
+      if (done) return;
+      done = true;
+      set.delete(finish);
+      clearTimeout(timer);
+      resolve(data ?? null);
+    };
+    set.add(finish);
+    const timer = setTimeout(() => finish(null), timeoutMs);
+    try {
+      window.Flutter.postMessage(action);
+    } catch {
+      finish(null);
+    }
+  });
+
+const AppZetoBridge = {
+  /** Is the app running inside the Flutter WebView? */
+  isFlutterApp: () => !!window.Flutter,
+
+  /** Send a raw action to Flutter (open_camera, get_location, pick_file, get_fcm_token). */
   send: (action) => {
     if (window.Flutter) {
       window.Flutter.postMessage(action);
@@ -26,125 +81,20 @@ const AppZetoBridge = {
     }
   },
 
-  /**
-   * Listen for responses from Flutter
-   * @param {Function} callback - Function to handle the response
-   */
+  /** Listen to every response from Flutter ({ type, data }). */
   onResponse: (callback) => {
-    window.onFlutterResponse = (response) => {
-      // response format: { type: "camera_response", data: "base64..." }
-      callback(response);
-    };
+    installDispatcher();
+    genericListener = callback;
   },
 
-  /**
-   * Request FCM Token from Flutter and return it as a Promise
-   * @returns {Promise<string|null>}
-   */
-  getFcmToken: () => {
-    return new Promise((resolve) => {
-      if (!window.Flutter) {
-        resolve(null);
-        return;
-      }
-
-      // One-time listener for the token response
-      const originalOnResponse = window.onFlutterResponse;
-      window.onFlutterResponse = (response) => {
-        if (response.type === 'fcm_token_response') {
-          // Restore original listener if it existed
-          window.onFlutterResponse = originalOnResponse;
-          resolve(response.data);
-        } else if (originalOnResponse) {
-          // Pass other messages to the original listener
-          originalOnResponse(response);
-        }
-      };
-
-      window.Flutter.postMessage("get_fcm_token");
-      
-      // Timeout after 10 seconds
-      setTimeout(() => {
-        if (window.onFlutterResponse !== originalOnResponse) {
-          window.onFlutterResponse = originalOnResponse;
-          resolve(null);
-        }
-      }, 10000);
-    });
-  },
+  /** @returns {Promise<string|null>} FCM token, or null after 10s. */
+  getFcmToken: () => request("get_fcm_token", "fcm_token_response", 10000),
 
   /**
-   * Request Location from Flutter and return it as a Promise
-   * @returns {Promise<{lat: number, lng: number}|null>}
+   * @returns {Promise<any|null>} Native location payload (usually {lat, lng}),
+   * or null after 15s.
    */
-  getLocation: () => {
-    return new Promise((resolve) => {
-      if (!window.Flutter) {
-        resolve(null);
-        return;
-      }
-
-      const originalOnResponse = window.onFlutterResponse;
-      window.onFlutterResponse = (response) => {
-        if (response.type === 'location_response') {
-          window.onFlutterResponse = originalOnResponse;
-          resolve(response.data);
-        } else if (originalOnResponse) {
-          originalOnResponse(response);
-        }
-      };
-
-      window.Flutter.postMessage("get_location");
-      
-      setTimeout(() => {
-        if (window.onFlutterResponse !== originalOnResponse) {
-          window.onFlutterResponse = originalOnResponse;
-          resolve(null);
-        }
-      }, 15000); // Higher timeout for GPS
-    });
-  }
+  getLocation: () => request("get_location", "location_response", 15000),
 };
-
-// --- Example Usage in React Component ---
-
-/*
-import React, { useEffect, useState } from 'react';
-
-const MyComponent = () => {
-  const [image, setImage] = useState(null);
-
-  useEffect(() => {
-    AppZetoBridge.onResponse((res) => {
-      if (res.type === 'camera_response' && res.data) {
-        setImage(`data:image/jpeg;base64,${res.data}`);
-      }
-      if (res.type === 'location_response') {
-        console.log("Current Location:", res.data);
-      }
-      if (res.type === 'fcm_token_response') {
-        console.log("FCM Token:", res.data);
-        // Send this token to your backend API to save it for push notifications
-      }
-    });
-  }, []);
-
-  const handleCapture = () => {
-    AppZetoBridge.send("open_camera");
-  };
-
-  const handleGetLocation = () => {
-    AppZetoBridge.send("get_location");
-  };
-
-  return (
-    <div>
-      <button onClick={handleCapture}>Open Camera</button>
-      <button onClick={handleGetLocation}>Get Location</button>
-      {image && <img src={image} alt="Captured" style={{width: '200px'}} />}
-    </div>
-  );
-};
-*/
 
 export default AppZetoBridge;

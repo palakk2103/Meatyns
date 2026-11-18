@@ -1,4 +1,5 @@
 import Seller from "../../models/seller.js";
+import { syncCatalogToSeller } from "../catalogSyncService.js";
 import {
   escapeRegExp,
   formatSellerApplication,
@@ -113,6 +114,13 @@ export async function approveSellerApplicationById({ sellerId, reviewedBy }) {
 
   if (!seller) {
     return null;
+  }
+
+  // Every approved store sells the full catalogue.
+  try {
+    await syncCatalogToSeller(seller._id);
+  } catch (err) {
+    console.error("[sellerApproval] catalogue sync failed:", err?.message);
   }
 
   return formatSellerApplication(seller);

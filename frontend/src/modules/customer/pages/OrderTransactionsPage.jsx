@@ -13,7 +13,7 @@ import {
   ChevronDown,
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
-import { useLocation as useAppLocation } from '../context/LocationContext';
+import { useLocation as useAppLocation, getLocationLabel } from '../context/LocationContext';
 import LocationDrawer from '../components/shared/LocationDrawer';
 import { LeafLogo } from '../components/shared/MainLocationHeader';
 import { customerApi } from '../services/customerApi';
@@ -131,7 +131,7 @@ const OrderTransactionsPage = () => {
                                     <span className="max-w-[110px] lg:max-w-[140px] truncate">
                                         {isFetchingLocation
                                             ? "Detecting..."
-                                            : currentLocation?.name || "Indore"}
+                                            : getLocationLabel(currentLocation)}
                                     </span>
                                     <ChevronDown size={13} className="text-[#1A1A1A] shrink-0" />
                                 </div>

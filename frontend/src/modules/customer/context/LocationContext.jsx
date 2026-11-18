@@ -5,6 +5,7 @@ import React, {
   useEffect,
   useCallback,
   useMemo,
+  useRef,
 } from "react";
 import { customerApi } from "../services/customerApi";
 import { hasValidStoredAuthToken } from "@core/utils/authStorage";
@@ -18,39 +19,89 @@ const STORAGE_KEY = STORAGE_KEYS.LOCATION;
 // address indefinitely.
 const LOCATION_TTL_MS = 30 * 24 * 60 * 60 * 1000;
 
+// Human-readable reason for a GeolocationPositionError.
+const describeGeolocationError = (error) => {
+  switch (error?.code) {
+    case 1:
+      return "Location permission is blocked. Allow location for this site from the address bar (lock icon) and try again.";
+    case 2:
+      return "Your device couldn't determine its location. Turn on location services on your device and try again.";
+    case 3:
+      return "Location request timed out. Please try again or set your address manually.";
+    default:
+      return error?.message || "Unable to fetch your location";
+  }
+};
+
+// Fallback shown only until the real location is detected. It is never
+// persisted, so it can't "stick" as if it were the user's address.
+const DEFAULT_LOCATION = {
+  name: "214, Rajshri Palace Colony, Pipliyahana, Indore, Madhya Pradesh 452018, India",
+  time: "12-15 mins",
+  city: "Indore",
+  state: "Madhya Pradesh",
+  pincode: "452018",
+  latitude: 22.711140989838025,
+  longitude: 75.9001552518043,
+  isDefault: true,
+};
+
+// Older builds saved the default address to storage on first visit; treat
+// such an entry as "no location" so it doesn't override real detection.
+const isStoredDefault = (stored) =>
+  Math.abs(Number(stored?.latitude) - DEFAULT_LOCATION.latitude) < 1e-6 &&
+  Math.abs(Number(stored?.longitude) - DEFAULT_LOCATION.longitude) < 1e-6;
+
+const readStoredLocation = () => {
+  const stored = getJSON(STORAGE_KEY, null);
+  const name = stored?.address || stored?.name;
+  const lat = Number(stored?.latitude);
+  const lng = Number(stored?.longitude);
+  if (!name || !Number.isFinite(lat) || !Number.isFinite(lng)) return null;
+  if (isStoredDefault(stored)) return null;
+  return {
+    name,
+    time: stored.time || "12-15 mins",
+    city: stored.city,
+    state: stored.state,
+    pincode: stored.pincode,
+    latitude: lat,
+    longitude: lng,
+  };
+};
+
+// The native app may answer with {lat,lng}, {latitude,longitude}, numeric
+// strings, or a JSON string. Returns {lat,lng} or null.
+const parseNativeCoords = (data) => {
+  let value = data;
+  if (typeof value === "string") {
+    try {
+      value = JSON.parse(value);
+    } catch {
+      return null;
+    }
+  }
+  if (!value || typeof value !== "object") return null;
+  const lat = Number(value.lat ?? value.latitude);
+  const lng = Number(value.lng ?? value.lon ?? value.longitude);
+  if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
+  if (lat === 0 && lng === 0) return null;
+  if (Math.abs(lat) > 90 || Math.abs(lng) > 180) return null;
+  return { lat, lng };
+};
+
+// Re-detect when the app comes back to the foreground after this long.
+const REDETECT_AFTER_MS = 10 * 60 * 1000;
+
 export const LocationProvider = ({ children }) => {
   // Default location (used until we can resolve a better one)
   // Start from the persisted delivery location when there is one, so the very
   // first catalogue request resolves the correct serving seller instead of
   // briefly using the hardcoded default below.
-  const [currentLocation, setCurrentLocation] = useState(() => {
-    const stored = getJSON(STORAGE_KEY, null);
-    const storedName = stored?.address || stored?.name;
-    if (
-      storedName &&
-      Number.isFinite(Number(stored?.latitude)) &&
-      Number.isFinite(Number(stored?.longitude))
-    ) {
-      return {
-        name: storedName,
-        time: stored.time || "12-15 mins",
-        city: stored.city,
-        state: stored.state,
-        pincode: stored.pincode,
-        latitude: Number(stored.latitude),
-        longitude: Number(stored.longitude),
-      };
-    }
-    return {
-      name: "214, Rajshri Palace Colony, Pipliyahana, Indore, Madhya Pradesh 452018, India",
-      time: "12-15 mins",
-      city: "Indore",
-      state: "Madhya Pradesh",
-      pincode: "452018",
-      latitude: 22.711140989838025,
-      longitude: 75.9001552518043,
-    };
-  });
+  const [currentLocation, setCurrentLocation] = useState(
+    () => readStoredLocation() || DEFAULT_LOCATION,
+  );
+  const lastDetectedAtRef = useRef(0);
 
   // Address list for drawer UI – will be hydrated from profile API.
   const [savedAddresses, setSavedAddresses] = useState([]);
@@ -107,11 +158,11 @@ export const LocationProvider = ({ children }) => {
   // Must be called directly from a user gesture (click/tap) for the browser to show the permission prompt.
   const fetchAndCacheLocation = useCallback((options = { autoDetect: false }) =>
     new Promise((resolve) => {
-      if (
-        typeof window === "undefined" ||
-        !("navigator" in window) ||
-        !navigator.geolocation
-      ) {
+      const hasBrowserGeolocation =
+        typeof window !== "undefined" &&
+        "navigator" in window &&
+        !!navigator.geolocation;
+      if (typeof window === "undefined" || (!hasBrowserGeolocation && !window.Flutter)) {
         resolve({
           ok: false,
           error: "Geolocation is not supported on this device",
@@ -282,41 +333,62 @@ export const LocationProvider = ({ children }) => {
         setIsFetchingLocation(false);
         if (toastId) {
           toast.error(message, { id: toastId, position: "bottom-center" });
-        } else {
+        } else if (!options.silent) {
           // Auto-detect failed (e.g. permission denied): tell the user why they
           // are still seeing the default area instead of silently showing it.
           toast.error(
-            "Couldn't detect your location. Showing the default area — please allow location access or set your address.",
-            { position: "bottom-center" },
+            `Couldn't detect your location. ${message} Showing the default area for now.`,
+            { position: "bottom-center", duration: 6000 },
           );
         }
         resolve({ ok: false, error: message });
       };
 
-      // Native Flutter Bridge
+      // Standard Browser Geolocation.
+      // Desktop browsers (no GPS) frequently time out or report
+      // POSITION_UNAVAILABLE with enableHighAccuracy, so retry once with a
+      // network-based, lower-accuracy fix before giving up.
+      const useBrowserGeolocation = () => {
+        if (!hasBrowserGeolocation) {
+          handleLocationError("Geolocation is not supported on this device");
+          return;
+        }
+        const onPosition = (position) =>
+          handleLocationSuccess(position.coords.latitude, position.coords.longitude);
+
+        navigator.geolocation.getCurrentPosition(
+          onPosition,
+          (error) => {
+            if (error?.code === 1) {
+              handleLocationError(describeGeolocationError(error));
+              return;
+            }
+            navigator.geolocation.getCurrentPosition(
+              onPosition,
+              (retryError) => handleLocationError(describeGeolocationError(retryError)),
+              { enableHighAccuracy: false, timeout: 15000, maximumAge: 10 * 60 * 1000 },
+            );
+          },
+          { enableHighAccuracy: true, timeout: 10000, maximumAge: 60 * 1000 },
+        );
+      };
+
+      // Native app (Flutter WebView): ask the native side for GPS first; if it
+      // returns nothing usable, fall back to the WebView's own geolocation
+      // instead of leaving the user on the default area.
       if (window.Flutter) {
-        import("../../../lib/appZetoBridge").then(async (m) => {
-          const AppZetoBridge = m.default;
-          const coords = await AppZetoBridge.getLocation();
-          if (coords && coords.lat && coords.lng) {
-            handleLocationSuccess(coords.lat, coords.lng);
-          } else {
-            handleLocationError("Native location failed");
-          }
-        }).catch(() => handleLocationError("Bridge not found"));
+        import("../../../lib/appZetoBridge")
+          .then((m) => m.default.getLocation())
+          .then((data) => {
+            const coords = parseNativeCoords(data);
+            if (coords) handleLocationSuccess(coords.lat, coords.lng);
+            else useBrowserGeolocation();
+          })
+          .catch(() => useBrowserGeolocation());
         return;
       }
 
-      // Standard Browser Geolocation
-      navigator.geolocation.getCurrentPosition(
-        (position) => handleLocationSuccess(position.coords.latitude, position.coords.longitude),
-        handleLocationError,
-        {
-          enableHighAccuracy: true,
-          timeout: 20000,
-          maximumAge: 0,
-        },
-      );
+      useBrowserGeolocation();
     }),
     [currentLocation?.city, currentLocation?.pincode, currentLocation?.state, updateLocation],
   );
@@ -367,43 +439,29 @@ export const LocationProvider = ({ children }) => {
     refreshAddresses();
   }, [refreshAddresses]);
 
-  // On mount: restore from cache first. Auto-fetch (if permission is pre-granted)
-  // is handled by a separate effect below.
+  // Auto-detect the live location as soon as the app opens, for everyone.
+  // The stored/default location is only a placeholder until this resolves;
+  // the default is never written to storage.
   useEffect(() => {
-    const parsed = getJSON(STORAGE_KEY, null);
-    const addressName = parsed?.address || parsed?.name;
-    if (parsed && addressName) {
-      updateLocation(
-        {
-          name: addressName,
-          time: parsed.time || "12-15 mins",
-          city: parsed.city,
-          state: parsed.state,
-          pincode: parsed.pincode,
-          latitude: parsed.latitude,
-          longitude: parsed.longitude,
-        },
-        { persist: false, updateSavedHome: false },
-      );
-    } else {
-      // If no location is stored (or TTL expired), persist the default
-      // immediately so subsequent reads have something to anchor on.
-      updateLocation(currentLocation, {
-        persist: true,
-        updateSavedHome: false,
-      });
-      // Fetch current live location automatically when the user opens the app for the first time
-      fetchAndCacheLocation({ autoDetect: true });
-    }
-    // Live fetch happens only when user taps location pill or "Use current location"
+    fetchAndCacheLocation({ autoDetect: true }).then((res) => {
+      if (res?.ok) lastDetectedAtRef.current = Date.now();
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Auto-detect location on app open for everyone (new and old users).
+  // Mobile app / PWA: the page often stays alive in the background, so also
+  // re-detect when the user brings the app back to the foreground.
   useEffect(() => {
-    fetchAndCacheLocation({ autoDetect: true });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    if (typeof document === "undefined") return undefined;
+    const onVisible = () => {
+      if (document.visibilityState !== "visible") return;
+      if (Date.now() - lastDetectedAtRef.current < REDETECT_AFTER_MS) return;
+      lastDetectedAtRef.current = Date.now();
+      fetchAndCacheLocation({ autoDetect: true, silent: true });
+    };
+    document.addEventListener("visibilitychange", onVisible);
+    return () => document.removeEventListener("visibilitychange", onVisible);
+  }, [fetchAndCacheLocation]);
 
   const locationValue = useMemo(() => ({
     currentLocation,
@@ -421,6 +479,15 @@ export const LocationProvider = ({ children }) => {
       {children}
     </LocationContext.Provider>
   );
+};
+
+// Text to show in headers for the delivery location. Never shows the
+// hardcoded fallback address as if it were the user's real location.
+export const getLocationLabel = (location) => {
+  if (!location || location.isDefault || !location.name) {
+    return "Select location";
+  }
+  return location.name;
 };
 
 export const useLocation = () => {

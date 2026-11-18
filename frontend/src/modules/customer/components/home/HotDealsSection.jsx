@@ -6,7 +6,7 @@ import { useCart } from "../../context/CartContext";
 import { useProductDetail } from "../../context/ProductDetailContext";
 import { toast } from "sonner";
 import { applyCloudinaryTransform } from "@/core/utils/imageUtils";
-import { getMeatType } from "../../utils/categoryFilter";
+import { getMeatType, isEggProduct } from "../../utils/categoryFilter";
 import { cleanProductName } from "@/core/utils/productName";
 
 // 4 Curated Hot Deals using real product IDs from database
@@ -65,10 +65,12 @@ const HotDealsSection = ({ products = [] }) => {
 
   // Merge real backend products if they have discounts, or fallback to curated defaults
   const displayItems = React.useMemo(() => {
-    // Hot Deals shows Mutton products only
-    // Falls back to all products so the section never disappears when no mutton item exists
-    const muttonOnly = (products || []).filter((p) => getMeatType(p) === "mutton");
-    products = muttonOnly.length ? muttonOnly : (products || []);
+    // Hot Deals shows Mutton products only.
+    // Falls back to other non-egg meat when the serving store has no mutton;
+    // eggs are never shown here (they have their own "Fresh Eggs" section).
+    const nonEgg = (products || []).filter((p) => !isEggProduct(p));
+    const muttonOnly = nonEgg.filter((p) => getMeatType(p) === "mutton");
+    products = muttonOnly.length ? muttonOnly : nonEgg;
     const discountedFromBackend = (products || [])
       .filter((p) => {
         const curr = Number(p.salePrice || p.price || 0);

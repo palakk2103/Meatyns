@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import ProductCard from "../components/shared/ProductCard";
 import { useWishlist } from "../context/WishlistContext";
 import { useCart } from "../context/CartContext";
-import { useLocation as useAppLocation } from "../context/LocationContext";
+import { useLocation as useAppLocation, getLocationLabel } from "../context/LocationContext";
 import LocationDrawer from "../components/shared/LocationDrawer";
 import { LeafLogo } from "../components/shared/MainLocationHeader";
 import {
@@ -115,7 +115,7 @@ const WishlistPage = () => {
                   <span className="max-w-[110px] lg:max-w-[140px] truncate">
                     {isFetchingLocation
                       ? "Detecting..."
-                      : currentLocation?.name || "Indore"}
+                      : getLocationLabel(currentLocation)}
                   </span>
                   <ChevronDown size={13} className="text-[#1A1A1A] shrink-0" />
                 </div>
