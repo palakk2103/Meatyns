@@ -8,7 +8,7 @@ const mockSendFCM = jest.fn();
 
 jest.unstable_mockModule("../app/modules/notifications/notification.model.js", () => ({
   default: {
-    findById: mockNotificationFindById,
+    findOneAndUpdate: mockNotificationFindById,
     updateOne: mockNotificationUpdateOne,
   },
 }));

@@ -1,5 +1,6 @@
 import Transaction from "../models/transaction.js";
 import Order from "../models/order.js";
+import Payment from "../models/payment.js";
 import CheckoutGroup from "../models/checkoutGroup.js";
 import { releaseReservedStockForOrder } from "./stockService.js";
 import { clearOrderTracking } from "./firebaseService.js";
@@ -31,6 +32,10 @@ export async function compensateOrderCancellation(order, orderIdString, opts = {
     await releaseReservedStockForOrder(existing, {
       reason: "Cancelled",
     });
+    // A cancelled order must never carry `expiresAt`: older databases have
+    // a TTL index on it, which made MongoDB silently delete cancelled
+    // (including PAID) orders a minute later.
+    existing.expiresAt = undefined;
     await existing.save();
   }
 
@@ -89,11 +94,76 @@ export async function compensateOrderCancellation(order, orderIdString, opts = {
     }
   }
 
+  // Return the customer's money at the gateway. The finance reversal above
+  // only adjusts internal books; without this a paid online order that is
+  // cancelled (seller timeout, rejection, delivery timeout...) kept the
+  // customer's money until someone refunded it by hand.
+  if (existing) {
+    await refundCapturedOnlinePaymentForOrder(existing, reason);
+  }
+
   // Fire-and-forget cleanup of realtime tracking nodes. Mongo state is
   // already cancelled at this point — keeping RTDB nodes around would
   // just leave stale "live" markers on customer maps and bloat costs.
   const canonicalOrderId = existing?.orderId || orderIdString;
   if (canonicalOrderId) {
     clearOrderTracking(canonicalOrderId).catch(() => {});
+  }
+}
+
+/**
+ * Issue a Razorpay refund for the online-paid share of a cancelled order.
+ * Idempotent per order via `Payment.sideEffectsApplied`, so retried cancel
+ * jobs and the late-capture refund path never refund twice. Failures are
+ * logged loudly (manual refund needed) but never break the cancellation.
+ */
+export async function refundCapturedOnlinePaymentForOrder(order, reason = "Order cancelled") {
+  if (!order || order.paymentMode !== "ONLINE") return;
+
+  const payment = await Payment.findOne({
+    paymentType: "ORDER",
+    status: "CAPTURED",
+    $or: [
+      { orderIds: order._id },
+      { order: order._id },
+      ...(order.checkoutGroupId ? [{ checkoutGroupId: order.checkoutGroupId }] : []),
+    ],
+  });
+  if (!payment) return;
+
+  const claimKey = `CANCEL_REFUND:${order._id}`;
+  const claim = await Payment.updateOne(
+    { _id: payment._id, sideEffectsApplied: { $ne: claimKey } },
+    { $addToSet: { sideEffectsApplied: claimKey } },
+  );
+  if (claim.modifiedCount !== 1) return;
+
+  const ordersInPayment = Array.isArray(payment.orderIds) ? payment.orderIds.length : 1;
+  const orderAmount = Number(order.paymentBreakdown?.grandTotal ?? order.pricing?.total ?? 0);
+  // Single-order payment → refund everything still refundable; otherwise
+  // refund only this order's share of the checkout.
+  const amount = ordersInPayment <= 1 ? null : orderAmount;
+  if (amount !== null && !(amount > 0)) return;
+
+  try {
+    const { initiateRazorpayRefund } = await import("./paymentService.js");
+    await initiateRazorpayRefund({
+      paymentId: payment._id.toString(),
+      amount,
+      reason: `Auto refund: ${reason}`,
+    });
+  } catch (error) {
+    // Release the claim so a later retry / admin action can refund.
+    await Payment.updateOne(
+      { _id: payment._id },
+      { $pull: { sideEffectsApplied: claimKey } },
+    ).catch(() => {});
+    logger.error("Auto-refund for cancelled online order failed; needs manual refund", {
+      scope: "compensateOrderCancellation",
+      orderId: order.orderId,
+      paymentId: payment._id.toString(),
+      gatewayPaymentId: payment.gatewayPaymentId,
+      error: error.message,
+    });
   }
 }

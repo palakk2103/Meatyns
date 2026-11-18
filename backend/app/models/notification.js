@@ -33,6 +33,13 @@ const notificationSchema = new mongoose.Schema(
       default: null,
       index: true,
     },
+    // Set atomically by whichever process (queue worker or the API-side
+    // pending sweeper) starts the push send, so a notification is never
+    // delivered twice and never stays stuck in "pending".
+    deliveryClaimedAt: {
+      type: Date,
+      default: null,
+    },
     failureReason: {
       type: String,
       default: "",

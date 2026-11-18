@@ -1,0 +1,161 @@
+[     278ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[     409ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[     425ms] [WARNING] Geolocation permission has been blocked as the user has ignored the permission prompt several times. This can be reset in Page Info which can be accessed by clicking the tune icon next to the URL. See https://www.chromestatus.com/feature/6443143280984064 for more information. @ http://localhost:5173/:1
+[     489ms] [LOG] [orderSocket] Socket connected, ID: lt9dbIl2dZ-iuhFeAAAH @ http://localhost:5173/src/core/services/orderSocket.js:49
+[     766ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[    4960ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[   63508ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[  123497ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[  183480ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[  243494ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[  303497ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[  363489ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[  367661ms] [LOG] [orderSocket] Socket disconnected, reason: transport close @ http://localhost:5173/src/core/services/orderSocket.js:60
+[  370246ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=4npn4wrq:1
+[  370247ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[  372924ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=4nrqiuoa:1
+[  372925ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[  375935ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[  380618ms] [LOG] [orderSocket] Socket connected, ID: aQCYceh-x_Sf5s3lAAAB @ http://localhost:5173/src/core/services/orderSocket.js:49
+[  383739ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[  394096ms] [LOG] [orderSocket] Socket disconnected, reason: transport close @ http://localhost:5173/src/core/services/orderSocket.js:60
+[  397010ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=4oabisrg:1
+[  397011ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[  399407ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=4oc6515i:1
+[  399407ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[  402418ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[  409459ms] [LOG] [orderSocket] Socket connected, ID: 7Pd5jJ-9_6_Xo35gAAAB @ http://localhost:5173/src/core/services/orderSocket.js:49
+[  409696ms] [LOG] [orderSocket] Socket disconnected, reason: transport close @ http://localhost:5173/src/core/services/orderSocket.js:60
+[  410857ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=4ol066nk:1
+[  410857ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[  413873ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[  415126ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=4ooaqyxo:1
+[  415127ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[  418132ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[  420424ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/settings:1
+[  421341ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=4ot3h1cz:1
+[  421342ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[  424352ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[  426823ms] [ERROR] %o
+
+%s
+
+%s
+ Error: useSettings must be used within a SettingsProvider
+    at useSettings (http://localhost:5173/src/core/context/SettingsContext.jsx?t=1795006266908:83:11)
+    at SeoHead (http://localhost:5173/src/core/components/SeoHead.jsx?t=1795006266908:6:24)
+    at Object.react_stack_bottom_frame (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:18509:20)
+    at renderWithHooks (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:5654:24)
+    at updateFunctionComponent (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:7475:21)
+    at beginWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:8525:20)
+    at runWithFiberInDEV (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:997:72)
+    at performUnitOfWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12561:98)
+    at workLoopSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12424:43)
+    at renderRootSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12408:13) The above error occurred in the <SeoHead> component. React will try to recreate this component tree from scratch using the error boundary you provided, ErrorBoundary. @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:7001
+[  426824ms] [ERROR] Uncaught error: Error: useSettings must be used within a SettingsProvider
+    at useSettings (http://localhost:5173/src/core/context/SettingsContext.jsx?t=1795006266908:83:11)
+    at SeoHead (http://localhost:5173/src/core/components/SeoHead.jsx?t=1795006266908:6:24)
+    at Object.react_stack_bottom_frame (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:18509:20)
+    at renderWithHooks (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:5654:24)
+    at updateFunctionComponent (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:7475:21)
+    at beginWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:8525:20)
+    at runWithFiberInDEV (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:997:72)
+    at performUnitOfWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12561:98)
+    at workLoopSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12424:43)
+    at renderRootSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12408:13) {componentStack: 
+    at SeoHead (http://localhost:5173/src/core/co…s/ErrorBoundary.jsx:6:5)
+    at App (<anonymous>)} @ http://localhost:5173/src/shared/components/ErrorBoundary.jsx:13
+[  426909ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:5173/src/modules/customer/pages/MaintenancePage.jsx?t=1795006781038:1
+[  426910ms] [ERROR] [vite] Failed to reload /src/modules/customer/pages/MaintenancePage.jsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:5173/@vite/client:809
+[  427086ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:5173/src/modules/customer/pages/MaintenancePage.jsx?t=1795006781425:1
+[  427087ms] [ERROR] [vite] Failed to reload /src/modules/customer/pages/MaintenancePage.jsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:5173/@vite/client:809
+[  427176ms] [ERROR] Failed to fetch cart from backend AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41)
+    at async fetchCart (http://localhost:5173/src/modules/customer/context/CartContext.jsx:142:26) @ http://localhost:5173/src/modules/customer/context/CartContext.jsx:145
+[  427177ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/cart:1
+[  427177ms] [ERROR] Failed to fetch wishlist from backend AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41)
+    at async fetchWishlistIds (http://localhost:5173/src/modules/customer/context/WishlistContext.jsx:31:26) @ http://localhost:5173/src/modules/customer/context/WishlistContext.jsx:46
+[  427177ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/wishlist?idsOnly=true:1
+[  427178ms] [ERROR] Failed to fetch profile: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41) @ http://localhost:5173/src/core/context/AuthContext.jsx:174
+[  427178ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/customer/profile:1
+[  427178ms] [ERROR] Failed to fetch settings AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41)
+    at async http://localhost:5173/src/core/context/SettingsContext.jsx?t=1795006781038:24:19 @ http://localhost:5173/src/core/context/SettingsContext.jsx?t=1795006781038:33
+[  427179ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/settings:1
+[  427532ms] [ERROR] Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41) @ http://localhost:5173/src/modules/customer/pages/Home.jsx?t=1795006781038:341
+[  427532ms] [ERROR] Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41) @ http://localhost:5173/src/modules/customer/pages/Home.jsx?t=1795006781038:341
+[  427532ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/categories:1
+[  427533ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/gallery/home:1
+[  427534ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/products?limit=50&lat=22.717568453198737&lng=75.8718831449296:1
+[  427534ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/experience?pageType=home:1
+[  427535ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/offer-sections?lat=22.717568453198737&lng=75.8718831449296:1
+[  427536ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/experience/hero?pageType=home:1
+[  430603ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[  430874ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=4p0g8ck6:1
+[  430874ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[  432150ms] [ERROR] Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41)
+    at async Object.getCategories (http://localhost:5173/src/modules/customer/services/customerApi.js:43:17)
+    at async Promise.all (index 0)
+    at async fetchData (http://localhost:5173/src/modules/customer/pages/Home.jsx?t=1795006781038:286:54) @ http://localhost:5173/src/modules/customer/pages/Home.jsx?t=1795006781038:341
+[  432150ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/categories:1
+[  432151ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/products?limit=50&lat=22.717525705192784&lng=75.87190171264744:1
+[  432151ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/experience?pageType=home:1
+[  432151ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/offer-sections?lat=22.717525705192784&lng=75.87190171264744:1
+[  432151ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/experience/hero?pageType=home:1
+[  432182ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/gallery/home:1
+[  435203ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[  440898ms] [LOG] [orderSocket] Socket connected, ID: FqDqejJavPJUH03BAAAB @ http://localhost:5173/src/core/services/orderSocket.js:49
+[  444013ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[  452385ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1

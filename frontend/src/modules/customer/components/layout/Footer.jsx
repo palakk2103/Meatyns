@@ -153,16 +153,14 @@ const Footer = () => {
                                     <Phone size={18} />
                                 </div>
                                 <div className="text-sm md:text-[14.5px] text-slate-300 font-medium flex flex-wrap items-center gap-1.5">
+                                    <a href="tel:18002338590" className="hover:text-[#FAB82C] transition-colors">1800-233-8590</a>
+                                    <span>|</span>
                                     {settings?.contactPhone || settings?.phone ? (
                                         <a href={`tel:${settings?.contactPhone || settings?.phone}`} className="hover:text-[#FAB82C] transition-colors">
                                             {settings?.contactPhone || settings?.phone}
                                         </a>
                                     ) : (
-                                        <>
-                                            <a href="tel:18002338590" className="hover:text-[#FAB82C] transition-colors">1800-233-8590</a>
-                                            <span>|</span>
-                                            <a href="tel:7558598590" className="hover:text-[#FAB82C] transition-colors">75585 98590</a>
-                                        </>
+                                        <a href="tel:7558598590" className="hover:text-[#FAB82C] transition-colors">75585 98590</a>
                                     )}
                                 </div>
                             </li>
@@ -170,8 +168,8 @@ const Footer = () => {
                                 <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-[#FAB82C] shrink-0 group-hover:bg-[#C81017] group-hover:text-white transition-colors">
                                     <Mail size={18} />
                                 </div>
-                                <a href={`mailto:${settings?.contactEmail || settings?.email || "meatyns2023@gmail.com"}`} className="text-sm md:text-[14.5px] text-slate-300 font-medium hover:text-[#FAB82C] transition-colors">
-                                    {settings?.contactEmail || settings?.email || "meatyns2023@gmail.com"}
+                                <a href="mailto:meatyns01@gmail.com" className="text-sm md:text-[14.5px] text-slate-300 font-medium hover:text-[#FAB82C] transition-colors">
+                                    meatyns01@gmail.com
                                 </a>
                             </li>
                         </ul>

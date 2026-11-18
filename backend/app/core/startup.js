@@ -12,6 +12,7 @@ import dns from 'node:dns';
 import { getProcessRole, isComponentEnabled, validateProcessRole } from './processRole.js';
 import { isRedisEnabled, getRedisClient, waitForRedis } from '../config/redis.js';
 import { createAllIndexes } from '../services/databaseIndexManager.js';
+import { dropUnsafeTtlIndexes } from '../dbConfig/ensureSafeIndexes.js';
 import { startSearchIndexWorker } from '../services/searchSyncService.js';
 // Side-effect import: registers every Mongoose model so the boot-time
 // `assertAllModelsRegistered()` check below works regardless of which
@@ -253,6 +254,9 @@ async function connectMongoDB(maxRetries = 5) {
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
       await mongoose.connect(mongoUri, options);
+      // Never let MongoDB auto-delete orders/payments via stale TTL indexes.
+      await dropUnsafeTtlIndexes().catch((err) =>
+        console.error('[Startup] TTL index safety check failed:', err?.message));
       return;
     } catch (error) {
       const isLastAttempt = attempt === maxRetries;

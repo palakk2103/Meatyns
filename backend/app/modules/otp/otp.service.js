@@ -15,6 +15,7 @@ import {
   getOtpLength,
   normalizeMobile,
 } from "../../utils/smsHelpers.js";
+import { assertPilotAllowedPhone } from "../../utils/customerPilotAccess.js";
 
 const SUPPORTED_USER_TYPES = ["Admin", "Seller", "Customer", "Delivery"];
 const SUPPORTED_PURPOSES = ["LOGIN", "SIGNUP", "PASSWORD_RESET"];
@@ -174,6 +175,8 @@ export async function sendSmsOtp({ mobile, userType, purpose, ipAddress = "unkno
   assertSupportedEnums({ userType, purpose });
 
   const normalizedMobile = assertValidMobile(mobile);
+  // Customer pilot lock (customer app only; other user types untouched).
+  if (userType === "Customer") assertPilotAllowedPhone(normalizedMobile);
   const account = await findAccountByUserType(userType, normalizedMobile);
   assertPurposeEligibility({ purpose, account, userType });
 
@@ -230,6 +233,7 @@ export async function verifySmsOtp({ mobile, otp, userType, purpose, ipAddress =
   assertSupportedEnums({ userType, purpose });
 
   const normalizedMobile = assertValidMobile(mobile);
+  if (userType === "Customer") assertPilotAllowedPhone(normalizedMobile);
   const code = String(otp || "").trim();
   const otpPattern = new RegExp(`^\\d{${getOtpLength()}}$`);
   if (!otpPattern.test(code)) {

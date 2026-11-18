@@ -306,7 +306,14 @@ async function startHttpServer() {
     const { registerOrderQueueProcessors } = await import("./app/queues/orderQueueProcessors.js");
     registerOrderQueueProcessors();
   }
-  
+
+  // Safety net: send push notifications stuck in "pending" (e.g. when the
+  // Bull worker process is not running). Safe alongside a real worker.
+  const { startPendingNotificationSweeper } = await import(
+    "./app/modules/notifications/notification.worker.js"
+  );
+  startPendingNotificationSweeper();
+
   return new Promise((resolve) => {
     server.listen(PORT, "0.0.0.0", () => {
       logger.info('HTTP server started', {

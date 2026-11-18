@@ -171,22 +171,26 @@ const CheckoutPage = () => {
   const [isPreviewLoading, setIsPreviewLoading] = useState(false);
   const postOrderNavigateRef = useRef(null);
   const previewDebounceRef = useRef(null);
+  // Starts empty and is filled from the customer's own profile / selected
+  // location below. (It used to start with a hardcoded test address, which
+  // was sent with real orders when the customer didn't pick an address.)
   const [currentAddress, setCurrentAddress] = useState({
     type: "Home",
-    name: "Harshvardhan Panchal",
-    address: "81 Pipliyahana Road, Near 214",
+    name: "",
+    address: "",
     landmark: "",
-    city: "Indore - 452018",
-    phone: "6268423925",
+    city: "",
+    phone: "",
   });
+  const addressInitializedRef = useRef(false);
   const [isEditAddressOpen, setIsEditAddressOpen] = useState(false);
   const [editAddressForm, setEditAddressForm] = useState({
     type: "Home",
-    name: "Harshvardhan Panchal",
-    address: "81 Pipliyahana Road, Near 214",
+    name: "",
+    address: "",
     landmark: "",
-    city: "Indore - 452018",
-    phone: "6268423925",
+    city: "",
+    phone: "",
   });
   const [showRecipientForm, setShowRecipientForm] = useState(false);
   const [recipientData, setRecipientData] = useState({
@@ -289,10 +293,12 @@ const CheckoutPage = () => {
   // Derived display values for primary delivery card
   const displayName = savedRecipient?.name || currentAddress.name;
   const displayPhone =
-    savedRecipient?.phone || currentAddress.phone || "6268423925";
+    savedRecipient?.phone || currentAddress.phone || user?.phone || "";
   const displayAddress = savedRecipient
     ? `${savedRecipient.completeAddress}${savedRecipient.landmark ? `, ${savedRecipient.landmark}` : ""}${savedRecipient.pincode ? ` - ${savedRecipient.pincode}` : ""}`
-    : `${currentAddress.address}${currentAddress.landmark ? `, ${currentAddress.landmark}` : ""}, ${currentAddress.city}`;
+    : [currentAddress.address, currentAddress.landmark, currentAddress.city]
+        .filter(Boolean)
+        .join(", ") || "Select a delivery address";
 
   useEffect(() => {
     if (!paymentMethods.length) return;
@@ -759,6 +765,80 @@ const CheckoutPage = () => {
     cart.length,
   ]);
 
+  // Fill the delivery address from the customer's own data: the saved address
+  // matching the selected delivery location, else the selected location
+  // itself, else their first saved address. Runs until an address is set.
+  useEffect(() => {
+    if (addressInitializedRef.current || currentAddress.address) return;
+
+    const curLat = Number(currentLocation?.latitude);
+    const curLng = Number(currentLocation?.longitude);
+    const hasCurLoc = Number.isFinite(curLat) && Number.isFinite(curLng);
+    const saved = Array.isArray(locationSavedAddresses) ? locationSavedAddresses : [];
+    const isNear = (loc) =>
+      hasCurLoc && loc &&
+      Math.abs(loc.lat - curLat) < 0.002 && Math.abs(loc.lng - curLng) < 0.002;
+
+    const matchingSaved = saved.find((a) => a?.address && isNear(a.location));
+    const base = {
+      type: "Home",
+      name: user?.name || "",
+      landmark: "",
+      city: "",
+      phone: user?.phone || "",
+    };
+
+    let next = null;
+    if (matchingSaved) {
+      next = {
+        ...base,
+        id: matchingSaved.id,
+        type: matchingSaved.label || "Home",
+        address: matchingSaved.address,
+        phone: matchingSaved.phone || base.phone,
+        location: matchingSaved.location,
+        ...(matchingSaved.placeId ? { placeId: matchingSaved.placeId } : {}),
+      };
+    } else if (currentLocation?.name && hasCurLoc) {
+      next = {
+        ...base,
+        address: currentLocation.name,
+        city: [currentLocation.city, currentLocation.state, currentLocation.pincode]
+          .filter(Boolean)
+          .join(", "),
+        location: { lat: curLat, lng: curLng },
+      };
+    } else {
+      const firstSaved = saved.find((a) => a?.address);
+      if (firstSaved) {
+        next = {
+          ...base,
+          id: firstSaved.id,
+          type: firstSaved.label || "Home",
+          address: firstSaved.address,
+          phone: firstSaved.phone || base.phone,
+          ...(firstSaved.location ? { location: firstSaved.location } : {}),
+          ...(firstSaved.placeId ? { placeId: firstSaved.placeId } : {}),
+        };
+      }
+    }
+
+    if (next) {
+      addressInitializedRef.current = true;
+      setCurrentAddress(next);
+    }
+  }, [user, locationSavedAddresses, currentLocation, currentAddress.address]);
+
+  // Customer details can load after the address — fill name/phone if blank.
+  useEffect(() => {
+    if (!user) return;
+    setCurrentAddress((prev) =>
+      prev.name && prev.phone
+        ? prev
+        : { ...prev, name: prev.name || user.name || "", phone: prev.phone || user.phone || "" },
+    );
+  }, [user]);
+
   // Load recipient from localStorage + fetch coupons on mount
   useEffect(() => {
     const parsed = getJSON(RECIPIENT_STORAGE_KEY, null);
@@ -909,6 +989,12 @@ const CheckoutPage = () => {
 
     if (visibleUnavailableItems.length > 0) {
       showToast("Remove the unavailable items from your cart to continue.", "error");
+      return;
+    }
+
+    if (!savedRecipient && !String(currentAddress.address || "").trim()) {
+      showToast("Please select a delivery address.", "warning");
+      setIsAddressModalOpen(true);
       return;
     }
 

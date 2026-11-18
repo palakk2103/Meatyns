@@ -9,6 +9,7 @@ import {
   cancelSubscription,
   processDueSubscriptionOrders,
 } from "../services/subscriptionService.js";
+import { assertPilotAllowedCustomer } from "../utils/customerPilotAccess.js";
 
 /* ===============================
    CUSTOMER CONTROLLERS
@@ -62,6 +63,7 @@ export const createNewSubscription = async (req, res) => {
   try {
     const customerId = req.user.id;
     const payload = req.body || {};
+    await assertPilotAllowedCustomer(customerId);
     const subscription = await createSubscription({
       customerId,
       ...payload,
@@ -69,7 +71,7 @@ export const createNewSubscription = async (req, res) => {
 
     return handleResponse(res, 201, "Subscription created successfully", subscription);
   } catch (error) {
-    return handleResponse(res, 400, error.message);
+    return handleResponse(res, error.statusCode === 403 ? 403 : 400, error.message);
   }
 };
 

@@ -13,7 +13,7 @@ const settingSchema = new mongoose.Schema(
         },
         supportEmail: {
             type: String,
-            default: "meatyns2023@gmail.com",
+            default: "meatyns01@gmail.com",
         },
         supportPhone: {
             type: String,
@@ -89,7 +89,7 @@ const settingSchema = new mongoose.Schema(
         // Seller acceptance workflow configuration (P4 / seller timeout)
         sellerAcceptanceTimeoutMs: {
             type: Number,
-            default: 60000,
+            default: 300000,
             min: 10000,
             max: 1800000,
         },

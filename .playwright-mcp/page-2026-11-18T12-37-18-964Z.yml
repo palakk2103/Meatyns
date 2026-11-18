@@ -1,0 +1,139 @@
+- generic [ref=f1e2]:
+  - generic [ref=f1e5]:
+    - complementary [ref=f1e6]:
+      - generic [ref=f1e7]:
+        - generic [ref=f1e9]:
+          - img "Meatyns" [ref=f1e11]
+          - generic [ref=f1e12]:
+            - heading "Meatyns" [level=1] [ref=f1e13]
+            - generic [ref=f1e14]: Admin Center
+        - navigation [ref=f1e15]:
+          - paragraph [ref=f1e16]: Core Management
+          - link "Dashboard" [ref=f1e17] [cursor=pointer]:
+            - /url: /admin
+          - button "Categories" [ref=f1e26]
+          - link "Products" [ref=f1e36] [cursor=pointer]:
+            - /url: /admin/products
+          - button "Marketing Tools" [ref=f1e43]
+          - button "Retention & Growth" [ref=f1e54]
+          - button "Content Management" [ref=f1e64]
+          - button "Marketing & Meta Ads" [ref=f1e77]
+          - button "Customer Support" [ref=f1e88]
+          - button "Sellers" [ref=f1e99]
+          - button "Delivery Management" [ref=f1e111]
+          - link "Wallet" [ref=f1e123] [cursor=pointer]:
+            - /url: /admin/wallet
+          - link "Money Requests" [ref=f1e129] [cursor=pointer]:
+            - /url: /admin/withdrawals
+          - link "Seller Payments" [ref=f1e135] [cursor=pointer]:
+            - /url: /admin/seller-transactions
+          - link "Collect Cash" [ref=f1e141] [cursor=pointer]:
+            - /url: /admin/cash-collection
+          - link "Customers" [ref=f1e147] [cursor=pointer]:
+            - /url: /admin/customers
+          - link "FAQs" [ref=f1e155] [cursor=pointer]:
+            - /url: /admin/faqs
+          - button "Orders" [ref=f1e162]
+          - link "Fees & Charges" [ref=f1e172] [cursor=pointer]:
+            - /url: /admin/billing
+          - link "Settings" [ref=f1e178] [cursor=pointer]:
+            - /url: /admin/settings
+          - link "Platform Staff" [ref=f1e185] [cursor=pointer]:
+            - /url: /admin/users
+          - link "My Profile" [ref=f1e191] [cursor=pointer]:
+            - /url: /admin/profile
+          - link "System Settings" [ref=f1e197] [cursor=pointer]:
+            - /url: /admin/env
+        - generic [ref=f1e204] [cursor=pointer]:
+          - img "Meatyns" [ref=f1e207]
+          - generic [ref=f1e209]:
+            - paragraph [ref=f1e210]: Admin Console
+            - paragraph [ref=f1e211]: Super Admin
+    - generic [ref=f1e212]:
+      - banner [ref=f1e213]:
+        - textbox "Search anything..." [ref=f1e218]
+        - generic [ref=f1e219]:
+          - button [ref=f1e221]
+          - button "P Palak admin" [ref=f1e225]:
+            - generic [ref=f1e226]: P
+            - generic [ref=f1e227]:
+              - paragraph [ref=f1e228]: Palak
+              - paragraph [ref=f1e229]: admin
+          - button "Sign Out" [ref=f1e230]
+      - main [ref=f1e234]:
+        - generic [ref=f1e236]:
+          - generic [ref=f1e237]:
+            - generic [ref=f1e238]:
+              - heading "Platform Settings" [level=1] [ref=f1e239]
+              - paragraph [ref=f1e244]: Manage global configurations, branding, and legal information.
+            - button "Save All Changes" [ref=f1e246]
+          - generic [ref=f1e251]:
+            - generic [ref=f1e252]:
+              - button "General" [ref=f1e253]
+              - button "Branding" [ref=f1e257]
+              - button "Legal & Contact" [ref=f1e261]
+              - button "Social & Apps" [ref=f1e266]
+              - button "SEO & Meta" [ref=f1e273]
+            - generic [ref=f1e279]:
+              - heading "General Information" [level=3] [ref=f1e281]
+              - generic [ref=f1e282]:
+                - generic [ref=f1e283]:
+                  - text: App Name
+                  - textbox [ref=f1e284]: Meatyns
+                - generic [ref=f1e285]:
+                  - text: Support Email
+                  - textbox [ref=f1e290]: meatyns01@gmail.com
+                - generic [ref=f1e291]:
+                  - text: Support Phone
+                  - textbox [ref=f1e295]: +91 7558598590
+                - generic [ref=f1e296]:
+                  - text: Currency Symbol
+                  - textbox [ref=f1e297]: ₹
+                - generic [ref=f1e298]:
+                  - generic [ref=f1e299]:
+                    - paragraph [ref=f1e300]: Auto Low Stock Alerts
+                    - paragraph [ref=f1e301]: Automatically notify sellers when any product stock drops to its low-stock threshold.
+                  - switch [checked] [ref=f1e302]
+                - generic [ref=f1e304]:
+                  - generic [ref=f1e305]:
+                    - paragraph [ref=f1e306]: Require approval for new seller products
+                    - paragraph [ref=f1e307]: When enabled, newly added seller products remain hidden until approved by admin.
+                  - switch [ref=f1e308]
+                - generic [ref=f1e310]:
+                  - generic [ref=f1e311]:
+                    - paragraph [ref=f1e312]: Require approval for seller product edits
+                    - paragraph [ref=f1e313]: When enabled, seller changes to existing products remain hidden until approved by admin.
+                  - switch [ref=f1e314]
+                - generic [ref=f1e316]:
+                  - generic [ref=f1e317]:
+                    - generic [ref=f1e323]:
+                      - heading "Seller Acceptance Timeout" [level=4] [ref=f1e324]
+                      - paragraph [ref=f1e325]: Time allotted for sellers to accept or decline incoming orders before auto-cancellation.
+                    - generic [ref=f1e326]:
+                      - button "Seconds" [ref=f1e327]
+                      - button "Minutes" [ref=f1e328]
+                  - generic [ref=f1e329]:
+                    - generic [ref=f1e330]:
+                      - generic [ref=f1e331]: Timeout Value (Seconds)
+                      - generic [ref=f1e332]:
+                        - spinbutton "Enter timeout..." [ref=f1e333]: "60"
+                        - generic [ref=f1e334]: seconds
+                    - generic [ref=f1e335]:
+                      - paragraph [ref=f1e336]: Configured Duration
+                      - paragraph [ref=f1e337]:
+                        - text: 1m 0s
+                        - generic [ref=f1e338]: (60 total seconds)
+                      - paragraph [ref=f1e339]: "Safe range: 10s to 30m (1800s). Default: 60s."
+                  - generic [ref=f1e340]:
+                    - paragraph [ref=f1e341]: "Quick Presets:"
+                    - generic [ref=f1e342]:
+                      - button "30s" [ref=f1e343]
+                      - button "60s (Default)" [ref=f1e344]
+                      - button "90s" [ref=f1e345]
+                      - button "2 min" [ref=f1e346]
+                      - button "3 min" [ref=f1e347]
+                      - button "5 min" [ref=f1e348]
+  - region "Notifications alt+T":
+    - list:
+      - listitem [ref=f1e353]:
+        - generic [ref=f1e357]: Settings updated successfully

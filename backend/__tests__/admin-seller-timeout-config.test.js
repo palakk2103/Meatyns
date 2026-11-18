@@ -33,7 +33,7 @@ describe("Admin-Controlled Seller Acceptance Timeout Configuration", () => {
       getEffectiveSellerTimeoutMs = mod.getEffectiveSellerTimeoutMs;
     });
 
-    it("returns default 60000ms when setting is not found and no env is set", async () => {
+    it("returns default 300000ms when setting is not found and no env is set", async () => {
       delete process.env.SELLER_TIMEOUT_MS;
       mockFindOne.mockReturnValue({
         select: jest.fn().mockReturnValue({
@@ -44,7 +44,7 @@ describe("Admin-Controlled Seller Acceptance Timeout Configuration", () => {
       });
 
       const timeout = await getEffectiveSellerTimeoutMs();
-      expect(timeout).toBe(60000);
+      expect(timeout).toBe(300000);
     });
 
     it("returns env variable fallback when setting is not persisted in database", async () => {

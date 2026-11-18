@@ -49,6 +49,7 @@ import { verifySlotAvailabilityBeforePlacement } from "./deliverySlotService.js"
 import { emitNotificationEvent } from "../modules/notifications/notification.emitter.js";
 import { NOTIFICATION_EVENTS } from "../modules/notifications/notification.constants.js";
 import * as logger from "./logger.js";
+import { assertPilotAllowedCustomer } from "../utils/customerPilotAccess.js";
 
 const IDEMPOTENCY_RECORD_TTL_MS = 24 * 60 * 60 * 1000;
 
@@ -301,6 +302,9 @@ export async function placeOrderAtomic({
   idempotencyKey = null,
   retryCount = 0,
 }) {
+  // Customer pilot lock: only allow-listed customer numbers can order.
+  await assertPilotAllowedCustomer(customerId, { allowNonCustomer: true });
+
   const normalizedPayload = {
     ...(payload || {}),
     paymentMode: normalizePaymentMode(payload?.paymentMode),

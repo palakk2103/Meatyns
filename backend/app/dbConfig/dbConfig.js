@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
+import { dropUnsafeTtlIndexes } from './ensureSafeIndexes.js';
 
 dotenv.config();
 
@@ -21,6 +22,10 @@ const connectDB = async () => {
         };
 
         await mongoose.connect(mongoUri, options);
+
+        // Never let MongoDB auto-delete orders/payments (stale TTL indexes).
+        await dropUnsafeTtlIndexes().catch((err) =>
+            console.error('✗ TTL index safety check failed:', err.message));
         
         // Connection event listeners
         mongoose.connection.on('disconnected', () => {

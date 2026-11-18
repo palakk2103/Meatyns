@@ -45,8 +45,10 @@ const SupportPage = () => {
     const { currentLocation, refreshLocation, isFetchingLocation } = useAppLocation();
     const [isLocationOpen, setIsLocationOpen] = useState(false);
 
-    const supportEmail = settings?.supportEmail || 'meatyns2023@gmail.com';
+    const supportEmail = 'meatyns01@gmail.com';
     const supportPhone = settings?.supportPhone || '+91 7558598590';
+    const tollFreePhone = '1800-233-8590';
+    const tollFreeHref = 'tel:18002338590';
     const supportEmailShort = supportEmail;
     const companyName = settings?.companyName || 'Meatyns Farmer Producer Company Limited';
     const [isTicketModalOpen, setIsTicketModalOpen] = useState(false);
@@ -264,8 +266,8 @@ const SupportPage = () => {
                     <ContactCard 
                         icon={Phone} 
                         label="Call Us" 
-                        sub={supportPhone} 
-                        onClick={() => window.location.href = `tel:${supportPhone}`} 
+                        sub={`${tollFreePhone} (Toll Free)`}
+                        onClick={() => window.location.href = tollFreeHref}
                     />
                     <ContactCard 
                         icon={Mail} 
@@ -283,7 +285,7 @@ const SupportPage = () => {
                     <div>
                         <h3 className="font-bold text-slate-800 text-sm">{companyName}</h3>
                         <p className="text-xs text-slate-600 mt-1">
-                            <a href={`tel:${supportPhone}`} className="font-semibold text-slate-700 hover:text-amber-800">{supportPhone}</a>
+                            <a href={tollFreeHref} className="font-semibold text-slate-700 hover:text-amber-800">{tollFreePhone} (Toll Free)</a>
                             {' · '}
                             <a href={`mailto:${supportEmail}`} className="font-semibold text-slate-700 hover:text-amber-800 break-all">{supportEmail}</a>
                         </p>

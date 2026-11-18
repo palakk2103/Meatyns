@@ -22,8 +22,33 @@ import {
 } from "../validation/customerAuthValidation.js";
 import { checkLoginOtp, createLoginOtp, LOGIN_OTP_TTL_MINUTES } from "../utils/loginOtp.js";
 import { sendLoginOtpEmail } from "../services/emailService.js";
+import {
+    assertPilotAllowedCustomer,
+    assertPilotAllowedPhone,
+    isCustomerPilotModeOn,
+    PILOT_ACCESS_CODE,
+    pilotAccessResponseData,
+} from "../utils/customerPilotAccess.js";
 
 const generateToken = signCustomerAccessToken;
+
+// Error response that also carries the pilot-access code so the app can show
+// the "launching soon" dialog (see utils/customerPilotAccess.js).
+const respondError = (res, error) =>
+    handleResponse(
+        res,
+        error.statusCode || 500,
+        error.message,
+        error.code === PILOT_ACCESS_CODE ? pilotAccessResponseData() : undefined,
+    );
+
+// Pilot mode: email OTP is only for existing accounts whose phone is allowed.
+// Checked before any account is created or any email is sent.
+const assertPilotEmailAccess = async (email) => {
+    if (!isCustomerPilotModeOn()) return;
+    const existing = await Customer.findOne({ email }).select("phone").lean();
+    await assertPilotAllowedCustomer(existing);
+};
 
 // Email OTP: real random code sent by email; fixed test OTP only for
 // configured test accounts (see utils/loginOtp.js).
@@ -56,6 +81,7 @@ export const signupCustomer = async (req, res) => {
 
         if (payload.email) {
             const normalizedEmail = payload.email.trim().toLowerCase();
+            await assertPilotEmailAccess(normalizedEmail);
             let customer = await Customer.findOne({ email: normalizedEmail });
             if (!customer) {
                 const placeholderPhone = payload.phone || `+9199${Date.now().toString().slice(-8)}`;
@@ -70,6 +96,7 @@ export const signupCustomer = async (req, res) => {
             return handleResponse(res, 200, "OTP has been sent to your email", result);
         }
 
+        assertPilotAllowedPhone(payload.phone);
         const otpResponse = await issueCustomerOtp({
             name: payload.name,
             rawPhone: payload.phone,
@@ -79,7 +106,7 @@ export const signupCustomer = async (req, res) => {
 
         return handleResponse(res, 200, "If the number is eligible, OTP has been sent", otpResponse);
     } catch (error) {
-        return handleResponse(res, error.statusCode || 500, error.message);
+        return respondError(res, error);
     }
 };
 
@@ -92,6 +119,7 @@ export const loginCustomer = async (req, res) => {
 
         if (payload.email) {
             const normalizedEmail = payload.email.trim().toLowerCase();
+            await assertPilotEmailAccess(normalizedEmail);
             let customer = await Customer.findOne({ email: normalizedEmail });
             if (!customer) {
                 // If user doesn't exist, create customer seamlessly
@@ -107,6 +135,7 @@ export const loginCustomer = async (req, res) => {
             return handleResponse(res, 200, "OTP has been sent to your email", result);
         }
 
+        assertPilotAllowedPhone(payload.phone);
         const otpResponse = await issueCustomerOtp({
             rawPhone: payload.phone,
             flow: "login",
@@ -115,7 +144,7 @@ export const loginCustomer = async (req, res) => {
 
         return handleResponse(res, 200, "If the number is eligible, OTP has been sent", otpResponse);
     } catch (error) {
-        return handleResponse(res, error.statusCode || 500, error.message);
+        return respondError(res, error);
     }
 };
 
@@ -132,6 +161,7 @@ export const verifyCustomerOTP = async (req, res) => {
             if (!customer) {
                 return handleResponse(res, 404, "Customer account not found");
             }
+            await assertPilotAllowedCustomer(customer);
             const check = checkLoginOtp({
                 identifier: normalizedEmail,
                 submitted: payload.otp,
@@ -155,6 +185,7 @@ export const verifyCustomerOTP = async (req, res) => {
             });
         }
 
+        assertPilotAllowedPhone(payload.phone);
         const customer = await verifyCustomerOtpCode({
             rawPhone: payload.phone,
             otp: payload.otp,
@@ -176,7 +207,7 @@ export const verifyCustomerOTP = async (req, res) => {
             }
         );
     } catch (error) {
-        return handleResponse(res, error.statusCode || 500, error.message);
+        return respondError(res, error);
     }
 };
 
@@ -201,6 +232,7 @@ export const loginCustomerWithPassword = async (req, res) => {
         if (!isMatch) {
             return handleResponse(res, 401, "Invalid email or password");
         }
+        await assertPilotAllowedCustomer(customer);
 
         customer.lastLogin = new Date();
         await customer.save();
@@ -213,7 +245,7 @@ export const loginCustomerWithPassword = async (req, res) => {
             customer: sanitizeCustomer(customer),
         });
     } catch (error) {
-        return handleResponse(res, error.statusCode || 500, error.message);
+        return respondError(res, error);
     }
 };
 
@@ -223,6 +255,13 @@ export const loginCustomerWithPassword = async (req, res) => {
 export const refreshCustomerToken = async (req, res) => {
     try {
         const { token, customer } = await refreshCustomerSession(req, res);
+        try {
+            await assertPilotAllowedCustomer(customer);
+        } catch (pilotError) {
+            // Not on the pilot list: end the saved session so the app logs out.
+            await endCustomerSession(req, res).catch(() => {});
+            return respondError(res, pilotError);
+        }
         return handleResponse(res, 200, "Session refreshed", {
             token,
             customer: sanitizeCustomer(customer),

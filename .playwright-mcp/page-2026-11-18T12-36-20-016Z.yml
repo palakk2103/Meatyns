@@ -1,0 +1,9 @@
+- generic [active]:
+  - generic:
+    - region "Notifications alt+T":
+      - list
+      - list:
+        - listitem [ref=e1]:
+          - generic [ref=e5]: Couldn't detect your location. Location permission is blocked. Allow location for this site from the address bar (lock icon) and try again. Showing the default area for now.
+        - listitem [ref=e7]:
+          - generic [ref=e11]: Couldn't detect your location. Location permission is blocked. Allow location for this site from the address bar (lock icon) and try again. Showing the default area for now.

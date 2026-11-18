@@ -64,7 +64,7 @@ export async function verifyOtpController(req, res) {
     return handleResponse(res, 200, "OTP verified successfully", result);
   } catch (error) {
     return handleResponse(res, error.statusCode || 500, error.message, {
-      code: "OTP_VERIFY_FAILED",
+      code: error.providerCode || "OTP_VERIFY_FAILED",
       attemptsRemaining: error.attemptsRemaining,
     });
   }

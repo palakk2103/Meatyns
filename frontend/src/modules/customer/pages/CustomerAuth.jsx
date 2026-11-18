@@ -75,8 +75,18 @@ const CATEGORIES = [
     },
 ];
 
+// Backend returns this code while the customer app is limited to test numbers
+// (backend/app/utils/customerPilotAccess.js).
+const PILOT_ACCESS_CODE = 'PILOT_ACCESS_ONLY';
+const getPilotNotice = (error) => {
+    const data = error?.response?.data;
+    if (data?.result?.code !== PILOT_ACCESS_CODE) return null;
+    return { title: data.result.title || "We're launching soon!", message: data.message };
+};
+
 const CustomerAuth = () => {
     const [isLoading, setIsLoading] = useState(false);
+    const [pilotNotice, setPilotNotice] = useState(null);
     const [showOtp, setShowOtp] = useState(false);
     const [timer, setTimer] = useState(0);
     const [carouselIndex, setCarouselIndex] = useState(0);
@@ -141,6 +151,12 @@ const CustomerAuth = () => {
             toast.success('OTP sent to your phone!');
             // Mock OTP toast hidden for App Store submission
         } catch (error) {
+            const notice = getPilotNotice(error);
+            if (notice) {
+                setShowOtp(false);
+                setPilotNotice(notice);
+                return;
+            }
             const apiMessage = error?.response?.data?.message;
             toast.error(apiMessage || 'Failed to send OTP. Please try again.');
         } finally {
@@ -186,6 +202,12 @@ const CustomerAuth = () => {
                 navigate('/');
             }
         } catch (error) {
+            const notice = getPilotNotice(error);
+            if (notice) {
+                setShowOtp(false);
+                setPilotNotice(notice);
+                return;
+            }
             const apiMessage = error?.response?.data?.message;
             toast.error(apiMessage || 'Invalid OTP');
         } finally {
@@ -625,6 +647,47 @@ const CustomerAuth = () => {
                 isLoading={isLoading}
                 timer={timer}
             />
+
+            {/* Pilot / testing-phase notice for numbers that are not on the test list */}
+            <AnimatePresence>
+                {pilotNotice && (
+                    <motion.div
+                        className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 px-4"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onClick={() => setPilotNotice(null)}
+                    >
+                        <motion.div
+                            role="dialog"
+                            aria-modal="true"
+                            aria-labelledby="pilot-notice-title"
+                            className="w-full max-w-sm rounded-3xl bg-white p-6 text-center shadow-2xl"
+                            initial={{ scale: 0.9, y: 20 }}
+                            animate={{ scale: 1, y: 0 }}
+                            exit={{ scale: 0.9, y: 20 }}
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-red-50 text-red-700">
+                                <Sparkles size={30} />
+                            </div>
+                            <h2 id="pilot-notice-title" className="mb-2 text-xl font-bold text-gray-900">
+                                {pilotNotice.title}
+                            </h2>
+                            <p className="mb-6 text-sm leading-relaxed text-gray-600">
+                                {pilotNotice.message}
+                            </p>
+                            <button
+                                type="button"
+                                onClick={() => setPilotNotice(null)}
+                                className="w-full rounded-2xl bg-red-700 py-3 font-semibold text-white transition hover:bg-red-800"
+                            >
+                                Okay, got it
+                            </button>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </>
     );
 };

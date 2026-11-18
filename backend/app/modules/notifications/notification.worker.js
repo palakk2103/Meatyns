@@ -20,6 +20,77 @@ import {
   setGauge,
 } from "../../services/metrics.js";
 
+// A delivery claim older than this is assumed to belong to a crashed process.
+const DELIVERY_CLAIM_STALE_MS = 5 * 60 * 1000;
+
+/**
+ * Safety net for the push pipeline. When Redis is enabled, the API only
+ * enqueues a Bull job and relies on a separate worker process to send it.
+ * If that worker is not running, every push (e.g. the seller's NEW_ORDER
+ * alert) stayed "pending" forever and the seller never heard about the
+ * order. This sweeper runs inside the API process and sends any
+ * notification still pending after `minAgeMs`. The atomic claim in
+ * `deliverNotificationById` guarantees no double sends when a worker IS
+ * running. Notifications older than `maxAgeMs` are left alone so a long
+ * outage never blasts customers/sellers with stale alerts.
+ */
+export function startPendingNotificationSweeper({
+  intervalMs = 20 * 1000,
+  minAgeMs = 15 * 1000,
+  maxAgeMs = 10 * 60 * 1000,
+  batchSize = 50,
+} = {}) {
+  let running = false;
+  const tick = async () => {
+    if (running) return;
+    running = true;
+    try {
+      const now = Date.now();
+      const pending = await Notification.find({
+        status: "pending",
+        channel: "push",
+        createdAt: { $gte: new Date(now - maxAgeMs), $lte: new Date(now - minAgeMs) },
+        $or: [
+          { deliveryClaimedAt: null },
+          { deliveryClaimedAt: { $lt: new Date(now - DELIVERY_CLAIM_STALE_MS) } },
+        ],
+      })
+        .sort({ createdAt: 1 })
+        .limit(batchSize)
+        .select("_id")
+        .lean();
+
+      for (const doc of pending) {
+        try {
+          await deliverNotificationById(doc._id.toString());
+        } catch (error) {
+          logger.warn("Pending notification sweep send failed", {
+            scope: "pendingNotificationSweeper",
+            notificationId: doc._id.toString(),
+            error: error.message,
+          });
+        }
+      }
+      if (pending.length > 0) {
+        logger.info("Pending notification sweeper delivered stuck notifications", {
+          scope: "pendingNotificationSweeper",
+          count: pending.length,
+        });
+      }
+    } catch (error) {
+      logger.warn("Pending notification sweep failed", {
+        scope: "pendingNotificationSweeper",
+        error: error.message,
+      });
+    } finally {
+      running = false;
+    }
+  };
+  const timer = setInterval(tick, intervalMs);
+  timer.unref?.();
+  return () => clearInterval(timer);
+}
+
 function failedCodeOf(responseItem) {
   return String(responseItem?.error?.code || "").trim();
 }
@@ -88,7 +159,23 @@ export async function deliverNotificationById(notificationId) {
     return;
   }
 
-  const notification = await Notification.findById(notificationId);
+  // Atomic claim: only one process (Bull worker, inline send or the pending
+  // sweeper) may send a given notification. A failed one may be retried,
+  // and a claim older than DELIVERY_CLAIM_STALE_MS is treated as crashed.
+  const claimedAt = new Date();
+  const notification = await Notification.findOneAndUpdate(
+    {
+      _id: notificationId,
+      status: { $ne: "sent" },
+      $or: [
+        { deliveryClaimedAt: null },
+        { status: "failed" },
+        { deliveryClaimedAt: { $lt: new Date(claimedAt.getTime() - DELIVERY_CLAIM_STALE_MS) } },
+      ],
+    },
+    { $set: { deliveryClaimedAt: claimedAt } },
+    { new: true },
+  );
   if (!notification) {
     return;
   }
