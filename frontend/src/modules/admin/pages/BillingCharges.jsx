@@ -7,7 +7,6 @@ import {
     Info,
     Truck,
     Settings,
-    Zap,
     MapPin,
     History,
     Plus,
@@ -184,7 +183,7 @@ const BillingCharges = () => {
                             <RotateCcw className="h-5 w-5 text-red-600" />
                         </div>
                     </h1>
-                    <p className="admin-description mt-1">Set up delivery fees, platform charges, and free delivery limits.</p>
+                    <p className="admin-description mt-1">Set up delivery fees and platform charges.</p>
                 </div>
                 <div className="flex items-center gap-3">
                     <button className="flex items-center gap-2 px-5 py-3 bg-white ring-1 ring-slate-200 text-slate-700 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-slate-50 transition-all shadow-sm">
@@ -256,39 +255,6 @@ const BillingCharges = () => {
                                     />
                                 </div>
                                 <p className="text-[10px] font-bold text-slate-400 italic">Fee added to every order.</p>
-                            </div>
-                            <div className="space-y-3">
-                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
-                                    Free Delivery Minimum (₹)
-                                    <Zap className="h-3 w-3 text-amber-500" />
-                                </label>
-                                <div className="relative group">
-                                    <span className="absolute left-5 top-1/2 -translate-y-1/2 font-bold text-slate-300 group-focus-within:text-red-500 transition-colors">₹</span>
-                                    <input
-                                        type="number"
-                                        value={config.freeDeliveryThreshold}
-                                        onChange={(e) => handleInputChange('freeDeliveryThreshold', e.target.value)}
-                                        className="w-full pl-10 pr-5 py-4 bg-slate-50 border-none rounded-2xl text-base font-black text-slate-900 outline-none focus:ring-2 focus:ring-red-500/10 transition-all"
-                                    />
-                                </div>
-                                <p className="text-[10px] font-bold text-slate-400 italic">Orders above this amount will have free delivery.</p>
-                            </div>
-                            <div className="space-y-3 md:col-span-2">
-                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
-                                    Minimum Order Value (₹)
-                                    <Info className="h-3 w-3 opacity-50" />
-                                </label>
-                                <div className="relative group">
-                                    <span className="absolute left-5 top-1/2 -translate-y-1/2 font-bold text-slate-300 group-focus-within:text-red-500 transition-colors">₹</span>
-                                    <input
-                                        type="number"
-                                        value={config.minimumOrderValue}
-                                        onChange={(e) => handleInputChange('minimumOrderValue', e.target.value)}
-                                        className="w-full pl-10 pr-5 py-4 bg-slate-50 border-none rounded-2xl text-base font-black text-slate-900 outline-none focus:ring-2 focus:ring-red-500/10 transition-all"
-                                        placeholder="0 for no minimum"
-                                    />
-                                </div>
-                                <p className="text-[10px] font-bold text-slate-400 italic">Customers cannot checkout if their cart is below this amount. Set to 0 to disable.</p>
                             </div>
                         </div>
                     </Card>

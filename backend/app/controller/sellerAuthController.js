@@ -86,7 +86,6 @@ export const signupSeller = async (req, res) => {
             email,
             phone,
             password,
-            emailVerificationToken,
             phoneVerificationToken,
             shopName,
             category,
@@ -141,11 +140,10 @@ export const signupSeller = async (req, res) => {
             return handleResponse(res, 400, "All fields are required");
         }
 
-        verifySellerVerificationToken({
-            channel: "email",
-            rawValue: email,
-            token: emailVerificationToken,
-        });
+        // Email is collected but not OTP-verified at signup; only the phone is verified.
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email).trim())) {
+            return handleResponse(res, 400, "Please enter a valid email address");
+        }
         verifySellerVerificationToken({
             channel: "phone",
             rawValue: phone,
@@ -202,7 +200,7 @@ export const signupSeller = async (req, res) => {
             documents: sellerDocuments,
             applicationStatus: "pending",
             isVerified: false,
-            emailVerified: true,
+            emailVerified: false,
             phoneVerified: true,
             isActive: false,
         };

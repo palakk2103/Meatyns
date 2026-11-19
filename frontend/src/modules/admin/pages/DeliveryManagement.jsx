@@ -646,64 +646,6 @@ const DeliveryManagement = () => {
                             </div>
                         )}
                     </Card>
-
-                    <Card className="p-6 rounded-2xl border border-slate-200/80 bg-white space-y-6 shadow-xs">
-                        <div className="border-b border-slate-100 pb-4">
-                            <h3 className="text-sm font-black text-slate-900 uppercase tracking-wider">
-                                Order Thresholds & Rules
-                            </h3>
-                            <p className="text-xs text-slate-500 mt-0.5">
-                                Configure thresholds for free delivery and checkout eligibility.
-                            </p>
-                        </div>
-
-                        <div className="space-y-4">
-                            <div className="space-y-1.5">
-                                <label className="text-xs font-bold text-slate-700 flex items-center justify-between">
-                                    <span>Free Delivery Order Threshold (₹)</span>
-                                    <span className="text-[11px] text-emerald-600 font-bold">Recommended: ₹499</span>
-                                </label>
-                                <div className="relative">
-                                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-sm">₹</span>
-                                    <input
-                                        type="number"
-                                        min="0"
-                                        value={freeDeliveryThreshold}
-                                        onChange={(e) => {
-                                            markDirty();
-                                            setFreeDeliveryThreshold(Math.max(0, parseFloat(e.target.value) || 0));
-                                        }}
-                                        className="w-full pl-8 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-slate-900 focus:bg-white focus:ring-2 focus:ring-black outline-none"
-                                    />
-                                </div>
-                                <p className="text-[11px] text-slate-400">
-                                    Orders with item total at or above this amount receive 100% free standard delivery. Set to 0 to disable.
-                                </p>
-                            </div>
-
-                            <div className="space-y-1.5">
-                                <label className="text-xs font-bold text-slate-700">
-                                    Minimum Order Value (₹)
-                                </label>
-                                <div className="relative">
-                                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-sm">₹</span>
-                                    <input
-                                        type="number"
-                                        min="0"
-                                        value={minimumOrderValue}
-                                        onChange={(e) => {
-                                            markDirty();
-                                            setMinimumOrderValue(Math.max(0, parseFloat(e.target.value) || 0));
-                                        }}
-                                        className="w-full pl-8 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-slate-900 focus:bg-white focus:ring-2 focus:ring-black outline-none"
-                                    />
-                                </div>
-                                <p className="text-[11px] text-slate-400">
-                                    Customers cannot place orders below this cart value. Set to 0 for no minimum.
-                                </p>
-                            </div>
-                        </div>
-                    </Card>
                 </div>
             )}
 

@@ -41,7 +41,7 @@ export function useCartServiceability(lat, lng, enabled = true) {
         // The server swapped items to the same product at the outlet serving
         // this location; reload the cart so ids/prices match the new outlet.
         if (Number(res.data?.result?.remappedCount || 0) > 0 && typeof refreshCart === "function") {
-          refreshCart();
+          refreshCart({ fresh: true });
         }
       })
       .catch(() => {

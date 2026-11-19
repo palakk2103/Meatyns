@@ -102,6 +102,16 @@ export const LocationProvider = ({ children }) => {
     () => readStoredLocation() || DEFAULT_LOCATION,
   );
   const lastDetectedAtRef = useRef(0);
+  // "detecting" until the first live fix (or a stored/manual location) is
+  // available, "ready" once we have a real location, "failed" when detection
+  // failed and there is nothing real to fall back to. The catalogue must not
+  // be priced from the hardcoded default, so the UI gates on this.
+  const [locationStatus, setLocationStatus] = useState(() =>
+    readStoredLocation() ? "ready" : "detecting",
+  );
+  // True once the customer picked a delivery location themselves in this
+  // session; background re-detection must then not overwrite it.
+  const manualSelectionRef = useRef(false);
 
   // Address list for drawer UI – will be hydrated from profile API.
   const [savedAddresses, setSavedAddresses] = useState([]);
@@ -114,9 +124,16 @@ export const LocationProvider = ({ children }) => {
   // address actions should touch the saved list.
   const updateLocation = useCallback((
     newLoc,
-    { persist = true, updateSavedHome = false } = {},
+    { persist = true, updateSavedHome = false, source = "manual" } = {},
   ) => {
     setCurrentLocation(newLoc);
+    const hasCoords =
+      Number.isFinite(Number(newLoc?.latitude)) &&
+      Number.isFinite(Number(newLoc?.longitude));
+    if (hasCoords && !newLoc?.isDefault) {
+      setLocationStatus("ready");
+      manualSelectionRef.current = source === "manual";
+    }
 
     if (updateSavedHome) {
       setSavedAddresses((prev) =>
@@ -191,6 +208,13 @@ export const LocationProvider = ({ children }) => {
       });
 
       const handleLocationSuccess = async (latitude, longitude) => {
+        // A background fix that lands after the customer already picked a
+        // delivery location must not replace their choice.
+        if (options.autoDetect && manualSelectionRef.current) {
+          setIsFetchingLocation(false);
+          resolve({ ok: true, skipped: true });
+          return;
+        }
         try {
           // Always succeed with coordinates (needed for delivery fee calculation),
           // even if reverse geocoding fails (key missing / quota / restrictions).
@@ -267,6 +291,7 @@ export const LocationProvider = ({ children }) => {
           updateLocation(liveLocation, {
             persist: true,
             updateSavedHome: false,
+            source: "gps",
           });
           
           if (toastId) {
@@ -312,7 +337,7 @@ export const LocationProvider = ({ children }) => {
             // Keep fallbackFromCoords
           }
 
-          updateLocation(resolvedLocation, { persist: true, updateSavedHome: false });
+          updateLocation(resolvedLocation, { persist: true, updateSavedHome: false, source: "gps" });
           
           if (toastId) {
              toast.success("Location fetched successfully", { id: toastId, position: "bottom-center" });
@@ -331,6 +356,9 @@ export const LocationProvider = ({ children }) => {
         const message = typeof error === 'string' ? error : (error.message || "Location permission denied");
         setLocationError(message);
         setIsFetchingLocation(false);
+        // Keep a stored/manual real location; only flag failure when all we
+        // have is the hardcoded default.
+        setLocationStatus((prev) => (prev === "ready" ? "ready" : "failed"));
         if (toastId) {
           toast.error(message, { id: toastId, position: "bottom-center" });
         } else if (!options.silent) {
@@ -456,6 +484,9 @@ export const LocationProvider = ({ children }) => {
     const onVisible = () => {
       if (document.visibilityState !== "visible") return;
       if (Date.now() - lastDetectedAtRef.current < REDETECT_AFTER_MS) return;
+      // The customer chose where to deliver; don't silently move them back
+      // to their GPS position.
+      if (manualSelectionRef.current) return;
       lastDetectedAtRef.current = Date.now();
       fetchAndCacheLocation({ autoDetect: true, silent: true });
     };
@@ -463,8 +494,15 @@ export const LocationProvider = ({ children }) => {
     return () => document.removeEventListener("visibilitychange", onVisible);
   }, [fetchAndCacheLocation]);
 
+  const hasRealLocation =
+    !currentLocation?.isDefault &&
+    Number.isFinite(Number(currentLocation?.latitude)) &&
+    Number.isFinite(Number(currentLocation?.longitude));
+
   const locationValue = useMemo(() => ({
     currentLocation,
+    locationStatus,
+    hasRealLocation,
     savedAddresses,
     updateLocation,
     addAddress,
@@ -472,7 +510,7 @@ export const LocationProvider = ({ children }) => {
     isFetchingLocation,
     locationError,
     refreshLocation,
-  }), [currentLocation, savedAddresses, updateLocation, addAddress, refreshAddresses, isFetchingLocation, locationError, refreshLocation]);
+  }), [currentLocation, locationStatus, hasRealLocation, savedAddresses, updateLocation, addAddress, refreshAddresses, isFetchingLocation, locationError, refreshLocation]);
 
   return (
     <LocationContext.Provider value={locationValue}>

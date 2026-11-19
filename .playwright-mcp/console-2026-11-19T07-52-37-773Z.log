@@ -1,0 +1,447 @@
+[     315ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[     506ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[     674ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://localhost:7000/api/wishlist?idsOnly=true:1
+[     676ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://localhost:7000/api/cart:1
+[     790ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[    1135ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[    1174ms] [LOG] [orderSocket] Socket connected, ID: _4QI-TLAIYspzO4uAAAF @ http://localhost:5173/src/core/services/orderSocket.js:49
+[    1573ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[    6063ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[   16631ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[   16830ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[   16938ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[   16983ms] [LOG] [orderSocket] Socket connected, ID: UaxKIHSrp805A6IXAAAH @ http://localhost:5173/src/core/services/orderSocket.js:49
+[   20983ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[  148893ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[  286489ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[  322207ms] [LOG] [orderSocket] Socket disconnected, reason: transport close @ http://localhost:5173/src/core/services/orderSocket.js:60
+[  324553ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9cu3577m:1
+[  324554ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[  327553ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[  328548ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9cx60azl:1
+[  328549ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[  331555ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[  337259ms] [LOG] [orderSocket] Socket connected, ID: ZVEO__L9dspNNyIrAAAB @ http://localhost:5173/src/core/services/orderSocket.js:49
+[  339732ms] [LOG] [orderSocket] Socket disconnected, reason: transport close @ http://localhost:5173/src/core/services/orderSocket.js:60
+[  340772ms] [ERROR] Route Error: Error: useLocation must be used within a LocationProvider
+    at useLocation (http://localhost:5173/src/modules/customer/context/LocationContext.jsx?t=1795074028885:419:11)
+    at LocationGate (http://localhost:5173/src/modules/customer/components/shared/LocationGate.jsx:9:99)
+    at Object.react_stack_bottom_frame (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:18509:20)
+    at renderWithHooks (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:5654:24)
+    at updateFunctionComponent (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:7475:21)
+    at beginWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:8525:20)
+    at runWithFiberInDEV (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:997:72)
+    at performUnitOfWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12561:98)
+    at workLoopSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12424:43)
+    at renderRootSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12408:13) @ http://localhost:5173/src/shared/components/RootErrorBoundary.jsx:13
+[  340784ms] [ERROR] Route Error: Error: useLocation must be used within a LocationProvider
+    at useLocation (http://localhost:5173/src/modules/customer/context/LocationContext.jsx?t=1795074028885:419:11)
+    at LocationGate (http://localhost:5173/src/modules/customer/components/shared/LocationGate.jsx:9:99)
+    at Object.react_stack_bottom_frame (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:18509:20)
+    at renderWithHooks (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:5654:24)
+    at updateFunctionComponent (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:7475:21)
+    at beginWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:8525:20)
+    at runWithFiberInDEV (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:997:72)
+    at performUnitOfWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12561:98)
+    at workLoopSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12424:43)
+    at renderRootSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12408:13) @ http://localhost:5173/src/shared/components/RootErrorBoundary.jsx:13
+[  340791ms] [ERROR] Route Error: Error: useLocation must be used within a LocationProvider
+    at useLocation (http://localhost:5173/src/modules/customer/context/LocationContext.jsx?t=1795074028885:419:11)
+    at LocationGate (http://localhost:5173/src/modules/customer/components/shared/LocationGate.jsx:9:99)
+    at Object.react_stack_bottom_frame (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:18509:20)
+    at renderWithHooks (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:5654:24)
+    at updateFunctionComponent (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:7475:21)
+    at beginWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:8525:20)
+    at runWithFiberInDEV (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:997:72)
+    at performUnitOfWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12561:98)
+    at workLoopSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12424:43)
+    at renderRootSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12408:13) @ http://localhost:5173/src/shared/components/RootErrorBoundary.jsx:13
+[  340792ms] [ERROR] Route Error: Error: useLocation must be used within a LocationProvider
+    at useLocation (http://localhost:5173/src/modules/customer/context/LocationContext.jsx?t=1795074028885:419:11)
+    at LocationGate (http://localhost:5173/src/modules/customer/components/shared/LocationGate.jsx:9:99)
+    at Object.react_stack_bottom_frame (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:18509:20)
+    at renderWithHooks (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:5654:24)
+    at updateFunctionComponent (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:7475:21)
+    at beginWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:8525:20)
+    at runWithFiberInDEV (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:997:72)
+    at performUnitOfWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12561:98)
+    at workLoopSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12424:43)
+    at renderRootSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12408:13) @ http://localhost:5173/src/shared/components/RootErrorBoundary.jsx:13
+[  340803ms] [ERROR] %o
+
+%s
+
+%s
+ Error: useLocation must be used within a LocationProvider
+    at useLocation (http://localhost:5173/src/modules/customer/context/LocationContext.jsx?t=1795074028885:419:11)
+    at LocationGate (http://localhost:5173/src/modules/customer/components/shared/LocationGate.jsx:9:99)
+    at Object.react_stack_bottom_frame (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:18509:20)
+    at renderWithHooks (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:5654:24)
+    at updateFunctionComponent (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:7475:21)
+    at beginWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:8525:20)
+    at runWithFiberInDEV (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:997:72)
+    at performUnitOfWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12561:98)
+    at workLoopSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12424:43)
+    at renderRootSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12408:13) The above error occurred in the <LocationGate> component. React will try to recreate this component tree from scratch using the error boundary you provided, RenderErrorBoundary. @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:7001
+[  340804ms] [ERROR] React Router caught the following error during render Error: useLocation must be used within a LocationProvider
+    at useLocation (http://localhost:5173/src/modules/customer/context/LocationContext.jsx?t=1795074028885:419:11)
+    at LocationGate (http://localhost:5173/src/modules/customer/components/shared/LocationGate.jsx:9:99)
+    at Object.react_stack_bottom_frame (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:18509:20)
+    at renderWithHooks (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:5654:24)
+    at updateFunctionComponent (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:7475:21)
+    at beginWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:8525:20)
+    at runWithFiberInDEV (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:997:72)
+    at performUnitOfWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12561:98)
+    at workLoopSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12424:43)
+    at renderRootSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12408:13) @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=707a6b01:6219
+[  341179ms] [ERROR] Failed to fetch cart from backend AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41)
+    at async fetchCart (http://localhost:5173/src/modules/customer/context/CartContext.jsx?t=1795075097460:142:26) @ http://localhost:5173/src/modules/customer/context/CartContext.jsx?t=1795075097460:145
+[  341180ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/cart:1
+[  341181ms] [ERROR] Failed to fetch wishlist from backend AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41)
+    at async fetchWishlistIds (http://localhost:5173/src/modules/customer/context/WishlistContext.jsx?t=1795075097460:31:26) @ http://localhost:5173/src/modules/customer/context/WishlistContext.jsx?t=1795075097460:46
+[  341182ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/wishlist?idsOnly=true:1
+[  341183ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/customer/profile:1
+[  341566ms] [ERROR] Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41) @ http://localhost:5173/src/modules/customer/pages/Home.jsx?t=1795075097460:341
+[  341567ms] [ERROR] Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41) @ http://localhost:5173/src/modules/customer/pages/Home.jsx?t=1795075097460:341
+[  341567ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/categories:1
+[  341569ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/gallery/home:1
+[  341569ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/products?limit=50&lat=18.5308&lng=73.8475:1
+[  341570ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/experience?pageType=home:1
+[  341570ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/offer-sections?lat=18.5308&lng=73.8475:1
+[  341571ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/experience/hero?pageType=home:1
+[  342682ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9d82pf8h:1
+[  342683ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[  344008ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[  346577ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9db2u2kg:1
+[  346577ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[  351379ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9desak7l:1
+[  351380ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[  354388ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[  361423ms] [LOG] [orderSocket] Socket connected, ID: SHxV_xM2CI-rgmDsAAAF @ http://localhost:5173/src/core/services/orderSocket.js:49
+[  367056ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[  378245ms] [LOG] [orderSocket] Socket disconnected, reason: transport close @ http://localhost:5173/src/core/services/orderSocket.js:60
+[  380597ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9e1brqjk:1
+[  380598ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[  382967ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9e35o821:1
+[  382967ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[  385973ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[  389821ms] [LOG] [orderSocket] Socket connected, ID: 9qA4c9Qsq6cPBTNnAAAB @ http://localhost:5173/src/core/services/orderSocket.js:49
+[  392931ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[  400123ms] [LOG] [orderSocket] Socket disconnected, reason: transport close @ http://localhost:5173/src/core/services/orderSocket.js:60
+[  402103ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9ehx44pd:1
+[  402103ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[  404900ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9ek2vd9u:1
+[  404900ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[  407902ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[  413547ms] [LOG] [orderSocket] Socket connected, ID: r3dKT6Nzu8NL7nEZAAAD @ http://localhost:5173/src/core/services/orderSocket.js:49
+[  416550ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[  434977ms] [ERROR] Route Error: TypeError: Cannot destructure property 'cart' of 'useCart(...)' as it is undefined.
+    at MiniCart (http://localhost:5173/src/modules/customer/components/shared/MiniCart.jsx?t=1795075097460:12:11)
+    at Object.react_stack_bottom_frame (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:18509:20)
+    at renderWithHooks (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:5654:24)
+    at updateFunctionComponent (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:7475:21)
+    at beginWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:8525:20)
+    at runWithFiberInDEV (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:997:72)
+    at performUnitOfWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12561:98)
+    at workLoopSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12424:43)
+    at renderRootSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12408:13)
+    at performWorkOnRoot (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:11766:189) @ http://localhost:5173/src/shared/components/RootErrorBoundary.jsx:13
+[  434979ms] [ERROR] Route Error: TypeError: Cannot destructure property 'cart' of 'useCart(...)' as it is undefined.
+    at MiniCart (http://localhost:5173/src/modules/customer/components/shared/MiniCart.jsx?t=1795075097460:12:11)
+    at Object.react_stack_bottom_frame (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:18509:20)
+    at renderWithHooks (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:5654:24)
+    at updateFunctionComponent (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:7475:21)
+    at beginWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:8525:20)
+    at runWithFiberInDEV (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:997:72)
+    at performUnitOfWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12561:98)
+    at workLoopSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12424:43)
+    at renderRootSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12408:13)
+    at performWorkOnRoot (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:11766:189) @ http://localhost:5173/src/shared/components/RootErrorBoundary.jsx:13
+[  435067ms] [ERROR] Route Error: TypeError: Cannot destructure property 'cart' of 'useCart(...)' as it is undefined.
+    at MiniCart (http://localhost:5173/src/modules/customer/components/shared/MiniCart.jsx?t=1795075097460:12:11)
+    at Object.react_stack_bottom_frame (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:18509:20)
+    at renderWithHooks (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:5654:24)
+    at updateFunctionComponent (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:7475:21)
+    at beginWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:8525:20)
+    at runWithFiberInDEV (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:997:72)
+    at performUnitOfWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12561:98)
+    at workLoopSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12424:43)
+    at renderRootSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12408:13)
+    at performWorkOnRoot (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:11827:37) @ http://localhost:5173/src/shared/components/RootErrorBoundary.jsx:13
+[  435068ms] [ERROR] Route Error: TypeError: Cannot destructure property 'cart' of 'useCart(...)' as it is undefined.
+    at MiniCart (http://localhost:5173/src/modules/customer/components/shared/MiniCart.jsx?t=1795075097460:12:11)
+    at Object.react_stack_bottom_frame (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:18509:20)
+    at renderWithHooks (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:5654:24)
+    at updateFunctionComponent (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:7475:21)
+    at beginWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:8525:20)
+    at runWithFiberInDEV (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:997:72)
+    at performUnitOfWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12561:98)
+    at workLoopSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12424:43)
+    at renderRootSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12408:13)
+    at performWorkOnRoot (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:11827:37) @ http://localhost:5173/src/shared/components/RootErrorBoundary.jsx:13
+[  435081ms] [ERROR] %o
+
+%s
+
+%s
+ TypeError: Cannot destructure property 'cart' of 'useCart(...)' as it is undefined.
+    at MiniCart (http://localhost:5173/src/modules/customer/components/shared/MiniCart.jsx?t=1795075097460:12:11)
+    at Object.react_stack_bottom_frame (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:18509:20)
+    at renderWithHooks (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:5654:24)
+    at updateFunctionComponent (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:7475:21)
+    at beginWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:8525:20)
+    at runWithFiberInDEV (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:997:72)
+    at performUnitOfWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12561:98)
+    at workLoopSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12424:43)
+    at renderRootSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12408:13)
+    at performWorkOnRoot (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:11827:37) The above error occurred in the <MiniCart> component. React will try to recreate this component tree from scratch using the error boundary you provided, RenderErrorBoundary. @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:7001
+[  435081ms] [ERROR] React Router caught the following error during render TypeError: Cannot destructure property 'cart' of 'useCart(...)' as it is undefined.
+    at MiniCart (http://localhost:5173/src/modules/customer/components/shared/MiniCart.jsx?t=1795075097460:12:11)
+    at Object.react_stack_bottom_frame (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:18509:20)
+    at renderWithHooks (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:5654:24)
+    at updateFunctionComponent (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:7475:21)
+    at beginWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:8525:20)
+    at runWithFiberInDEV (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:997:72)
+    at performUnitOfWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12561:98)
+    at workLoopSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12424:43)
+    at renderRootSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12408:13)
+    at performWorkOnRoot (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:11827:37) @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=707a6b01:6219
+[  435319ms] [ERROR] Route Error: TypeError: Cannot destructure property 'cart' of 'useCart(...)' as it is undefined.
+    at MiniCart (http://localhost:5173/src/modules/customer/components/shared/MiniCart.jsx?t=1795075097460:12:11)
+    at Object.react_stack_bottom_frame (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:18509:20)
+    at renderWithHooks (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:5654:24)
+    at updateFunctionComponent (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:7475:21)
+    at beginWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:8525:20)
+    at runWithFiberInDEV (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:997:72)
+    at performUnitOfWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12561:98)
+    at workLoopSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12424:43)
+    at renderRootSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12408:13)
+    at performWorkOnRoot (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:11766:189) @ http://localhost:5173/src/shared/components/RootErrorBoundary.jsx:13
+[  435320ms] [ERROR] Route Error: TypeError: Cannot destructure property 'cart' of 'useCart(...)' as it is undefined.
+    at MiniCart (http://localhost:5173/src/modules/customer/components/shared/MiniCart.jsx?t=1795075097460:12:11)
+    at Object.react_stack_bottom_frame (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:18509:20)
+    at renderWithHooks (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:5654:24)
+    at updateFunctionComponent (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:7475:21)
+    at beginWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:8525:20)
+    at runWithFiberInDEV (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:997:72)
+    at performUnitOfWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12561:98)
+    at workLoopSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12424:43)
+    at renderRootSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12408:13)
+    at performWorkOnRoot (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:11766:189) @ http://localhost:5173/src/shared/components/RootErrorBoundary.jsx:13
+[  435446ms] [ERROR] Route Error: TypeError: Cannot destructure property 'cart' of 'useCart(...)' as it is undefined.
+    at MiniCart (http://localhost:5173/src/modules/customer/components/shared/MiniCart.jsx?t=1795075097460:12:11)
+    at Object.react_stack_bottom_frame (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:18509:20)
+    at renderWithHooks (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:5654:24)
+    at updateFunctionComponent (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:7475:21)
+    at beginWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:8525:20)
+    at runWithFiberInDEV (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:997:72)
+    at performUnitOfWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12561:98)
+    at workLoopSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12424:43)
+    at renderRootSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12408:13)
+    at performWorkOnRoot (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:11827:37) @ http://localhost:5173/src/shared/components/RootErrorBoundary.jsx:13
+[  435448ms] [ERROR] Route Error: TypeError: Cannot destructure property 'cart' of 'useCart(...)' as it is undefined.
+    at MiniCart (http://localhost:5173/src/modules/customer/components/shared/MiniCart.jsx?t=1795075097460:12:11)
+    at Object.react_stack_bottom_frame (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:18509:20)
+    at renderWithHooks (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:5654:24)
+    at updateFunctionComponent (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:7475:21)
+    at beginWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:8525:20)
+    at runWithFiberInDEV (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:997:72)
+    at performUnitOfWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12561:98)
+    at workLoopSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12424:43)
+    at renderRootSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12408:13)
+    at performWorkOnRoot (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:11827:37) @ http://localhost:5173/src/shared/components/RootErrorBoundary.jsx:13
+[  435455ms] [ERROR] %o
+
+%s
+
+%s
+ TypeError: Cannot destructure property 'cart' of 'useCart(...)' as it is undefined.
+    at MiniCart (http://localhost:5173/src/modules/customer/components/shared/MiniCart.jsx?t=1795075097460:12:11)
+    at Object.react_stack_bottom_frame (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:18509:20)
+    at renderWithHooks (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:5654:24)
+    at updateFunctionComponent (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:7475:21)
+    at beginWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:8525:20)
+    at runWithFiberInDEV (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:997:72)
+    at performUnitOfWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12561:98)
+    at workLoopSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12424:43)
+    at renderRootSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12408:13)
+    at performWorkOnRoot (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:11827:37) The above error occurred in the <MiniCart> component. React will try to recreate this component tree from scratch using the error boundary you provided, RenderErrorBoundary. @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:7001
+[  435456ms] [ERROR] React Router caught the following error during render TypeError: Cannot destructure property 'cart' of 'useCart(...)' as it is undefined.
+    at MiniCart (http://localhost:5173/src/modules/customer/components/shared/MiniCart.jsx?t=1795075097460:12:11)
+    at Object.react_stack_bottom_frame (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:18509:20)
+    at renderWithHooks (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:5654:24)
+    at updateFunctionComponent (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:7475:21)
+    at beginWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:8525:20)
+    at runWithFiberInDEV (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:997:72)
+    at performUnitOfWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12561:98)
+    at workLoopSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12424:43)
+    at renderRootSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12408:13)
+    at performWorkOnRoot (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:11827:37) @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=707a6b01:6219
+[  437428ms] [LOG] [orderSocket] Socket disconnected, reason: transport close @ http://localhost:5173/src/core/services/orderSocket.js:60
+[  437442ms] [ERROR] Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41) @ http://localhost:5173/src/modules/customer/pages/Home.jsx?t=1795075191431:341
+[  437444ms] [ERROR] Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41) @ http://localhost:5173/src/modules/customer/pages/Home.jsx?t=1795075191431:341
+[  437444ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/products?limit=50&lat=18.5308&lng=73.8475:1
+[  437445ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/cart/serviceability?lat=18.5308&lng=73.8475:1
+[  439551ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9fatges3:1
+[  439552ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[  441944ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9fcnz022:1
+[  441945ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[  447234ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9fgqvzxe:1
+[  447234ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[  450240ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[  457305ms] [LOG] [orderSocket] Socket connected, ID: MX9aRYCIzr4sNX2wAAAF @ http://localhost:5173/src/core/services/orderSocket.js:49
+[  460460ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[  718366ms] [LOG] [vite] server connection lost. Polling for restart... @ http://localhost:5173/@vite/client:865
+[  768206ms] [LOG] [orderSocket] Socket disconnected, reason: transport close @ http://localhost:5173/src/core/services/orderSocket.js:60
+[  769713ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[  770057ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[  770293ms] [LOG] [orderSocket] Socket connected, ID: 2ufHulJLyxS3XSY7AAAN @ http://localhost:5173/src/core/services/orderSocket.js:49
+[  770345ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[  775208ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[  958549ms] [LOG] [orderSocket] Socket disconnected, reason: transport close @ http://localhost:5173/src/core/services/orderSocket.js:60
+[  958550ms] [LOG] [vite] server connection lost. Polling for restart... @ http://localhost:5173/@vite/client:865
+[ 1410190ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 1410387ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 1410524ms] [ERROR] Failed to load resource: net::ERR_NAME_NOT_RESOLVED @ https://maps.googleapis.com/maps/api/geocode/json?latlng=18.5308%2C73.8475&key=AIzaSyCIqh3rJtNAXkBUHLKhHPILnNNnjVlz_N0:1
+[ 1410533ms] [ERROR] Failed to load resource: net::ERR_NAME_NOT_RESOLVED @ https://maps.googleapis.com/maps/api/geocode/json?latlng=18.5308%2C73.8475&key=AIzaSyCIqh3rJtNAXkBUHLKhHPILnNNnjVlz_N0:1
+[ 1410541ms] [ERROR] Failed to load resource: net::ERR_NAME_NOT_RESOLVED @ https://nominatim.openstreetmap.org/reverse?lat=18.5308&lon=73.8475&format=json:1
+[ 1410560ms] [ERROR] Failed to load resource: net::ERR_NAME_NOT_RESOLVED @ https://nominatim.openstreetmap.org/reverse?lat=18.5308&lon=73.8475&format=json:1
+[ 1414173ms] [ERROR] Failed to fetch settings AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41) @ http://localhost:5173/src/core/context/SettingsContext.jsx:33
+[ 1414174ms] [ERROR] Failed to fetch settings AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41) @ http://localhost:5173/src/core/context/SettingsContext.jsx:33
+[ 1414175ms] [ERROR] Failed to load resource: net::ERR_NETWORK_IO_SUSPENDED @ http://localhost:7000/api/settings:1
+[ 1922259ms] [LOG] [orderSocket] Socket disconnected, reason: ping timeout @ http://localhost:5173/src/core/services/orderSocket.js:60
+[ 1922289ms] [ERROR] Failed to fetch wishlist from backend AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41) @ http://localhost:5173/src/modules/customer/context/WishlistContext.jsx?t=1795075191431:46
+[ 1922290ms] [ERROR] Failed to fetch wishlist from backend AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41) @ http://localhost:5173/src/modules/customer/context/WishlistContext.jsx?t=1795075191431:46
+[ 1922290ms] [ERROR] Failed to load resource: net::ERR_NETWORK_IO_SUSPENDED @ http://localhost:7000/api/wishlist?idsOnly=true:1
+[ 1922290ms] [ERROR] Failed to fetch profile: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41) @ http://localhost:5173/src/core/context/AuthContext.jsx:174
+[ 1922291ms] [ERROR] Failed to fetch profile: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41) @ http://localhost:5173/src/core/context/AuthContext.jsx:174
+[ 1922291ms] [ERROR] Failed to load resource: net::ERR_NETWORK_IO_SUSPENDED @ http://localhost:7000/api/customer/profile:1
+[ 1922291ms] [ERROR] Failed to load resource: net::ERR_NETWORK_IO_SUSPENDED @ http://localhost:7000/api/products/serviceability?lat=18.5308&lng=73.8475:1
+[ 1922292ms] [LOG] [vite] server connection lost. Polling for restart... @ http://localhost:5173/@vite/client:865
+[ 1922770ms] [ERROR] Failed to load resource: net::ERR_NETWORK_IO_SUSPENDED @ http://localhost:7000/api/meta/pixel-config:1
+[ 1922770ms] [ERROR] Failed to fetch cart from backend AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41) @ http://localhost:5173/src/modules/customer/context/CartContext.jsx?t=1795075191431:146
+[ 1922770ms] [ERROR] Failed to fetch cart from backend AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41) @ http://localhost:5173/src/modules/customer/context/CartContext.jsx?t=1795075191431:146
+[ 1922771ms] [ERROR] Failed to load resource: net::ERR_NETWORK_IO_SUSPENDED @ http://localhost:7000/api/cart:1
+[ 1922771ms] [ERROR] Failed to load resource: net::ERR_NETWORK_IO_SUSPENDED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=a03yc6ty&sid=_v5KM8gIWfUKDLZYAAAU:1
+[ 1922771ms] [ERROR] Failed to load resource: net::ERR_NETWORK_IO_SUSPENDED @ http://localhost:7000/api/meta/pixel-config:1
+[ 1922772ms] [ERROR] Failed to load resource: net::ERR_NETWORK_IO_SUSPENDED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=a03yegil&sid=_v5KM8gIWfUKDLZYAAAU:1
+[ 1922822ms] [ERROR] Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41) @ http://localhost:5173/src/modules/customer/pages/Home.jsx?t=1795075191431:341
+[ 1922823ms] [ERROR] Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41) @ http://localhost:5173/src/modules/customer/pages/Home.jsx?t=1795075191431:341
+[ 1922823ms] [ERROR] Failed to load resource: net::ERR_NETWORK_IO_SUSPENDED @ http://localhost:7000/api/categories:1
+[ 1922824ms] [ERROR] Failed to load resource: net::ERR_NETWORK_IO_SUSPENDED @ http://localhost:7000/api/gallery/home:1
+[ 1922824ms] [ERROR] Failed to load resource: net::ERR_NETWORK_IO_SUSPENDED @ http://localhost:7000/api/products?limit=50&lat=18.5308&lng=73.8475:1
+[ 1922824ms] [ERROR] Failed to load resource: net::ERR_NETWORK_IO_SUSPENDED @ http://localhost:7000/api/experience?pageType=home:1
+[ 1922825ms] [ERROR] Failed to load resource: net::ERR_NETWORK_IO_SUSPENDED @ http://localhost:7000/api/offer-sections?lat=18.5308&lng=73.8475:1
+[ 1922825ms] [ERROR] Failed to load resource: net::ERR_NETWORK_IO_SUSPENDED @ http://localhost:7000/api/experience/hero?pageType=home:1
+[ 1924535ms] [LOG] [orderSocket] Socket connected, ID: zNQ65boz35O0wkyeAAAY @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 1924947ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 1925166ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 1925472ms] [LOG] [orderSocket] Socket connected, ID: plx0M5lpvEpLR6kdAAAa @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 1926429ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 1932895ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 2143696ms] [LOG] [orderSocket] Socket disconnected, reason: transport close @ http://localhost:5173/src/core/services/orderSocket.js:60
+[ 2143698ms] [LOG] [vite] server connection lost. Polling for restart... @ http://localhost:5173/@vite/client:865
+[ 2347347ms] [LOG] [orderSocket] Socket connected, ID: Kgkwvo16m4TTMj9VAAAh @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2348690ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2348879ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2349228ms] [LOG] [orderSocket] Socket connected, ID: utJCgjEAGftmO6IfAAAj @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2349283ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 2354482ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 3556423ms] [LOG] [orderSocket] Socket disconnected, reason: io client disconnect @ http://localhost:5173/src/core/services/orderSocket.js:60
+[ 3556445ms] [LOG] [orderSocket] Socket connected, ID: afBgGPAhL2tAur5WAAAn @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 3559574ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 3714435ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 3719995ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 3800967ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1

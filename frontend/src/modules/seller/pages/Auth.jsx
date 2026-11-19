@@ -380,10 +380,6 @@ const Auth = () => {
           toast.error("Please enter a valid 10-digit contact number.");
           return;
         }
-        if (verifications.email.status !== "verified" || !verifications.email.token) {
-          toast.error("Please verify your business email before continuing.");
-          return;
-        }
         if (verifications.phone.status !== "verified" || !verifications.phone.token) {
           toast.error("Please verify your contact number before continuing.");
           return;
@@ -442,7 +438,6 @@ const Auth = () => {
             lat: formData.lat,
             lng: formData.lng,
             radius: formData.radius,
-            emailVerificationToken: verifications.email.token,
             phoneVerificationToken: verifications.phone.token,
           }).forEach(([key, value]) => {
             if (value !== null && value !== undefined && value !== "") {
@@ -771,66 +766,11 @@ const Auth = () => {
                         inputMode="email"
                         autoComplete="email"
                         placeholder="Business Email"
-                        className="w-full pl-12 pr-28 py-4 bg-slate-50 border-2 border-transparent rounded-lg text-sm font-bold text-slate-700 outline-none focus:bg-white focus:border-slate-200 transition-all placeholder:text-slate-300"
+                        className="w-full pl-12 pr-6 py-4 bg-slate-50 border-2 border-transparent rounded-lg text-sm font-bold text-slate-700 outline-none focus:bg-white focus:border-slate-200 transition-all placeholder:text-slate-300"
                         value={formData.email}
                         onChange={handleChange}
                       />
-                      {!isLogin && (
-                        <button
-                          type="button"
-                          onClick={() => handleSendVerificationOtp("email")}
-                          disabled={
-                            verifications.email.isSending ||
-                            verifications.email.status === "verified" ||
-                            !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email || "")
-                          }
-                          className={`absolute right-3 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-md text-[10px] font-black uppercase tracking-wider transition-all ${verifications.email.status === "verified"
-                            ? "bg-brand-100 text-brand-700 cursor-default"
-                            : "bg-slate-900 text-white hover:bg-black disabled:opacity-50 disabled:cursor-not-allowed"
-                            }`}>
-                          {verifications.email.isSending ? (
-                            <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                          ) : verifications.email.status === "verified" ? (
-                            "Verified"
-                          ) : verifications.email.isOtpVisible ? (
-                            "Resend"
-                          ) : (
-                            "Verify"
-                          )}
-                        </button>
-                      )}
                     </div>
-                    {!isLogin && verifications.email.isOtpVisible && verifications.email.status !== "verified" && (
-                      <div className="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
-                        <input
-                          type="text"
-                          inputMode="numeric"
-                          maxLength={4}
-                          placeholder="Enter email OTP"
-                          value={verifications.email.otp}
-                          onChange={(e) =>
-                            updateVerificationState("email", {
-                              otp: e.target.value.replace(/\D/g, "").slice(0, 4),
-                            })
-                          }
-                          className="flex-1 bg-transparent text-sm font-bold text-slate-700 outline-none placeholder:text-slate-400"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => handleVerifyOtp("email")}
-                          disabled={verifications.email.isVerifying || verifications.email.otp.length !== 4}
-                          className="rounded-md bg-white px-3 py-1.5 text-[10px] font-black uppercase tracking-wider text-slate-700 shadow-sm ring-1 ring-slate-200 hover:bg-slate-100 disabled:opacity-50"
-                        >
-                          {verifications.email.isVerifying ? "Checking..." : "Confirm OTP"}
-                        </button>
-                      </div>
-                    )}
-                    {!isLogin && verifications.email.status === "verified" && (
-                      <div className="flex items-center gap-2 text-[11px] font-bold text-brand-600">
-                        <CheckCircle className="h-4 w-4" />
-                        <span>Email verified successfully.</span>
-                      </div>
-                    )}
 
                     {!isLogin && (
                       <>

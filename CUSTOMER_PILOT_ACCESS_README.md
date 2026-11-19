@@ -33,6 +33,7 @@ Customers can still open the app and browse products; they just can't log in or 
 | 7558598590 | Real SMS OTP |
 | 7841849908 | Real SMS OTP |
 | 9096533667 | Real SMS OTP |
+| 9011571573 | Real SMS OTP |
 
 Keep this table in sync with `PILOT_PHONES` in the code.
 

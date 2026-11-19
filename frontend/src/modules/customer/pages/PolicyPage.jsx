@@ -199,13 +199,6 @@ const PolicyPage = () => {
                                     <p className="text-[11px] text-slate-500 font-medium mt-0.5">Continuous cold-chain temperature maintained from outlet to home.</p>
                                 </div>
                             </div>
-                            <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-100 flex items-start gap-3">
-                                <Award size={18} className="text-[#047857] mt-0.5 shrink-0" />
-                                <div>
-                                    <h4 className="text-xs font-bold text-slate-900">Free Delivery</h4>
-                                    <p className="text-[11px] text-slate-500 font-medium mt-0.5">Enjoy free delivery when your cart reaches above the minimum order value.</p>
-                                </div>
-                            </div>
                         </div>
 
                         <p className="text-xs text-slate-500 font-medium">

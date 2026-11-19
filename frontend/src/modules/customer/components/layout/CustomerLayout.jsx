@@ -5,6 +5,7 @@ import BottomNav from './BottomNav';
 import MiniCart from '../shared/MiniCart';
 import ProductDetailSheet from '../shared/ProductDetailSheet';
 import MobileFooterMessage from './MobileFooterMessage';
+import LocationGate from '../shared/LocationGate';
 import { useProductDetail } from '../../context/ProductDetailContext';
 import { cn } from '@/lib/utils';
 import { useLocation } from 'react-router-dom';
@@ -88,6 +89,12 @@ const CustomerLayout = ({ children, showHeader: showHeaderProp, fullHeight = fal
     const showBottomNav = showBottomNavProp !== undefined ? showBottomNavProp : !hideBottomNavRoutes.includes(path);
     const showCart = showCartProp !== undefined ? showCartProp : (!hideCartRoutes.includes(path) && !path.startsWith('/orders'));
 
+    // Pages whose prices/products depend on the serving outlet: never render
+    // them from the hardcoded default area, wait for a real location.
+    const locationGatedRoutes = ['/', '/categories', '/offers', '/wishlist', '/cart', '/search'];
+    const needsLocation =
+        locationGatedRoutes.includes(path) || path.startsWith('/category/') || path.startsWith('/product/');
+
     // Condition to hide the MobileFooterMessage ("India's last minute app") on specific pages
     const hideFooterMessageRoutes = ['/profile', '/profile/edit'];
     const showFooterMessage = showBottomNav && !hideFooterMessageRoutes.includes(path) && !path.startsWith('/category');
@@ -115,7 +122,7 @@ const CustomerLayout = ({ children, showHeader: showHeaderProp, fullHeight = fal
             )}
 
             <main className={cn("flex-1 md:pb-0", !showHeader && "pt-0", !fullHeight && "pb-16")}>
-                {children}
+                {needsLocation ? <LocationGate>{children}</LocationGate> : children}
             </main>
 
             {showCart && <MiniCart />}

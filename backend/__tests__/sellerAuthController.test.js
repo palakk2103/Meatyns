@@ -37,7 +37,6 @@ describe("sellerAuthController signupSeller", () => {
         email: "seller@example.com",
         phone: "9876543210",
         password: "secret123",
-        emailVerificationToken: "email-token",
         phoneVerificationToken: "phone-token",
         shopName: "Noyo Mart",
         category: "Groceries",
@@ -64,23 +63,18 @@ describe("sellerAuthController signupSeller", () => {
     }));
   });
 
-  it("requires both verified email and phone tokens before creating the seller", async () => {
+  it("requires only a verified phone token (email is not OTP-verified) before creating the seller", async () => {
     await signupSeller(req, res);
 
-    expect(mockVerifySellerVerificationToken).toHaveBeenCalledTimes(2);
-    expect(mockVerifySellerVerificationToken).toHaveBeenNthCalledWith(1, {
-      channel: "email",
-      rawValue: "seller@example.com",
-      token: "email-token",
-    });
-    expect(mockVerifySellerVerificationToken).toHaveBeenNthCalledWith(2, {
+    expect(mockVerifySellerVerificationToken).toHaveBeenCalledTimes(1);
+    expect(mockVerifySellerVerificationToken).toHaveBeenCalledWith({
       channel: "phone",
       rawValue: "9876543210",
       token: "phone-token",
     });
     expect(mockSellerCreate).toHaveBeenCalledWith(
       expect.objectContaining({
-        emailVerified: true,
+        emailVerified: false,
         phoneVerified: true,
         isVerified: false,
         isActive: false,
@@ -88,5 +82,13 @@ describe("sellerAuthController signupSeller", () => {
       }),
     );
     expect(res.status).toHaveBeenCalledWith(201);
+  });
+
+  it("rejects an invalid email address", async () => {
+    req.body.email = "not-an-email";
+    await signupSeller(req, res);
+
+    expect(mockSellerCreate).not.toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(400);
   });
 });

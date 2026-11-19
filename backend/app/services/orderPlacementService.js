@@ -310,6 +310,18 @@ export async function placeOrderAtomic({
     paymentMode: normalizePaymentMode(payload?.paymentMode),
   };
 
+  // The delivery address's coordinates decide which outlet serves (and is
+  // notified about) the order. Without them the backend can't verify the
+  // seller, so never accept an order with no delivery location.
+  if (!normalizeAddress(normalizedPayload.address).location) {
+    const error = new Error(
+      "Please select your delivery location on the map before placing the order.",
+    );
+    error.statusCode = 400;
+    error.code = "DELIVERY_LOCATION_REQUIRED";
+    throw error;
+  }
+
   if (idempotencyKey) {
     if (!validateIdempotencyKey(idempotencyKey)) {
       const error = new Error("Invalid idempotency key format");

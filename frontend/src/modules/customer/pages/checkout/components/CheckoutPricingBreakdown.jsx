@@ -91,11 +91,6 @@ const CheckoutPricingBreakdown = React.memo(function CheckoutPricingBreakdown({
               )}
             </span>
           </div>
-          {pricingPreview?.isFreeDeliveryApplied && (
-            <div className="px-2 -mt-2 text-[11px] font-semibold text-emerald-600">
-              Free delivery qualified (above ₹{pricingPreview?.freeDeliveryThreshold})
-            </div>
-          )}
           {pricingPreview?.deliveryMethod === "EXPRESS" && (
             <div className="px-2 -mt-2 flex items-center justify-between text-[11px] font-semibold text-amber-700 bg-amber-50/70 p-1.5 rounded-lg border border-amber-200/50">
               <span className="flex items-center gap-1">⚡ Express Priority Delivery</span>

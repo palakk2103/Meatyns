@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { applyCloudinaryTransform } from "@/core/utils/imageUtils";
 import { getMeatType, isEggProduct } from "../../utils/categoryFilter";
 import { cleanProductName } from "@/core/utils/productName";
+import { getDefaultVariantDisplay, getOfferCardPricing } from "../../utils/variantDisplay";
 
 // 4 Curated Top Picks using real product IDs from database
 const DEFAULT_TOP_PICKS = [
@@ -73,14 +74,17 @@ const TopPicksSection = ({ products = [], title = "Top Picks for You", icon = "â
           const key = String(p.name || "").toLowerCase();
           if (!key || seen.has(key)) return acc;
           seen.add(key);
-          const curr = Number(p.salePrice || p.price || 0);
-          const orig = Number(p.originalPrice || 0);
+          const d = getDefaultVariantDisplay(p);
+          const curr = d.price;
+          const orig = d.mrp;
           const hasDiscount = orig > curr && curr > 0;
           acc.push({
+            raw: p,
+            variantSku: d.variantSku,
             id: p._id || p.id,
             _id: p._id || p.id,
             name: p.name,
-            weight: p.weight || "",
+            weight: d.weight,
             price: curr,
             originalPrice: hasDiscount ? orig : null,
             discount: hasDiscount ? `${Math.round(((orig - curr) / orig) * 100)}% OFF` : null,
@@ -103,18 +107,18 @@ const TopPicksSection = ({ products = [], title = "Top Picks for You", icon = "â
         return MEAT_KEYWORDS.some((kw) => name.includes(kw) || cat.includes(kw));
       })
       .map((p) => {
-        const orig = Number(p.originalPrice || 0);
-        const curr = Number(p.salePrice || p.price || 0);
-        const effectiveOrig = orig > curr ? orig : Math.round(curr * 1.25);
-        const pct = Math.round(((effectiveOrig - curr) / effectiveOrig) * 100);
+        const d = getDefaultVariantDisplay(p);
+        const offer = getOfferCardPricing(d, 15);
         return {
+          raw: p,
+          variantSku: d.variantSku,
           id: p._id || p.id,
           _id: p._id || p.id,
           name: p.name,
-          weight: p.weight || "500 g",
-          price: curr,
-          originalPrice: effectiveOrig,
-          discount: `${pct}% OFF`,
+          weight: d.weight,
+          price: offer.price,
+          originalPrice: offer.originalPrice,
+          discount: offer.discount,
           image: p.mainImage || p.image || DEFAULT_TOP_PICKS[0].image,
         };
       });
@@ -131,18 +135,18 @@ const TopPicksSection = ({ products = [], title = "Top Picks for You", icon = "â
       if (merged.length >= 4) break;
       const pName = (p.name || "").toLowerCase();
       if (pName && !existingNames.has(pName)) {
-        const orig = Number(p.originalPrice || 0);
-        const curr = Number(p.salePrice || p.price || 0);
-        const effectiveOrig = orig > curr ? orig : Math.round(curr * 1.25);
-        const pct = Math.round(((effectiveOrig - curr) / effectiveOrig) * 100);
+        const d = getDefaultVariantDisplay(p);
+        const offer = getOfferCardPricing(d, 15);
         merged.push({
+          raw: p,
+          variantSku: d.variantSku,
           id: p._id || p.id,
           _id: p._id || p.id,
           name: p.name,
-          weight: p.weight || "500 g",
-          price: curr,
-          originalPrice: effectiveOrig,
-          discount: `${pct}% OFF`,
+          weight: d.weight,
+          price: offer.price,
+          originalPrice: offer.originalPrice,
+          discount: offer.discount,
           image: p.mainImage || p.image || DEFAULT_TOP_PICKS[0].image,
         });
         existingNames.add(pName);
@@ -154,8 +158,11 @@ const TopPicksSection = ({ products = [], title = "Top Picks for You", icon = "â
 
   const getQuantity = (product) => {
     const pId = String(product?.id || product?._id || "");
+    const sku = String(product?.variantSku || "").trim();
     const item = (cart || []).find(
-      (c) => String(c.id || c._id) === pId
+      (c) =>
+        String(c.id || c._id) === pId &&
+        (!sku || String(c.variantSku || "").trim() === sku)
     );
     return item ? Number(item.quantity) || 0 : 0;
   };
@@ -180,7 +187,9 @@ const TopPicksSection = ({ products = [], title = "Top Picks for You", icon = "â
     e.preventDefault();
     e.stopPropagation();
     addToCart({
-      ...product,
+      ...(product.raw || product),
+      image: product.image,
+      variantSku: product.variantSku || "",
       id: product.id || product._id,
       _id: product.id || product._id,
     });
@@ -190,7 +199,7 @@ const TopPicksSection = ({ products = [], title = "Top Picks for You", icon = "â
   const handleIncrement = (e, product) => {
     e.preventDefault();
     e.stopPropagation();
-    updateQuantity(product.id || product._id, 1);
+    updateQuantity(product.id || product._id, 1, product.variantSku || "");
   };
 
   const handleDecrement = (e, product) => {
@@ -198,9 +207,9 @@ const TopPicksSection = ({ products = [], title = "Top Picks for You", icon = "â
     e.stopPropagation();
     const qty = getQuantity(product);
     if (qty <= 1) {
-      removeFromCart(product.id || product._id);
+      removeFromCart(product.id || product._id, product.variantSku || "");
     } else {
-      updateQuantity(product.id || product._id, -1);
+      updateQuantity(product.id || product._id, -1, product.variantSku || "");
     }
   };
 
@@ -273,7 +282,7 @@ const TopPicksSection = ({ products = [], title = "Top Picks for You", icon = "â
                     {cleanProductName(product.name)}
                   </h3>
                   <p className="text-[9.5px] sm:text-xs text-slate-400 font-medium mt-0.5">
-                    {product.weight || "500 g"}
+                    {product.weight}
                   </p>
                 </div>
 
@@ -287,9 +296,9 @@ const TopPicksSection = ({ products = [], title = "Top Picks for You", icon = "â
                   <span className="text-[13px] sm:text-base md:text-lg font-black text-slate-900">
                     â‚¹{product.price}
                   </span>
-                  {(curated ? product.discount : (product.discount || "20% OFF")) && (
+                  {product.discount && (
                     <span className="ml-auto bg-[#EF131F] text-white text-[8px] sm:text-[10.5px] font-bold px-1 sm:px-1.5 py-0.5 rounded shadow-xs tracking-tight">
-                      {product.discount || "20% OFF"}
+                      {product.discount}
                     </span>
                   )}
                 </div>

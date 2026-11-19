@@ -17,6 +17,9 @@ const LocationDrawer = ({ isOpen, onClose }) => {
     isFetchingLocation,
     locationError,
   } = useLocation();
+  // The hardcoded fallback area must never leak into labels, search bias or
+  // a new address's city/state.
+  const knownLocation = currentLocation?.isDefault ? {} : currentLocation || {};
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [placePredictions, setPlacePredictions] = useState([]);
@@ -203,9 +206,9 @@ const LocationDrawer = ({ isOpen, onClose }) => {
           {
             name: prediction.description,
             time: "12-15 mins",
-            city: prediction.city || currentLocation.city,
-            state: prediction.state || currentLocation.state,
-            pincode: prediction.pincode || currentLocation.pincode,
+            city: prediction.city || knownLocation.city,
+            state: prediction.state || knownLocation.state,
+            pincode: prediction.pincode || knownLocation.pincode,
             latitude: prediction.latitude,
             longitude: prediction.longitude,
           },
@@ -232,9 +235,9 @@ const LocationDrawer = ({ isOpen, onClose }) => {
           {
             name: name || prediction.description,
             time: "12-15 mins",
-            city: city || currentLocation.city,
-            state: state || currentLocation.state,
-            pincode: pincode || currentLocation.pincode,
+            city: city || knownLocation.city,
+            state: state || knownLocation.state,
+            pincode: pincode || knownLocation.pincode,
             latitude: lat,
             longitude: lng,
           },
@@ -383,9 +386,9 @@ const LocationDrawer = ({ isOpen, onClose }) => {
                   },
                   latitude: parseFloat(item.lat),
                   longitude: parseFloat(item.lon),
-                  city: locality || currentLocation.city,
-                  state: addr.state || currentLocation.state,
-                  pincode: addr.postcode || currentLocation.pincode,
+                  city: locality || knownLocation.city,
+                  state: addr.state || knownLocation.state,
+                  pincode: addr.postcode || knownLocation.pincode,
                 };
               });
               setPlacePredictions(formatted);
@@ -418,8 +421,8 @@ const LocationDrawer = ({ isOpen, onClose }) => {
         sessionToken: getAutocompleteSessionToken(),
       };
 
-      const lat = Number(currentLocation?.latitude);
-      const lng = Number(currentLocation?.longitude);
+      const lat = Number(knownLocation?.latitude);
+      const lng = Number(knownLocation?.longitude);
       if (Number.isFinite(lat) && Number.isFinite(lng)) {
         request.location = new window.google.maps.LatLng(lat, lng);
         request.radius = 30000;
@@ -605,9 +608,11 @@ const LocationDrawer = ({ isOpen, onClose }) => {
                       ? "Detecting..."
                       : "Use current location"}
                   </h3>
-                  <p className="text-[12px] text-slate-400 font-medium truncate opacity-60">
-                    ({currentLocation.name})
-                  </p>
+                  {!currentLocation?.isDefault && currentLocation?.name && (
+                    <p className="text-[12px] text-slate-400 font-medium truncate opacity-60">
+                      ({currentLocation.name})
+                    </p>
+                  )}
                 </div>
                 <ChevronRight size={16} className="text-slate-300 flex-shrink-0" />
               </button>

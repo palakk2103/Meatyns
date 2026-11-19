@@ -11,7 +11,6 @@ import {
     Package,
     Heart,
     Headphones,
-    Bike
 } from 'lucide-react';
 
 const mainCategories = [
@@ -78,15 +77,6 @@ const DesktopSidebarNav = () => {
                         </Link>
                     );
                 })}
-            </div>
-
-            {/* Free Delivery Promo Box */}
-            <div className="mt-8 p-4 rounded-2xl bg-[#FFFBEB] border border-[#FDE68A] flex flex-col items-center text-center shadow-xs">
-                <div className="w-10 h-10 rounded-full bg-[#FDCE04] flex items-center justify-center text-[#1A1A1A] shadow-xs mb-2">
-                    <Bike size={22} strokeWidth={2.2} />
-                </div>
-                <p className="text-xs font-bold text-slate-900">Free Delivery</p>
-                <p className="text-[11px] text-slate-500 mt-0.5">on orders above ₹499</p>
             </div>
         </aside>
     );

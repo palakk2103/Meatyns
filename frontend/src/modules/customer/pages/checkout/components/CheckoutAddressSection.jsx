@@ -3,6 +3,7 @@ import { Check, Contact2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import AddressSearchInput from "../../../components/shared/AddressSearchInput";
 
 /**
  * CheckoutAddressSection
@@ -36,6 +37,7 @@ const CheckoutAddressSection = React.memo(function CheckoutAddressSection({
   displayName,
   displayPhone,
   displayAddress,
+  addressSearchBias = null,
 }) {
   return (
     <motion.div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-100">
@@ -99,16 +101,27 @@ const CheckoutAddressSection = React.memo(function CheckoutAddressSection({
                   Enter delivery address details
                 </h4>
                 <div className="space-y-3">
-                  <Input
-                    placeholder="Enter complete address*"
-                    value={recipientData.completeAddress}
-                    onChange={(e) =>
-                      onRecipientDataChange({ ...recipientData, completeAddress: e.target.value })
+                  {/* The recipient's coordinates pick the outlet that delivers
+                      (and is notified about) this order, so the area must be
+                      chosen from the suggestions, not typed freely. */}
+                  <AddressSearchInput
+                    placeholder="Search receiver's area / street*"
+                    bias={addressSearchBias}
+                    value={{
+                      text: recipientData.completeAddress,
+                      location: recipientData.location || null,
+                    }}
+                    onChange={({ text, location, pincode }) =>
+                      onRecipientDataChange({
+                        ...recipientData,
+                        completeAddress: text,
+                        location: location || null,
+                        pincode: location && pincode ? pincode : recipientData.pincode,
+                      })
                     }
-                    className="h-12 rounded-xl border-slate-200 focus:ring-primary focus:border-primary text-sm"
                   />
                   <Input
-                    placeholder="Find landmark (optional)"
+                    placeholder="House / flat no., landmark (optional)"
                     value={recipientData.landmark}
                     onChange={(e) =>
                       onRecipientDataChange({ ...recipientData, landmark: e.target.value })

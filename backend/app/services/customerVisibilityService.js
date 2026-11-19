@@ -46,7 +46,8 @@ export function normalizeServiceRadiusKm(value) {
 /**
  * Pure selection rule (no I/O) so it is unit-testable.
  *  1. Sellers whose radius covers the customer -> pick the nearest.
- *  2. Nobody covers the customer -> fall back to the nearest eligible seller.
+ *  2. Nobody covers the customer -> null (we don't deliver there; no fallback
+ *     to a far-away outlet).
  *  Ties break on seller id for a deterministic result.
  * `sellers` must already be eligible (active, approved, has products).
  */
@@ -72,17 +73,9 @@ export function selectSellerForCoordinates(lat, lng, sellers = []) {
     a.distanceKm - b.distanceKm || a.id.localeCompare(b.id);
 
   const covering = candidates.filter((c) => c.distanceKm <= c.radiusKm).sort(byDistance);
-  if (covering.length) {
-    const c = covering[0];
-    return { sellerId: c.id, distanceKm: c.distanceKm, withinRadius: true, fallback: false };
-  }
-  const nearest = candidates.sort(byDistance)[0];
-  return {
-    sellerId: nearest.id,
-    distanceKm: nearest.distanceKm,
-    withinRadius: false,
-    fallback: true,
-  };
+  if (!covering.length) return null; // outside every outlet's radius -> not serviceable
+  const c = covering[0];
+  return { sellerId: c.id, distanceKm: c.distanceKm, withinRadius: true, fallback: false };
 }
 
 /** Round lat/lng to 4 decimals (~11m) so nearby requests share a cache bucket. */
@@ -106,7 +99,7 @@ export async function invalidateSellerSelectionCache() {
 /**
  * Single source of truth: which ONE seller serves a customer at (lat, lng).
  * Returns { sellerId, distanceKm, withinRadius, fallback } or null when no
- * eligible seller exists at all.
+ * eligible seller's service radius covers the location.
  */
 export async function resolveSelectedSellerForCustomer(lat, lng) {
   const fetchFn = async () => {
@@ -309,7 +302,7 @@ export async function evaluateCartServiceability({ cartItems = [], lat, lng }) {
 
 /**
  * Backward-compatible: returns an array, now containing at most ONE seller id
- * (the selected one). Empty only when no eligible seller exists anywhere.
+ * (the selected one). Empty when no seller's radius covers the location.
  */
 export async function getNearbySellerIdsForCustomer(lat, lng) {
   const selected = await resolveSelectedSellerForCustomer(lat, lng);

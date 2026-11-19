@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { applyCloudinaryTransform } from "@/core/utils/imageUtils";
 import { getMeatType, isEggProduct } from "../../utils/categoryFilter";
 import { cleanProductName } from "@/core/utils/productName";
+import { getDefaultVariantDisplay, getOfferCardPricing } from "../../utils/variantDisplay";
 
 // 4 Curated Hot Deals using real product IDs from database
 export const DEFAULT_HOT_DEALS = [
@@ -80,17 +81,18 @@ const HotDealsSection = ({ products = [] }) => {
       if (merged.length >= 4) break;
       const pName = (p.name || "").toLowerCase();
       if (pName && !existingNames.has(pName)) {
-        const curr = Number(p.salePrice || p.price || 0);
-        const orig = Number(p.originalPrice || 0) || Math.round(curr * 1.2);
-        const pct = orig > curr ? Math.round(((orig - curr) / orig) * 100) : 15;
+        const d = getDefaultVariantDisplay(p);
+        const offer = getOfferCardPricing(d, 15);
         merged.push({
+          raw: p,
+          variantSku: d.variantSku,
           id: p._id || p.id,
           _id: p._id || p.id,
           name: p.name,
-          weight: p.weight || "500 g",
-          price: curr,
-          originalPrice: orig,
-          discount: `${pct}% OFF`,
+          weight: d.weight,
+          price: offer.price,
+          originalPrice: offer.originalPrice,
+          discount: offer.discount,
           image: p.mainImage || p.image || DEFAULT_HOT_DEALS[0].image,
         });
         existingNames.add(pName);
@@ -102,8 +104,11 @@ const HotDealsSection = ({ products = [] }) => {
 
   const getQuantity = (product) => {
     const pId = String(product?.id || product?._id || "");
+    const sku = String(product?.variantSku || "").trim();
     const item = (cart || []).find(
-      (c) => String(c.id || c._id) === pId
+      (c) =>
+        String(c.id || c._id) === pId &&
+        (!sku || String(c.variantSku || "").trim() === sku)
     );
     return item ? Number(item.quantity) || 0 : 0;
   };
@@ -128,7 +133,9 @@ const HotDealsSection = ({ products = [] }) => {
     e.preventDefault();
     e.stopPropagation();
     addToCart({
-      ...product,
+      ...(product.raw || product),
+      image: product.image,
+      variantSku: product.variantSku || "",
       id: product.id || product._id,
       _id: product.id || product._id,
     });
@@ -138,7 +145,7 @@ const HotDealsSection = ({ products = [] }) => {
   const handleIncrement = (e, product) => {
     e.preventDefault();
     e.stopPropagation();
-    updateQuantity(product.id || product._id, 1);
+    updateQuantity(product.id || product._id, 1, product.variantSku || "");
   };
 
   const handleDecrement = (e, product) => {
@@ -146,9 +153,9 @@ const HotDealsSection = ({ products = [] }) => {
     e.stopPropagation();
     const qty = getQuantity(product);
     if (qty <= 1) {
-      removeFromCart(product.id || product._id);
+      removeFromCart(product.id || product._id, product.variantSku || "");
     } else {
-      updateQuantity(product.id || product._id, -1);
+      updateQuantity(product.id || product._id, -1, product.variantSku || "");
     }
   };
 
@@ -225,7 +232,7 @@ const HotDealsSection = ({ products = [] }) => {
                     {cleanProductName(product.name)}
                   </h3>
                   <p className="text-[9.5px] sm:text-xs text-slate-400 font-medium mt-0.5">
-                    {product.weight || "500 g"}
+                    {product.weight}
                   </p>
                 </div>
 
@@ -239,9 +246,11 @@ const HotDealsSection = ({ products = [] }) => {
                   <span className="text-[13px] sm:text-base md:text-lg font-black text-slate-900">
                     ₹{product.price}
                   </span>
-                  <span className="ml-auto bg-[#EF131F] text-white text-[8px] sm:text-[10.5px] font-bold px-1 sm:px-1.5 py-0.5 rounded shadow-xs tracking-tight">
-                    {product.discount || "25% OFF"}
-                  </span>
+                  {product.discount && (
+                    <span className="ml-auto bg-[#EF131F] text-white text-[8px] sm:text-[10.5px] font-bold px-1 sm:px-1.5 py-0.5 rounded shadow-xs tracking-tight">
+                      {product.discount}
+                    </span>
+                  )}
                 </div>
 
                 {/* Add to Cart / Quantity Stepper Button */}

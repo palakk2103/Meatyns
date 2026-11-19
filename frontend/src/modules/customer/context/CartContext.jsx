@@ -163,11 +163,14 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  const fetchCart = async () => {
+  // `fresh` bypasses the short-lived /cart cache and any in-flight request,
+  // e.g. right after the server swapped cart lines to another outlet.
+  const fetchCart = async (options) => {
+    const fresh = Boolean(options && options.fresh === true);
     if (isAuthenticated) {
       setLoading(true);
       try {
-        const response = await customerApi.getCart();
+        const response = await customerApi.getCart({ forceRefresh: fresh });
         setCart(normalizeBackendCart(response.data?.result?.items));
       } catch (error) {
         console.error("Failed to fetch cart from backend", error);

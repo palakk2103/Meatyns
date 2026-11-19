@@ -81,6 +81,10 @@ import CheckoutWishlistSection from "./checkout/components/CheckoutWishlistSecti
 import CheckoutOrderSuccess from "./checkout/components/CheckoutOrderSuccess";
 import FishEmptyCartIllustration from "../components/shared/FishEmptyCartIllustration";
 import { cleanProductName } from "@/core/utils/productName";
+import { useCartServiceability } from "../hooks/useCartServiceability";
+
+const hasValidCoords = (loc) =>
+  Boolean(loc) && Number.isFinite(Number(loc.lat)) && Number.isFinite(Number(loc.lng));
 
 const CheckoutPage = () => {
   const {
@@ -134,6 +138,7 @@ const CheckoutPage = () => {
   const {
     savedAddresses: locationSavedAddresses,
     currentLocation,
+    hasRealLocation,
     refreshLocation,
     isFetchingLocation,
     updateLocation,
@@ -171,6 +176,7 @@ const CheckoutPage = () => {
   const [isPreviewLoading, setIsPreviewLoading] = useState(false);
   const postOrderNavigateRef = useRef(null);
   const previewDebounceRef = useRef(null);
+  const previewSeqRef = useRef(0);
   // Starts empty and is filled from the customer's own profile / selected
   // location below. (It used to start with a hardcoded test address, which
   // was sent with real orders when the customer didn't pick an address.)
@@ -199,6 +205,7 @@ const CheckoutPage = () => {
     pincode: "",
     name: "",
     phone: "",
+    location: null,
   });
   const [savedRecipient, setSavedRecipient] = useState(null);
   const [recommendedProducts, setRecommendedProducts] = useState([]);
@@ -225,12 +232,9 @@ const CheckoutPage = () => {
     deliveryOptions?.[deliveryMethod]?.deliveryFee ?? (deliveryMethod === "EXPRESS" ? 40 : 25)
   );
 
-  const isFreeDeliveryForSubtotal = (pricingPreview?.productSubtotal ?? cartTotal) >= (pricingPreview?.freeDeliveryThreshold || 499);
   const activeEffectiveDeliveryFee = pricingPreview?.deliveryFeeCharged != null
     ? Number(pricingPreview.deliveryFeeCharged)
-    : (isFreeDeliveryForSubtotal
-        ? (deliveryMethod === "EXPRESS" ? Number(deliveryOptions?.EXPRESS?.surcharge ?? 40) : 0)
-        : currentSelectedDeliveryFee);
+    : currentSelectedDeliveryFee;
 
   const finalAmountToPay = pricingPreview?.grandTotal != null
     ? Math.max(0, Number(pricingPreview.grandTotal) - walletAmountToUse)
@@ -317,10 +321,11 @@ const CheckoutPage = () => {
         landmark: savedRecipient.landmark || "",
         city: savedRecipient.pincode ? `${savedRecipient.pincode}` : "",
         phone: savedRecipient.phone,
-        location:
-          currentLocation?.latitude && currentLocation?.longitude
-            ? { lat: currentLocation.latitude, lng: currentLocation.longitude }
-            : undefined,
+        // The RECIPIENT's coordinates: the outlet serving their address gets
+        // (and is notified about) the order, not the buyer's own location.
+        location: hasValidCoords(savedRecipient.location)
+          ? { lat: Number(savedRecipient.location.lat), lng: Number(savedRecipient.location.lng) }
+          : undefined,
       };
     }
 
@@ -334,9 +339,9 @@ const CheckoutPage = () => {
 
     // No coordinates on the chosen address -> fall back to the selected
     // delivery location, so the backend can always verify which seller serves it.
-    const hasCurrentLoc =
-      Number.isFinite(Number(currentLocation?.latitude)) &&
-      Number.isFinite(Number(currentLocation?.longitude));
+    // Never the hardcoded default area: it would route the order to the
+    // wrong outlet.
+    const hasCurrentLoc = hasRealLocation;
 
     return {
       ...currentAddress,
@@ -355,6 +360,10 @@ const CheckoutPage = () => {
       recipientData.phone.length !== 10
     ) {
       showToast("Please fill all required fields", "error");
+      return;
+    }
+    if (!hasValidCoords(recipientData.location)) {
+      showToast("Please pick the receiver's area from the suggestions.", "error");
       return;
     }
     setSavedRecipient(recipientData);
@@ -688,18 +697,23 @@ const CheckoutPage = () => {
   );
 
   // Fetch delivery slots from backend
+  const deliverySlotsSeqRef = useRef(0);
   const fetchDeliverySlots = async (dateToUse = null) => {
     if (cart.length === 0) return;
+    const seq = ++deliverySlotsSeqRef.current;
     try {
       setIsLoadingDeliverySlots(true);
       setDeliverySlotError(null);
       const targetAddr = buildAddressForOrder();
       const res = await customerApi.getDeliverySlots({
         address: targetAddr,
-        customerLocation: targetAddr?.location || (currentLocation ? { lat: currentLocation.latitude, lng: currentLocation.longitude } : null),
+        customerLocation: targetAddr?.location || null,
         items: cart.map((i) => ({ product: i.id || i._id, quantity: i.quantity })),
         date: dateToUse || selectedDeliveryDate || undefined,
       });
+      // An older request (e.g. for the cart before it was remapped to the
+      // delivery address's outlet) must not overwrite a newer answer.
+      if (seq !== deliverySlotsSeqRef.current) return;
 
       if (res.data?.success) {
         const result = res.data.result || {};
@@ -760,9 +774,14 @@ const CheckoutPage = () => {
     currentAddress?.location?.lat,
     currentAddress?.location?.lng,
     savedRecipient?.completeAddress,
+    savedRecipient?.location?.lat,
+    savedRecipient?.location?.lng,
     currentLocation?.latitude,
     currentLocation?.longitude,
     cart.length,
+    // Lines are swapped to another outlet's products when the delivery
+    // address changes; the count stays the same but the seller does not.
+    cartProductIdKey,
   ]);
 
   // Fill the delivery address from the customer's own data: the saved address
@@ -843,8 +862,10 @@ const CheckoutPage = () => {
   useEffect(() => {
     const parsed = getJSON(RECIPIENT_STORAGE_KEY, null);
     if (parsed && parsed.completeAddress && parsed.name && parsed.phone) {
-      setRecipientData(parsed);
-      setSavedRecipient(parsed);
+      setRecipientData({ location: null, ...parsed });
+      // Recipients saved by older builds have no coordinates; make the
+      // customer re-pick the area instead of routing to the wrong outlet.
+      if (hasValidCoords(parsed.location)) setSavedRecipient(parsed);
     }
 
     const fetchCoupons = async () => {
@@ -860,6 +881,13 @@ const CheckoutPage = () => {
     };
     fetchCoupons();
   }, []);
+
+  // Validate the cart against the DELIVERY address (which may differ from the
+  // customer's current location). The server swaps each line for the same
+  // product of the outlet serving that address and the cart reloads, so the
+  // order — and its new-order notification — goes to that outlet, at its prices.
+  const deliveryCoords = buildAddressForOrder()?.location || null;
+  useCartServiceability(deliveryCoords?.lat, deliveryCoords?.lng, Boolean(deliveryCoords));
 
   // Debounced checkoutPreview — fires 400 ms after last dependency change
   useEffect(() => {
@@ -893,14 +921,19 @@ const CheckoutPage = () => {
     });
 
     const fetchPreview = async () => {
+      // Only the latest preview may update the UI: an older one priced for the
+      // cart before it was remapped would show a false "unavailable" notice.
+      const seq = ++previewSeqRef.current;
       try {
         setIsPreviewLoading(true);
         const res = await customerApi.checkoutPreview(buildPreviewPayload());
+        if (seq !== previewSeqRef.current) return;
         if (res.data?.success) {
           setPricingPreview(res.data.result?.breakdown ?? null);
           setUnavailableItems([]);
         }
       } catch (error) {
+        if (seq !== previewSeqRef.current) return;
         const data = error.response?.data?.result;
         if (data?.code === "CART_SELLER_MISMATCH") {
           setUnavailableItems(Array.isArray(data.unavailableItems) ? data.unavailableItems : []);
@@ -994,6 +1027,14 @@ const CheckoutPage = () => {
 
     if (!savedRecipient && !String(currentAddress.address || "").trim()) {
       showToast("Please select a delivery address.", "warning");
+      setIsAddressModalOpen(true);
+      return;
+    }
+
+    // The delivery address's coordinates pick the outlet that gets (and is
+    // notified about) this order, so they are mandatory.
+    if (!buildAddressForOrder()?.location) {
+      showToast("Please set your delivery location on the map to continue.", "warning");
       setIsAddressModalOpen(true);
       return;
     }
@@ -1386,6 +1427,11 @@ const CheckoutPage = () => {
               displayName={displayName}
               displayPhone={displayPhone}
               displayAddress={displayAddress}
+              addressSearchBias={
+                hasRealLocation
+                  ? { lat: Number(currentLocation.latitude), lng: Number(currentLocation.longitude) }
+                  : null
+              }
             />
 
             {/* Serviceability Alert (Mobile) */}
@@ -1806,17 +1852,13 @@ const CheckoutPage = () => {
                       <span className="font-medium text-slate-700">Delivery Charges</span>
                       <p className="text-[10px] text-slate-400">
                         {activeEffectiveDeliveryFee === 0
-                          ? `Free delivery applied (orders above ₹${pricingPreview?.freeDeliveryThreshold || 499})`
+                          ? "Free delivery applied"
                           : pricingPreview?.citySlabApplied
                           ? `Distance-based delivery charge${
                               typeof pricingPreview?.distanceKmActual === "number"
                                 ? ` (${pricingPreview.distanceKmActual.toFixed(1)} km)`
                                 : ""
                             }`
-                          : deliveryMethod === "EXPRESS" && isFreeDeliveryForSubtotal
-                          ? "Base fee waived • Express priority fee applied"
-                          : pricingPreview?.freeDeliveryThreshold
-                          ? `Free delivery on orders above ₹${pricingPreview.freeDeliveryThreshold}`
                           : "Delivery charge"}
                       </p>
                     </div>

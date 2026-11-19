@@ -1,7 +1,7 @@
 /**
  * Seller-wise service radius: exactly ONE seller serves a customer.
  *  - nearest covering seller wins (A/B/C overlap)
- *  - nobody covers the customer -> nearest eligible seller (fallback)
+ *  - nobody covers the customer -> null / empty (not serviceable, no fallback)
  *  - inactive / unapproved / invalid-coordinate / product-less sellers excluded
  */
 import { jest } from "@jest/globals";
@@ -71,9 +71,9 @@ describe("selectSellerForCoordinates", () => {
     expect(r).toMatchObject({ sellerId: "far", withinRadius: true, fallback: false });
   });
 
-  test("D) outside every radius -> nearest eligible seller (fallback)", () => {
+  test("D) outside every radius -> null (not serviceable)", () => {
     const r = selectSellerForCoordinates(BASE.lat, BASE.lng, [seller("A", 20, 5), seller("B", 12, 5), seller("C", 40, 8)]);
-    expect(r).toMatchObject({ sellerId: "B", withinRadius: false, fallback: true });
+    expect(r).toBeNull();
   });
 
   test("fallback does not override normal radius selection", () => {
@@ -96,7 +96,7 @@ describe("selectSellerForCoordinates", () => {
       { _id: "o", serviceRadius: 5, location: { coordinates: [500, 500] } },
     ];
     expect(selectSellerForCoordinates(BASE.lat, BASE.lng, bad)).toBeNull();
-    expect(selectSellerForCoordinates(BASE.lat, BASE.lng, [...bad, seller("ok", 50, 5)]).sellerId).toBe("ok");
+    expect(selectSellerForCoordinates(BASE.lat, BASE.lng, [...bad, seller("ok", 3, 5)]).sellerId).toBe("ok");
   });
 
   test("no sellers -> null", () => {
@@ -150,10 +150,10 @@ describe("resolveSelectedSellerForCustomer (eligibility filtering)", () => {
     expect(await getNearbySellerIdsForCustomer(BASE.lat, BASE.lng)).toEqual(["A"]);
   });
 
-  test("outside every radius -> single nearest fallback, not empty", async () => {
+  test("outside every radius -> empty (we don't deliver there)", async () => {
     sellerRows = [seller("A", 25, 5), seller("B", 15, 5)];
     sellerIdsWithProducts = ["A", "B"];
-    expect(await getNearbySellerIdsForCustomer(BASE.lat, BASE.lng)).toEqual(["B"]);
+    expect(await getNearbySellerIdsForCustomer(BASE.lat, BASE.lng)).toEqual([]);
   });
 
   test("no eligible seller anywhere -> empty (graceful)", async () => {

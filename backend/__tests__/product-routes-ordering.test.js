@@ -21,6 +21,7 @@ jest.unstable_mockModule("../app/controller/productController.js", () => ({
   approveProduct: jest.fn((req, res) => res.status(200).json({})),
   rejectProduct: jest.fn((req, res) => res.status(200).json({})),
   bulkCreateProducts: jest.fn((req, res) => res.status(201).json({})),
+  getLocationServiceability: jest.fn((req, res) => res.status(200).json({})),
 }));
 
 jest.unstable_mockModule("../app/controller/stockController.js", () => ({

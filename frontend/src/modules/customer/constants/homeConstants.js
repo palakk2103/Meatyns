@@ -23,7 +23,6 @@ export const MARQUEE_MESSAGES = [
   "100% Fresh & Hygienic Meat",
   "Farm to Fork — Same Day Delivery",
   "Premium Cuts, Chilled & Sourced Daily",
-  "Free Delivery on Orders Above ₹299",
   "Quality Assured • Safe • Antibiotic-Free",
 ];
 

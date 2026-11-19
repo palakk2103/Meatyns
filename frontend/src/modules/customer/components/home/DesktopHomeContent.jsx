@@ -20,6 +20,7 @@ import TrendingCategoriesSection from "./TrendingCategoriesSection";
 import TrustFeaturesBanner from "./TrustFeaturesBanner";
 import QuickCategoryRow from "./QuickCategoryRow";
 import GalleryPreviewSection from "../gallery/GalleryPreviewSection";
+import { getDefaultVariantDisplay } from "../../utils/variantDisplay";
 
 const DesktopHomeContent = ({ products = [], categories = [], heroConfig }) => {
   const navigate = useNavigate();
@@ -27,54 +28,40 @@ const DesktopHomeContent = ({ products = [], categories = [], heroConfig }) => {
 
   const handleAddToCart = (item) => {
     addToCart({
-      id: item.id,
-      _id: item.id,
-      name: item.name,
-      price: item.price,
-      originalPrice: item.originalPrice,
+      ...(item.raw || item),
       image: item.image,
-      weight: item.weight,
+      variantSku: item.variantSku || "",
+      id: item.id || item._id,
+      _id: item.id || item._id,
     });
     toast.success(`${item.name} added to cart!`);
   };
 
+  // Product with the biggest REAL discount (on the variant the product sheet
+  // opens with). No fake percentage: if nothing is discounted, the card hides.
   const todaysDealProduct = React.useMemo(() => {
     if (!products || products.length === 0) return null;
-
-    // Filter products with valid discount (originalPrice > price) and find the best discount
-    const discounted = products
-      .filter(
-        (p) =>
-          p &&
-          p.price &&
-          p.originalPrice &&
-          Number(p.originalPrice) > Number(p.price)
-      )
-      .map((p) => {
-        const pct = Math.round(
-          ((Number(p.originalPrice) - Number(p.price)) / Number(p.originalPrice)) *
-            100
-        );
-        return { ...p, discountPercent: pct };
-      })
-      .sort((a, b) => b.discountPercent - a.discountPercent);
-
-    if (discounted.length > 0) {
-      return discounted[0];
+    let best = null;
+    for (const p of products) {
+      if (!p) continue;
+      const d = getDefaultVariantDisplay(p);
+      if (!(d.mrp > d.price && d.price > 0)) continue;
+      const pct = Math.round(((d.mrp - d.price) / d.mrp) * 100);
+      if (pct <= 0 || (best && best.discountPercent >= pct)) continue;
+      best = {
+        raw: p,
+        variantSku: d.variantSku,
+        id: p._id || p.id,
+        _id: p._id || p.id,
+        name: p.name,
+        image: p.mainImage || p.image,
+        weight: d.weight,
+        price: d.price,
+        originalPrice: d.mrp,
+        discountPercent: pct,
+      };
     }
-
-    const first = products[0];
-    return {
-      ...first,
-      discountPercent:
-        first.originalPrice && Number(first.originalPrice) > Number(first.price)
-          ? Math.round(
-              ((Number(first.originalPrice) - Number(first.price)) /
-                Number(first.originalPrice)) *
-                100
-            )
-          : 15,
-    };
+    return best;
   }, [products]);
 
   const [activeBannerIdx, setActiveBannerIdx] = React.useState(0);
@@ -98,17 +85,7 @@ const DesktopHomeContent = ({ products = [], categories = [], heroConfig }) => {
       ? heroBanners[activeBannerIdx % heroBanners.length]
       : null;
 
-  const deal = todaysDealProduct || {
-    id: "chicken_breast_deal",
-    _id: "chicken_breast_deal",
-    name: "Chicken Breast (Boneless)",
-    price: 149,
-    originalPrice: 179,
-    discountPercent: 17,
-    image:
-      "https://images.unsplash.com/photo-1604503468506-a8da13d82791?auto=format&fit=crop&q=80&w=160&h=160",
-    weight: "500 g",
-  };
+  const deal = todaysDealProduct;
 
   const handleHeroBannerClick = (e) => {
     e?.stopPropagation?.();
@@ -388,6 +365,7 @@ const DesktopHomeContent = ({ products = [], categories = [], heroConfig }) => {
         </div>
 
         {/* Card 2: "Today's Deal" Card (100% Dynamic Highest Discount Product) */}
+        {deal && (
         <div className="bg-white rounded-2xl p-4 border border-slate-100 shadow-xs flex flex-col gap-3">
           {/* Header */}
           <div className="flex items-center justify-between">
@@ -455,6 +433,7 @@ const DesktopHomeContent = ({ products = [], categories = [], heroConfig }) => {
             <span>Add to Cart</span>
           </button>
         </div>
+        )}
 
         {/* Card 3: 3 Trust Features Card matching reference */}
         <div className="bg-white rounded-2xl p-4 border border-slate-100 shadow-xs flex flex-col gap-3.5">

@@ -510,7 +510,15 @@ export async function buildCheckoutPricingSnapshot({
       checkoutLocation.lat,
       checkoutLocation.lng,
     );
-    if (selected) {
+    if (!selected) {
+      const err = new Error(
+        "We don't deliver to this location yet. Please choose an address within a Meatyns outlet's delivery range.",
+      );
+      err.statusCode = 400;
+      err.code = "LOCATION_NOT_SERVICEABLE";
+      throw err;
+    }
+    {
       selectedSellerId = selected.sellerId;
       const foreign = sellerIds.filter((id) => id !== selectedSellerId);
       if (foreign.length > 0) {
@@ -542,17 +550,6 @@ export async function buildCheckoutPricingSnapshot({
   }
 
   const financeSettings = await getOrCreateFinanceSettings({ session });
-
-  if (
-    financeSettings.minimumOrderValue > 0 &&
-    totalSubtotal < financeSettings.minimumOrderValue
-  ) {
-    const err = new Error(
-      `Minimum order value is ₹${financeSettings.minimumOrderValue}. Please add more items to proceed.`,
-    );
-    err.statusCode = 400;
-    throw err;
-  }
 
   for (const sellerId of sellerIds) {
     const sellerItems = itemsBySeller.get(sellerId) || [];
@@ -609,13 +606,11 @@ export async function buildCheckoutPricingSnapshot({
   // (so `grossTotal` is final on the delivery axis) and BEFORE tip /
   // wallet allocation (so they clamp against the post-rebate grandTotal,
   // matching the frontend math).
-  const qualifiesForPlatformFreeDelivery =
-    financeSettings.freeDeliveryThreshold > 0 &&
-    totalSubtotal >= financeSettings.freeDeliveryThreshold;
-
-  if (applyFreeDelivery || qualifiesForPlatformFreeDelivery) {
+  // Free delivery now comes only from a free-delivery coupon; the old
+  // cart-value threshold and minimum-order rules are no longer applied.
+  if (applyFreeDelivery) {
     applyFreeDeliveryToSellerBreakdowns(sellerBreakdownEntries, {
-      keepCitySlabFees: !applyFreeDelivery,
+      keepCitySlabFees: false,
     });
   }
   allocateCheckoutTipToSellerBreakdowns(sellerBreakdownEntries, tipAmount);
@@ -638,13 +633,11 @@ export async function buildCheckoutPricingSnapshot({
   const aggregateBreakdown = buildAggregateBreakdown(
     sellerBreakdownEntries.map((entry) => entry.breakdown),
   );
-  aggregateBreakdown.freeDeliveryThreshold = financeSettings.freeDeliveryThreshold;
-  aggregateBreakdown.minimumOrderValue = financeSettings.minimumOrderValue;
   const citySlabFeeKept = !applyFreeDelivery && sellerBreakdownEntries.some(
     (entry) => entry?.breakdown?.snapshots?.deliveryFeeBreakdown?.citySlabApplied,
   );
   aggregateBreakdown.isFreeDeliveryApplied =
-    Boolean(applyFreeDelivery || qualifiesForPlatformFreeDelivery) && !citySlabFeeKept;
+    Boolean(applyFreeDelivery) && !citySlabFeeKept;
   // True when a city distance-slab charge (Normal/Scheduled) is in the bill.
   aggregateBreakdown.citySlabApplied =
     Number(aggregateBreakdown.deliveryFeeCharged || 0) > 0 &&

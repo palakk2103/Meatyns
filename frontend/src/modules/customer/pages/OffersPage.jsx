@@ -9,7 +9,8 @@ import { useCart } from "../context/CartContext";
 import { useProductDetail } from "../context/ProductDetailContext";
 import { toast } from "sonner";
 import { applyCloudinaryTransform } from "@/core/utils/imageUtils";
-import { DEFAULT_HOT_DEALS } from "../components/home/HotDealsSection";
+import { getDefaultVariantDisplay } from "../utils/variantDisplay";
+import { isEggProduct } from "../utils/categoryFilter";
 import { cleanProductName } from "@/core/utils/productName";
 
 const OffersPage = () => {
@@ -19,7 +20,7 @@ const OffersPage = () => {
   const { openProduct } = useProductDetail();
 
   const [legacyOffers, setLegacyOffers] = useState([]);
-  const [hotDeals, setHotDeals] = useState(DEFAULT_HOT_DEALS);
+  const [hotDeals, setHotDeals] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -45,55 +46,47 @@ const OffersPage = () => {
           prodRes.data ||
           [];
 
-        const MEAT_KEYWORDS = [
-          "chicken",
-          "fish",
-          "mutton",
-          "meat",
-          "pomfret",
-          "prawn",
-          "seafood",
-          "steak",
-          "curry cut",
-        ];
-
-        const discountedFromBackend = (Array.isArray(prods) ? prods : [])
-          .filter((p) => {
-            const orig = Number(p.originalPrice || p.price || 0);
-            const curr = Number(p.salePrice || p.price || 0);
-            const name = (p.name || "").toLowerCase();
-            const cat = (p.category?.name || p.category || "").toLowerCase();
-            return (
-              orig > curr &&
-              MEAT_KEYWORDS.some((kw) => name.includes(kw) || cat.includes(kw))
-            );
-          })
+        // Only real products with a real discount on the variant the
+        // product sheet opens with (no hard-coded / fake deals).
+        const deals = (Array.isArray(prods) ? prods : [])
           .map((p) => {
-            const orig = Number(p.originalPrice || p.price || 0);
-            const curr = Number(p.salePrice || p.price || 0);
+            const d = getDefaultVariantDisplay(p);
+            const curr = d.price;
+            const orig = d.mrp;
+            if (!(orig > curr && curr > 0)) return null;
             const pct = Math.round(((orig - curr) / orig) * 100);
+            if (pct <= 0) return null;
+            const catName = typeof p.category === "object" ? p.category?.name || "" : "";
+            const subName = typeof p.subcategoryId === "object" ? p.subcategoryId?.name || "" : "";
+            const parentCat = typeof p.categoryId === "object" ? p.categoryId?.name || "" : "";
+            const headerName = typeof p.headerId === "object" ? p.headerId?.name || "" : "";
             return {
+              raw: p,
+              variantSku: d.variantSku,
               id: p._id || p.id,
               _id: p._id || p.id,
               name: p.name,
-              weight: p.weight || "500 g",
+              weight: d.weight,
               price: curr,
               originalPrice: orig,
+              pct,
               discount: `${pct}% OFF`,
-              image: p.mainImage || p.image || DEFAULT_HOT_DEALS[0].image,
+              image: p.mainImage || p.image || "",
+              isEgg: isEggProduct(p),
+              searchText: `${p.name || ""} ${catName} ${subName} ${parentCat} ${headerName}`.toLowerCase(),
             };
-          });
+          })
+          .filter(Boolean);
 
-        // Merge backend discounted products with DEFAULT_HOT_DEALS
-        const merged = [...discountedFromBackend];
-        const existingNames = new Set(merged.map((m) => m.name.toLowerCase()));
-        for (const item of DEFAULT_HOT_DEALS) {
-          if (!existingNames.has(item.name.toLowerCase())) {
-            merged.push(item);
-            existingNames.add(item.name.toLowerCase());
-          }
-        }
-        setHotDeals(merged);
+        // One card per product
+        const seen = new Set();
+        const unique = deals.filter((d) => {
+          const k = String(d.id);
+          if (seen.has(k)) return false;
+          seen.add(k);
+          return true;
+        });
+        setHotDeals(unique);
       } catch (e) {
         console.error("Failed to load offers", e);
       } finally {
@@ -105,8 +98,11 @@ const OffersPage = () => {
 
   const getQuantity = (product) => {
     const pId = String(product?.id || product?._id || "");
+    const sku = String(product?.variantSku || "").trim();
     const item = (cart || []).find(
-      (c) => String(c.id || c._id) === pId
+      (c) =>
+        String(c.id || c._id) === pId &&
+        (!sku || String(c.variantSku || "").trim() === sku)
     );
     return item ? Number(item.quantity) || 0 : 0;
   };
@@ -131,7 +127,9 @@ const OffersPage = () => {
     e.preventDefault();
     e.stopPropagation();
     addToCart({
-      ...product,
+      ...(product.raw || product),
+      image: product.image,
+      variantSku: product.variantSku || "",
       id: product.id || product._id,
       _id: product.id || product._id,
     });
@@ -141,7 +139,7 @@ const OffersPage = () => {
   const handleIncrement = (e, product) => {
     e.preventDefault();
     e.stopPropagation();
-    updateQuantity(product.id || product._id, 1);
+    updateQuantity(product.id || product._id, 1, product.variantSku || "");
   };
 
   const handleDecrement = (e, product) => {
@@ -149,9 +147,9 @@ const OffersPage = () => {
     e.stopPropagation();
     const qty = getQuantity(product);
     if (qty <= 1) {
-      removeFromCart(product.id || product._id);
+      removeFromCart(product.id || product._id, product.variantSku || "");
     } else {
-      updateQuantity(product.id || product._id, -1);
+      updateQuantity(product.id || product._id, -1, product.variantSku || "");
     }
   };
 
@@ -172,13 +170,23 @@ const OffersPage = () => {
     .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 
   const [categoryFilter, setCategoryFilter] = useState("all");
+  const maxDiscount = useMemo(
+    () => hotDeals.reduce((m, d) => Math.max(m, Number(d.pct) || 0), 0),
+    [hotDeals]
+  );
 
   const filteredDeals = useMemo(() => {
     if (categoryFilter === "all") return hotDeals;
+    const FILTER_REGEX = {
+      chicken: /chicken|poultry|murga/,
+      fish: /fish|seafood|prawn|shrimp|crab|pomfret|rohu|surmai|machli/,
+      mutton: /mutton|goat|lamb|gosht|bakra/,
+    };
     return hotDeals.filter((p) => {
-      const name = (p.name || "").toLowerCase();
-      const cat = (p.category?.name || p.category || "").toLowerCase();
-      return name.includes(categoryFilter) || cat.includes(categoryFilter);
+      if (categoryFilter === "egg") return p.isEgg;
+      if (p.isEgg) return false;
+      const re = FILTER_REGEX[categoryFilter];
+      return re ? re.test(p.searchText || "") : true;
     });
   }, [hotDeals, categoryFilter]);
 
@@ -230,7 +238,7 @@ const OffersPage = () => {
               <span className="text-[#FAB82C]">Best Prices</span>
             </h2>
             <p className="text-xs sm:text-sm text-red-100 font-medium">
-              Up to 20% OFF on fresh cuts • 100% Hygienic
+              {maxDiscount > 0 ? `Up to ${maxDiscount}% OFF on fresh cuts • ` : "Fresh cuts • "}100% Hygienic
             </p>
             <div className="pt-1">
               <button
@@ -353,7 +361,7 @@ const OffersPage = () => {
                       {cleanProductName(product.name)}
                     </h3>
                     <p className="text-[9.5px] sm:text-xs text-slate-400 font-medium mt-0.5">
-                      {product.weight || "500 g"}
+                      {product.weight}
                     </p>
                   </div>
 
@@ -367,9 +375,11 @@ const OffersPage = () => {
                     <span className="text-[13px] sm:text-base md:text-lg font-black text-slate-900">
                       ₹{product.price}
                     </span>
-                    <span className="ml-auto bg-[#EF131F] text-white text-[8px] sm:text-[10.5px] font-bold px-1 sm:px-1.5 py-0.5 rounded shadow-xs tracking-tight">
-                      {product.discount || "25% OFF"}
-                    </span>
+                    {product.discount && (
+                      <span className="ml-auto bg-[#EF131F] text-white text-[8px] sm:text-[10.5px] font-bold px-1 sm:px-1.5 py-0.5 rounded shadow-xs tracking-tight">
+                        {product.discount}
+                      </span>
+                    )}
                   </div>
 
                   {/* Add to Cart / Quantity Stepper Button */}
@@ -412,6 +422,12 @@ const OffersPage = () => {
             );
           })}
         </div>
+
+        {!isLoading && filteredDeals.length === 0 && (
+          <div className="p-6 sm:p-8 bg-slate-50 rounded-2xl border border-slate-200 text-center text-slate-500 text-sm font-medium">
+            No deals available right now. Check back soon!
+          </div>
+        )}
       </div>
 
       {isLoading && (

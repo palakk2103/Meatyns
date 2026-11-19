@@ -9,15 +9,12 @@ import {
     Trash2,
     ArrowRight,
     ArrowLeft,
-    Sparkles,
     ShieldCheck,
-    Truck,
     Tag,
     ShoppingBag,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@shared/components/ui/Toast';
-import { useSettings } from '@core/context/SettingsContext';
 import { applyCloudinaryTransform } from '@/core/utils/imageUtils';
 import DesktopSidebarNav from '../components/shared/DesktopSidebarNav';
 import FishEmptyCartIllustration from '../components/shared/FishEmptyCartIllustration';
@@ -29,23 +26,14 @@ import { cleanProductName } from "@/core/utils/productName";
 const CartPage = () => {
     const navigate = useNavigate();
     const { cart, removeFromCart, updateQuantity, cartTotal, clearCart, resolveItemEffectivePrice } = useCart();
-    const { settings } = useSettings();
     const { showToast } = useToast();
-    const { currentLocation } = useAppLocation();
-    const unavailableItems = useCartServiceability(currentLocation?.latitude, currentLocation?.longitude);
+    const { currentLocation, hasRealLocation } = useAppLocation();
+    const unavailableItems = useCartServiceability(currentLocation?.latitude, currentLocation?.longitude, hasRealLocation);
     const removeUnavailable = (id, sku) => removeFromCart(id, String(sku || '').trim());
     const removeAllUnavailable = () => unavailableItems.forEach((u) => removeUnavailable(u.productId, u.variantSku));
     const itemCount = cart.reduce((count, item) => count + item.quantity, 0);
     const [emptyBoxData, setEmptyBoxData] = useState(null);
 
-    const freeDeliveryThreshold = Number(settings?.freeDeliveryThreshold ?? 499);
-    const minimumOrderValue = Number(settings?.minimumOrderValue ?? 0);
-    const baseDeliveryFee = Number(settings?.fixedDeliveryFee ?? settings?.customerBaseDeliveryFee ?? 30);
-    const isFreeDelivery = cartTotal >= freeDeliveryThreshold || cartTotal === 0;
-    const deliveryCharge = isFreeDelivery ? 0 : baseDeliveryFee;
-    const finalCartTotal = cartTotal + deliveryCharge;
-    const amountForFreeDelivery = Math.max(0, freeDeliveryThreshold - cartTotal);
-    const isBelowMinimum = cartTotal > 0 && cartTotal < minimumOrderValue;
 
     const handleRemove = (id, name, variantSku = "") => {
         removeFromCart(id, variantSku);
@@ -59,11 +47,6 @@ const CartPage = () => {
         if (unavailableItems.length > 0) {
             e?.preventDefault?.();
             showToast('Remove the unavailable items to continue to checkout.', 'error');
-            return;
-        }
-        if (isBelowMinimum) {
-            e?.preventDefault?.();
-            showToast(`Minimum order amount is ₹${minimumOrderValue}. Please add ₹${minimumOrderValue - cartTotal} more to checkout.`, 'warning');
             return;
         }
         navigate('/checkout');
@@ -232,24 +215,6 @@ const CartPage = () => {
                                     ))}
                                 </div>
                                 <div className="p-4 bg-white rounded-2xl shadow-sm border border-slate-100 space-y-3">
-                                    {amountForFreeDelivery > 0 ? (
-                                        <div className="rounded-xl bg-amber-50 border border-amber-200 p-2.5 text-xs text-amber-800 flex items-center gap-2">
-                                            <Truck size={15} className="text-amber-600 flex-shrink-0" />
-                                            <span>Add <strong>₹{amountForFreeDelivery}</strong> more to unlock <strong>FREE Delivery</strong>!</span>
-                                        </div>
-                                    ) : cartTotal > 0 ? (
-                                        <div className="rounded-xl bg-emerald-50 border border-emerald-200 p-2.5 text-xs text-emerald-800 flex items-center gap-2">
-                                            <Sparkles size={15} className="text-emerald-600 flex-shrink-0" />
-                                            <span>Yay! You have unlocked <strong>FREE Delivery</strong></span>
-                                        </div>
-                                    ) : null}
-
-                                    {isBelowMinimum && (
-                                        <div className="rounded-xl bg-rose-50 border border-rose-200 p-2.5 text-xs text-rose-700 font-medium">
-                                            Minimum order value is ₹{minimumOrderValue}. Add items worth ₹{minimumOrderValue - cartTotal} more to checkout.
-                                        </div>
-                                    )}
-
                                     <div className="flex justify-between text-sm">
                                         <span className="text-slate-500">Subtotal</span>
                                         <span className="font-bold">₹{cartTotal}</span>
@@ -257,21 +222,22 @@ const CartPage = () => {
                                     <div className="flex justify-between text-sm">
                                         <div>
                                             <span className="text-slate-500">Delivery</span>
-                                            <p className="text-[10px] text-slate-400">Free above ₹{freeDeliveryThreshold}</p>
                                         </div>
-                                        <span className="font-bold text-emerald-600">{deliveryCharge === 0 ? 'FREE' : `₹${deliveryCharge}`}</span>
+                                        <span className="text-xs font-semibold text-slate-500">Calculated at checkout</span>
                                     </div>
-                                    <div className="border-t pt-2 flex justify-between font-black text-base">
-                                        <span>Total</span>
-                                        <span className="text-[#1A1A1A]">₹{finalCartTotal}</span>
+                                    <div className="border-t pt-2">
+                                        <div className="flex justify-between font-black text-base">
+                                            <span>Item Total</span>
+                                            <span className="text-[#1A1A1A]">₹{cartTotal.toLocaleString('en-IN')}</span>
+                                        </div>
+                                        <p className="text-[10px] text-slate-400 mt-0.5">Delivery charge depends on your location and is added at checkout.</p>
                                     </div>
                                     <div className="block pt-2">
                                         <Button
                                             onClick={handleProceedToCheckout}
-                                            disabled={isBelowMinimum}
                                             className="w-full h-12 rounded-xl bg-[#FDCE04] hover:bg-[#E5B800] text-[#1A1A1A] font-extrabold border border-[#E5B800] disabled:opacity-50"
                                         >
-                                            {isBelowMinimum ? `Min Order ₹${minimumOrderValue}` : 'Proceed to Checkout'}
+                                            Proceed to Checkout
                                         </Button>
                                     </div>
                                 </div>
@@ -448,24 +414,6 @@ const CartPage = () => {
                                     Price Details
                                 </h2>
 
-                                {amountForFreeDelivery > 0 ? (
-                                    <div className="rounded-xl bg-amber-50 border border-amber-200 p-3 text-xs text-amber-800 flex items-center gap-2.5">
-                                        <Truck size={16} className="text-amber-600 flex-shrink-0" />
-                                        <span>Add <strong>₹{amountForFreeDelivery}</strong> more to unlock <strong>FREE Delivery</strong>!</span>
-                                    </div>
-                                ) : cartTotal > 0 ? (
-                                    <div className="rounded-xl bg-emerald-50 border border-emerald-200 p-3 text-xs text-emerald-800 flex items-center gap-2.5">
-                                        <Sparkles size={16} className="text-emerald-600 flex-shrink-0" />
-                                        <span>You qualify for <strong>FREE Delivery</strong></span>
-                                    </div>
-                                ) : null}
-
-                                {isBelowMinimum && (
-                                    <div className="rounded-xl bg-rose-50 border border-rose-200 p-3 text-xs text-rose-700 font-medium">
-                                        Minimum order value is ₹{minimumOrderValue}. Please add ₹{minimumOrderValue - cartTotal} more to proceed.
-                                    </div>
-                                )}
-
                                 <div className="space-y-2.5 text-xs">
                                     <div className="flex items-center justify-between text-slate-600">
                                         <span>Subtotal</span>
@@ -474,15 +422,8 @@ const CartPage = () => {
                                     <div className="flex items-center justify-between text-slate-600">
                                         <div>
                                             <span>Delivery Charges</span>
-                                            <p className="text-[10px] text-slate-400">Free delivery above ₹{freeDeliveryThreshold}</p>
                                         </div>
-                                        <span className="font-semibold text-slate-900">
-                                            {deliveryCharge === 0 ? (
-                                                <span className="text-emerald-700 font-bold">FREE</span>
-                                            ) : (
-                                                `₹${deliveryCharge}`
-                                            )}
-                                        </span>
+                                        <span className="font-semibold text-slate-500">Calculated at checkout</span>
                                     </div>
                                     {appliedCoupon && (
                                         <div className="flex items-center justify-between text-emerald-700">
@@ -493,18 +434,21 @@ const CartPage = () => {
 
                                     <hr className="border-slate-100 my-2" />
 
-                                    <div className="flex items-center justify-between text-sm font-black text-slate-900 pt-1">
-                                        <span>Total Amount</span>
-                                        <span className="text-base text-slate-900">₹{finalCartTotal.toLocaleString('en-IN')}</span>
+                                    <div className="pt-1">
+                                        <div className="flex items-center justify-between text-sm font-black text-slate-900">
+                                            <span>Item Total</span>
+                                            <span className="text-base text-slate-900">₹{cartTotal.toLocaleString('en-IN')}</span>
+                                        </div>
+                                        <p className="text-[10px] text-slate-400 mt-1">Delivery charge depends on your location and is added at checkout.</p>
                                     </div>
                                 </div>
 
                                 <button
                                     onClick={handleProceedToCheckout}
-                                    disabled={cart.length === 0 || isBelowMinimum}
+                                    disabled={cart.length === 0}
                                     className="w-full py-3.5 rounded-xl bg-[#FDCE04] hover:bg-[#E5B800] disabled:opacity-50 text-[#1A1A1A] font-extrabold text-sm flex items-center justify-center gap-2 border border-[#E5B800] transition-all active:scale-[0.99] shadow-sm cursor-pointer mt-2"
                                 >
-                                    <span>{isBelowMinimum ? `Min Order ₹${minimumOrderValue}` : 'Proceed to Checkout \u2192'}</span>
+                                    <span>Proceed to Checkout &rarr;</span>
                                 </button>
                             </div>
                         </div>

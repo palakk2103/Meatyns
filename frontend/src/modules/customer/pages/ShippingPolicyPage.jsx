@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChevronLeft, Truck, Clock, ThermometerSnowflake, Gift, CheckCircle2 } from 'lucide-react';
+import { ChevronLeft, Truck, Clock, ThermometerSnowflake, CheckCircle2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useSettings } from '@core/context/SettingsContext';
 
@@ -57,11 +57,6 @@ const ShippingPolicyPage = () => {
                                 <h4 className="text-xs font-bold text-slate-900 mb-1">Cold-Chain Maintained</h4>
                                 <p className="text-xs text-slate-600 font-medium">Cold-chain maintained continuously from outlet to home.</p>
                             </div>
-                            <div className="p-4 rounded-2xl bg-emerald-50/60 border border-emerald-200/70">
-                                <Gift size={20} className="text-[#047857] mb-2" />
-                                <h4 className="text-xs font-bold text-slate-900 mb-1">Free Delivery</h4>
-                                <p className="text-xs text-slate-600 font-medium">Free delivery above minimum order value.</p>
-                            </div>
                         </div>
 
                         <h3 className="text-slate-800 font-bold text-base mt-6 flex items-center gap-2">
@@ -82,7 +77,7 @@ const ShippingPolicyPage = () => {
                             <CheckCircle2 size={16} className="text-[#C81017]" /> 3. Delivery Fees
                         </h3>
                         <p>
-                            Delivery fees depend on distance and applicable cart thresholds. Orders that meet or exceed our specified minimum order value qualify for free delivery automatically at checkout.
+                            Delivery fees depend on the distance to your delivery location and are shown clearly at checkout before you pay.
                         </p>
 
                         <h3 className="text-slate-800 font-bold text-base mt-6 flex items-center gap-2">

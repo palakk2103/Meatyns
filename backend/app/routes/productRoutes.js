@@ -10,6 +10,7 @@ import {
     approveProduct,
     rejectProduct,
     bulkCreateProducts,
+    getLocationServiceability,
 } from "../controller/productController.js";
 import { adjustStock, getStockHistory } from "../controller/stockController.js";
 import {
@@ -27,6 +28,7 @@ const router = express.Router();
 
 // Public routes with optional auth (to detect admin/seller vs customer)
 router.get("/", optionalVerifyToken, getProducts);
+router.get("/serviceability", getLocationServiceability);
 
 // Seller protected routes
 router.get("/seller/me", verifyToken, allowRoles("seller"), requireApprovedSeller, getSellerProducts);

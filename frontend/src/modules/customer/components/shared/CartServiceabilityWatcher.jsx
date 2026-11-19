@@ -15,12 +15,13 @@ const TOAST_ID = "cart-unavailable-for-location";
 const CartServiceabilityWatcher = () => {
   const { pathname } = useRouterLocation();
   const navigate = useNavigate();
-  const { currentLocation } = useAppLocation();
+  const { currentLocation, hasRealLocation } = useAppLocation();
   const onCartFlow = pathname === "/cart" || pathname.startsWith("/checkout");
+  // Never validate (and remap) the cart against the hardcoded default area.
   const unavailable = useCartServiceability(
     currentLocation?.latitude,
     currentLocation?.longitude,
-    !onCartFlow,
+    !onCartFlow && hasRealLocation,
   );
   const lastKeyRef = useRef("");
 

@@ -65,9 +65,12 @@ export const customerApi = {
 
   // Sellers & Location
   getNearbySellers: (params) => getWithDedupe("/seller/nearby", params),
+  // Is this location inside any outlet's delivery radius?
+  getLocationServiceability: (lat, lng) =>
+    getWithDedupe("/products/serviceability", { lat, lng }, { ttl: 60000 }),
 
   // Cart
-  getCart: () => getWithDedupe("/cart", {}, { ttl: 2000 }), // Very short cache for cart
+  getCart: (options = {}) => getWithDedupe("/cart", {}, { ttl: 2000, ...options }), // Very short cache for cart
   // Re-validates the server cart against a delivery location (single-seller rule).
   getCartServiceability: (lat, lng) =>
     axiosInstance.get("/cart/serviceability", { params: { lat, lng } }),

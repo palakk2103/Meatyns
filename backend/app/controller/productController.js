@@ -9,7 +9,30 @@ import getPagination from "../utils/pagination.js";
 import {
   parseCustomerCoordinates,
   getNearbySellerIdsForCustomer,
+  resolveSelectedSellerForCustomer,
 } from "../services/customerVisibilityService.js";
+
+/* ===============================
+   LOCATION SERVICEABILITY (public)
+   Does any outlet's service radius cover (lat, lng)? The customer app shows
+   "we don't deliver here" instead of the catalogue when it does not.
+================================ */
+export const getLocationServiceability = async (req, res) => {
+  try {
+    const coords = parseCustomerCoordinates(req.query || {});
+    if (!coords.valid) {
+      return handleResponse(res, 400, "Valid lat and lng are required");
+    }
+    const selected = await resolveSelectedSellerForCustomer(coords.lat, coords.lng);
+    return handleResponse(res, 200, "Location serviceability evaluated", {
+      serviceable: Boolean(selected),
+      sellerId: selected?.sellerId || null,
+      distanceKm: selected ? Number(selected.distanceKm.toFixed(2)) : null,
+    });
+  } catch (error) {
+    return handleResponse(res, 500, error.message);
+  }
+};
 import {
   enqueueProductIndex,
   enqueueProductRemoval,
@@ -393,9 +416,6 @@ export const getProducts = async (req, res) => {
           // Requested seller is outside service radius
           query.sellerId = { $in: [] };
         }
-      } else if (requestedSellerIds.length > 0) {
-        // Fallback: If user explicitly requested a specific seller, honor it
-        query.sellerId = { $in: requestedSellerIds };
       } else {
         // Customer location has no active serving outlet within service radius
         query.sellerId = { $in: [] };
@@ -1335,9 +1355,8 @@ export const getProductById = async (req, res) => {
         coords.lat,
         coords.lng,
       );
-      if (nearbySellerIds.length > 0) {
-        nearbySellerSet = new Set(nearbySellerIds.map(String));
-      }
+      // Empty set = no outlet delivers here, so every product is unavailable.
+      nearbySellerSet = new Set(nearbySellerIds.map(String));
     }
 
     const isObjectId = mongoose.Types.ObjectId.isValid(id) && String(new mongoose.Types.ObjectId(id)) === id;
@@ -1379,7 +1398,7 @@ export const getProductById = async (req, res) => {
       }
     }
 
-    if (enforceRadius && nearbySellerSet && nearbySellerSet.size > 0) {
+    if (enforceRadius && nearbySellerSet) {
       const sellerIdForProduct = String(product?.sellerId?._id || product?.sellerId);
       if (!nearbySellerSet.has(sellerIdForProduct)) {
         return handleResponse(res, 404, "Product not available in your area");
