@@ -839,7 +839,7 @@ export async function reverseOrderFinanceOnCancellation(
           type: LEDGER_TRANSACTION_TYPE.WALLET_REFUND,
           direction: LEDGER_DIRECTION.CREDIT,
           amount: walletUsed,
-          paymentMode: "WALLET",
+          paymentMode: null, // ledger enum is ONLINE|COD; the WALLET_* type says it is wallet money
           description: `Refund for wallet payment: ${reason}`,
           reference: order.orderId,
         },

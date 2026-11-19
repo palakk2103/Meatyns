@@ -299,7 +299,7 @@ export async function markOrderItemUnavailable({
           type: LEDGER_TRANSACTION_TYPE.WALLET_REFUND,
           direction: LEDGER_DIRECTION.CREDIT,
           amount: walletRefund,
-          paymentMode: "WALLET",
+          paymentMode: null, // ledger enum is ONLINE|COD; the WALLET_* type says it is wallet money
           description: `Refund for unavailable item: ${targetItem.name || "Item"} (${trimmedReason})`,
           reference: `${order.orderId}-ITEM-${itemIndex + 1}`,
         },
