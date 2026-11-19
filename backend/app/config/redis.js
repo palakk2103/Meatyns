@@ -147,29 +147,23 @@ export function getRedisClient() {
  * Mirrors bull/lib/queue.js defaults and attaches the same error handler.
  */
 export function createBullRedisClient(type, config) {
-  let client;
-  if (typeof config === "string") {
-    client = new Redis(config, {
-      lazyConnect: true,
-      maxRetriesPerRequest: null,
-      retryStrategy(times) {
-        if (times > 20) return null;
-        return Math.min(times * 200, 3000);
-      },
-    });
-  } else if (["bclient", "subscriber"].includes(type)) {
-    client = new Redis({
-      ...config,
-      lazyConnect: true,
-      maxRetriesPerRequest: null,
-    });
-  } else {
-    client = new Redis({
-      ...config,
-      lazyConnect: true,
-      maxRetriesPerRequest: null,
-    });
-  }
+  // Bull requirements: clients must connect eagerly (no lazyConnect — Bull
+  // waits for the "ready" event, which a lazy client never emits), and the
+  // blocking/subscriber clients need enableReadyCheck=false and
+  // maxRetriesPerRequest=null. With lazyConnect the worker registered its
+  // processors but never pulled a single job: notifications and
+  // seller/delivery timeout jobs piled up in Redis unprocessed.
+  const isBlocking = ["bclient", "subscriber"].includes(type);
+  const options = {
+    maxRetriesPerRequest: null,
+    ...(isBlocking ? { enableReadyCheck: false } : {}),
+    retryStrategy(times) {
+      return Math.min(times * 200, 3000);
+    },
+  };
+  const client = typeof config === "string"
+    ? new Redis(config, options)
+    : new Redis({ ...config, ...options });
   attachRedisErrorHandler(client);
   return client;
 }

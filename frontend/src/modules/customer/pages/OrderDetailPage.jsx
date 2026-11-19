@@ -8,6 +8,7 @@ import LiveTrackingMap from "../components/order/LiveTrackingMap";
 import DeliveryOtpDisplay from "../components/DeliveryOtpDisplay";
 import OrderProgressTracker from "../components/order/OrderProgressTracker";
 import ReturnProgressTracker from "../components/order/ReturnProgressTracker";
+import EnableOrderNotificationsPrompt from "../components/order/EnableOrderNotificationsPrompt";
 import { applyCloudinaryTransform } from "@/core/utils/imageUtils";
 import {
   ChevronLeft,
@@ -899,6 +900,7 @@ const OrderDetailPage = () => {
         </div>
 
         <div className="max-w-2xl mx-auto px-4 py-4 space-y-4">
+          <EnableOrderNotificationsPrompt />
           {/* Payment Required Card - Only for Online Pending Orders */}
           {isAwaitingOnlinePayment && (
             <motion.div
@@ -1384,6 +1386,7 @@ const OrderDetailPage = () => {
           <div className="max-w-7xl mx-auto grid grid-cols-12 gap-8 items-start">
             {/* Left Column: Order Header & Vertical Timeline Tracker */}
             <div className="col-span-7 xl:col-span-8 space-y-4">
+              <EnableOrderNotificationsPrompt />
               {/* Order Info & Status Badge Row */}
               <div className="flex items-center justify-between">
                 <div>

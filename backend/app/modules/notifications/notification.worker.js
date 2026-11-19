@@ -22,6 +22,8 @@ import {
 
 // A delivery claim older than this is assumed to belong to a crashed process.
 const DELIVERY_CLAIM_STALE_MS = 5 * 60 * 1000;
+// Pending notifications older than this are marked expired instead of sent.
+const MAX_PUSH_AGE_MS = 30 * 60 * 1000;
 
 /**
  * Safety net for the push pipeline. When Redis is enabled, the API only
@@ -177,6 +179,17 @@ export async function deliverNotificationById(notificationId) {
     { new: true },
   );
   if (!notification) {
+    return;
+  }
+
+  // Never push stale alerts (e.g. a backlog released after a queue outage):
+  // a "New order" for an order cancelled hours ago only confuses people.
+  const ageMs = Date.now() - new Date(notification.createdAt || Date.now()).getTime();
+  if (notification.status === "pending" && ageMs > MAX_PUSH_AGE_MS) {
+    await Notification.updateOne(
+      { _id: notification._id },
+      { $set: { status: "failed", failureReason: "Expired before delivery" } },
+    );
     return;
   }
 
