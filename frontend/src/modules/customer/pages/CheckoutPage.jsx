@@ -1592,6 +1592,41 @@ const CheckoutPage = () => {
                 </h2>
 
                 <div className="bg-white rounded-2xl p-5 border border-[#ede5df] shadow-xs space-y-3">
+                  {/* Wallet balance (was only available in the mobile layout) */}
+                  {(user?.walletBalance || 0) > 0 && (
+                    <div className={`p-3.5 rounded-xl border transition-colors ${useWallet ? "border-[#FDCE04] bg-[#FFFBEB]/70" : "border-slate-200/80"}`}>
+                      <div className="flex items-center justify-between gap-3">
+                        <div className="flex items-center gap-3">
+                          <div className="h-8 w-8 rounded-full bg-[#FDCE04]/20 flex items-center justify-center">
+                            <Wallet size={16} className="text-[#1A1A1A]" />
+                          </div>
+                          <div>
+                            <span className="text-xs font-bold text-slate-800 block">Use Wallet Balance</span>
+                            <span className="text-[11px] text-slate-500 font-medium">
+                              Available: ₹{(user?.walletBalance || 0).toLocaleString("en-IN")}
+                            </span>
+                          </div>
+                        </div>
+                        <button
+                          type="button"
+                          role="switch"
+                          aria-checked={useWallet}
+                          aria-label="Use wallet balance"
+                          onClick={() => setUseWallet((v) => !v)}
+                          className={`w-11 h-6 rounded-full transition-colors relative flex items-center px-1 shrink-0 ${useWallet ? "bg-[#FDCE04]" : "bg-slate-200"}`}
+                        >
+                          <span className={`h-4 w-4 rounded-full bg-black shadow-sm transition-transform ${useWallet ? "translate-x-5" : "translate-x-0"}`} />
+                        </button>
+                      </div>
+                      {useWallet && walletAmountToUse > 0 && (
+                        <div className="mt-3 pt-3 border-t border-[#FDCE04]/30 flex items-center justify-between">
+                          <span className="text-[11px] font-semibold text-slate-600">Amount used from wallet</span>
+                          <span className="text-sm font-black text-[#1A1A1A]">− ₹{walletAmountToUse}</span>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
                   {/* Option 1: Online Payment (Razorpay) */}
                   {settings?.onlineEnabled !== false && (
                     <label
