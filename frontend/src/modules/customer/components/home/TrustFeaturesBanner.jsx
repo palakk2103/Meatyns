@@ -1,7 +1,9 @@
 import React from "react";
 import { ShieldCheck, Truck, Clock, Heart } from "lucide-react";
+import { useServingOutlet } from "../../hooks/useServingOutlet";
 
 const TrustFeaturesBanner = () => {
+  const servingOutlet = useServingOutlet();
   return (
     <div className="w-full mt-2 mb-6 sm:mb-8 select-none">
       <div className="bg-[#FAF3EE] rounded-xl sm:rounded-2xl lg:rounded-3xl p-4 sm:p-6 border border-[#F2E5DC] shadow-xs">
@@ -36,7 +38,7 @@ const TrustFeaturesBanner = () => {
             </div>
           </div>
 
-          {/* Feature 3: Fast Delivery 15–30 mins */}
+          {/* Feature 3: Fast Delivery (serving outlet's real ETA) */}
           <div className="flex items-center gap-3 sm:gap-3.5 justify-start md:justify-center shrink-0 md:shrink">
             <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-[#FDCE04]/20 flex items-center justify-center text-[#1A1A1A] shrink-0">
               <Clock size={24} className="stroke-[2.2]" />
@@ -46,7 +48,7 @@ const TrustFeaturesBanner = () => {
                 Fast Delivery
               </span>
               <span className="text-[11px] sm:text-xs font-semibold text-slate-600 leading-tight">
-                15–30 mins
+                {servingOutlet?.etaLabel || "15–30 mins"}
               </span>
             </div>
           </div>

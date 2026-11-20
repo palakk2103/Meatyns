@@ -7,6 +7,7 @@ import { useCart } from '../../context/CartContext';
 import { useLocation as useAppLocation, getLocationLabel } from "../../context/LocationContext";
 import { useSettings } from '@core/context/SettingsContext';
 import LocationDrawer from '../shared/LocationDrawer';
+import { useServingOutlet } from '../../hooks/useServingOutlet';
 
 // Leaf outline emblem matching brand logo design
 const LeafLogo = ({ className = "w-8 h-8 text-white shrink-0" }) => (
@@ -47,6 +48,7 @@ const Header = () => {
     const isCheckoutPage = location.pathname === '/checkout';
     const [isLocationOpen, setIsLocationOpen] = useState(false);
     const { currentLocation, refreshLocation, isFetchingLocation } = useAppLocation();
+    const servingOutlet = useServingOutlet();
 
     // Search placeholder animation
     const [searchPlaceholder, setSearchPlaceholder] = useState('Search ');
@@ -166,7 +168,7 @@ const Header = () => {
                                         Delivery in
                                     </span>
                                     <span className="text-[13px] lg:text-sm font-bold text-[#1A1A1A] whitespace-nowrap leading-tight">
-                                        {currentLocation?.time || '15–30 mins'}
+                                        {servingOutlet?.etaLabel || currentLocation?.time || '15–30 mins'}
                                     </span>
                                 </div>
                             </div>
@@ -237,7 +239,7 @@ const Header = () => {
                         <img
                             src="/meatyns_logo_2x.png"
                             alt="Meatyns"
-                            className="h-6 sm:h-7 w-auto object-contain"
+                            className="h-9 w-auto object-contain"
                         />
                     </Link>
 

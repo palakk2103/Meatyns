@@ -14,6 +14,8 @@ import { customerApi } from '../../services/customerApi';
 const cleanProductName = (n) =>
     String(n ?? '').replace(/[\s(\-–,]*\b\d+\s*packs?\b[\s)]*/gi, ' ').replace(/\s{2,}/g, ' ').trim() || String(n ?? '');
 import { Button } from '@/components/ui/button';
+import ServingOutletStrip from './ServingOutletStrip';
+import { useServingOutlet } from '../../hooks/useServingOutlet';
 import { Loader2 } from 'lucide-react';
 
 const parseWeightToGramsOrUnits = (name) => {
@@ -126,6 +128,7 @@ const ProgressiveProductImage = ({ src, alt, className, style }) => {
 
 const ProductDetailSheet = () => {
     const { selectedProduct, isOpen, closeProduct, setSelectedProduct } = useProductDetail();
+    const servingOutlet = useServingOutlet();
     const { cart, cartCount, addToCart, updateQuantity, removeFromCart } = useCart();
     const { toggleWishlist: toggleWishlistGlobal, isInWishlist } = useWishlist();
     const { showToast } = useToast();
@@ -603,7 +606,7 @@ const ProductDetailSheet = () => {
                                                 className="inline-flex items-center gap-1.5 bg-[#ecfeff] border border-brand-200/50 text-primary px-3 py-1.5 rounded-lg text-[10px] font-[700] uppercase tracking-wider"
                                             >
                                                 <Clock size={12} strokeWidth={2.5} className="text-primary" />
-                                                {selectedProduct.deliveryTime || '8-15 MINS'}
+                                                {servingOutlet?.etaLabel || selectedProduct.deliveryTime || '8-15 MINS'}
                                             </motion.div>
                                             {selectedProduct.originalPrice > selectedProduct.price && (
                                                 <motion.div
@@ -639,6 +642,7 @@ const ProductDetailSheet = () => {
                                             {selectedProduct.weight && (
                                                 <span className="text-[12px] bg-slate-100 text-slate-700 font-bold px-2 py-0.5 rounded-md uppercase tracking-wider inline-block mb-1.5">{selectedProduct.weight}</span>
                                             )}
+                                            <ServingOutletStrip compact className="mt-1.5" />
                                         </motion.div>
 
                                         {/* Price + Add-to-Cart Card */}
@@ -1002,7 +1006,7 @@ const ProductDetailSheet = () => {
                                 {/* Delivery Time Badge */}
                                 <div className="inline-flex items-center gap-1.5 bg-[#F0FDF4] border border-brand-100 text-primary px-2.5 py-1 rounded-lg text-[10px] font-black uppercase mb-3">
                                     <Clock size={12} strokeWidth={3} />
-                                    {selectedProduct.deliveryTime || "8 Mins"}
+                                    {servingOutlet?.etaLabel || selectedProduct.deliveryTime || "8 Mins"}
                                 </div>
 
                                 <h2 className="text-xl font-black text-[#1A1A1A] leading-tight mb-1">
@@ -1013,6 +1017,7 @@ const ProductDetailSheet = () => {
                                         {selectedProduct.weight}
                                     </span>
                                 )}
+                                <ServingOutletStrip compact className="mt-2" />
 
                                 {/* Variants Selection (Mobile) - skeleton while full details load */}
                                 {detailsLoading && !(selectedProduct.variants && selectedProduct.variants.length > 0) && (

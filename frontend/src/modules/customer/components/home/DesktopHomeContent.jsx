@@ -1,6 +1,7 @@
 import MascotTagline from "../shared/MascotTagline";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useServingOutlet } from "../../hooks/useServingOutlet";
 import {
   ShieldCheck,
   Snowflake,
@@ -23,6 +24,7 @@ import GalleryPreviewSection from "../gallery/GalleryPreviewSection";
 import { getDefaultVariantDisplay } from "../../utils/variantDisplay";
 
 const DesktopHomeContent = ({ products = [], categories = [], heroConfig }) => {
+  const servingOutlet = useServingOutlet();
   const navigate = useNavigate();
   const { addToCart } = useCart();
 
@@ -270,7 +272,7 @@ const DesktopHomeContent = ({ products = [], categories = [], heroConfig }) => {
                     <span className="text-[11px] font-bold leading-tight">
                       Fast Delivery
                       <br />
-                      15–30 mins
+                      {servingOutlet?.etaLabel || "15–30 mins"}
                     </span>
                   </div>
                 </div>

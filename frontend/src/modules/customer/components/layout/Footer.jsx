@@ -2,8 +2,16 @@ import React from 'react';
 import { Facebook, Twitter, Instagram, Youtube, Mail, MapPin, Phone, ShieldCheck, Snowflake, Zap } from 'lucide-react';
 import { useSettings } from '@core/context/SettingsContext';
 import { Link } from 'react-router-dom';
+import { useServingOutlet } from '../../hooks/useServingOutlet';
 
 const Footer = () => {
+    const servingOutlet = useServingOutlet();
+    // Real ETA of the outlet serving this address; Pune etc. have no Express.
+    const deliveryTitle = !servingOutlet
+        ? '15–30 Mins Express'
+        : servingOutlet.deliveryMethod === 'EXPRESS'
+            ? `${servingOutlet.etaLabel.replace(/\s*mins$/i, '')} Mins Express`
+            : `Delivery ${servingOutlet.etaLabel}`;
     const { settings } = useSettings();
 
     return (
@@ -58,7 +66,7 @@ const Footer = () => {
                             <Zap size={22} />
                         </div>
                         <div>
-                            <h4 className="text-white font-extrabold text-sm leading-tight">15–30 Mins Express</h4>
+                            <h4 className="text-white font-extrabold text-sm leading-tight">{deliveryTitle}</h4>
                             <p className="text-slate-400 text-xs font-medium mt-0.5">Fast temperature-controlled delivery</p>
                         </div>
                     </div>

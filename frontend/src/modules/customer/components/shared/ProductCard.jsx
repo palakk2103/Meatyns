@@ -13,6 +13,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Clock } from "lucide-react";
 
 import { useProductDetail } from "../../context/ProductDetailContext";
+import { useServingOutlet } from "../../hooks/useServingOutlet";
 
 const cleanProductName = (n) =>
   String(n ?? "").replace(/[\s(\-–,]*\b\d+\s*packs?\b[\s)]*/gi, " ").replace(/\s{2,}/g, " ").trim() || String(n ?? "");
@@ -22,6 +23,7 @@ const ProductCard = React.memo(
     const { toggleWishlist: toggleWishlistGlobal, isInWishlist } =
       useWishlist();
     const { cart, addToCart, updateQuantity, removeFromCart } = useCart();
+    const servingOutlet = useServingOutlet();
     const { showToast } = useToast();
     const { animateAddToCart, animateRemoveFromCart } = useCartAnimation();
 
@@ -486,7 +488,7 @@ const ProductCard = React.memo(
                 "font-semibold",
                 compact ? "text-[8px]" : "text-[9px] sm:text-[10px]",
               )}>
-              {product.deliveryTime || "8-12 mins"}
+              {servingOutlet?.etaLabel || product.deliveryTime || "8-12 mins"}
             </span>
           </div>
 

@@ -100,6 +100,43 @@ export function formatSlotLabel(startTime, endTime) {
 /**
  * Resolve sellers from items or sellerId
  */
+/**
+ * Delivery-time estimate shown while BROWSING (header / product pages), so the
+ * customer knows how long the outlet serving them takes. Mirrors checkout:
+ * Express ETA (prep + minutes-per-km, clamped by admin min/max) where Express
+ * is offered, otherwise the Normal delivery label (e.g. Pune: "Within 1 hour").
+ */
+export function estimateBrowseDeliveryEta({ distanceKm = 0, sellerCity = null, deliveryConfig = {} } = {}) {
+  const expressConfig = deliveryConfig?.express || {};
+  const normalConfig = deliveryConfig?.normal || {};
+  const km = Number.isFinite(Number(distanceKm)) ? Number(distanceKm) : 0;
+
+  const expressOffered =
+    !isExpressBlockedForCity(sellerCity) && expressConfig.enabled !== false;
+
+  if (expressOffered) {
+    const dynamicEtaMins = Math.round(
+      DELIVERY_SLOT_CONFIG.EXPRESS_BASE_PREP_MINUTES +
+        km * DELIVERY_SLOT_CONFIG.EXPRESS_TRAVEL_MINUTES_PER_KM,
+    );
+    const minMinutes = Math.max(expressConfig.estimatedMinMinutes || 15, dynamicEtaMins - 5);
+    const maxMinutes = Math.max(expressConfig.estimatedMaxMinutes || 30, dynamicEtaMins + 5);
+    return {
+      method: DELIVERY_METHODS.EXPRESS,
+      minMinutes,
+      maxMinutes,
+      label: `${minMinutes}–${maxMinutes} mins`,
+    };
+  }
+
+  return {
+    method: DELIVERY_METHODS.NORMAL,
+    minMinutes: normalConfig.minMinutes || DELIVERY_SLOT_CONFIG.NORMAL_MIN_MINUTES,
+    maxMinutes: normalConfig.maxMinutes || DELIVERY_SLOT_CONFIG.NORMAL_MAX_MINUTES,
+    label: normalConfig.estimatedLabel || "Within 1 hour",
+  };
+}
+
 export async function resolveSellersForCheckout({ sellerId, items = [] }) {
   if (sellerId) {
     const seller = await Seller.findById(sellerId).lean();

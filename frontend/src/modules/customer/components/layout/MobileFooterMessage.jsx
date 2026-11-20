@@ -13,7 +13,15 @@ const MobileFooterMessage = () => {
                 />
             </div>
 
-            <div className="flex items-center gap-3 mt-4">
+            <img
+                src="/meatyns_logo_2x.png"
+                alt="Meatyns"
+                className="mt-3 h-9 w-auto object-contain select-none mix-blend-multiply"
+                draggable="false"
+                loading="lazy"
+            />
+
+            <div className="flex items-center gap-3 mt-3">
                 <span className="h-[2px] w-8 rounded-full bg-gradient-to-r from-transparent to-red-500"></span>
                 <p className="text-[15px] font-extrabold tracking-wide text-slate-800">
                     Click it <span className="text-red-600">&amp;</span> Get it

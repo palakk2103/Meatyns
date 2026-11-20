@@ -22,6 +22,7 @@ import ProductCard from "../components/shared/ProductCard";
 import MainLocationHeader from "../components/shared/MainLocationHeader";
 import DesktopSidebar from "../components/layout/DesktopSidebar";
 import DesktopHomeContent from "../components/home/DesktopHomeContent";
+import ServingOutletStrip from "../components/shared/ServingOutletStrip";
 import { useProductDetail } from "../context/ProductDetailContext";
 import { cn } from "@/lib/utils";
 import CardBanner from "@/assets/CardBanner.jpg";
@@ -506,6 +507,7 @@ const Home = () => {
             <>
               {/* ──── Desktop Center & Right Content (md+) ──── */}
               <div className="hidden md:block">
+                <ServingOutletStrip className="mx-4 lg:mx-8 mb-3 w-fit" />
                 <DesktopHomeContent
                   products={products}
                   categories={categories}
@@ -522,6 +524,8 @@ const Home = () => {
                   activeCategory={activeCategory}
                   onCategorySelect={setActiveCategory}
                 />
+
+                <ServingOutletStrip compact className="mx-3 my-2" />
 
                 <motion.div ref={heroRef} className="will-change-transform" style={isMobile ? { opacity: 1 } : { opacity, y, scale, pointerEvents }}>
                   <div className="relative w-full overflow-hidden">

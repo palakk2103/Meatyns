@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useLocation as useAppLocation, getLocationLabel } from '../context/LocationContext';
+import { useServingOutlet } from '../hooks/useServingOutlet';
 import LocationDrawer from '../components/shared/LocationDrawer';
 import { LeafLogo } from '../components/shared/MainLocationHeader';
 import { customerApi } from '../services/customerApi';
@@ -25,6 +26,7 @@ const OrderTransactionsPage = () => {
 
     const { cartCount } = useCart();
     const { currentLocation, refreshLocation, isFetchingLocation } = useAppLocation();
+    const servingOutlet = useServingOutlet();
     const [isLocationOpen, setIsLocationOpen] = useState(false);
 
     const [walletTxns, setWalletTxns] = useState([]);
@@ -146,7 +148,7 @@ const OrderTransactionsPage = () => {
                                     Delivery in
                                 </span>
                                 <span className="text-[13px] lg:text-sm font-extrabold text-[#1A1A1A] whitespace-nowrap leading-tight">
-                                    {currentLocation?.time || "15–30 mins"}
+                                    {servingOutlet?.etaLabel || currentLocation?.time || "15–30 mins"}
                                 </span>
                             </div>
                         </div>

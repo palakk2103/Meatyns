@@ -4,6 +4,8 @@ import Category from "../models/category.js";
 import Seller from "../models/seller.js";
 import { getSellerCurrentOpenStatus } from "../services/storeStatusService.js";
 import { handleResponse } from "../utils/helper.js";
+import { estimateBrowseDeliveryEta } from "../services/deliverySlotService.js";
+import { getOrCreateFinanceSettings } from "../services/finance/financeSettingsService.js";
 import { slugify } from "../utils/slugify.js";
 import getPagination from "../utils/pagination.js";
 import {
@@ -24,10 +26,44 @@ export const getLocationServiceability = async (req, res) => {
       return handleResponse(res, 400, "Valid lat and lng are required");
     }
     const selected = await resolveSelectedSellerForCustomer(coords.lat, coords.lng);
+    const distanceKm = selected ? Number(selected.distanceKm.toFixed(2)) : null;
+
+    // Tell the customer WHICH outlet their products come from, how far it is
+    // and roughly how long delivery takes. Best-effort: never fail the
+    // serviceability answer because of this extra info.
+    let outlet = null;
+    if (selected) {
+      try {
+        const [sellerDoc, financeSettings] = await Promise.all([
+          Seller.findById(selected.sellerId).select("_id shopName locality city").lean(),
+          getOrCreateFinanceSettings().catch(() => null),
+        ]);
+        const eta = estimateBrowseDeliveryEta({
+          distanceKm: selected.distanceKm,
+          sellerCity: sellerDoc?.city || null,
+          deliveryConfig: financeSettings?.deliveryConfig || {},
+        });
+        outlet = {
+          id: String(selected.sellerId),
+          name: sellerDoc?.shopName || "Meatyns outlet",
+          locality: sellerDoc?.locality || "",
+          city: sellerDoc?.city || "",
+          distanceKm,
+          etaLabel: eta.label,
+          etaMinMinutes: eta.minMinutes,
+          etaMaxMinutes: eta.maxMinutes,
+          deliveryMethod: eta.method,
+        };
+      } catch (infoError) {
+        logger.warn?.("[serviceability] outlet info failed", { error: infoError.message });
+      }
+    }
+
     return handleResponse(res, 200, "Location serviceability evaluated", {
       serviceable: Boolean(selected),
       sellerId: selected?.sellerId || null,
-      distanceKm: selected ? Number(selected.distanceKm.toFixed(2)) : null,
+      distanceKm,
+      outlet,
     });
   } catch (error) {
     return handleResponse(res, 500, error.message);

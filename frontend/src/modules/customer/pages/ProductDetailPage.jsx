@@ -14,6 +14,7 @@ import Lottie from 'lottie-react';
 import ProductSeo from '../components/seo/ProductSeo';
 import { trackViewContent } from '@/core/meta/pixelService';
 import { cleanProductName } from "@/core/utils/productName";
+import ServingOutletStrip from '../components/shared/ServingOutletStrip';
 
 const ProductDetailPage = () => {
     const { id } = useParams();
@@ -240,6 +241,8 @@ const ProductDetailPage = () => {
                         <h1 className="text-3xl md:text-4xl font-black text-slate-800 leading-tight mb-3">
                             {cleanProductName(product.name)}
                         </h1>
+
+                        <ServingOutletStrip className="mb-4 w-fit" />
 
                         <div className="flex items-baseline gap-4 mb-5">
                             <span className="text-4xl font-black text-primary">₹{product.salePrice || product.price}</span>

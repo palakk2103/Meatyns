@@ -4,6 +4,7 @@ import ProductCard from "../components/shared/ProductCard";
 import { useWishlist } from "../context/WishlistContext";
 import { useCart } from "../context/CartContext";
 import { useLocation as useAppLocation, getLocationLabel } from "../context/LocationContext";
+import { useServingOutlet } from "../hooks/useServingOutlet";
 import LocationDrawer from "../components/shared/LocationDrawer";
 import { LeafLogo } from "../components/shared/MainLocationHeader";
 import {
@@ -30,6 +31,7 @@ const WishlistPage = () => {
 
   const { cartCount } = useCart();
   const { currentLocation, refreshLocation, isFetchingLocation } = useAppLocation();
+  const servingOutlet = useServingOutlet();
   const [isLocationOpen, setIsLocationOpen] = useState(false);
 
   const [isMobile, setIsMobile] = useState(
@@ -130,7 +132,7 @@ const WishlistPage = () => {
                   Delivery in
                 </span>
                 <span className="text-[13px] lg:text-sm font-extrabold text-[#1A1A1A] whitespace-nowrap leading-tight">
-                  {currentLocation?.time || "15–30 mins"}
+                  {servingOutlet?.etaLabel || currentLocation?.time || "15–30 mins"}
                 </span>
               </div>
             </div>

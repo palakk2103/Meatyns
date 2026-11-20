@@ -11,6 +11,7 @@ import {
   Mic,
 } from "lucide-react";
 import LocationDrawer from "./LocationDrawer";
+import { useServingOutlet } from "../../hooks/useServingOutlet";
 import { useLocation, getLocationLabel } from "../../context/LocationContext";
 import { useProductDetail } from "../../context/ProductDetailContext";
 import { useSettings } from "@core/context/SettingsContext";
@@ -84,6 +85,7 @@ const MainLocationHeader = ({
   const { currentLocation, refreshLocation, isFetchingLocation } =
     useLocation();
   const { isOpen: isProductDetailOpen } = useProductDetail();
+  const servingOutlet = useServingOutlet();
   const { settings } = useSettings();
   const appName = settings?.appName || "App";
   const logoUrl = settings?.logoUrl || LogoImage;
@@ -318,7 +320,7 @@ const MainLocationHeader = ({
                     Delivery in
                   </span>
                   <span className="text-[13px] lg:text-sm font-bold text-[#111111] whitespace-nowrap leading-tight">
-                    {currentLocation?.time || "12-15 mins"}
+                    {servingOutlet?.etaLabel || currentLocation?.time || "12-15 mins"}
                   </span>
                 </div>
               </div>
@@ -404,7 +406,7 @@ const MainLocationHeader = ({
                   <img
                     src="/meatyns_logo_2x.png"
                     alt="Meatyns"
-                    className="h-6 sm:h-7 w-auto object-contain"
+                    className="h-9 w-auto object-contain"
                   />
                 </div>
 

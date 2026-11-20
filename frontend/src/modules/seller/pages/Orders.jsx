@@ -23,6 +23,7 @@ import {
 } from 'react-icons/hi2';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { getOrderBill, getOrderBillExtraRows } from '@/shared/utils/orderBill';
 
 // Orders Page
 
@@ -128,6 +129,7 @@ const Orders = () => {
                     unavailableReason: item.unavailableReason || null,
                 })),
                 total: order.pricing?.total || 0,
+                bill: getOrderBill(order),
                 partialFulfillment: order.partialFulfillment || null,
                 status: getLegacyStatusFromOrder(order),
                 workflowStatus: order.workflowStatus,
@@ -315,6 +317,7 @@ const Orders = () => {
                         unavailableReason: it.unavailableReason || null,
                     })),
                     total: updatedOrder.pricing?.total || 0,
+                    bill: getOrderBill(updatedOrder),
                     status: updatedOrder.status,
                     partialFulfillment: updatedOrder.partialFulfillment,
                 }));
@@ -977,16 +980,22 @@ const Orders = () => {
                                                     <div className="space-y-2">
                                                         <div className="flex justify-between text-xs">
                                                             <span className="font-bold text-slate-600">Subtotal</span>
-                                                            <span className="font-black text-slate-900">₹{(selectedOrder.total - 10).toFixed(2)}</span>
+                                                            <span className="font-black text-slate-900">₹{(selectedOrder.bill?.subtotal ?? 0).toFixed(2)}</span>
                                                         </div>
                                                         <div className="flex justify-between text-xs">
                                                             <span className="font-bold text-slate-600">Delivery Fee</span>
-                                                            <span className="font-black text-brand-600">₹10.00</span>
+                                                            <span className="font-black text-brand-600">₹{(selectedOrder.bill?.deliveryFee ?? 0).toFixed(2)}</span>
                                                         </div>
+                                                        {selectedOrder.bill && getOrderBillExtraRows(selectedOrder.bill).map((row) => (
+                                                            <div key={row.key} className="flex justify-between text-xs">
+                                                                <span className="font-bold text-slate-600">{row.label}</span>
+                                                                <span className="font-black text-slate-900">{row.sign}₹{row.amount.toFixed(2)}</span>
+                                                            </div>
+                                                        ))}
                                                         <div className="h-px bg-primary/10 my-2" />
                                                         <div className="flex justify-between text-sm">
                                                             <span className="font-black text-slate-900">Total</span>
-                                                            <span className="font-black text-primary">₹{selectedOrder.total.toFixed(2)}</span>
+                                                            <span className="font-black text-primary">₹{Number(selectedOrder.total || 0).toFixed(2)}</span>
                                                         </div>
                                                     </div>
                                                 </div>

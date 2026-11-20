@@ -36,6 +36,7 @@ import {
 } from "recharts";
 import { cn } from "@/lib/utils";
 import { getPaymentInfo } from "@/shared/utils/paymentInfo";
+import { getOrderBill, getOrderBillExtraRows } from "@/shared/utils/orderBill";
 import { sellerApi } from "../services/sellerApi";
 import { toast } from "sonner";
 import { useSellerOrders } from "../context/SellerOrdersContext";
@@ -215,6 +216,7 @@ const Dashboard = () => {
       address: addressStr || "—",
       items,
       total: Number(order.pricing?.total ?? 0),
+      bill: getOrderBill(order),
       status: order.status || "pending",
       payment: `${getPaymentInfo(order).modeLabel} - ${getPaymentInfo(order).statusLabel}`,
     };
@@ -578,7 +580,7 @@ const Dashboard = () => {
                             Subtotal
                           </span>
                           <span className="font-black text-slate-900">
-                            ₹{(selectedOrder.total - 10).toFixed(2)}
+                            ₹{(selectedOrder.bill?.subtotal ?? 0).toFixed(2)}
                           </span>
                         </div>
                         <div className="flex justify-between text-xs">
@@ -586,9 +588,20 @@ const Dashboard = () => {
                             Delivery Fee
                           </span>
                           <span className="font-black text-brand-600">
-                            ₹10.00
+                            ₹{(selectedOrder.bill?.deliveryFee ?? 0).toFixed(2)}
                           </span>
                         </div>
+                        {selectedOrder.bill &&
+                          getOrderBillExtraRows(selectedOrder.bill).map((row) => (
+                            <div key={row.key} className="flex justify-between text-xs">
+                              <span className="font-bold text-slate-600">
+                                {row.label}
+                              </span>
+                              <span className="font-black text-slate-900">
+                                {row.sign}₹{row.amount.toFixed(2)}
+                              </span>
+                            </div>
+                          ))}
                         <div className="h-px bg-primary/10 my-2" />
                         <div className="flex justify-between text-sm">
                           <span className="font-black text-slate-900">

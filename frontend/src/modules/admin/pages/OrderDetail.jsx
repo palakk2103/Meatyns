@@ -31,6 +31,7 @@ import {
     Loader2
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { getOrderBill, getOrderBillExtraRows } from '@/shared/utils/orderBill';
 import { useToast } from '@shared/components/ui/Toast';
 import { adminFinanceApi } from '../services/api/financeApi';
 import { adminOrdersApi } from '../services/api/ordersApi';
@@ -489,6 +490,12 @@ const OrderDetail = () => {
                                 <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Delivery Fee</span>
                                 <span className="text-sm font-bold text-brand-600">₹{order.pricing?.deliveryFee || 0}</span>
                             </div>
+                            {getOrderBillExtraRows(getOrderBill(order)).map((row) => (
+                                <div key={row.key} className="flex items-center justify-between w-full max-w-[240px]">
+                                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{row.label}</span>
+                                    <span className="text-sm font-bold text-slate-700">{row.sign}₹{row.amount}</span>
+                                </div>
+                            ))}
                             <div className="h-px w-full max-w-[240px] bg-slate-200 my-2" />
                             <div className="flex items-center justify-between w-full max-w-[240px]">
                                 <span className="text-xs font-black text-slate-900 uppercase tracking-tight">Total Payable</span>
@@ -1081,6 +1088,12 @@ const OrderDetail = () => {
                                             <td align="left" style={{ fontSize: "12px", color: "#64748b", fontWeight: "700" }}>Logistics Cost</td>
                                             <td align="right" style={{ fontSize: "13px", fontWeight: "800", color: "#2563eb" }}>+ ₹{order.pricing?.deliveryFee || 0}</td>
                                         </tr>
+                                        {getOrderBillExtraRows(getOrderBill(order)).map((row) => (
+                                            <tr key={row.key}>
+                                                <td align="left" style={{ fontSize: "12px", color: "#64748b", fontWeight: "700" }}>{row.label}</td>
+                                                <td align="right" style={{ fontSize: "13px", fontWeight: "800", color: "#0f172a" }}>{row.sign === "-" ? "- " : "+ "}₹{row.amount}</td>
+                                            </tr>
+                                        ))}
                                         <tr>
                                             <td colSpan="2" style={{ padding: "12px 0" }}><div style={{ height: "1px", backgroundColor: "#e2e8f0" }}></div></td>
                                         </tr>
