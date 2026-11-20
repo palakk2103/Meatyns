@@ -1,30 +1,29 @@
 import React from 'react';
-import { useSettings } from '@core/context/SettingsContext';
 
 const MobileFooterMessage = () => {
-    const { settings } = useSettings();
-    const appName = settings?.appName || 'Meatyns';
     return (
-        <div className="md:hidden w-full flex flex-col items-center -mt-8 pt-0 pb-28 px-6 bg-transparent">
-            <div className="w-full flex flex-col">
-                <h2 className="text-[34px] leading-[1.1] font-black text-slate-300 tracking-tight text-left">
-                    Freshness You<br />
-                    <span className="whitespace-nowrap">
-                        Can Count On.<span className="ml-2 text-[28px] align-middle">❤️</span>
-                    </span>
-                </h2>
-
-                <div className="w-full h-[1px] bg-slate-200 mt-6 mb-4"></div>
-
-                <div className="flex items-center justify-between">
-                    <span className="text-slate-300 font-black text-2xl tracking-tighter text-left">
-                        {appName}
-                    </span>
-                    <span className="text-[11px] font-bold uppercase tracking-[2px] text-slate-300">
-                        Fresh. Fast. Reliable.
-                    </span>
-                </div>
+        <div className="md:hidden w-full flex flex-col items-center pt-6 pb-32 px-6 bg-transparent">
+            <div className="relative w-40 h-48 flex items-center justify-center">
+                <img
+                    src="/mascot/chef_mascot.png"
+                    alt="Meatyns Chef Mascot"
+                    className="max-h-full max-w-full object-contain select-none drop-shadow-[0_12px_24px_rgba(0,0,0,0.12)]"
+                    draggable="false"
+                    loading="lazy"
+                />
             </div>
+
+            <div className="flex items-center gap-3 mt-4">
+                <span className="h-[2px] w-8 rounded-full bg-gradient-to-r from-transparent to-red-500"></span>
+                <p className="text-[15px] font-extrabold tracking-wide text-slate-800">
+                    Click it <span className="text-red-600">&amp;</span> Get it
+                </p>
+                <span className="h-[2px] w-8 rounded-full bg-gradient-to-l from-transparent to-red-500"></span>
+            </div>
+
+            <p className="mt-2 text-[10px] font-bold uppercase tracking-[3px] text-slate-400">
+                Fresh · Fast · Reliable
+            </p>
         </div>
     );
 };

@@ -45,7 +45,7 @@ import {
   validateIdempotencyKey,
 } from "./idempotencyService.js";
 import { buildCheckoutPricingSnapshot } from "./checkoutPricingService.js";
-import { verifySlotAvailabilityBeforePlacement } from "./deliverySlotService.js";
+import { verifySlotAvailabilityBeforePlacement, isExpressBlockedForSellers } from "./deliverySlotService.js";
 import { emitNotificationEvent } from "../modules/notifications/notification.emitter.js";
 import { NOTIFICATION_EVENTS } from "../modules/notifications/notification.constants.js";
 import * as logger from "./logger.js";
@@ -456,6 +456,18 @@ export async function placeOrderAtomic({
     });
 
 
+
+    if (normalizedPayload.deliveryMethod === "EXPRESS") {
+      const blocked = await isExpressBlockedForSellers(
+        pricingSnapshot.sellerBreakdownEntries.map((e) => e.sellerId),
+        session,
+      );
+      if (blocked) {
+        const expressErr = new Error("Express delivery is not available in your city. Please choose Normal or Scheduled delivery.");
+        expressErr.statusCode = 400;
+        throw expressErr;
+      }
+    }
 
     const checkoutGroupId = await generateUniqueCheckoutGroupId({ session });
     const checkoutReservation = computeStockReservationWindow(paymentMode);

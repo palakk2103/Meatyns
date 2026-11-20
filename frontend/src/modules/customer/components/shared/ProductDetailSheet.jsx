@@ -80,6 +80,50 @@ const getCalculatedVariantOriginalPrice = (product, variant) => {
     return variantOriginalPrice || baseProductOriginalPrice;
 };
 
+// Cache of full product details so re-opening a product is instant
+const productDetailCache = new Map();
+
+const mergeFullProduct = (prev, full) => {
+    if (!prev) return full;
+    return {
+        ...prev,
+        ...full,
+        description: full.description || prev.description,
+        id: full._id || prev.id,
+        _id: full._id || prev._id,
+    };
+};
+
+// Image that first shows the already-cached card thumbnail, then swaps in the sharper version once loaded
+const ProgressiveProductImage = ({ src, alt, className, style }) => {
+    const [hiResLoaded, setHiResLoaded] = useState(false);
+    const lowSrc = applyCloudinaryTransform(src);
+    const hiSrc = applyCloudinaryTransform(src, "f_auto,q_auto:good,w_900,dpr_auto");
+    useEffect(() => setHiResLoaded(false), [hiSrc]);
+    return (
+        <div className="relative w-full h-full">
+            <img
+                src={lowSrc}
+                alt={alt}
+                decoding="async"
+                fetchpriority="high"
+                className={cn(className, "absolute inset-0")}
+                style={style}
+            />
+            {hiSrc !== lowSrc && (
+                <img
+                    src={hiSrc}
+                    alt={alt}
+                    decoding="async"
+                    onLoad={() => setHiResLoaded(true)}
+                    className={cn(className, "absolute inset-0 transition-opacity duration-200", hiResLoaded ? "opacity-100" : "opacity-0")}
+                    style={style}
+                />
+            )}
+        </div>
+    );
+};
+
 const ProductDetailSheet = () => {
     const { selectedProduct, isOpen, closeProduct, setSelectedProduct } = useProductDetail();
     const { cart, cartCount, addToCart, updateQuantity, removeFromCart } = useCart();
@@ -90,8 +134,11 @@ const ProductDetailSheet = () => {
 
     // Controls for sheet animation
     const controls = useAnimation();
-    const [isExpanded, setIsExpanded] = useState(false);
+    // Mobile always opens directly in the full-page view (no intermediate card)
+    const isExpanded = true;
+    const setIsExpanded = () => {};
     const [selectedVariant, setSelectedVariant] = useState(null);
+    const [detailsLoading, setDetailsLoading] = useState(false);
     const [activeImageIndex, setActiveImageIndex] = useState(0);
 
     const [reviews, setReviews] = useState([]);
@@ -143,26 +190,38 @@ const ProductDetailSheet = () => {
         if (prodId) {
             fetchReviews(prodId);
 
+            // Use cached full details instantly (if we've opened this product before)
+            const cached = productDetailCache.get(prodId);
+            if (cached && setSelectedProduct) {
+                setSelectedProduct((prev) => mergeFullProduct(prev, cached));
+            }
+
             // Fetch full product details from backend to ensure description and attributes are fully populated
+            setDetailsLoading(!cached);
             customerApi.getProductById(prodId)
                 .then((res) => {
                     const full = res.data?.result || res.data?.product;
-                    if (full && setSelectedProduct) {
-                        setSelectedProduct((prev) => {
-                            if (!prev) return full;
-                            return {
-                                ...prev,
-                                ...full,
-                                description: full.description || prev.description,
-                                id: full._id || prev.id,
-                                _id: full._id || prev._id,
-                            };
-                        });
+                    if (full) {
+                        productDetailCache.set(prodId, full);
+                        if (setSelectedProduct) {
+                            setSelectedProduct((prev) => {
+                                const prevId = String(prev?._id || prev?.id || "");
+                                if (prev && prevId !== prodId) return prev; // user switched product
+                                return mergeFullProduct(prev, full);
+                            });
+                        }
                     }
                 })
-                .catch(() => {});
+                .catch(() => {})
+                .finally(() => setDetailsLoading(false));
         }
     }, [selectedProduct?._id, selectedProduct?.id]);
+
+    useEffect(() => {
+        if (!selectedVariant && selectedProduct?.variants?.length > 0) {
+            setSelectedVariant(selectedProduct.variants[0]);
+        }
+    }, [selectedProduct?.variants]);
 
     const fetchReviews = async (productId) => {
         try {
@@ -382,7 +441,7 @@ const ProductDetailSheet = () => {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={closeProduct}
-                        className="fixed inset-0 bg-black/60 z-[220] backdrop-blur-sm"
+                        className="fixed inset-0 bg-black/60 z-[220] md:backdrop-blur-sm"
                     />
 
                     {/* ============================================================ */}
@@ -860,43 +919,12 @@ const ProductDetailSheet = () => {
                         data-lenis-prevent
                         data-lenis-prevent-wheel
                         data-lenis-prevent-touch
-                        drag={isExpanded ? false : "y"}
-                        dragConstraints={{ top: 0, bottom: 0 }}
-                        dragElastic={0.7}
-                        onDragEnd={handleDragEnd}
-                        initial={{
-                            opacity: 0,
-                            scale: 0.9,
-                            y: "100vh",
-                            top: "10%",
-                            bottom: "10%",
-                            left: "50%",
-                            x: "-50%",
-                            width: "min(90%, 400px)",
-                            borderRadius: "24px"
-                        }}
-                        animate={{
-                            opacity: 1,
-                            scale: 1,
-                            y: 0,
-                            top: isExpanded ? 0 : "10%",
-                            bottom: isExpanded ? 0 : "10%",
-                            left: isExpanded ? 0 : "50%",
-                            x: isExpanded ? 0 : "-50%",
-                            width: isExpanded ? "100%" : "min(90%, 400px)",
-                            borderRadius: isExpanded ? 0 : "24px"
-                        }}
-                        exit={{ opacity: 0, scale: 0.9, y: "100vh", transition: { duration: 0.3 } }}
-                        transition={{
-                            type: "spring",
-                            damping: 25,
-                            stiffness: 400,
-                            mass: 0.8
-                        }}
-                        className={cn(
-                            "md:hidden fixed z-[230] bg-white shadow-2xl overflow-hidden flex flex-col",
-                        )}
-                        style={{ willChange: "transform, top, bottom, left, width, border-radius" }}
+                        initial={{ opacity: 0, y: 24 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 24, transition: { duration: 0.18, ease: "easeIn" } }}
+                        transition={{ duration: 0.22, ease: [0.25, 0.1, 0.25, 1] }}
+                        className="md:hidden fixed inset-0 z-[230] bg-white shadow-2xl overflow-hidden flex flex-col"
+                        style={{ willChange: "transform", backfaceVisibility: "hidden" }}
                     >
                         {/* Drag Handle (Visible only when not fully expanded) */}
                         {!isExpanded && (
@@ -943,11 +971,8 @@ const ProductDetailSheet = () => {
                                 >
                                     {allImages.map((img, i) => (
                                         <div key={i} className="flex-shrink-0 w-full h-full snap-center flex items-center justify-center px-0 sm:px-4">
-                                            <motion.img
-                                                initial={{ scale: 0.8, opacity: 0 }}
-                                                animate={{ scale: 1, opacity: 1 }}
-                                                transition={{ duration: 0.4 }}
-                                                src={applyCloudinaryTransform(img, "f_auto,q_auto:best,w_1200,dpr_auto")}
+                                            <ProgressiveProductImage
+                                                src={img}
                                                 alt={`${selectedProduct.name} ${i + 1}`}
                                                 className="w-full h-full object-contain mix-blend-multiply drop-shadow-xl"
                                                 style={{ objectPosition: 'center calc(50% - 40px)' }}
@@ -989,7 +1014,17 @@ const ProductDetailSheet = () => {
                                     </span>
                                 )}
 
-                                {/* Variants Selection (Mobile) */}
+                                {/* Variants Selection (Mobile) - skeleton while full details load */}
+                                {detailsLoading && !(selectedProduct.variants && selectedProduct.variants.length > 0) && (
+                                    <div className="mt-4 mb-2">
+                                        <div className="h-3 w-24 bg-slate-100 rounded mb-3 animate-pulse" />
+                                        <div className="flex gap-2">
+                                            {[0, 1, 2, 3].map((k) => (
+                                                <div key={k} className="h-10 w-[72px] bg-slate-100 rounded-xl animate-pulse" />
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
                                 {selectedProduct.variants && selectedProduct.variants.length > 0 && (
                                     <div className="mt-4 mb-2">
                                         <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Select Variant</h4>

@@ -12,6 +12,25 @@ import { calculateCustomerDeliveryFee } from "./finance/pricingService.js";
 import { resolveDeliveryZoneForLocation } from "./deliveryZoneService.js";
 import logger from "./logger.js";
 
+// Cities where Express delivery is not offered at all (only Normal + Scheduled).
+const EXPRESS_BLOCKED_CITIES = new Set(["pune"]);
+
+export function isExpressBlockedForCity(city) {
+  return EXPRESS_BLOCKED_CITIES.has(String(city || "").trim().toLowerCase());
+}
+
+/**
+ * True when any of the given sellers is in a city where Express is not offered.
+ */
+export async function isExpressBlockedForSellers(sellerIds = [], session = null) {
+  const ids = [...new Set(sellerIds.filter(Boolean).map(String))];
+  if (!ids.length) return false;
+  const query = Seller.find({ _id: { $in: ids } }).select("city").lean();
+  if (session) query.session(session);
+  const sellers = await query;
+  return sellers.some((s) => isExpressBlockedForCity(s.city));
+}
+
 const DAYS_OF_WEEK = [
   "Sunday",
   "Monday",
@@ -388,7 +407,9 @@ export async function getDeliveryOptionsAndSlots({
   const maxEta = Math.max(expressConfig.estimatedMaxMinutes || 30, dynamicEtaMins + 5);
   const expressEtaLabel = `${minEta}–${maxEta} mins`;
 
-  const isExpressEnabled = expressConfig.enabled !== false && (matchedZone ? matchedZone.expressAvailable !== false : true);
+  // Pune (and any other blocked city) never offers Express — hide it entirely.
+  const isExpressCityBlocked = sellers.some((s) => isExpressBlockedForCity(s?.city));
+  const isExpressEnabled = !isExpressCityBlocked && expressConfig.enabled !== false && (matchedZone ? matchedZone.expressAvailable !== false : true);
   const expressAvailable = isServiceable && (expressConfig.operatingHoursOnly ? isCurrentlyOpen : true) && isExpressEnabled;
 
   const expressOption = {
@@ -397,12 +418,15 @@ export async function getDeliveryOptionsAndSlots({
     tagline: "Deliver as soon as possible",
     available: expressAvailable,
     enabled: isExpressEnabled,
+    hidden: isExpressCityBlocked,
     estimatedMinutes: dynamicEtaMins,
     estimatedLabel: expressEtaLabel,
     deliveryFee: expressPricing.deliveryFeeCharged,
     baseDeliveryFee: expressPricing.standardNormalFee,
     surcharge: expressPricing.expressSurcharge,
-    disabledReason: !isExpressEnabled
+    disabledReason: isExpressCityBlocked
+      ? "Express delivery is not available in your city."
+      : !isExpressEnabled
       ? "Express delivery is currently disabled."
       : !isServiceable
       ? unserviceableReason

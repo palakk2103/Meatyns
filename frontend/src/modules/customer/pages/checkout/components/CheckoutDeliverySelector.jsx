@@ -42,6 +42,8 @@ const CheckoutDeliverySelector = ({
     tagline: "Choose date and time slot",
   };
 
+  const showExpress = express.hidden !== true;
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
@@ -57,8 +59,9 @@ const CheckoutDeliverySelector = ({
       </div>
 
       {/* 3 Main Delivery Method Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      <div className={`grid grid-cols-1 ${showExpress ? "sm:grid-cols-3" : "sm:grid-cols-2"} gap-3`}>
         {/* 1. EXPRESS DELIVERY */}
+        {showExpress && (
         <div
           onClick={() => {
             if (express.available && express.enabled !== false) onSelectDeliveryMethod("EXPRESS");
@@ -121,6 +124,7 @@ const CheckoutDeliverySelector = ({
             </p>
           )}
         </div>
+        )}
 
         {/* 2. NORMAL DELIVERY */}
         <div

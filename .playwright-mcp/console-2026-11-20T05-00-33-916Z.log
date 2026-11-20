@@ -1,0 +1,18 @@
+[     181ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:5173/@vite-plugin-pwa/pwa-entry-point-loaded:1
+[     234ms] [ERROR] Manifest: Line: 1, column: 1, Syntax error. @ http://localhost:5173/manifest.webmanifest:1
+[     789ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[    1076ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[    1123ms] [WARNING] Geolocation permission has been blocked as the user has ignored the permission prompt several times. This can be reset in Page Info which can be accessed by clicking the tune icon next to the URL. See https://www.chromestatus.com/feature/6443143280984064 for more information. @ http://localhost:5173/:1
+[    1240ms] [ERROR] Manifest: Line: 1, column: 1, Syntax error. @ http://localhost:5173/manifest.webmanifest:1
+[    1254ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://localhost:7000/api/customer/profile:1
+[    1262ms] [WARNING] WebSocket connection to 'ws://localhost:7000/socket.io/?EIO=4&transport=websocket&sid=TGHkB7jfeJpCn4ikAAAE' failed: WebSocket is closed before the connection is established. @ http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1500
+[    1267ms] [ERROR] [orderSocket] Socket connection error: Error: Unauthorized
+    at Socket2.onpacket (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:3128:21)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:3721:12 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[    1284ms] [ERROR] Failed to load resource: the server responded with a status of 400 (Bad Request) @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=ighd1bwt&sid=TGHkB7jfeJpCn4ikAAAE:1
+[    1535ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://localhost:7000/api/cart:1
+[    1539ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://localhost:7000/api/wishlist?idsOnly=true:1
+[    1790ms] [LOG] [orderSocket] Socket connected, ID: 1g90L22w_qjV-jWpAAAH @ http://localhost:5173/src/core/services/orderSocket.js:49
+[    3317ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[    7879ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1

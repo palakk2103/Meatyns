@@ -1,0 +1,83 @@
+[     477ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=38bb20a6:20103
+[     626ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/storefront/config:1
+[    1511ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/storefront/header-tabs:1
+[    1512ms] [WARNING] Failed to fetch header tabs from backend, using cache/defaults: Request failed with status code 500 @ http://localhost:5173/src/config/userAppTabs.js:113
+[    1512ms] [WARNING] Failed to fetch header tabs from backend, using cache/defaults: Request failed with status code 500 @ http://localhost:5173/src/config/userAppTabs.js:113
+[    1512ms] [WARNING] Failed to fetch header tabs from backend, using cache/defaults: Request failed with status code 500 @ http://localhost:5173/src/config/userAppTabs.js:113
+[    1513ms] [WARNING] Failed to fetch header tabs from backend, using cache/defaults: Request failed with status code 500 @ http://localhost:5173/src/config/userAppTabs.js:113
+[    1513ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/storefront/home?commerceFlow=standard:1
+[    1529ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/storefront/you-popup:1
+[    1530ms] [WARNING] You popup config unavailable, using cached/default: Request failed with status code 500 @ http://localhost:5173/src/config/youPopup.js:60
+[    1531ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/cart?marketplaceTab=mithilakart:1
+[    1531ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/cart?marketplaceTab=mithilakart:1
+[   22319ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=38bb20a6:20103
+[   22954ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/storefront/config:1
+[   23017ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/storefront/header-tabs:1
+[   23018ms] [WARNING] Failed to fetch header tabs from backend, using cache/defaults: Request failed with status code 500 @ http://localhost:5173/src/config/userAppTabs.js:113
+[   23018ms] [WARNING] Failed to fetch header tabs from backend, using cache/defaults: Request failed with status code 500 @ http://localhost:5173/src/config/userAppTabs.js:113
+[   23018ms] [WARNING] Failed to fetch header tabs from backend, using cache/defaults: Request failed with status code 500 @ http://localhost:5173/src/config/userAppTabs.js:113
+[   23018ms] [WARNING] Failed to fetch header tabs from backend, using cache/defaults: Request failed with status code 500 @ http://localhost:5173/src/config/userAppTabs.js:113
+[   23019ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/storefront/home?commerceFlow=standard:1
+[   23041ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/storefront/you-popup:1
+[   23042ms] [WARNING] You popup config unavailable, using cached/default: Request failed with status code 500 @ http://localhost:5173/src/config/youPopup.js:60
+[   23073ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/cart?marketplaceTab=mithilakart:1
+[   23075ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/cart?marketplaceTab=mithilakart:1
+[   27235ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/maps/reverse-geocode?lat=22.71762883616982&lng=75.87191545734039:1
+[   61260ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/maps/reverse-geocode?lat=22.71756451318945&lng=75.87191201892034:1
+[   95313ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/maps/reverse-geocode?lat=22.717627992822482&lng=75.87189112838473:1
+[  129424ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/maps/reverse-geocode?lat=22.71759441155132&lng=75.87191481932946:1
+[  163507ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/maps/reverse-geocode?lat=22.717511289065005&lng=75.87188296236098:1
+[  199742ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/maps/reverse-geocode?lat=22.717572489491367&lng=75.87195641123907:1
+[  200379ms] [ERROR] Failed to load resource: net::ERR_NAME_NOT_RESOLVED @ https://nominatim.openstreetmap.org/reverse?lat=22.717572489491367&lon=75.87195641123907&format=json&addressdetails=1:1
+[  200427ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://fonts.gstatic.com/s/montserrat/v31/JTUSjIg1_i6t8kCHKm459Wlhyw.woff2:1
+[  260790ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/maps/reverse-geocode?lat=22.717524431123653&lng=75.87190277198904:1
+[  292454ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/maps/reverse-geocode?lat=22.71763989362956&lng=75.87192549970221:1
+[  324603ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/maps/reverse-geocode?lat=22.71758406712795&lng=75.8719114582739:1
+[  357311ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/maps/reverse-geocode?lat=22.717597060320816&lng=75.87190690274109:1
+[  388460ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/maps/reverse-geocode?lat=22.71760203997169&lng=75.87192924582568:1
+[  423587ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/maps/reverse-geocode?lat=22.71755821896962&lng=75.87191700091347:1
+[  457674ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/maps/reverse-geocode?lat=22.71753145502314&lng=75.87190204955648:1
+[  488869ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/maps/reverse-geocode?lat=22.71759868450449&lng=75.87190997290227:1
+[  520704ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/maps/reverse-geocode?lat=22.71761218958723&lng=75.87191249027293:1
+[  552435ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/maps/reverse-geocode?lat=22.71761866401568&lng=75.8719061408792:1
+[  583738ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/maps/reverse-geocode?lat=22.717628996407313&lng=75.87189038973828:1
+[  615582ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/maps/reverse-geocode?lat=22.7176195139523&lng=75.87191678675917:1
+[  678658ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/maps/reverse-geocode?lat=22.71764182763055&lng=75.87191501288692:1
+[  709876ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/maps/reverse-geocode?lat=22.717606041831665&lng=75.87193611763857:1
+[  741678ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/maps/reverse-geocode?lat=22.717571251750186&lng=75.8718822246957:1
+[  772872ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/maps/reverse-geocode?lat=22.717636991203022&lng=75.8718942928465:1
+[  804100ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/maps/reverse-geocode?lat=22.71758027349083&lng=75.87190795684428:1
+[  835281ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/maps/reverse-geocode?lat=22.717613688906866&lng=75.87192356218858:1
+[  866585ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/maps/reverse-geocode?lat=22.717601727977105&lng=75.8719267013213:1
+[  897717ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/maps/reverse-geocode?lat=22.717592416204802&lng=75.87190034566224:1
+[  929300ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/maps/reverse-geocode?lat=22.717588195400708&lng=75.87191943600715:1
+[  953227ms] [LOG] [vite] server connection lost. Polling for restart... @ http://localhost:5173/@vite/client:964
+[  953230ms] [ERROR] WebSocket connection to 'ws://localhost:5173/' failed: Error in connection establishment: net::ERR_NETWORK_IO_SUSPENDED @ http://localhost:5173/@vite/client:1035
+[  954867ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=38bb20a6:20103
+[  955526ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/storefront/config:1
+[  955612ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/storefront/header-tabs:1
+[  955613ms] [WARNING] Failed to fetch header tabs from backend, using cache/defaults: Request failed with status code 500 @ http://localhost:5173/src/config/userAppTabs.js:113
+[  955613ms] [WARNING] Failed to fetch header tabs from backend, using cache/defaults: Request failed with status code 500 @ http://localhost:5173/src/config/userAppTabs.js:113
+[  955613ms] [WARNING] Failed to fetch header tabs from backend, using cache/defaults: Request failed with status code 500 @ http://localhost:5173/src/config/userAppTabs.js:113
+[  955613ms] [WARNING] Failed to fetch header tabs from backend, using cache/defaults: Request failed with status code 500 @ http://localhost:5173/src/config/userAppTabs.js:113
+[  955614ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/storefront/home?commerceFlow=standard:1
+[  955636ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/storefront/you-popup:1
+[  955636ms] [WARNING] You popup config unavailable, using cached/default: Request failed with status code 500 @ http://localhost:5173/src/config/youPopup.js:60
+[  955637ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/cart?marketplaceTab=mithilakart:1
+[  955637ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/cart?marketplaceTab=mithilakart:1
+[  959791ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/maps/reverse-geocode?lat=22.717531214541392&lng=75.87188512114757:1
+[  993906ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/maps/reverse-geocode?lat=22.717559041526364&lng=75.87189019323712:1
+[ 1025690ms] [LOG] [vite] server connection lost. Polling for restart... @ http://localhost:5173/@vite/client:964
+[ 1025692ms] [ERROR] WebSocket connection to 'ws://localhost:5173/' failed: Error in connection establishment: net::ERR_NETWORK_IO_SUSPENDED @ http://localhost:5173/@vite/client:1035
+[ 1038168ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=38bb20a6:20103
+[ 1038867ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/storefront/config:1
+[ 1038869ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/storefront/header-tabs:1
+[ 1038871ms] [WARNING] Failed to fetch header tabs from backend, using cache/defaults: Request failed with status code 500 @ http://localhost:5173/src/config/userAppTabs.js:113
+[ 1038872ms] [WARNING] Failed to fetch header tabs from backend, using cache/defaults: Request failed with status code 500 @ http://localhost:5173/src/config/userAppTabs.js:113
+[ 1038872ms] [WARNING] Failed to fetch header tabs from backend, using cache/defaults: Request failed with status code 500 @ http://localhost:5173/src/config/userAppTabs.js:113
+[ 1038872ms] [WARNING] Failed to fetch header tabs from backend, using cache/defaults: Request failed with status code 500 @ http://localhost:5173/src/config/userAppTabs.js:113
+[ 1038873ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/storefront/home?commerceFlow=standard:1
+[ 1038892ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/storefront/you-popup:1
+[ 1038893ms] [WARNING] You popup config unavailable, using cached/default: Request failed with status code 500 @ http://localhost:5173/src/config/youPopup.js:60
+[ 1038894ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/cart?marketplaceTab=mithilakart:1
+[ 1038895ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:5173/api/v1/cart?marketplaceTab=mithilakart:1
