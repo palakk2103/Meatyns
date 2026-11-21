@@ -336,7 +336,6 @@ export function calculateCustomerDeliveryFee(distanceKm, deliverySettings, optio
     : 0;
 
   const deliveryConfig = deliverySettings?.deliveryConfig || {};
-  const expressConfig = deliveryConfig?.express || {};
   const normalConfig = deliveryConfig?.normal || {};
   const advanceConfig = deliveryConfig?.advance || {};
 
@@ -392,9 +391,18 @@ export function calculateCustomerDeliveryFee(distanceKm, deliverySettings, optio
   const citySlabFee = citySlab ? roundCurrency(citySlab.fee) : null;
 
   if (deliveryMethod === "EXPRESS") {
-    expressSurcharge = roundCurrency(Number(expressConfig?.surcharge ?? 40));
+    // Express costs exactly double the Normal fee for the same distance
+    // (the city slab fee when one covers it, else the standard distance fee),
+    // e.g. Kolhapur 0-1km Normal ₹30 -> Express ₹60.
+    const normalCitySlab = citySlabs.length > 0
+      ? findDistanceSlab(citySlabs, normalizedDistance)
+      : null;
+    const normalFeeForDistance = normalCitySlab
+      ? roundCurrency(normalCitySlab.fee)
+      : standardNormalFee;
+    expressSurcharge = normalFeeForDistance;
     methodSurcharge = expressSurcharge;
-    finalDeliveryFee = addMoney(standardNormalFee, expressSurcharge);
+    finalDeliveryFee = addMoney(normalFeeForDistance, expressSurcharge);
   } else if (citySlab) {
     finalDeliveryFee = citySlabFee;
   } else if (deliveryMethod === "SCHEDULED") {

@@ -685,26 +685,11 @@ const DeliveryManagement = () => {
                         </div>
 
                         <div className="space-y-5">
-                            <div className="space-y-2">
-                                <label className="text-xs font-bold text-slate-700 flex items-center justify-between">
-                                    <span>Express Priority Surcharge (₹)</span>
-                                    <span className="text-[11px] text-amber-700 font-bold">Added on top of standard base fee</span>
-                                </label>
-                                <div className="relative">
-                                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-sm">₹</span>
-                                    <input
-                                        type="number"
-                                        min="0"
-                                        value={expressConfig.surcharge}
-                                        onChange={(e) => {
-                                            markDirty();
-                                            setExpressConfig((prev) => ({ ...prev, surcharge: Math.max(0, parseFloat(e.target.value) || 0) }));
-                                        }}
-                                        className="w-full pl-8 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-slate-900 focus:bg-white focus:ring-2 focus:ring-black outline-none"
-                                    />
-                                </div>
-                                <p className="text-[11px] text-slate-400">
-                                    Formula: Express Delivery Fee = Normal Delivery Fee (Base + Distance) + Express Surcharge.
+                            <div className="space-y-1.5 p-3 bg-amber-50 border border-amber-200 rounded-xl">
+                                <p className="text-xs font-bold text-amber-900">Express Fee = 2 × Normal Delivery Fee</p>
+                                <p className="text-[11px] text-amber-800">
+                                    Express always costs double the Normal fee for the same distance (the city slab fee when one applies).
+                                    Example: Kolhapur 0–1 km Normal ₹30 → Express ₹60; 1–3 km ₹45 → ₹90.
                                 </p>
                             </div>
 
@@ -781,7 +766,7 @@ const DeliveryManagement = () => {
                                 <div className="flex justify-between items-center">
                                     <h4 className="text-sm font-bold text-slate-900">⚡ Express Delivery</h4>
                                     <span className="text-sm font-black text-slate-900">
-                                        ₹{(Number(baseCharge) || 30) + (Number(expressConfig.surcharge) || 40)}
+                                        ₹{2 * (Number(baseCharge) || 0)}
                                     </span>
                                 </div>
                                 <p className="text-xs text-slate-500">Deliver as soon as possible</p>
@@ -799,12 +784,12 @@ const DeliveryManagement = () => {
                                     <span className="font-bold">₹{baseCharge}</span>
                                 </div>
                                 <div className="flex justify-between text-amber-700">
-                                    <span>Express Surcharge:</span>
-                                    <span className="font-bold">+₹{expressConfig.surcharge}</span>
+                                    <span>Express (same again):</span>
+                                    <span className="font-bold">+₹{Number(baseCharge) || 0}</span>
                                 </div>
                                 <div className="flex justify-between pt-1 border-t border-slate-200 font-black text-slate-900">
-                                    <span>Total Express Fee:</span>
-                                    <span>₹{(Number(baseCharge) || 30) + (Number(expressConfig.surcharge) || 40)}</span>
+                                    <span>Total Express Fee (2×):</span>
+                                    <span>₹{2 * (Number(baseCharge) || 0)}</span>
                                 </div>
                             </div>
                         </div>

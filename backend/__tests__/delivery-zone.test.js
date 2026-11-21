@@ -242,9 +242,9 @@ describe("Sprint 3B: Polygon-Based Delivery Zones", () => {
         deliveryMethod: "EXPRESS",
         zone: zoneWithCustomFee,
       });
-      // Fee override: ₹20 + Express surcharge: ₹40 + Zone surcharge: ₹5 = ₹65
-      expect(res.deliveryFeeCharged).toBe(65);
-      expect(res.expressSurcharge).toBe(40);
+      // Fee override ₹20 doubled for Express = ₹40, + Zone surcharge ₹5 = ₹45
+      expect(res.deliveryFeeCharged).toBe(45);
+      expect(res.expressSurcharge).toBe(20);
       expect(res.zoneSurcharge).toBe(5);
     });
   });

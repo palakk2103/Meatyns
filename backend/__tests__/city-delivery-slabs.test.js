@@ -49,11 +49,22 @@ describe("City delivery slabs (Normal + Scheduled)", () => {
     expect(fee(0.5, "NORMAL", "  kolhapur ").deliveryFeeCharged).toBe(30);
   });
 
-  it("express delivery ignores the city slabs", () => {
-    // standard: 20 + ceil(2 - 0.5)=2km * 10 = 40, + express surcharge 150
-    const res = fee(2, "EXPRESS");
-    expect(res.deliveryFeeCharged).toBe(190);
-    expect(res.citySlabApplied).toBe(false);
+  it.each([
+    [0.4, 60],
+    [1, 60],
+    [1.41, 90],
+    [3, 90],
+    [3.2, 140],
+    [5, 140],
+  ])("express delivery at %s km in Kolhapur costs double the slab: ₹%s", (km, expected) => {
+    const res = fee(km, "EXPRESS");
+    expect(res.deliveryFeeCharged).toBe(expected);
+    expect(res.expressSurcharge).toBe(expected / 2);
+  });
+
+  it("express beyond the last slab is double the standard fee", () => {
+    // standard: 20 + ceil(6.2 - 0.5)=6km * 10 = 80 -> express 160
+    expect(fee(6.2, "EXPRESS").deliveryFeeCharged).toBe(160);
   });
 
   it("other cities keep the standard fee", () => {

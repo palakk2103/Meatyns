@@ -53,15 +53,15 @@ describe("Delivery Slot Management & Dynamic Delivery Pricing", () => {
       expect(fee.deliveryMethod).toBe("NORMAL");
     });
 
-    it("calculates express delivery fee with configured express surcharge", () => {
-      // 2.5km distance -> standard fee 50 + express surcharge 45 = 95
+    it("calculates express delivery fee as double the normal fee", () => {
+      // 2.5km distance -> standard fee 50, express = 2 x 50 = 100
       const fee = calculateCustomerDeliveryFee(2.5, baseDeliverySettings, {
         deliveryMethod: "EXPRESS",
       });
 
       expect(fee.standardNormalFee).toBe(50);
-      expect(fee.expressSurcharge).toBe(45);
-      expect(fee.deliveryFeeCharged).toBe(95);
+      expect(fee.expressSurcharge).toBe(50);
+      expect(fee.deliveryFeeCharged).toBe(100);
       expect(fee.deliveryMethod).toBe("EXPRESS");
     });
 
@@ -114,7 +114,7 @@ describe("Delivery Slot Management & Dynamic Delivery Pricing", () => {
       const express = calculateCustomerDeliveryFee(10, fixedSettings, {
         deliveryMethod: "EXPRESS",
       });
-      expect(express.deliveryFeeCharged).toBe(75); // 35 + 40
+      expect(express.deliveryFeeCharged).toBe(70); // 2 x 35
     });
   });
 
