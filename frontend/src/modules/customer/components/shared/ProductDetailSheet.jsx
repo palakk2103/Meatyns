@@ -126,7 +126,33 @@ const ProgressiveProductImage = ({ src, alt, className, style }) => {
     );
 };
 
+// Phones/tablets always get the full-page view. Width alone isn't reliable:
+// "Desktop site" mode, some Android browsers and landscape phones report >=768px,
+// which used to show the old centered popup instead of the full page.
+const MOBILE_DETAIL_QUERY = "(max-width: 767px), (pointer: coarse) and (hover: none)";
+const getIsMobileDetail = () =>
+    typeof window !== "undefined" && typeof window.matchMedia === "function"
+        ? window.matchMedia(MOBILE_DETAIL_QUERY).matches
+        : false;
+const useIsMobileDetail = () => {
+    const [isMobile, setIsMobile] = useState(getIsMobileDetail);
+    useEffect(() => {
+        if (typeof window === "undefined" || typeof window.matchMedia !== "function") return;
+        const mql = window.matchMedia(MOBILE_DETAIL_QUERY);
+        const onChange = () => setIsMobile(mql.matches);
+        onChange();
+        if (mql.addEventListener) mql.addEventListener("change", onChange);
+        else mql.addListener(onChange);
+        return () => {
+            if (mql.removeEventListener) mql.removeEventListener("change", onChange);
+            else mql.removeListener(onChange);
+        };
+    }, []);
+    return isMobile;
+};
+
 const ProductDetailSheet = () => {
+    const isMobileDetail = useIsMobileDetail();
     const { selectedProduct, isOpen, closeProduct, setSelectedProduct } = useProductDetail();
     const servingOutlet = useServingOutlet();
     const { cart, cartCount, addToCart, updateQuantity, removeFromCart } = useCart();
@@ -444,7 +470,7 @@ const ProductDetailSheet = () => {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={closeProduct}
-                        className="fixed inset-0 bg-black/60 z-[220] md:backdrop-blur-sm"
+                        className={cn("fixed inset-0 z-[220]", isMobileDetail ? "bg-white" : "bg-black/60 backdrop-blur-sm")}
                     />
 
                     {/* ============================================================ */}
@@ -464,7 +490,7 @@ const ProductDetailSheet = () => {
                                 desktopRightScrollRef.current.scrollTop += e.deltaY;
                             }
                         }}
-                        className="hidden md:flex fixed z-[230] top-[72px] bottom-[16px] left-[3%] right-[3%] lg:left-[6%] lg:right-[6%] xl:left-[12%] xl:right-[12%] max-h-[calc(100vh-88px)] bg-white rounded-3xl shadow-[0_40px_100px_rgba(0,0,0,0.25)] overflow-hidden touch-pan-y pointer-events-auto"
+                        className={cn(isMobileDetail ? "hidden" : "flex", "fixed z-[230] top-[72px] bottom-[16px] left-[3%] right-[3%] lg:left-[6%] lg:right-[6%] xl:left-[12%] xl:right-[12%] max-h-[calc(100vh-88px)] bg-white rounded-3xl shadow-[0_40px_100px_rgba(0,0,0,0.25)] overflow-hidden touch-pan-y pointer-events-auto")}
                     >
                         {/* Parent flex container that holds both sides together */}
                         <div className="flex w-full h-full min-h-0 overflow-hidden" data-lenis-prevent data-lenis-prevent-wheel data-lenis-prevent-touch>
@@ -927,7 +953,7 @@ const ProductDetailSheet = () => {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: 24, transition: { duration: 0.18, ease: "easeIn" } }}
                         transition={{ duration: 0.22, ease: [0.25, 0.1, 0.25, 1] }}
-                        className="md:hidden fixed inset-0 z-[230] bg-white shadow-2xl overflow-hidden flex flex-col"
+                        className={cn(isMobileDetail ? "flex" : "hidden", "fixed inset-0 z-[230] bg-white shadow-2xl overflow-hidden flex-col")}
                         style={{ willChange: "transform", backfaceVisibility: "hidden" }}
                     >
                         {/* Drag Handle (Visible only when not fully expanded) */}

@@ -1,0 +1,165 @@
+- generic [ref=f1e2]:
+  - generic [ref=f1e3]:
+    - main [ref=f1e4]:
+      - generic [ref=f1e132]:
+        - button "Back to Gallery" [ref=f1e133] [cursor=pointer]
+        - generic [ref=f1e136]:
+          - generic [ref=f1e143]:
+            - link "Memorable Moments" [ref=f1e144] [cursor=pointer]:
+              - /url: /gallery?category=memorable-moments
+            - heading "Inside the Meatyns Store" [level=1] [ref=f1e145]
+            - generic [ref=f1e147]:
+              - generic [ref=f1e148]: 15 Mar 2026
+              - generic [ref=f1e151]: 12 photos
+            - paragraph [ref=f1e157]: "Step inside a Meatyns store: chilled display counters stocked with fresh cuts, a dedicated order pick-up counter, and a clean, bright space designed around hygiene and quality."
+          - generic [ref=f1e158]:
+            - 'button "Open image 1: Store interior" [ref=f1e159] [cursor=pointer]':
+              - generic [ref=f1e160]:
+                - img "Store interior" [ref=f1e162]
+                - generic [ref=f1e163]: Store interior
+            - 'button "Open image 2: Order counter" [ref=f1e164] [cursor=pointer]':
+              - generic [ref=f1e165]:
+                - img "Order counter" [ref=f1e167]
+                - generic [ref=f1e168]: Order counter
+            - 'button "Open image 3: Your order is here" [ref=f1e169] [cursor=pointer]':
+              - generic [ref=f1e170]:
+                - img "Your order is here" [ref=f1e172]
+                - generic [ref=f1e173]: Your order is here
+            - 'button "Open image 4: Fresh mutton on display" [ref=f1e174] [cursor=pointer]':
+              - generic [ref=f1e175]:
+                - img "Fresh mutton on display" [ref=f1e177]
+                - generic [ref=f1e178]: Fresh mutton on display
+            - 'button "Open image 5: Fresh chicken, cut daily" [ref=f1e179] [cursor=pointer]':
+              - generic [ref=f1e180]:
+                - img "Fresh chicken, cut daily" [ref=f1e182]
+                - generic [ref=f1e183]: Fresh chicken, cut daily
+            - 'button "Open image 6: Chilled display counter" [ref=f1e184] [cursor=pointer]':
+              - generic [ref=f1e185]:
+                - img "Chilled display counter" [ref=f1e187]
+                - generic [ref=f1e188]: Chilled display counter
+            - 'button "Open image 7: Ready-to-cook selection" [ref=f1e189] [cursor=pointer]':
+              - generic [ref=f1e190]:
+                - img "Ready-to-cook selection" [ref=f1e192]
+                - generic [ref=f1e193]: Ready-to-cook selection
+            - 'button "Open image 8: Pick-up counter" [ref=f1e194] [cursor=pointer]':
+              - generic [ref=f1e195]:
+                - img "Pick-up counter" [ref=f1e197]
+                - generic [ref=f1e198]: Pick-up counter
+            - 'button "Open image 9: Meatyns brand wall" [ref=f1e199] [cursor=pointer]':
+              - generic [ref=f1e200]:
+                - img "Meatyns brand wall" [ref=f1e202]
+                - generic [ref=f1e203]: Meatyns brand wall
+            - 'button "Open image 10: Our preparation area" [ref=f1e204] [cursor=pointer]':
+              - generic [ref=f1e205]:
+                - img "Our preparation area" [ref=f1e207]
+                - generic [ref=f1e208]: Our preparation area
+            - 'button "Open image 11: Find us online" [ref=f1e209] [cursor=pointer]':
+              - generic [ref=f1e210]:
+                - img "Find us online" [ref=f1e212]
+                - generic [ref=f1e213]: Find us online
+            - 'button "Open image 12: Vibe to meat you" [ref=f1e214] [cursor=pointer]':
+              - generic [ref=f1e215]:
+                - img "Vibe to meat you" [ref=f1e217]
+                - generic [ref=f1e218]: Vibe to meat you
+    - contentinfo [ref=f1e7]:
+      - generic [ref=f1e8]:
+        - generic [ref=f1e9]:
+          - generic [ref=f1e15]:
+            - heading "100% Fresh & Hygienic" [level=4] [ref=f1e16]
+            - paragraph [ref=f1e17]: Sourced daily from certified farms
+          - generic [ref=f1e33]:
+            - heading "Chilled, Never Frozen" [level=4] [ref=f1e34]
+            - paragraph [ref=f1e35]: Stored strictly at 0–4°C always
+          - generic [ref=f1e40]:
+            - heading "15–30 Mins Express" [level=4] [ref=f1e41]
+            - paragraph [ref=f1e42]: Fast temperature-controlled delivery
+        - generic [ref=f1e43]:
+          - generic [ref=f1e44]:
+            - img "Meatyns" [ref=f1e46]
+            - paragraph [ref=f1e47]: Good Food Starts with Meatyns.
+            - paragraph [ref=f1e48]: Your trusted destination for farm-fresh chicken, tender mutton, ocean-fresh fish & coastal seafood. Hygienically packed, temperature-controlled, and delivered fresh to your door.
+            - generic [ref=f1e49]:
+              - link "Facebook" [ref=f1e50] [cursor=pointer]:
+                - /url: "#"
+              - link "Twitter" [ref=f1e53] [cursor=pointer]:
+                - /url: "#"
+              - link "Instagram" [ref=f1e56] [cursor=pointer]:
+                - /url: "#"
+              - link "YouTube" [ref=f1e60] [cursor=pointer]:
+                - /url: "#"
+          - generic [ref=f1e64]:
+            - heading "Quick Links" [level=3] [ref=f1e65]
+            - list [ref=f1e67]:
+              - listitem [ref=f1e68]:
+                - link "Home" [ref=f1e69] [cursor=pointer]:
+                  - /url: /
+              - listitem [ref=f1e70]:
+                - link "About Meatyns" [ref=f1e71] [cursor=pointer]:
+                  - /url: /about
+              - listitem [ref=f1e72]:
+                - link "Franchise Opportunities" [ref=f1e73] [cursor=pointer]:
+                  - /url: /franchise
+              - listitem [ref=f1e74]:
+                - link "What We Deliver" [ref=f1e75] [cursor=pointer]:
+                  - /url: /what-we-deliver
+              - listitem [ref=f1e76]:
+                - link "All Categories" [ref=f1e77] [cursor=pointer]:
+                  - /url: /category/all
+              - listitem [ref=f1e78]:
+                - link "Offers & Deals" [ref=f1e79] [cursor=pointer]:
+                  - /url: /offers
+              - listitem [ref=f1e80]:
+                - link "Customer Support" [ref=f1e81] [cursor=pointer]:
+                  - /url: /support
+              - listitem [ref=f1e82]:
+                - link "Contact Us" [ref=f1e83] [cursor=pointer]:
+                  - /url: /contact
+          - generic [ref=f1e84]:
+            - heading "Categories" [level=3] [ref=f1e85]
+            - list [ref=f1e87]:
+              - listitem [ref=f1e88]:
+                - link "Fresh Chicken" [ref=f1e89] [cursor=pointer]:
+                  - /url: /search?q=chicken
+              - listitem [ref=f1e90]:
+                - link "Tender Mutton" [ref=f1e91] [cursor=pointer]:
+                  - /url: /search?q=mutton
+              - listitem [ref=f1e92]:
+                - link "Chicken Curry Cut" [ref=f1e93] [cursor=pointer]:
+                  - /url: /search?q=chicken
+              - listitem [ref=f1e94]:
+                - link "Goat Curry Cut" [ref=f1e95] [cursor=pointer]:
+                  - /url: /search?q=mutton
+              - listitem [ref=f1e96]:
+                - link "All Meat Cuts" [ref=f1e97] [cursor=pointer]:
+                  - /url: /categories
+          - generic [ref=f1e98]:
+            - heading "Contact Us" [level=3] [ref=f1e99]
+            - list [ref=f1e101]:
+              - listitem [ref=f1e102]:
+                - generic [ref=f1e107]: Unit-A, Shop No. 11, Sharda Vihar Apartment, Isolation Ring Road, Near Dhyan Chand Hockey Stadium, Kolhapur
+              - listitem [ref=f1e108]:
+                - generic [ref=f1e112]:
+                  - link "1800-233-8590" [ref=f1e113] [cursor=pointer]:
+                    - /url: tel:18002338590
+                  - generic [ref=f1e114]: "|"
+                  - link "75585 98590" [ref=f1e115] [cursor=pointer]:
+                    - /url: tel:7558598590
+              - listitem [ref=f1e116]:
+                - link "meatyns01@gmail.com" [ref=f1e121] [cursor=pointer]:
+                  - /url: mailto:meatyns01@gmail.com
+        - generic [ref=f1e122]:
+          - paragraph [ref=f1e123]: © 2026 Meatyns. All rights reserved.
+          - generic [ref=f1e124]:
+            - link "Our Policies" [ref=f1e125] [cursor=pointer]:
+              - /url: /policy
+            - link "Quality Policy" [ref=f1e126] [cursor=pointer]:
+              - /url: /quality-policy
+            - link "Delivery Policy" [ref=f1e127] [cursor=pointer]:
+              - /url: /shipping-policy
+            - link "Refund & Replacement" [ref=f1e128] [cursor=pointer]:
+              - /url: /refund-policy
+            - link "Privacy Policy" [ref=f1e129] [cursor=pointer]:
+              - /url: /privacy
+            - link "Terms of Service" [ref=f1e130] [cursor=pointer]:
+              - /url: /terms
+  - region "Notifications alt+T"

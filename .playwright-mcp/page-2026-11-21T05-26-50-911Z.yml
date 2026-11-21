@@ -1,0 +1,106 @@
+- generic [ref=f1e2]:
+  - generic [ref=f1e3]:
+    - main [ref=f1e4]:
+      - generic [ref=f1e5]: Loading...
+    - contentinfo [ref=f1e7]:
+      - generic [ref=f1e8]:
+        - generic [ref=f1e9]:
+          - generic [ref=f1e15]:
+            - heading "100% Fresh & Hygienic" [level=4] [ref=f1e16]
+            - paragraph [ref=f1e17]: Sourced daily from certified farms
+          - generic [ref=f1e33]:
+            - heading "Chilled, Never Frozen" [level=4] [ref=f1e34]
+            - paragraph [ref=f1e35]: Stored strictly at 0–4°C always
+          - generic [ref=f1e40]:
+            - heading "15–30 Mins Express" [level=4] [ref=f1e41]
+            - paragraph [ref=f1e42]: Fast temperature-controlled delivery
+        - generic [ref=f1e43]:
+          - generic [ref=f1e44]:
+            - img "Meatyns" [ref=f1e46]
+            - paragraph [ref=f1e47]: Good Food Starts with Meatyns.
+            - paragraph [ref=f1e48]: Your trusted destination for farm-fresh chicken, tender mutton, ocean-fresh fish & coastal seafood. Hygienically packed, temperature-controlled, and delivered fresh to your door.
+            - generic [ref=f1e49]:
+              - link "Facebook" [ref=f1e50] [cursor=pointer]:
+                - /url: "#"
+              - link "Twitter" [ref=f1e53] [cursor=pointer]:
+                - /url: "#"
+              - link "Instagram" [ref=f1e56] [cursor=pointer]:
+                - /url: "#"
+              - link "YouTube" [ref=f1e60] [cursor=pointer]:
+                - /url: "#"
+          - generic [ref=f1e64]:
+            - heading "Quick Links" [level=3] [ref=f1e65]
+            - list [ref=f1e67]:
+              - listitem [ref=f1e68]:
+                - link "Home" [ref=f1e69] [cursor=pointer]:
+                  - /url: /
+              - listitem [ref=f1e70]:
+                - link "About Meatyns" [ref=f1e71] [cursor=pointer]:
+                  - /url: /about
+              - listitem [ref=f1e72]:
+                - link "Franchise Opportunities" [ref=f1e73] [cursor=pointer]:
+                  - /url: /franchise
+              - listitem [ref=f1e74]:
+                - link "What We Deliver" [ref=f1e75] [cursor=pointer]:
+                  - /url: /what-we-deliver
+              - listitem [ref=f1e76]:
+                - link "All Categories" [ref=f1e77] [cursor=pointer]:
+                  - /url: /category/all
+              - listitem [ref=f1e78]:
+                - link "Offers & Deals" [ref=f1e79] [cursor=pointer]:
+                  - /url: /offers
+              - listitem [ref=f1e80]:
+                - link "Customer Support" [ref=f1e81] [cursor=pointer]:
+                  - /url: /support
+              - listitem [ref=f1e82]:
+                - link "Contact Us" [ref=f1e83] [cursor=pointer]:
+                  - /url: /contact
+          - generic [ref=f1e84]:
+            - heading "Categories" [level=3] [ref=f1e85]
+            - list [ref=f1e87]:
+              - listitem [ref=f1e88]:
+                - link "Fresh Chicken" [ref=f1e89] [cursor=pointer]:
+                  - /url: /search?q=chicken
+              - listitem [ref=f1e90]:
+                - link "Tender Mutton" [ref=f1e91] [cursor=pointer]:
+                  - /url: /search?q=mutton
+              - listitem [ref=f1e92]:
+                - link "Chicken Curry Cut" [ref=f1e93] [cursor=pointer]:
+                  - /url: /search?q=chicken
+              - listitem [ref=f1e94]:
+                - link "Goat Curry Cut" [ref=f1e95] [cursor=pointer]:
+                  - /url: /search?q=mutton
+              - listitem [ref=f1e96]:
+                - link "All Meat Cuts" [ref=f1e97] [cursor=pointer]:
+                  - /url: /categories
+          - generic [ref=f1e98]:
+            - heading "Contact Us" [level=3] [ref=f1e99]
+            - list [ref=f1e101]:
+              - listitem [ref=f1e102]:
+                - generic [ref=f1e107]: Indore, Madhya Pradesh, India
+              - listitem [ref=f1e108]:
+                - generic [ref=f1e112]:
+                  - link "1800-233-8590" [ref=f1e113] [cursor=pointer]:
+                    - /url: tel:18002338590
+                  - generic [ref=f1e114]: "|"
+                  - link "75585 98590" [ref=f1e115] [cursor=pointer]:
+                    - /url: tel:7558598590
+              - listitem [ref=f1e116]:
+                - link "meatyns01@gmail.com" [ref=f1e121] [cursor=pointer]:
+                  - /url: mailto:meatyns01@gmail.com
+        - generic [ref=f1e122]:
+          - paragraph [ref=f1e123]: © 2026 Meatyns. All rights reserved.
+          - generic [ref=f1e124]:
+            - link "Our Policies" [ref=f1e125] [cursor=pointer]:
+              - /url: /policy
+            - link "Quality Policy" [ref=f1e126] [cursor=pointer]:
+              - /url: /quality-policy
+            - link "Delivery Policy" [ref=f1e127] [cursor=pointer]:
+              - /url: /shipping-policy
+            - link "Refund & Replacement" [ref=f1e128] [cursor=pointer]:
+              - /url: /refund-policy
+            - link "Privacy Policy" [ref=f1e129] [cursor=pointer]:
+              - /url: /privacy
+            - link "Terms of Service" [ref=f1e130] [cursor=pointer]:
+              - /url: /terms
+  - region "Notifications alt+T"
