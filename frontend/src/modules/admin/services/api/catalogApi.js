@@ -22,6 +22,7 @@ export const adminCatalogApi = {
     // Daily carcass report
     getDailyStock: (params) => axiosInstance.get('/admin/daily-stock', { params }),
     getDailyStockSellers: () => axiosInstance.get('/admin/daily-stock/sellers'),
+    getDailyStockProducts: (sellerId) => axiosInstance.get('/admin/daily-stock/products', { params: { sellerId } }),
     saveDailyStock: (data) => axiosInstance.put('/admin/daily-stock', data),
 
     // Product Management

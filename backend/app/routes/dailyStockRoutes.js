@@ -17,4 +17,5 @@ const canManage = requireAdminPermission(ADMIN_PERMISSIONS.STOCK_MANAGE);
 dailyStockAdminRouter.use(verifyToken);
 dailyStockAdminRouter.get("/", canView, daily.getAdminDailyStock);
 dailyStockAdminRouter.get("/sellers", canView, daily.listAdminDailyStockSellers);
+dailyStockAdminRouter.get("/products", canView, daily.getAdminDailyStockProducts);
 dailyStockAdminRouter.put("/", canManage, daily.saveAdminDailyStock);

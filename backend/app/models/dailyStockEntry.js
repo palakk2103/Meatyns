@@ -22,6 +22,12 @@ const dailyStockEntrySchema = new mongoose.Schema(
     wastagePieces: qty,
     wastageKg: qty,
 
+    // Optional starting stock for the day. null = continue from the previous
+    // day's closing stock; a number = (re)set the opening stock to that value
+    // (used for the very first day and for corrections).
+    startStockPieces: { type: Number, default: null, min: 0 },
+    startStockKg: { type: Number, default: null, min: 0 },
+
     note: { type: String, trim: true, default: "", maxlength: 500 },
     updatedByRole: { type: String, enum: ["seller", "admin"], default: "seller" },
     updatedById: { type: mongoose.Schema.Types.ObjectId, default: null },
