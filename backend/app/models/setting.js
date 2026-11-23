@@ -204,6 +204,10 @@ const settingSchema = new mongoose.Schema(
                 surcharge: { type: Number, default: 40, min: 0 },
                 estimatedMinMinutes: { type: Number, default: 15, min: 0 },
                 estimatedMaxMinutes: { type: Number, default: 30, min: 0 },
+                // Cities (matched on the serving outlet's city, lowercase) where Express is not offered.
+                blockedCities: { type: [String], default: ["pune"] },
+                // Express fee = Normal fee x this multiplier (admin-editable, min 1).
+                feeMultiplier: { type: Number, default: 2, min: 1 },
                 operatingHoursOnly: { type: Boolean, default: true },
             },
             normal: {

@@ -1,3 +1,4 @@
+import { normalizeServiceRadiusKm } from "./customerVisibilityService.js";
 import Seller from "../models/seller.js";
 import Product from "../models/product.js";
 import Order from "../models/order.js";
@@ -13,10 +14,14 @@ import { resolveDeliveryZoneForLocation } from "./deliveryZoneService.js";
 import logger from "./logger.js";
 
 // Cities where Express delivery is not offered at all (only Normal + Scheduled).
-const EXPRESS_BLOCKED_CITIES = new Set(["pune"]);
+// Admin-editable via deliveryConfig.express.blockedCities; this is only the
+// fallback used when the setting has never been saved.
+const DEFAULT_EXPRESS_BLOCKED_CITIES = ["pune"];
 
-export function isExpressBlockedForCity(city) {
-  return EXPRESS_BLOCKED_CITIES.has(String(city || "").trim().toLowerCase());
+export function isExpressBlockedForCity(city, blockedCities = DEFAULT_EXPRESS_BLOCKED_CITIES) {
+  const list = Array.isArray(blockedCities) ? blockedCities : DEFAULT_EXPRESS_BLOCKED_CITIES;
+  const normalized = String(city || "").trim().toLowerCase();
+  return list.some((c) => String(c || "").trim().toLowerCase() === normalized);
 }
 
 /**
@@ -28,7 +33,9 @@ export async function isExpressBlockedForSellers(sellerIds = [], session = null)
   const query = Seller.find({ _id: { $in: ids } }).select("city").lean();
   if (session) query.session(session);
   const sellers = await query;
-  return sellers.some((s) => isExpressBlockedForCity(s.city));
+  const financeSettings = await getOrCreateFinanceSettings();
+  const blockedCities = financeSettings?.deliveryConfig?.express?.blockedCities;
+  return sellers.some((s) => isExpressBlockedForCity(s.city, blockedCities));
 }
 
 const DAYS_OF_WEEK = [
@@ -112,7 +119,7 @@ export function estimateBrowseDeliveryEta({ distanceKm = 0, sellerCity = null, d
   const km = Number.isFinite(Number(distanceKm)) ? Number(distanceKm) : 0;
 
   const expressOffered =
-    !isExpressBlockedForCity(sellerCity) && expressConfig.enabled !== false;
+    !isExpressBlockedForCity(sellerCity, expressConfig.blockedCities) && expressConfig.enabled !== false;
 
   if (expressOffered) {
     const dynamicEtaMins = Math.round(
@@ -408,7 +415,7 @@ export async function getDeliveryOptionsAndSlots({
       matchedZone = zoneResolution.zone;
       if (primarySeller) {
         distanceKm = getDistanceKm(loc, primarySeller);
-        const radius = Number(primarySeller.serviceRadius || 10);
+        const radius = normalizeServiceRadiusKm(primarySeller.serviceRadius);
         if (zoneResolution.fallbackToRadius && distanceKm > radius) {
           isServiceable = false;
           unserviceableReason = `Address is outside store service radius (${distanceKm}km vs max ${radius}km).`;
@@ -417,7 +424,7 @@ export async function getDeliveryOptionsAndSlots({
     }
   } else if (primarySeller) {
     distanceKm = getDistanceKm(loc, primarySeller);
-    const radius = Number(primarySeller.serviceRadius || 10);
+    const radius = normalizeServiceRadiusKm(primarySeller.serviceRadius);
     if (loc?.lat && loc?.lng && distanceKm > radius) {
       isServiceable = false;
       unserviceableReason = `Address is outside store service radius (${distanceKm}km vs max ${radius}km).`;
@@ -444,8 +451,8 @@ export async function getDeliveryOptionsAndSlots({
   const maxEta = Math.max(expressConfig.estimatedMaxMinutes || 30, dynamicEtaMins + 5);
   const expressEtaLabel = `${minEta}–${maxEta} mins`;
 
-  // Pune (and any other blocked city) never offers Express — hide it entirely.
-  const isExpressCityBlocked = sellers.some((s) => isExpressBlockedForCity(s?.city));
+  // Any city listed in deliveryConfig.express.blockedCities (default: Pune) never offers Express — hide it entirely.
+  const isExpressCityBlocked = sellers.some((s) => isExpressBlockedForCity(s?.city, expressConfig.blockedCities));
   const isExpressEnabled = !isExpressCityBlocked && expressConfig.enabled !== false && (matchedZone ? matchedZone.expressAvailable !== false : true);
   const expressAvailable = isServiceable && (expressConfig.operatingHoursOnly ? isCurrentlyOpen : true) && isExpressEnabled;
 

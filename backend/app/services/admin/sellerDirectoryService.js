@@ -1,3 +1,4 @@
+import { normalizeServiceRadiusKm } from "../customerVisibilityService.js";
 import Seller from "../../models/seller.js";
 import Order from "../../models/order.js";
 import { getSellerCurrentOpenStatus } from "../storeStatusService.js";
@@ -440,7 +441,7 @@ export async function getActiveSellersData({
       fulfillmentRate,
       productCount,
       activeProductCount,
-      serviceRadius: Number(seller.serviceRadius || 5),
+      serviceRadius: normalizeServiceRadiusKm(seller.serviceRadius),
       location: getSellerDisplayLocation(seller),
       city: seller.address || "Location not set",
       latitude: Array.isArray(seller.location?.coordinates)

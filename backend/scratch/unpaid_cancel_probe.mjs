@@ -1,0 +1,10 @@
+const API='http://localhost:7000/api';
+const j=async r=>{const t=await r.text();try{return JSON.parse(t)}catch{return{raw:t.slice(0,200)}}};
+const v=await j(await fetch(`${API}/customer/verify-otp`,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({phone:'8770620342',otp:'1234'})}));
+const H={'content-type':'application/json',authorization:`Bearer ${v.result.token||v.result.accessToken}`};
+const c=(await j(await fetch(`${API}/products?lat=16.6986&lng=74.2421&limit=3`))).result.items[0];
+const body={items:[{productId:String(c._id),variantSku:c.variants?.[0]?.sku,quantity:1}],address:{type:'Home',name:'API Test',address:'unpaid cancel test, Kolhapur',city:'Kolhapur',phone:'8770620342',location:{lat:16.6986,lng:74.2421}},paymentMode:'ONLINE',deliveryMethod:'NORMAL',timeSlot:'now'};
+const r=await j(await fetch(`${API}/orders`,{method:'POST',headers:H,body:JSON.stringify(body)}));
+const id=r.result?.order?.orderId; console.log('placed',id,r.result?.order?.paymentStatus,r.result?.order?.workflowStatus);
+const x=await j(await fetch(`${API}/orders/cancel/${id}`,{method:'PUT',headers:H,body:JSON.stringify({reason:'unpaid test'})}));
+console.log('cancel unpaid online order ->',x.message);

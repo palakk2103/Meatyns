@@ -14,9 +14,10 @@ const MOCK_OTP = '1234';
 const LOC = {
     kolhapurRajarampuri: { lat: 16.698, lng: 74.236, seller: 'kolhapur5@meatyns.com', city: 'Kolhapur' },
     kolhapurLineBazar: { lat: 16.715, lng: 74.26, seller: 'kolhapur2@meatyns.com', city: 'Kolhapur' },
-    kolhapurFarFallback: { lat: 16.8, lng: 74.3, seller: 'kolhapur2@meatyns.com', city: 'Kolhapur' }, // outside every radius
+    // Outside every outlet's radius: there is NO fallback to a far-away outlet any more.
+    kolhapurFar: { lat: 16.8, lng: 74.46, seller: null, city: 'Kolhapur' },
     puneBaner: { lat: 18.559, lng: 73.7868, seller: 'pune@meatyns.com', city: 'Pune' },
-    mumbaiFallback: { lat: 19.076, lng: 72.8777, seller: 'pune@meatyns.com', city: 'Mumbai' }, // nearest = Pune
+    mumbaiNoService: { lat: 19.076, lng: 72.8777, seller: null, city: 'Mumbai' }, // no outlet covers Mumbai
 };
 
 let api;
@@ -49,15 +50,19 @@ test.beforeAll(async () => {
 
 test.describe('API: one customer location -> exactly one seller', () => {
     for (const [key, loc] of Object.entries(LOC)) {
-        test(`${key}: every product belongs to ${loc.seller}, no duplicates`, async () => {
+        test(`${key}: ${loc.seller ? 'every product belongs to ' + loc.seller + ', no duplicates' : 'not serviceable (no products, no fallback outlet)'}`, async () => {
             const list = await items(loc);
+            if (!loc.seller) {
+                expect(list).toHaveLength(0);
+                return;
+            }
             expect(list.length).toBeGreaterThan(0);
             const sellers = new Set(list.map(sid));
             expect([...sellers]).toHaveLength(1); // ONE seller only
             if (sellerIdByEmail[loc.seller]) expect([...sellers][0]).toBe(sellerIdByEmail[loc.seller]);
             const names = list.map((p) => p.name);
             expect(new Set(names).size).toBe(names.length); // no duplicate listings
-            expect(list.length).toBe(13);
+            expect(list.length).toBeGreaterThanOrEqual(13); // catalogue size is data, not a constant
         });
     }
 
@@ -136,7 +141,7 @@ test.describe('API: checkout safety', () => {
             data: { items: items_, address: { name: 'T', address: 'x', city: loc.city, phone: MOCK_PHONE, location: { lat: loc.lat, lng: loc.lng } } },
         });
 
-    test('cart with another seller\'s products is rejected for this delivery address', async () => {
+    test('checkout preview rejects another outlet\'s product for this delivery address (409, never priced from the wrong outlet)', async () => {
         const kolh = await items(LOC.kolhapurRajarampuri);
         const res = await preview([{ productId: kolh[0]._id, quantity: 1 }], LOC.puneBaner);
         expect(res.status()).toBe(409);
@@ -162,10 +167,10 @@ test.describe('API: checkout safety', () => {
         expect(body).toContain('1050');
     });
 
-    test('customer outside every radius can still check out with the fallback seller', async () => {
-        const list = await items(LOC.mumbaiFallback);
-        const res = await preview([{ productId: list[0]._id, quantity: 1 }], LOC.mumbaiFallback);
-        expect(res.status()).not.toBe(409);
+    test('customer outside every radius cannot check out (no far-away fallback outlet)', async () => {
+        const kolh = await items(LOC.kolhapurRajarampuri);
+        const res = await preview([{ productId: kolh[0]._id, quantity: 1 }], LOC.mumbaiNoService);
+        expect(res.status()).toBeGreaterThanOrEqual(400);
     });
 });
 

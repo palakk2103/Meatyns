@@ -18,6 +18,7 @@ import {
   Share2,
   Gift,
   ShoppingBag,
+  Store,
   ChevronDown,
   ChevronUp,
   Heart,
@@ -171,6 +172,9 @@ const CheckoutPage = () => {
   const [showSuccess, setShowSuccess] = useState(false);
   const [orderId, setOrderId] = useState(null);
   const [pricingPreview, setPricingPreview] = useState(null);
+  const outlets = (pricingPreview?.sellers || []).filter((s) => s?.shopName);
+  const outletNames = outlets.map((s) => s.shopName);
+  const outletLocations = [...new Set(outlets.map((s) => s.shopLocation).filter(Boolean))];
   // Items the selected address's seller can't deliver (server: CART_SELLER_MISMATCH).
   const [unavailableItems, setUnavailableItems] = useState([]);
   const [isPreviewLoading, setIsPreviewLoading] = useState(false);
@@ -300,7 +304,7 @@ const CheckoutPage = () => {
     savedRecipient?.phone || currentAddress.phone || user?.phone || "";
   const displayAddress = savedRecipient
     ? `${savedRecipient.completeAddress}${savedRecipient.landmark ? `, ${savedRecipient.landmark}` : ""}${savedRecipient.pincode ? ` - ${savedRecipient.pincode}` : ""}`
-    : [currentAddress.address, currentAddress.landmark, currentAddress.city]
+    : [currentAddress.houseNo, currentAddress.address, currentAddress.landmark, currentAddress.city]
         .filter(Boolean)
         .join(", ") || "Select a delivery address";
 
@@ -343,8 +347,13 @@ const CheckoutPage = () => {
     // wrong outlet.
     const hasCurrentLoc = hasRealLocation;
 
+    const { houseNo, fromSaved: _fromSaved, ...addressRest } = currentAddress;
+    const houseNoTrimmed = String(houseNo || "").trim();
     return {
-      ...currentAddress,
+      ...addressRest,
+      // Flat/house number is sent as the first part of the address so riders
+      // and the seller see the exact door, not just the map-pin area.
+      address: [houseNoTrimmed, currentAddress.address].filter(Boolean).join(", "),
       location: hasAddrLoc
         ? { lat: addrLoc.lat, lng: addrLoc.lng }
         : hasCurrentLoc
@@ -473,6 +482,7 @@ const CheckoutPage = () => {
         city: "",
         phone: addr.phone || currentAddress.phone,
         landmark: "",
+        fromSaved: true,
         ...(pid ? { placeId: pid } : {}),
         ...(resolvedLoc ? { location: resolvedLoc } : {}),
       });
@@ -481,7 +491,7 @@ const CheckoutPage = () => {
         updateLocation(
           {
             name: rawText,
-            time: currentLocation?.time || "12-15 mins",
+            time: currentLocation?.time || "",
             city: currentLocation?.city,
             state: currentLocation?.state,
             pincode: currentLocation?.pincode,
@@ -499,6 +509,10 @@ const CheckoutPage = () => {
   };
 
   const handleSaveEditedAddress = async () => {
+    if (!editAddressForm.fromSaved && !String(editAddressForm.houseNo || "").trim()) {
+      showToast("Please enter Flat / House No.", "error");
+      return;
+    }
     if (
       !editAddressForm.name.trim() ||
       !editAddressForm.address.trim() ||
@@ -534,7 +548,7 @@ const CheckoutPage = () => {
         updateLocation(
           {
             name: resp.data?.result?.formattedAddress || query,
-            time: currentLocation?.time || "12-15 mins",
+            time: currentLocation?.time || "",
             city: currentLocation?.city,
             state: currentLocation?.state,
             pincode: currentLocation?.pincode,
@@ -571,6 +585,8 @@ const CheckoutPage = () => {
         ...prev,
         address: liveLocation.name,
         landmark: "",
+        houseNo: "",
+        fromSaved: false,
         city: [liveLocation.city, liveLocation.state, liveLocation.pincode]
           .filter(Boolean)
           .join(", "),
@@ -588,6 +604,8 @@ const CheckoutPage = () => {
         ...prev,
         address: currentLocation.name,
         landmark: "",
+        houseNo: "",
+        fromSaved: false,
         city: [currentLocation.city, currentLocation.state, currentLocation.pincode]
           .filter(Boolean)
           .join(", "),
@@ -812,6 +830,7 @@ const CheckoutPage = () => {
       next = {
         ...base,
         id: matchingSaved.id,
+        fromSaved: true,
         type: matchingSaved.label || "Home",
         address: matchingSaved.address,
         phone: matchingSaved.phone || base.phone,
@@ -833,6 +852,7 @@ const CheckoutPage = () => {
         next = {
           ...base,
           id: firstSaved.id,
+          fromSaved: true,
           type: firstSaved.label || "Home",
           address: firstSaved.address,
           phone: firstSaved.phone || base.phone,
@@ -1028,6 +1048,13 @@ const CheckoutPage = () => {
     if (!savedRecipient && !String(currentAddress.address || "").trim()) {
       showToast("Please select a delivery address.", "warning");
       setIsAddressModalOpen(true);
+      return;
+    }
+
+    // Exact door details are mandatory so riders can find the customer.
+    if (!savedRecipient && !currentAddress.fromSaved && !String(currentAddress.houseNo || "").trim()) {
+      showToast("Please add your Flat / House No. so the rider can find you.", "warning");
+      handleOpenEditAddress();
       return;
     }
 
@@ -1474,6 +1501,16 @@ const CheckoutPage = () => {
               onRemoveAll={handleRemoveAllUnavailable}
             />
 
+            {outletNames.length > 0 && (
+              <div className="flex items-center gap-2 rounded-2xl bg-white border border-slate-100 shadow-sm px-4 py-3 text-sm text-slate-800">
+                <Store size={16} className="flex-shrink-0" />
+                <span className="truncate">
+                  Order will be fulfilled by <span className="font-bold">{outletNames.join(", ")}</span>
+                  {outletLocations.length > 0 && <span className="block text-xs text-slate-500">{outletLocations.join(" | ")}</span>}
+                </span>
+              </div>
+            )}
+
             {/* Cart Summary */}
             <CheckoutCartSummary
               cart={cart}
@@ -1786,6 +1823,16 @@ const CheckoutPage = () => {
                   onRemoveAll={handleRemoveAllUnavailable}
                 />
 
+                {outletNames.length > 0 && (
+                  <div className="flex items-center gap-2 rounded-xl bg-[#FDCE04]/15 px-3 py-2 text-xs text-slate-800">
+                    <Store size={14} className="flex-shrink-0" />
+                    <span className="truncate">
+                      Fulfilled by <span className="font-bold">{outletNames.join(", ")}</span>
+                      {outletLocations.length > 0 && <span className="block text-[11px] text-slate-500 truncate">{outletLocations.join(" | ")}</span>}
+                    </span>
+                  </div>
+                )}
+
                 {/* Mini Item List */}
                 <div className="space-y-3 max-h-56 overflow-y-auto pr-1">
                   {cart.map((item) => (
@@ -2002,6 +2049,16 @@ const CheckoutPage = () => {
               <DialogDescription>Update the details of your current delivery address.</DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 py-4">
+              <div className="grid gap-2">
+                <Label htmlFor="edit-houseno" className="text-xs font-semibold text-slate-700">Flat / House No. &amp; Building <span className="text-red-500">*</span></Label>
+                <Input
+                  id="edit-houseno"
+                  value={editAddressForm.houseNo || ""}
+                  onChange={(e) => setEditAddressForm((prev) => ({ ...prev, houseNo: e.target.value }))}
+                  className="h-10"
+                  placeholder="e.g. Flat 204, Sai Residency"
+                />
+              </div>
               <div className="grid gap-2">
                 <Label htmlFor="edit-address" className="text-xs font-semibold text-slate-700">Address</Label>
                 <Input

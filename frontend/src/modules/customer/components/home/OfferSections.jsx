@@ -279,7 +279,7 @@ const OfferSections = ({ sections, noServiceData, allProducts = [] }) => {
               price: p.salePrice ?? p.price,
               originalPrice: p.price ?? p.salePrice,
               weight: p.weight || "500g",
-              deliveryTime: p.deliveryTime || "12-15 mins",
+              deliveryTime: p.deliveryTime || "",
             }));
           }
 

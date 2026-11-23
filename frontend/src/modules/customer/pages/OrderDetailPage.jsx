@@ -1,3 +1,4 @@
+import { stripLeadingCode } from "@/core/utils/geocodeResult";
 import MascotTagline from "../components/shared/MascotTagline";
 import { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
@@ -424,6 +425,39 @@ const OrderDetailPage = () => {
     const iv = setInterval(calculateCountdown, 1000);
     return () => clearInterval(iv);
   }, [order, returnWindowMinutes]);
+
+  // Store (pickup) address — comes from the seller/outlet, never the
+  // customer's delivery address.
+  const storeAddressText = [
+    order?.seller?.address,
+    order?.seller?.locality,
+    order?.seller?.city,
+  ]
+    .filter(Boolean)
+    .filter((part, i, arr) => !arr.slice(0, i).some((p) => String(p).includes(part)))
+    .join(", ");
+
+  const handleOpenStoreInMaps = () => {
+    const coords = order?.seller?.location?.coordinates;
+    if (
+      Array.isArray(coords) &&
+      Number.isFinite(coords[0]) &&
+      Number.isFinite(coords[1]) &&
+      !(coords[0] === 0 && coords[1] === 0)
+    ) {
+      window.open(
+        `https://www.google.com/maps/dir/?api=1&destination=${coords[1]},${coords[0]}`,
+        "_blank",
+      );
+      return;
+    }
+    if (storeAddressText) {
+      window.open(
+        `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(storeAddressText)}`,
+        "_blank",
+      );
+    }
+  };
 
   const handleOpenInMaps = () => {
     const loc = order?.address?.location;
@@ -1094,13 +1128,15 @@ const OrderDetailPage = () => {
                 <div className="flex items-center gap-2 mb-1">
                   <p className="text-xs font-bold text-orange-600 uppercase tracking-wider">Pickup Location</p>
                 </div>
-                <h4 className="font-bold text-slate-900 text-base mb-1">Store Location</h4>
+                <h4 className="font-bold text-slate-900 text-base mb-1">
+                  {order.seller?.shopName || "Store Location"}
+                </h4>
                 <p className="text-sm text-slate-500 leading-relaxed">
-                  {order.address?.address || "Address not available"}
+                  {storeAddressText || "Store address not available"}
                 </p>
               </div>
               <button
-                onClick={handleOpenInMaps}
+                onClick={handleOpenStoreInMaps}
                 className="h-10 w-10 rounded-full bg-slate-100 flex items-center justify-center hover:bg-slate-200 transition-colors flex-shrink-0"
               >
                 <Navigation2 size={18} className="text-slate-700" />
@@ -1198,7 +1234,7 @@ const OrderDetailPage = () => {
                 </div>
                 <h4 className="font-bold text-slate-900 text-base mb-1">{order.address?.name || order.customer?.name || order.customerName || "Customer"}</h4>
                 <p className="text-sm text-slate-500 leading-relaxed">
-                  {order.address?.address ? `${order.address.address}${order.address.city ? `, ${order.address.city}` : ""}` : (order.address?.fullAddress || order.address?.city || "Address not available")}
+                  {order.address?.address ? `${stripLeadingCode(order.address.address)}${order.address.city ? `, ${order.address.city}` : ""}` : (order.address?.fullAddress || order.address?.city || "Address not available")}
                 </p>
                 {order.address?.location &&
                   typeof order.address.location.lat === "number" &&

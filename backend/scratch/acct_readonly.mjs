@@ -1,0 +1,11 @@
+import dns from 'dns'; dns.setServers(['8.8.8.8','1.1.1.1']);
+import 'dotenv/config';
+import mongoose from 'mongoose';
+import Seller from '../app/models/seller.js';
+import Delivery from '../app/models/delivery.js';
+await mongoose.connect(process.env.MONGO_URI);
+const s = await Seller.findOne({ email: 'palakk2103@gmail.com' }).select('shopName email address locality city pincode location serviceRadius isActive isOnline applicationStatus').lean();
+console.log(JSON.stringify(s));
+const d = await Delivery.findOne({ email: 'palakpatel0342@gmail.com' }).select('name email location isOnline isActive status').lean();
+console.log(JSON.stringify(d));
+await mongoose.disconnect();

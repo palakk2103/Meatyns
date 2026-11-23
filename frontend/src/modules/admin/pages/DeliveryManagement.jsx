@@ -58,6 +58,8 @@ const DeliveryManagement = () => {
         surcharge: 40,
         estimatedMinMinutes: 15,
         estimatedMaxMinutes: 30,
+        feeMultiplier: 2,
+        blockedCities: 'pune', // comma-separated cities where Express is not offered
         operatingHoursOnly: true,
     });
 
@@ -116,6 +118,10 @@ const DeliveryManagement = () => {
                         surcharge: dc.express.surcharge ?? 40,
                         estimatedMinMinutes: dc.express.estimatedMinMinutes ?? 15,
                         estimatedMaxMinutes: dc.express.estimatedMaxMinutes ?? 30,
+                        feeMultiplier: Number(dc.express.feeMultiplier) >= 1 ? Number(dc.express.feeMultiplier) : 2,
+                        blockedCities: Array.isArray(dc.express.blockedCities)
+                            ? dc.express.blockedCities.join(', ')
+                            : 'pune',
                         operatingHoursOnly: dc.express.operatingHoursOnly !== false,
                     });
                 }
@@ -197,6 +203,11 @@ const DeliveryManagement = () => {
                         surcharge: Number(expressConfig.surcharge) || 0,
                         estimatedMinMinutes: Number(expressConfig.estimatedMinMinutes) || 15,
                         estimatedMaxMinutes: Number(expressConfig.estimatedMaxMinutes) || 30,
+                        feeMultiplier: Math.max(1, Number(expressConfig.feeMultiplier) || 2),
+                        blockedCities: String(expressConfig.blockedCities || '')
+                            .split(',')
+                            .map((c) => c.trim().toLowerCase())
+                            .filter(Boolean),
                         operatingHoursOnly: expressConfig.operatingHoursOnly,
                     },
                     normal: {
@@ -730,6 +741,45 @@ const DeliveryManagement = () => {
                                         <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">mins</span>
                                     </div>
                                 </div>
+                            </div>
+
+                            <div className="space-y-1.5">
+                                <label className="text-xs font-bold text-slate-700">
+                                    Express fee multiplier (Express fee = Normal fee x this)
+                                </label>
+                                <input
+                                    type="number"
+                                    min="1"
+                                    step="0.1"
+                                    value={expressConfig.feeMultiplier}
+                                    onChange={(e) => {
+                                        markDirty();
+                                        setExpressConfig((prev) => ({ ...prev, feeMultiplier: e.target.value }));
+                                    }}
+                                    className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-slate-900 focus:bg-white focus:ring-2 focus:ring-black outline-none"
+                                />
+                                <p className="text-[11px] text-slate-500">
+                                    2 = Express costs double (Normal Rs 30 becomes Rs 60). Applies to the city distance slab fee, or the standard distance fee where no slab covers the distance.
+                                </p>
+                            </div>
+
+                            <div className="space-y-1.5">
+                                <label className="text-xs font-bold text-slate-700">
+                                    Cities where Express is NOT offered
+                                </label>
+                                <input
+                                    type="text"
+                                    placeholder="e.g. pune, nagpur"
+                                    value={expressConfig.blockedCities}
+                                    onChange={(e) => {
+                                        markDirty();
+                                        setExpressConfig((prev) => ({ ...prev, blockedCities: e.target.value }));
+                                    }}
+                                    className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-slate-900 focus:bg-white focus:ring-2 focus:ring-black outline-none"
+                                />
+                                <p className="text-[11px] text-slate-500">
+                                    Comma-separated, matched on the serving outlet's city. Those outlets only offer Normal and Scheduled delivery.
+                                </p>
                             </div>
 
                             <div className="p-4 bg-amber-50/50 border border-amber-200/60 rounded-xl flex items-center justify-between">

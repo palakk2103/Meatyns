@@ -1,3 +1,4 @@
+import { pickBestGeocodeResult } from "@/core/utils/geocodeResult";
 import React, {
   createContext,
   useContext,
@@ -35,22 +36,27 @@ const describeGeolocationError = (error) => {
 
 // Fallback shown only until the real location is detected. It is never
 // persisted, so it can't "stick" as if it were the user's address.
+// Neutral placeholder: no city, address or coordinates. The UI gates on
+// locationStatus and never prices/serves from this, so it must not point at
+// any real place (it used to be an Indore address).
 const DEFAULT_LOCATION = {
-  name: "214, Rajshri Palace Colony, Pipliyahana, Indore, Madhya Pradesh 452018, India",
-  time: "12-15 mins",
-  city: "Indore",
-  state: "Madhya Pradesh",
-  pincode: "452018",
-  latitude: 22.711140989838025,
-  longitude: 75.9001552518043,
+  name: "",
+  time: "",
+  city: "",
+  state: "",
+  pincode: "",
   isDefault: true,
 };
+
+// Older builds persisted a hardcoded Indore address as if it were the user's
+// location. Recognise (and discard) that exact legacy entry only.
+const LEGACY_DEFAULT_COORDS = { latitude: 22.711140989838025, longitude: 75.9001552518043 };
 
 // Older builds saved the default address to storage on first visit; treat
 // such an entry as "no location" so it doesn't override real detection.
 const isStoredDefault = (stored) =>
-  Math.abs(Number(stored?.latitude) - DEFAULT_LOCATION.latitude) < 1e-6 &&
-  Math.abs(Number(stored?.longitude) - DEFAULT_LOCATION.longitude) < 1e-6;
+  Math.abs(Number(stored?.latitude) - LEGACY_DEFAULT_COORDS.latitude) < 1e-6 &&
+  Math.abs(Number(stored?.longitude) - LEGACY_DEFAULT_COORDS.longitude) < 1e-6;
 
 const readStoredLocation = () => {
   const stored = getJSON(STORAGE_KEY, null);
@@ -61,7 +67,7 @@ const readStoredLocation = () => {
   if (isStoredDefault(stored)) return null;
   return {
     name,
-    time: stored.time || "12-15 mins",
+    time: stored.time || "",
     city: stored.city,
     state: stored.state,
     pincode: stored.pincode,
@@ -197,7 +203,7 @@ export const LocationProvider = ({ children }) => {
 
       const fallbackFromCoords = (latitude, longitude) => ({
         name: `Lat ${Number(latitude).toFixed(5)}, Lng ${Number(longitude).toFixed(5)}`,
-        time: "12-15 mins",
+        time: "",
         // Never inherit the previous/default (Indore) city, state or pincode:
         // the coordinates are the new location, so stale labels would be wrong.
         city: "",
@@ -235,7 +241,8 @@ export const LocationProvider = ({ children }) => {
             if (response.ok) {
               const data = await response.json();
               if (data.status === "OK" && data.results && data.results.length > 0) {
-                const components = data.results[0].address_components || [];
+                const best = pickBestGeocodeResult(data.results);
+                const components = best.address_components || [];
                 const getComponent = (types) =>
                   components.find((c) => types.every((t) => c.types.includes(t)))
                     ?.long_name;
@@ -269,11 +276,11 @@ export const LocationProvider = ({ children }) => {
                 if (country) displayParts.push(country);
 
                 const friendlyName =
-                  displayParts.join(", ") || data.results[0].formatted_address;
+                  displayParts.join(", ") || best.formatted_address;
 
                 liveLocation = {
                   name: friendlyName,
-                  time: "12-15 mins",
+                  time: "",
                   city: locality || liveLocation.city,
                   state: state || liveLocation.state,
                   pincode: pincode || liveLocation.pincode,
@@ -324,7 +331,7 @@ export const LocationProvider = ({ children }) => {
 
                 resolvedLocation = {
                   name: friendlyName,
-                  time: "12-15 mins",
+                  time: "",
                   city: locality || resolvedLocation.city,
                   state: state || resolvedLocation.state,
                   pincode: pincode || resolvedLocation.pincode,

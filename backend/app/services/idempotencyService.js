@@ -69,6 +69,11 @@ export async function checkIdempotency(key, payload = null) {
   }
   
   const redis = getRedisClient();
+  const NO_CACHE = { exists: false, inProgress: false, checksumMismatch: false };
+  // Redis is only a fast-path cache; the order itself is also de-duplicated in
+  // MongoDB (placement.idempotencyKey). If Redis is disabled/unavailable we must
+  // keep taking orders instead of failing checkout.
+  if (!redis) return NO_CACHE;
   const resultKey = RESULT_KEY_PREFIX + key;
   const lockKey = LOCK_KEY_PREFIX + key;
   const errorKey = ERROR_KEY_PREFIX + key;
@@ -153,8 +158,8 @@ export async function checkIdempotency(key, payload = null) {
     };
     
   } catch (error) {
-    logger.error(`[Idempotency] Error checking idempotency for key ${key}:`, error);
-    throw error;
+    logger.error(`[Idempotency] Error checking idempotency for key ${key}; continuing without cache:`, error);
+    return NO_CACHE;
   }
 }
 
@@ -170,6 +175,7 @@ export async function acquireIdempotencyLock(key, ttlSeconds = LOCK_TTL_SECONDS)
   }
   
   const redis = getRedisClient();
+  if (!redis) return true; // no Redis: DB-level idempotency still applies
   const lockKey = LOCK_KEY_PREFIX + key;
   const lockValue = `${Date.now()}`; // Timestamp as lock value
   
@@ -186,8 +192,8 @@ export async function acquireIdempotencyLock(key, ttlSeconds = LOCK_TTL_SECONDS)
     return false;
     
   } catch (error) {
-    logger.error(`[Idempotency] Error acquiring lock for key ${key}:`, error);
-    throw error;
+    logger.error(`[Idempotency] Error acquiring lock for key ${key}; proceeding without lock:`, error);
+    return true;
   }
 }
 
@@ -205,6 +211,7 @@ export async function storeIdempotencyResult(key, result, payload = null, ttlSec
   }
   
   const redis = getRedisClient();
+  if (!redis) return;
   const resultKey = RESULT_KEY_PREFIX + key;
   const lockKey = LOCK_KEY_PREFIX + key;
   
@@ -227,8 +234,7 @@ export async function storeIdempotencyResult(key, result, payload = null, ttlSec
     logger.info(`[Idempotency] Result stored for key: ${key}, TTL: ${ttlSeconds}s`);
     
   } catch (error) {
-    logger.error(`[Idempotency] Error storing result for key ${key}:`, error);
-    throw error;
+    logger.error(`[Idempotency] Error storing result for key ${key} (order already placed, not failing):`, error);
   }
 }
 
@@ -246,6 +252,7 @@ export async function storeIdempotencyError(key, error, payload = null, ttlSecon
   }
   
   const redis = getRedisClient();
+  if (!redis) return;
   const errorKey = ERROR_KEY_PREFIX + key;
   const lockKey = LOCK_KEY_PREFIX + key;
   
@@ -273,7 +280,6 @@ export async function storeIdempotencyError(key, error, payload = null, ttlSecon
     
   } catch (err) {
     logger.error(`[Idempotency] Error storing error for key ${key}:`, err);
-    throw err;
   }
 }
 
@@ -288,6 +294,7 @@ export async function releaseIdempotencyLock(key) {
   }
   
   const redis = getRedisClient();
+  if (!redis) return;
   const lockKey = LOCK_KEY_PREFIX + key;
   
   try {
@@ -296,7 +303,6 @@ export async function releaseIdempotencyLock(key) {
     
   } catch (error) {
     logger.error(`[Idempotency] Error releasing lock for key ${key}:`, error);
-    throw error;
   }
 }
 

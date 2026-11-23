@@ -12,7 +12,7 @@ export const DEFAULT_SETTINGS = {
   secondaryColor: "#64748b",
   companyName: "Meatyns Farmer Producer Company Limited",
   taxId: "",
-  address: "Indore, Madhya Pradesh, India",
+  address: "",
   facebook: "",
   twitter: "",
   instagram: "",

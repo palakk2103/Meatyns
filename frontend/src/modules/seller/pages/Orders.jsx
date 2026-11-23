@@ -1,3 +1,4 @@
+import { stripLeadingCode } from "@/core/utils/geocodeResult";
 import { useState, useMemo, useEffect, useRef } from 'react';
 import Card from '@shared/components/ui/Card';
 import Button from '@shared/components/ui/Button';
@@ -141,8 +142,17 @@ const Orders = () => {
                     ? new Date(order.createdAt).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })
                     : '',
                 address: order.address
-                    ? `${order.address.address || ''}, ${order.address.city || ''}`.trim()
+                    ? [stripLeadingCode(order.address.address), order.address.landmark ? `Landmark: ${order.address.landmark}` : '', order.address.city]
+                        .filter(Boolean)
+                        .join(', ')
                     : '',
+                storeAddress: [order.seller?.address, order.seller?.locality, order.seller?.city]
+                    .filter(Boolean)
+                    .filter((part, i, arr) => !arr.slice(0, i).some((q) => String(q).includes(part)))
+                    .join(', '),
+                storeLocation: Array.isArray(order.seller?.location?.coordinates)
+                    ? { lat: order.seller.location.coordinates[1], lng: order.seller.location.coordinates[0] }
+                    : null,
                 location: order.address?.location || null,
                 paymentInfo: getPaymentInfo(order),
                 payment: `${getPaymentInfo(order).modeLabel} - ${getPaymentInfo(order).statusLabel}`,
@@ -938,6 +948,17 @@ const Orders = () => {
                                                         {selectedOrder.address}
                                                     </p>
                                                 </div>
+
+                                                {selectedOrder.storeAddress && (
+                                                    <div>
+                                                        <h4 className="text-xs font-black text-slate-600 uppercase tracking-widest flex items-center gap-2 mb-2">
+                                                            <HiOutlineMapPin className="h-3 w-3 text-primary" /> Pickup (Your Store)
+                                                        </h4>
+                                                        <p className="text-xs font-bold text-slate-800 leading-relaxed bg-slate-50 p-3 rounded-2xl border border-slate-100 shadow-sm">
+                                                            {selectedOrder.storeAddress}
+                                                        </p>
+                                                    </div>
+                                                )}
 
                                                 <div>
                                                     <h4 className="text-xs font-black text-slate-600 uppercase tracking-widest flex items-center gap-2 mb-2">

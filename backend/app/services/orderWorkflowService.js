@@ -762,7 +762,14 @@ export async function customerCancelV2(customerId, orderId, reason) {
   }
 
   const ws = resolveWorkflowStatus(order);
-  if (ws !== WORKFLOW_STATUS.SELLER_PENDING) {
+  // An online order still waiting for (or failed) payment has not reached the
+  // seller yet, so the customer may drop it. A captured payment moves the
+  // order to SELLER_PENDING, so CREATED here always means "not paid".
+  const unpaidOnlineOrder =
+    ws === WORKFLOW_STATUS.CREATED &&
+    String(order.paymentMode || "").toUpperCase() === "ONLINE" &&
+    !["CAPTURED", "PAID", "SUCCESS"].includes(String(order.paymentStatus || "").toUpperCase());
+  if (ws !== WORKFLOW_STATUS.SELLER_PENDING && !unpaidOnlineOrder) {
     const err = new Error("Order cannot be cancelled after confirmation");
     err.statusCode = 400;
     throw err;
@@ -772,7 +779,7 @@ export async function customerCancelV2(customerId, orderId, reason) {
     {
       orderId,
       customer: customerId,
-      workflowStatus: WORKFLOW_STATUS.SELLER_PENDING,
+      workflowStatus: ws,
     },
     {
       $set: {
@@ -1157,7 +1164,15 @@ export async function requestHandoffOtpAtomic(deliveryId, orderId, lat, lng) {
     if (Array.isArray(coords) && coords.length >= 2) {
       cust = { lat: coords[1], lng: coords[0] };
     } else {
-      cust = { lat: 22.7196, lng: 75.8577 }; // Indore center
+      // Never invent a location (it used to default to Indore and was then
+      // written into the order). Without a real destination the proximity
+      // check cannot run, so stop and let support fix the address.
+      const err = new Error(
+        "Delivery location is missing for this order. Please contact support.",
+      );
+      err.statusCode = 422;
+      err.code = "DELIVERY_LOCATION_MISSING";
+      throw err;
     }
     await Order.updateOne(
       { _id: order._id },

@@ -13,6 +13,7 @@ const mockProductCountDocuments = jest.fn();
 jest.unstable_mockModule("../app/models/product.js", () => ({
   default: {
     countDocuments: mockProductCountDocuments,
+    deleteMany: jest.fn().mockResolvedValue({ deletedCount: 0 }),
   },
 }));
 

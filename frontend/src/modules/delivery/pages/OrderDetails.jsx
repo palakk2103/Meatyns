@@ -1,3 +1,4 @@
+import { stripLeadingCode } from "@/core/utils/geocodeResult";
 import React, { useState, useEffect, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "@/core/context/AuthContext";
@@ -423,9 +424,19 @@ const OrderDetails = () => {
             maxCacheAgeMs: 20 * 60 * 1000,
           });
         }).catch((err) => {
-          console.warn("Geolocation failed, using default fallback location", err);
-          return { lat: 22.7196, lng: 75.8577 };
+          console.warn("Geolocation failed", err);
+          return null;
         });
+
+        // Never send a made-up location: the server verifies the rider is
+        // physically near the store/customer, so a fake one only causes
+        // confusing "too far" errors (or wrongly passes the check).
+        if (!location || !Number.isFinite(location.lat) || !Number.isFinite(location.lng)) {
+          toast.error("Location not available. Please turn on GPS / allow location access and try again.");
+          setIsSlideComplete(false);
+          setDragX(0);
+          return;
+        }
 
         if (step === 1) {
           const res = await deliveryApi.markArrivedAtStore(order.orderId, {
@@ -467,6 +478,15 @@ const OrderDetails = () => {
       toast.error(message);
     }
   };
+
+  const storeAddressText = [
+    order?.seller?.address,
+    order?.seller?.locality,
+    order?.seller?.city,
+  ]
+    .filter(Boolean)
+    .filter((part, i, arr) => !arr.slice(0, i).some((p) => String(p).includes(part)))
+    .join(", ");
 
   const handleNavigate = () => {
     const sellerCoords = order?.seller?.location?.coordinates;
@@ -952,8 +972,8 @@ const OrderDetails = () => {
                   </h3>
                   <p className="text-gray-500 text-sm mb-4 leading-relaxed">
                     {isReturn
-                      ? order.address?.address || "Address not available"
-                      : order.seller?.address || "Address not available"}
+                      ? stripLeadingCode(order.address?.address) || "Address not available"
+                      : storeAddressText || "Address not available"}
                   </p>
                   <Button onClick={handleNavigate} className="w-full" variant="outline">
                     <Navigation size={18} className="mr-2" />{" "}
@@ -1027,10 +1047,15 @@ const OrderDetails = () => {
                       : order.address?.name || "Customer"}
                   </h3>
                   <p className="text-gray-500 text-sm mb-1">
-                    {isReturn ? order.seller?.address : order.address?.address}
+                    {isReturn ? storeAddressText : stripLeadingCode(order.address?.address)}
                   </p>
+                  {!isReturn && order.address?.landmark && (
+                    <p className="text-gray-500 text-sm mb-1">
+                      Landmark: {order.address.landmark}
+                    </p>
+                  )}
                   <p className="text-gray-500 text-sm mb-4">
-                    {isReturn ? order.seller?.address : order.address?.city}
+                    {isReturn ? "" : order.address?.city}
                   </p>
                   <Button onClick={handleNavigate} className="w-full bg-black hover:bg-brand-700 text-white border-none">
                     <Navigation size={18} className="mr-2 text-white" />{" "}

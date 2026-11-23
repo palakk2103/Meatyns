@@ -22,7 +22,9 @@ const ContactUsPage = () => {
     const appName = settings?.appName || 'Meatyns';
 
     // Contact details from specifications
-    const address = "Unit-A, Shop No. 11, Sharda Vihar Apartment, Isolation Ring Road, Near Dhyan Chand Hockey Stadium, Kolhapur";
+    // Company/support address comes from admin Settings; the text below is only the
+    // fallback shown when Settings has no address saved.
+    const address = settings?.contactAddress || settings?.address || "Unit-A, Shop No. 11, Sharda Vihar Apartment, Isolation Ring Road, Near Dhyan Chand Hockey Stadium, Kolhapur";
     const tollFreePhone = "1800-233-8590";
     const directPhone = "75585 98590";
     const email = "meatyns01@gmail.com";
@@ -51,7 +53,7 @@ const ContactUsPage = () => {
     };
 
     const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-        "Sharda Vihar Apartment, Isolation Ring Road, Near Dhyan Chand Hockey Stadium, Kolhapur"
+        address
     )}`;
 
     return (
@@ -116,7 +118,7 @@ const ContactUsPage = () => {
                                     <MapPin size={20} />
                                 </div>
                                 <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-slate-100 text-slate-700">
-                                    Kolhapur Outlet
+                                    Store / Support
                                 </span>
                             </div>
                             <h3 className="font-extrabold text-slate-900 text-base">Outlet Address</h3>

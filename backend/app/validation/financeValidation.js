@@ -166,6 +166,8 @@ export const updateDeliverySettingsSchema = Joi.object({
       surcharge: Joi.number().min(0).optional(),
       estimatedMinMinutes: Joi.number().min(1).optional(),
       estimatedMaxMinutes: Joi.number().min(1).optional(),
+      feeMultiplier: Joi.number().min(1).max(10).optional(),
+      blockedCities: Joi.array().items(Joi.string().trim().max(80)).max(100).optional(),
       operatingHoursOnly: Joi.boolean().optional(),
     }).optional(),
     normal: Joi.object({

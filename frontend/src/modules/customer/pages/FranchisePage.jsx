@@ -129,7 +129,7 @@ const FranchisePage = () => {
     const [formData, setFormData] = useState({
         name: '',
         phone: '',
-        city: 'Pune',
+        city: '',
         budget: '₹15 Lakhs Ready',
         message: ''
     });
@@ -572,10 +572,12 @@ const FranchisePage = () => {
                                                 Target City in Maharashtra
                                             </label>
                                             <select
+                                                required
                                                 value={formData.city}
                                                 onChange={(e) => setFormData({ ...formData, city: e.target.value })}
                                                 className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#C81017]/20 focus:border-[#C81017]"
                                             >
+                                                <option value="" disabled>Select your city</option>
                                                 <option value="Pune">Pune</option>
                                                 <option value="Mumbai / MMR">Mumbai / MMR</option>
                                                 <option value="Nagpur">Nagpur</option>

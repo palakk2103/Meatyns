@@ -1,3 +1,4 @@
+import { normalizeServiceRadiusKm } from "./customerVisibilityService.js";
 import Delivery from "../models/delivery.js";
 import Seller from "../models/seller.js";
 import { distanceMeters } from "../utils/geoUtils.js";
@@ -50,7 +51,7 @@ export async function getDeliveryPartnerIdsWithinSellerRadius(sellerId) {
   if (Math.abs(lat) < 1e-5 && Math.abs(lng) < 1e-5) return [];
 
   const radiusKm = Math.min(
-    Math.max(Number(seller.serviceRadius) || 5, 1),
+    Math.max(normalizeServiceRadiusKm(seller.serviceRadius), 1),
     100,
   );
   const maxDistanceM = radiusKm * 1000;

@@ -108,7 +108,7 @@ const TermsPage = () => {
                             <div className="mt-3 text-slate-600 space-y-1.5 text-sm font-medium">
                                 <p><span className="text-slate-800 font-semibold">Entity:</span> {companyName}</p>
                                 <p><span className="text-slate-800 font-semibold">Helpline:</span> {settings?.supportPhone || '+91 7558598590'}</p>
-                                <p><span className="text-slate-800 font-semibold">Registered Store:</span> Unit-A, Shop No. 11, Sharda Vihar Apartment, Isolation Ring Road, Kolhapur</p>
+                                <p><span className="text-slate-800 font-semibold">Registered Store:</span> {settings?.contactAddress || settings?.address || "Unit-A, Shop No. 11, Sharda Vihar Apartment, Isolation Ring Road, Kolhapur"}</p>
                                 <p><span className="text-slate-800 font-semibold">Support Email:</span> {settings?.supportEmail || 'meatyns2023@gmail.com'}</p>
                             </div>
                         </div>

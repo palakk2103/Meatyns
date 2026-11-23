@@ -73,7 +73,7 @@ const GalleryPage = () => {
       .getGalleryCategories()
       .then((res) => {
         const rows = res?.data?.results || res?.data?.result || [];
-        setCategories(Array.isArray(rows) ? rows.filter((c) => c.isActive !== false) : []);
+        setCategories(Array.isArray(rows) ? rows.filter((c) => c.isActive !== false && Number(c.galleryCount ?? 1) > 0) : []);
       })
       .catch(() => setCategories([]));
   }, [reloadKey]);

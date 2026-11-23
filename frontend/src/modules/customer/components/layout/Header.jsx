@@ -168,7 +168,7 @@ const Header = () => {
                                         Delivery in
                                     </span>
                                     <span className="text-[13px] lg:text-sm font-bold text-[#1A1A1A] whitespace-nowrap leading-tight">
-                                        {servingOutlet?.etaLabel || currentLocation?.time || '15–30 mins'}
+                                        {servingOutlet?.etaLabel || currentLocation?.time || '—'}
                                     </span>
                                 </div>
                             </div>

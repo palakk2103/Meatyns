@@ -367,7 +367,7 @@ const SearchPage = () => {
                                     Delivery in
                                 </span>
                                 <span className="text-[13px] lg:text-sm font-bold text-[#111111] whitespace-nowrap leading-tight">
-                                    {currentLocation?.time || "12-15 mins"}
+                                    {currentLocation?.time || "—"}
                                 </span>
                             </div>
                         </div>

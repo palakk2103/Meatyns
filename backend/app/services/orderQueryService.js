@@ -118,7 +118,7 @@ export async function fetchSellerOrdersPage({
       .populate("customer", "name phone")
       .populate("items.product", "name mainImage price salePrice")
       .populate("deliveryBoy", "name phone")
-      .populate("seller", "shopName name")
+      .populate("seller", "shopName name address locality city pincode location")
       .lean(),
     Order.countDocuments(query),
     Order.aggregate([
@@ -452,7 +452,7 @@ export async function getOrderWithAccess(orderId, userId, role) {
     .populate("items.product", "name mainImage price salePrice")
     .populate("deliveryBoy", "name phone")
     .populate("returnDeliveryBoy", "name phone")
-    .populate("seller", "shopName name address phone location")
+    .populate("seller", "shopName name address locality city state pincode phone location")
     .lean();
 
   if (!order) {

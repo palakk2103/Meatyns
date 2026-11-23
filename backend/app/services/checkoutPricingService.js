@@ -1,3 +1,4 @@
+import { normalizeServiceRadiusKm } from "./customerVisibilityService.js";
 import mongoose from "mongoose";
 import Seller from "../models/seller.js";
 import Category from "../models/category.js";
@@ -50,7 +51,7 @@ export function groupHydratedItemsBySeller(hydratedItems = []) {
 
 async function computeDistanceKmForSeller({ sellerId, addressLocation, session = null, isSelectedSeller = false }) {
   const query = Seller.findById(sellerId)
-    .select("location serviceRadius shopName city isOnline isManualOverride storeHours isActive applicationStatus")
+    .select("location serviceRadius shopName city address locality pincode isOnline isManualOverride storeHours isActive applicationStatus")
     .lean();
   if (session) query.session(session);
   const seller = await query;
@@ -69,7 +70,7 @@ async function computeDistanceKmForSeller({ sellerId, addressLocation, session =
   }
 
   const normalizedLocation = normalizeLocation(addressLocation);
-  if (!normalizedLocation) return { distanceKm: 0, zone: null, sellerCity: seller.city || null };
+  if (!normalizedLocation) return { distanceKm: 0, zone: null, sellerCity: seller.city || null, shopName: seller.shopName || null, shopLocation: [seller.address, seller.locality, seller.city, seller.pincode].filter(Boolean).join(", ") || null };
 
   // Validate polygon delivery zone serviceability
   const zoneResolution = await resolveDeliveryZoneForLocation(normalizedLocation);
@@ -82,7 +83,7 @@ async function computeDistanceKmForSeller({ sellerId, addressLocation, session =
   }
 
   const coords = seller?.location?.coordinates;
-  if (!Array.isArray(coords) || coords.length < 2) return { distanceKm: 0, zone: zoneResolution.zone, sellerCity: seller.city || null };
+  if (!Array.isArray(coords) || coords.length < 2) return { distanceKm: 0, zone: zoneResolution.zone, sellerCity: seller.city || null, shopName: seller.shopName || null, shopLocation: [seller.address, seller.locality, seller.city, seller.pincode].filter(Boolean).join(", ") || null };
 
   const [sellerLng, sellerLat] = coords;
   const distanceInMeters = distanceMeters(
@@ -97,7 +98,7 @@ async function computeDistanceKmForSeller({ sellerId, addressLocation, session =
   // (nearest covering seller, or nearest overall when none covers them), so the
   // raw radius check must not reject it.
   if (zoneResolution.fallbackToRadius && !isSelectedSeller) {
-    const radius = Number(seller.serviceRadius || 5);
+    const radius = normalizeServiceRadiusKm(seller.serviceRadius);
     if (distanceKm > radius) {
       const err = new Error(
         `${seller.shopName || "Store"} does not deliver to your current location (Distance: ${distanceKm}km, Service Radius: ${radius}km)`,
@@ -107,7 +108,7 @@ async function computeDistanceKmForSeller({ sellerId, addressLocation, session =
     }
   }
 
-  return { distanceKm, zone: zoneResolution.zone, sellerCity: seller.city || null };
+  return { distanceKm, zone: zoneResolution.zone, sellerCity: seller.city || null, shopName: seller.shopName || null, shopLocation: [seller.address, seller.locality, seller.city, seller.pincode].filter(Boolean).join(", ") || null };
 }
 
 function sumField(rows, field) {
@@ -152,6 +153,11 @@ function buildAggregateBreakdown(sellerBreakdowns = []) {
     codPendingAmount: sumField(sellerBreakdowns, "codPendingAmount"),
     distanceKmActual: sumField(sellerBreakdowns, "distanceKmActual"),
     distanceKmRounded: sumField(sellerBreakdowns, "distanceKmRounded"),
+    sellers: sellerBreakdowns.map((row) => ({
+      sellerId: row.sellerId,
+      shopName: row.sellerName || null,
+      shopLocation: row.sellerLocation || null,
+    })),
     snapshots: {
       perSeller: sellerBreakdowns.map((row, index) => ({
         index,
@@ -562,6 +568,8 @@ export async function buildCheckoutPricingSnapshot({
     const distanceKm = typeof distanceResult === "number" ? distanceResult : distanceResult.distanceKm;
     const zone = typeof distanceResult === "object" ? distanceResult.zone : null;
     const sellerCity = typeof distanceResult === "object" ? distanceResult.sellerCity : null;
+    const sellerShopName = typeof distanceResult === "object" ? distanceResult.shopName : null;
+    const sellerShopLocation = typeof distanceResult === "object" ? distanceResult.shopLocation : null;
 
     if (zone?.minOrderValue != null && totalSubtotal < Number(zone.minOrderValue)) {
       const err = new Error(
@@ -597,6 +605,8 @@ export async function buildCheckoutPricingSnapshot({
       breakdown: {
         ...breakdown,
         sellerId,
+        sellerName: sellerShopName,
+        sellerLocation: sellerShopLocation,
       },
     });
   }

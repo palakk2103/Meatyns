@@ -153,7 +153,7 @@ const LocationDrawer = ({ isOpen, onClose }) => {
     const apply = (coords) => {
       const newLoc = {
         name: address.address,
-        time: "12-15 mins",
+        time: "",
         ...(coords ? { latitude: coords.lat, longitude: coords.lng } : {}),
       };
 
@@ -205,7 +205,7 @@ const LocationDrawer = ({ isOpen, onClose }) => {
         updateLocation(
           {
             name: prediction.description,
-            time: "12-15 mins",
+            time: "",
             city: prediction.city || knownLocation.city,
             state: prediction.state || knownLocation.state,
             pincode: prediction.pincode || knownLocation.pincode,
@@ -234,7 +234,7 @@ const LocationDrawer = ({ isOpen, onClose }) => {
         updateLocation(
           {
             name: name || prediction.description,
-            time: "12-15 mins",
+            time: "",
             city: city || knownLocation.city,
             state: state || knownLocation.state,
             pincode: pincode || knownLocation.pincode,

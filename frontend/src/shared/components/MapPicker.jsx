@@ -1,3 +1,4 @@
+import { pickBestGeocodeResult } from "@/core/utils/geocodeResult";
 import React, { useState, useCallback, useEffect, useRef } from "react";
 import {
   GoogleMap,
@@ -249,7 +250,7 @@ const MapPicker = ({
       const geocoder = new window.google.maps.Geocoder();
       const result = await new Promise((resolve, reject) => {
         geocoder.geocode({ location: marker }, (results, status) => {
-          if (status === "OK") resolve(results[0]);
+          if (status === "OK") resolve(pickBestGeocodeResult(results));
           else reject(status);
         });
       });

@@ -11,6 +11,8 @@ export const DEFAULT_DELIVERY_CONFIG = Object.freeze({
     surcharge: 40,
     estimatedMinMinutes: 15,
     estimatedMaxMinutes: 30,
+    blockedCities: ["pune"],
+    feeMultiplier: 2,
     operatingHoursOnly: true,
   },
   normal: {
@@ -138,6 +140,12 @@ export function normalizeFinanceSettings(raw = {}) {
       estimatedMaxMinutes: Number.isFinite(Number(rawExpress.estimatedMaxMinutes))
         ? Math.max(1, Number(rawExpress.estimatedMaxMinutes))
         : DEFAULT_DELIVERY_CONFIG.express.estimatedMaxMinutes,
+      feeMultiplier: Number.isFinite(Number(rawExpress.feeMultiplier)) && Number(rawExpress.feeMultiplier) >= 1
+        ? Number(rawExpress.feeMultiplier)
+        : DEFAULT_DELIVERY_CONFIG.express.feeMultiplier,
+      blockedCities: Array.isArray(rawExpress.blockedCities)
+        ? [...new Set(rawExpress.blockedCities.map((c) => String(c || "").trim().toLowerCase()).filter(Boolean))]
+        : [...DEFAULT_DELIVERY_CONFIG.express.blockedCities],
       operatingHoursOnly: rawExpress.operatingHoursOnly !== undefined
         ? Boolean(rawExpress.operatingHoursOnly)
         : DEFAULT_DELIVERY_CONFIG.express.operatingHoursOnly,

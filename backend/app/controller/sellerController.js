@@ -1,3 +1,4 @@
+import { normalizeServiceRadiusKm } from "../services/customerVisibilityService.js";
 import Seller from "../models/seller.js";
 import Order from "../models/order.js";
 import Product from "../models/product.js";
@@ -54,7 +55,7 @@ export const getNearbySellers = async (req, res) => {
           isStoreOpen: getSellerCurrentOpenStatus(seller),
         };
       })
-      .filter((seller) => seller.distance <= (seller.serviceRadius || 5));
+      .filter((seller) => seller.distance <= normalizeServiceRadiusKm(seller.serviceRadius));
 
     return handleResponse(
       res,
