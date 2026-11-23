@@ -19,6 +19,11 @@ export const adminCatalogApi = {
         axiosInstance.delete('/admin/categories/bulk', { data }),
     getParentUnits: () => axiosInstance.get('/admin/categories?flat=true'),
 
+    // Daily carcass report
+    getDailyStock: (params) => axiosInstance.get('/admin/daily-stock', { params }),
+    getDailyStockSellers: () => axiosInstance.get('/admin/daily-stock/sellers'),
+    saveDailyStock: (data) => axiosInstance.put('/admin/daily-stock', data),
+
     // Product Management
     getProducts: (params) => axiosInstance.get('/products', { params }),
     getProductModerationList: (params) =>

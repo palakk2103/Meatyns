@@ -71,6 +71,7 @@ import "../models/notification.js";
 import "../models/searchIndexFailure.js";
 import "../models/sellerMetrics.js";
 import "../models/stockHistory.js";
+import "../models/dailyStockEntry.js";
 
 // Module-scoped models
 import "../modules/notifications/preference.model.js"; // NotificationPreference

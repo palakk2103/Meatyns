@@ -16,6 +16,7 @@ import {
   HiOutlineMapPin,
   HiOutlineLifebuoy,
   HiOutlineShieldCheck,
+  HiOutlineClipboardDocumentList,
 } from "react-icons/hi2";
 
 const Dashboard = React.lazy(() => import("../pages/Dashboard"));
@@ -23,6 +24,7 @@ const ProductManagement = React.lazy(
   () => import("../pages/ProductManagement"),
 );
 const StockManagement = React.lazy(() => import("../pages/StockManagement"));
+const DailyStock = React.lazy(() => import("../pages/DailyStock"));
 const AddProduct = React.lazy(() => import("../pages/AddProduct"));
 const BulkUploadProducts = React.lazy(
   () => import("../pages/BulkUploadProducts"),
@@ -41,6 +43,7 @@ const navItems = [
   { label: "Products", path: "/seller/products", icon: HiOutlineCube },
   { label: "Bulk Upload", path: "/seller/products/bulk", icon: HiOutlineDocumentArrowUp },
   { label: "Stock", path: "/seller/inventory", icon: HiOutlineArchiveBox },
+  { label: "Daily Carcass Log", path: "/seller/daily-stock", icon: HiOutlineClipboardDocumentList },
   { label: "Orders", path: "/seller/orders", icon: HiOutlineTruck },
   { label: "Returns", path: "/seller/returns", icon: HiOutlineArchiveBox },
   { label: "Track Orders", path: "/seller/tracking", icon: HiOutlineMapPin },
@@ -82,6 +85,7 @@ const SellerRoutes = () => {
         <Route path="/products/add" element={<AddProduct />} />
         <Route path="/products/bulk" element={<BulkUploadProducts />} />
         <Route path="/inventory" element={<StockManagement />} />
+        <Route path="/daily-stock" element={<DailyStock />} />
         <Route path="/orders" element={<Orders />} />
         <Route path="/returns" element={<Returns />} />
         <Route path="/tracking" element={<DeliveryTracking />} />

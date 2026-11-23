@@ -91,15 +91,22 @@ const RootLayout = () => {
 
     setActiveRole(targetRole);
 
-    return (
-        <LocationProvider>
+    const content = (
+        <>
             <ScrollToTop />
             <MetaPixelTracker />
             <Suspense fallback={<div className="flex h-screen items-center justify-center font-outfit">Loading...</div>}>
                 <Outlet />
             </Suspense>
-        </LocationProvider>
+        </>
     );
+
+    // The location provider is customer-only: it auto-detects GPS (permission
+    // prompt / "couldn't detect your location" toast) and loads the customer
+    // profile. Admin, seller and delivery panels must not trigger either.
+    return targetRole === ROLES.CUSTOMER
+        ? <LocationProvider>{content}</LocationProvider>
+        : content;
 };
 
 const CustomerLayoutWrapper = () => {

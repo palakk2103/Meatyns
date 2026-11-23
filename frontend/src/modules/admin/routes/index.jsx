@@ -108,6 +108,7 @@ const RecipesManagement = React.lazy(() => import("../pages/RecipesManagement"))
 const CombosManagement = React.lazy(() => import("../pages/CombosManagement"));
 const DeliveryManagement = React.lazy(() => import("../pages/DeliveryManagement"));
 const GalleryManagement = React.lazy(() => import("../pages/GalleryManagement"));
+const DailyCarcassReport = React.lazy(() => import("../pages/DailyCarcassReport"));
 
 const navItems = [
   {
@@ -131,6 +132,7 @@ const navItems = [
     ],
   },
   { label: "Products", path: "/admin/products", icon: Box, color: "amber", roles: ["super_admin", "admin", "inventory_manager"] },
+  { label: "Daily Carcass Report", path: "/admin/daily-carcass", icon: ClipboardList, color: "rose", roles: ["super_admin", "admin", "inventory_manager"] },
   {
     label: "Marketing Tools",
     icon: Sparkles,
@@ -318,6 +320,7 @@ const AdminRoutes = () => {
         <Route path="/categories/sub" element={<SubCategories />} />
         <Route path="/categories/hierarchy" element={<CategoryHierarchy />} />
         <Route path="/products" element={<ProductManagement />} />
+        <Route path="/daily-carcass" element={<DailyCarcassReport />} />
         <Route path="/sellers/active" element={<ActiveSellers />} />
         <Route path="/sellers/active/:id" element={<SellerDetail />} />
         <Route path="/support-tickets" element={<SupportTickets />} />

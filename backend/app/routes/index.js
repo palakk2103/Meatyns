@@ -35,6 +35,10 @@ import {
     galleryPublicRouter as galleryPublicRoute,
     galleryAdminRouter as galleryAdminRoute,
 } from "./galleryRoutes.js";
+import {
+    dailyStockSellerRouter as dailyStockSellerRoute,
+    dailyStockAdminRouter as dailyStockAdminRoute,
+} from "./dailyStockRoutes.js";
 
 import express from "express";
 
@@ -55,6 +59,9 @@ const setupRoutes = (app) => {
     // Must precede the generic "/admin" mount so gallery admin paths resolve here.
     router.use("/admin/gallery", galleryAdminRoute);
     router.use("/gallery", galleryPublicRoute);
+    // Daily carcass stock log. Must precede the generic "/admin" and "/seller" mounts.
+    router.use("/admin/daily-stock", dailyStockAdminRoute);
+    router.use("/seller/daily-stock", dailyStockSellerRoute);
     router.use("/admin", adminRoute);
     router.use("/seller", sellerRoute);
     router.use("/settings", settingsRoute);

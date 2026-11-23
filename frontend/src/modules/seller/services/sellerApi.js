@@ -35,6 +35,11 @@ export const sellerApi = {
     adjustStock: (data) => axiosInstance.post('/products/adjust-stock', data),
     getStockHistory: () => axiosInstance.get('/products/stock-history'),
 
+    // Daily carcass log
+    getDailyStock: (params) => axiosInstance.get('/seller/daily-stock', { params }),
+    getDailyStockProducts: () => axiosInstance.get('/seller/daily-stock/products'),
+    saveDailyStock: (data) => axiosInstance.put('/seller/daily-stock', data),
+
     // Notifications
     getNotifications: () => axiosInstance.get('/notifications'),
     markNotificationRead: (id) => axiosInstance.put(`/notifications/${id}/read`),
