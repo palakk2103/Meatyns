@@ -72,7 +72,7 @@ const SellerStatusToggle = ({ className = "" }) => {
         disabled={loading}
         title={isStoreOpen ? "Click to set Store Offline" : "Click to set Store Online"}
         className={cn(
-          "relative flex items-center gap-2 px-3.5 py-1.5 rounded-full font-bold text-xs transition-all duration-300 border shadow-sm select-none active:scale-95",
+          "relative flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1.5 rounded-full font-bold text-xs transition-all duration-300 border shadow-sm select-none active:scale-95",
           isStoreOpen
             ? "bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100"
             : "bg-rose-50 text-rose-700 border-rose-200 hover:bg-rose-100",
@@ -94,7 +94,7 @@ const SellerStatusToggle = ({ className = "" }) => {
           />
         </span>
 
-        <span className="font-extrabold uppercase tracking-wider text-[11px]">
+        <span className="font-extrabold uppercase tracking-wide sm:tracking-wider text-[10px] sm:text-[11px] whitespace-nowrap">
           {isStoreOpen ? "Store Open" : "Shop Closed"}
         </span>
 

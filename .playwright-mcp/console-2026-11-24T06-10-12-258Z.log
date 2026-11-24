@@ -1,0 +1,6 @@
+[     368ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[    1155ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[    1306ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[    1385ms] [LOG] [orderSocket] Socket connected, ID: umfPxEYFGCaiX7xRAAAB @ http://localhost:5173/src/core/services/orderSocket.js:49
+[   13759ms] [WARNING] Notifications permission has been blocked as the user has ignored the permission prompt several times. This can be reset in Page Info which can be accessed by clicking the tune icon next to the URL. See https://www.chromestatus.com/feature/6443143280984064 for more information. @ http://localhost:5173/seller/daily-stock:1
+[   13760ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150

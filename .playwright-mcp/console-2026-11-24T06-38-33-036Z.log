@@ -1,0 +1,39 @@
+[     493ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[     692ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[     774ms] [LOG] [orderSocket] Socket connected, ID: thHKHRupSqzPIAatAAAF @ http://localhost:5173/src/core/services/orderSocket.js:49
+[     829ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[    9951ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[    9951ms] [WARNING] Notifications permission has been blocked as the user has ignored the permission prompt several times. This can be reset in Page Info which can be accessed by clicking the tune icon next to the URL. See https://www.chromestatus.com/feature/6443143280984064 for more information. @ http://localhost:5173/admin/daily-carcass:1
+[   51041ms] [LOG] [orderSocket] Socket disconnected, reason: transport close @ http://localhost:5173/src/core/services/orderSocket.js:60
+[   52127ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/admin/daily-stock?from=2026-11-18&to=2026-11-24&sellerId=6a61c24736109852f8dac028:1
+[   53572ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=br0qysqp:1
+[   53572ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[   59073ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=br4zqj17:1
+[   59073ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[   63553ms] [LOG] [orderSocket] Socket connected, ID: Z-Fy23_TgdVsXrU0AAAB @ http://localhost:5173/src/core/services/orderSocket.js:49
+[   89978ms] [LOG] [orderSocket] Socket disconnected, reason: transport close @ http://localhost:5173/src/core/services/orderSocket.js:60
+[   91190ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=brtrricp:1
+[   91190ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[   94704ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=brwhj3on:1
+[   94705ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[  104760ms] [LOG] [orderSocket] Socket connected, ID: xer-UToW9hQGqAQbAAAB @ http://localhost:5173/src/core/services/orderSocket.js:49

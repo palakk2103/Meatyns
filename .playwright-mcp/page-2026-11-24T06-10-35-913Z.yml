@@ -1,0 +1,269 @@
+- generic [ref=f3e2]:
+  - generic [ref=f3e5]:
+    - complementary [ref=f3e6]:
+      - generic [ref=f3e7]:
+        - generic [ref=f3e9]:
+          - img "Meatyns" [ref=f3e11]
+          - generic [ref=f3e12]:
+            - heading "Meatyns" [level=1] [ref=f3e13]
+            - generic [ref=f3e14]: Seller Panel
+        - navigation [ref=f3e15]:
+          - paragraph [ref=f3e16]: Core Management
+          - link "Dashboard" [ref=f3e17] [cursor=pointer]:
+            - /url: /seller
+          - link "Products" [ref=f3e22] [cursor=pointer]:
+            - /url: /seller/products
+          - link "Bulk Upload" [ref=f3e27] [cursor=pointer]:
+            - /url: /seller/products/bulk
+          - link "Stock" [ref=f3e32] [cursor=pointer]:
+            - /url: /seller/inventory
+          - link "Daily Carcass Log" [ref=f3e37] [cursor=pointer]:
+            - /url: /seller/daily-stock
+          - link "Orders" [ref=f3e43] [cursor=pointer]:
+            - /url: /seller/orders
+          - link "Returns" [ref=f3e48] [cursor=pointer]:
+            - /url: /seller/returns
+          - link "Track Orders" [ref=f3e53] [cursor=pointer]:
+            - /url: /seller/tracking
+          - link "Sales Reports" [ref=f3e59] [cursor=pointer]:
+            - /url: /seller/analytics
+          - link "Money Request" [ref=f3e64] [cursor=pointer]:
+            - /url: /seller/withdrawals
+          - link "Payment History" [ref=f3e69] [cursor=pointer]:
+            - /url: /seller/transactions
+          - link "Earnings" [ref=f3e74] [cursor=pointer]:
+            - /url: /seller/earnings
+          - link "Profile" [ref=f3e79] [cursor=pointer]:
+            - /url: /seller/profile
+          - link "Help & Support" [ref=f3e84] [cursor=pointer]:
+            - /url: /seller/support
+          - link "Privacy Policy" [ref=f3e89] [cursor=pointer]:
+            - /url: /seller/privacy
+        - generic [ref=f3e96] [cursor=pointer]:
+          - img "Meatyns" [ref=f3e99]
+          - generic [ref=f3e101]:
+            - paragraph [ref=f3e102]: Seller Console
+            - paragraph [ref=f3e103]: Seller
+    - generic [ref=f3e104]:
+      - banner [ref=f3e105]:
+        - textbox "Search products by name or SKU..." [ref=f3e110]
+        - generic [ref=f3e111]:
+          - button "Store Open" [ref=f3e113]
+          - button [ref=f3e121]
+          - button "M Meatyns seller" [ref=f3e126]:
+            - generic [ref=f3e127]: M
+            - generic [ref=f3e128]:
+              - paragraph [ref=f3e129]: Meatyns
+              - paragraph [ref=f3e130]: seller
+          - button "Sign Out" [ref=f3e131]
+      - main [ref=f3e135]:
+        - generic [ref=f3e137]:
+          - generic [ref=f3e138]:
+            - heading "Daily Carcass Log" [level=1] [ref=f3e139]
+            - paragraph [ref=f3e140]: Record carcasses received, offline sales and wastage. Sales made through the app are added automatically.
+          - generic [ref=f3e141]:
+            - generic [ref=f3e142]:
+              - generic [ref=f3e143]:
+                - text: Product
+                - combobox "Product" [ref=f3e144]:
+                  - option "Broiler Eggs – Pack of 6"
+                  - option "Gavran Eggs – Pack of 6"
+                  - option "Goat Curry Cut"
+                  - option "Meatyns Chicken Breast - Boneless"
+                  - option "Meatyns Chicken Leg - Boneless"
+                  - option "Meatyns Chicken Lollipop"
+                  - option "Meatyns Chicken Wings" [selected]
+                  - option "Meatyns Regular (Liver & Fat Add)"
+                  - option "Meatyns Special Mutton ( Liver & Fat less )"
+                  - option "Meatyns Whole Chicken - Skinless"
+                  - option "Mutton Chops( Ribcage & T-Bone Steak )"
+                  - option "Mutton Liver"
+                  - option "Mutton Paya ( Whole ) Pack Of 4"
+                  - option "Mutton Paya with small pieces"
+                  - option "Premium Goat Curry Cut (Long Shoulder, Boneless & Goat Shank)"
+              - generic [ref=f3e145]:
+                - text: Date
+                - textbox "Date" [ref=f3e146]: 2026-11-24
+            - paragraph [ref=f3e147]: "Stock carries forward: each day starts with the previous day's closing stock. Only fill the starting stock on the first day, or to correct the count after a physical check. Leave it empty to continue from the previous day."
+            - group [ref=f3e148]:
+              - generic [ref=f3e149]:
+                - group "Starting stock (optional)" [ref=f3e150]:
+                  - generic [ref=f3e152]:
+                    - text: Animals (pcs)
+                    - spinbutton "Animals (pcs)" [ref=f3e153]
+                  - generic [ref=f3e154]:
+                    - text: Weight (kg)
+                    - spinbutton "Weight (kg)" [ref=f3e155]
+                - group "Received today" [ref=f3e156]:
+                  - generic [ref=f3e158]:
+                    - text: Animals (pcs)
+                    - spinbutton "Animals (pcs)" [ref=f3e159]
+                  - generic [ref=f3e160]:
+                    - text: Weight (kg)
+                    - spinbutton "Weight (kg)" [ref=f3e161]
+                - group "Sold offline / at counter" [ref=f3e162]:
+                  - generic [ref=f3e164]:
+                    - text: Animals (pcs)
+                    - spinbutton "Animals (pcs)" [ref=f3e165]
+                  - generic [ref=f3e166]:
+                    - text: Weight (kg)
+                    - spinbutton "Weight (kg)" [ref=f3e167]
+                - group "Wastage" [ref=f3e168]:
+                  - generic [ref=f3e170]:
+                    - text: Animals (pcs)
+                    - spinbutton "Animals (pcs)" [ref=f3e171]
+                  - generic [ref=f3e172]:
+                    - text: Weight (kg)
+                    - spinbutton "Weight (kg)" [ref=f3e173]
+              - generic [ref=f3e174]:
+                - text: Average weight of this product per animal (kg, optional)
+                - 'spinbutton "Average weight of this product per animal (kg, optional) Used only to estimate how many animals the kg sold through the app correspond to. Example: 0.4 for chicken legs." [ref=f3e175]': "0.4"
+                - generic [ref=f3e176]: "Used only to estimate how many animals the kg sold through the app correspond to. Example: 0.4 for chicken legs."
+              - generic [ref=f3e177]:
+                - text: Note (optional)
+                - textbox "Note (optional)" [ref=f3e178]
+            - button "Save entry" [ref=f3e179]
+          - generic [ref=f3e180]:
+            - generic [ref=f3e181]:
+              - text: From
+              - textbox "From" [ref=f3e182]: 2026-11-18
+            - generic [ref=f3e183]:
+              - text: To
+              - textbox "To" [ref=f3e184]: 2026-11-24
+          - generic [ref=f3e185]:
+            - generic [ref=f3e186]:
+              - generic [ref=f3e187]:
+                - button "Animals (pcs)" [ref=f3e188]
+                - button "Weight (kg)" [ref=f3e189]
+              - button "Export CSV" [ref=f3e190]
+            - generic [ref=f3e191]:
+              - generic [ref=f3e192]:
+                - paragraph [ref=f3e193]: Opening stock
+                - paragraph [ref=f3e194]: 0pcs
+              - generic [ref=f3e195]:
+                - paragraph [ref=f3e196]: Received
+                - paragraph [ref=f3e197]: 0pcs
+              - generic [ref=f3e198]:
+                - paragraph [ref=f3e199]: Sold
+                - paragraph [ref=f3e200]: 2pcs
+              - generic [ref=f3e201]:
+                - paragraph [ref=f3e202]: Wastage
+                - paragraph [ref=f3e203]: 0pcs
+              - generic [ref=f3e204]:
+                - paragraph [ref=f3e205]: Closing stock
+                - paragraph [ref=f3e206]: 0pcs
+            - generic [ref=f3e207]:
+              - paragraph [ref=f3e208]: Closing stock = opening + received − sold − wastage, and it becomes the next day's opening stock. Stock is counted from the day an entry is first saved for a product.
+              - paragraph [ref=f3e209]: 2 pcs of the sold figure came from products with no stock entry, so it is not deducted from stock.
+            - generic [ref=f3e210]:
+              - heading "Stock on hand at end of 2026-11-24" [level=3] [ref=f3e211]
+              - table [ref=f3e213]:
+                - rowgroup [ref=f3e214]:
+                  - row [ref=f3e215]:
+                    - columnheader "Product" [ref=f3e216]
+                    - columnheader "In stock" [ref=f3e217]
+                - rowgroup [ref=f3e218]:
+                  - row [ref=f3e219]:
+                    - cell "No stock recorded yet. Save a starting stock or a received entry to begin." [ref=f3e220]
+            - generic [ref=f3e221]:
+              - heading "Day by day" [level=3] [ref=f3e222]
+              - table [ref=f3e224]:
+                - rowgroup [ref=f3e225]:
+                  - row [ref=f3e226]:
+                    - columnheader "Date" [ref=f3e227]
+                    - columnheader "Opening" [ref=f3e228]
+                    - columnheader "Received" [ref=f3e229]
+                    - columnheader "Sold (app)" [ref=f3e230]
+                    - columnheader "Sold (offline)" [ref=f3e231]
+                    - columnheader "Wastage" [ref=f3e232]
+                    - columnheader "Closing" [ref=f3e233]
+                - rowgroup [ref=f3e234]:
+                  - row [ref=f3e235]:
+                    - cell "2026-11-24" [ref=f3e236]
+                    - cell "0" [ref=f3e237]
+                    - cell "0" [ref=f3e238]
+                    - cell "0" [ref=f3e239]
+                    - cell "0" [ref=f3e240]
+                    - cell "0" [ref=f3e241]
+                    - cell "0" [ref=f3e242]
+                  - row [ref=f3e243]:
+                    - cell "2026-11-23" [ref=f3e244]
+                    - cell "0" [ref=f3e245]
+                    - cell "0" [ref=f3e246]
+                    - cell "2" [ref=f3e247]
+                    - cell "0" [ref=f3e248]
+                    - cell "0" [ref=f3e249]
+                    - cell "0" [ref=f3e250]
+                  - row [ref=f3e251]:
+                    - cell "2026-11-22" [ref=f3e252]
+                    - cell "0" [ref=f3e253]
+                    - cell "0" [ref=f3e254]
+                    - cell "0" [ref=f3e255]
+                    - cell "0" [ref=f3e256]
+                    - cell "0" [ref=f3e257]
+                    - cell "0" [ref=f3e258]
+                  - row [ref=f3e259]:
+                    - cell "2026-11-21" [ref=f3e260]
+                    - cell "0" [ref=f3e261]
+                    - cell "0" [ref=f3e262]
+                    - cell "0" [ref=f3e263]
+                    - cell "0" [ref=f3e264]
+                    - cell "0" [ref=f3e265]
+                    - cell "0" [ref=f3e266]
+                  - row [ref=f3e267]:
+                    - cell "2026-11-20" [ref=f3e268]
+                    - cell "0" [ref=f3e269]
+                    - cell "0" [ref=f3e270]
+                    - cell "0" [ref=f3e271]
+                    - cell "0" [ref=f3e272]
+                    - cell "0" [ref=f3e273]
+                    - cell "0" [ref=f3e274]
+                  - row [ref=f3e275]:
+                    - cell "2026-11-19" [ref=f3e276]
+                    - cell "0" [ref=f3e277]
+                    - cell "0" [ref=f3e278]
+                    - cell "0" [ref=f3e279]
+                    - cell "0" [ref=f3e280]
+                    - cell "0" [ref=f3e281]
+                    - cell "0" [ref=f3e282]
+                  - row [ref=f3e283]:
+                    - cell "2026-11-18" [ref=f3e284]
+                    - cell "0" [ref=f3e285]
+                    - cell "0" [ref=f3e286]
+                    - cell "0" [ref=f3e287]
+                    - cell "0" [ref=f3e288]
+                    - cell "0" [ref=f3e289]
+                    - cell "0" [ref=f3e290]
+            - generic [ref=f3e291]:
+              - heading "Details by product" [level=3] [ref=f3e292]
+              - table [ref=f3e294]:
+                - rowgroup [ref=f3e295]:
+                  - row [ref=f3e296]:
+                    - columnheader "Date" [ref=f3e297]
+                    - columnheader "Product" [ref=f3e298]
+                    - columnheader "Opening" [ref=f3e299]
+                    - columnheader "Received" [ref=f3e300]
+                    - columnheader "Sold (app)" [ref=f3e301]
+                    - columnheader "Sold (offline)" [ref=f3e302]
+                    - columnheader "Wastage" [ref=f3e303]
+                    - columnheader "Closing" [ref=f3e304]
+                - rowgroup [ref=f3e305]:
+                  - row [ref=f3e306]:
+                    - cell "2026-11-24" [ref=f3e307]
+                    - cell "Meatyns Chicken Wings" [ref=f3e308]
+                    - cell "0" [ref=f3e309]
+                    - cell "0" [ref=f3e310]
+                    - cell "0" [ref=f3e311]
+                    - cell "0" [ref=f3e312]
+                    - cell "0" [ref=f3e313]
+                    - cell "0" [ref=f3e314]
+                  - row [ref=f3e315]:
+                    - cell "2026-11-23" [ref=f3e316]
+                    - cell "Gavran Eggs – Pack of 6" [ref=f3e317]
+                    - cell "—" [ref=f3e318]
+                    - cell "0" [ref=f3e319]
+                    - cell "2" [ref=f3e320]
+                    - cell "0" [ref=f3e321]
+                    - cell "0" [ref=f3e322]
+                    - cell "—" [ref=f3e323]
+  - region "Notifications alt+T"

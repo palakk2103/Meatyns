@@ -218,16 +218,17 @@ const Topbar = ({ onMenuClick }) => {
                 ? "fixed top-0 left-0 right-0 z-[200] h-14 px-4 md:left-72 md:h-16 md:px-6"
                 : "fixed top-0 left-72 right-0 h-16 px-6 z-40"
         )}>
-            <div className="flex items-center flex-1 mr-4 overflow-hidden">
+            <div className="flex items-center flex-1 min-w-0 mr-2 md:mr-4 md:overflow-hidden">
                 <button
                     onClick={onMenuClick}
-                    className="p-2.5 mr-3 bg-gray-100/80 hover:bg-white rounded-xl text-gray-600 hover:text-primary transition-all duration-300 md:hidden border border-transparent hover:border-primary/20 shadow-sm"
+                    aria-label="Open menu"
+                    className="shrink-0 p-2.5 mr-2 sm:mr-3 bg-gray-100/80 hover:bg-white rounded-xl text-gray-600 hover:text-primary transition-all duration-300 md:hidden border border-transparent hover:border-primary/20 shadow-sm"
                 >
                     <HiOutlineMenu className="h-5 w-5" />
                 </button>
 
                 {/* Mobile Logo */}
-                <div className="flex items-center space-x-2 mr-4 md:hidden">
+                <div className="hidden sm:flex items-center space-x-2 mr-4 md:hidden">
                     {logoUrl ? (
                         <div className="h-8 w-8 rounded-lg overflow-hidden shadow-md shadow-primary/10 border border-gray-100">
                             <img src={logoUrl} alt={appName} className="h-full w-full object-contain" />
@@ -252,7 +253,7 @@ const Topbar = ({ onMenuClick }) => {
                 </form>
             </div>
 
-            <div className="flex items-center space-x-3 md:space-x-4">
+            <div className="flex items-center shrink-0 space-x-1.5 sm:space-x-3 md:space-x-4">
                 {isSeller && <SellerStatusToggle />}
                 <div className="relative" ref={notificationRef}>
                     <button
@@ -282,7 +283,7 @@ const Topbar = ({ onMenuClick }) => {
                     </AnimatePresence>
                 </div>
 
-                <div className="h-8 w-px bg-gray-100 mx-1"></div>
+                <div className="hidden md:block h-8 w-px bg-gray-100 mx-1"></div>
                 <button
                     onClick={() => {
                         if (location.pathname.startsWith('/admin')) {
@@ -295,7 +296,7 @@ const Topbar = ({ onMenuClick }) => {
                             navigate('/profile');
                         }
                     }}
-                    className="flex items-center space-x-2.5 p-1 pr-3 hover:bg-gray-50 rounded-xl transition-all duration-300 group ring-1 ring-transparent hover:ring-gray-100 shadow-sm hover:shadow-md"
+                    className="hidden md:flex items-center space-x-2.5 p-1 pr-3 hover:bg-gray-50 rounded-xl transition-all duration-300 group ring-1 ring-transparent hover:ring-gray-100 shadow-sm hover:shadow-md"
                 >
                     <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center text-white font-bold text-xs shadow-md group-hover:scale-105 transition-transform">
                         {user?.name?.[0] || 'A'}
@@ -307,7 +308,8 @@ const Topbar = ({ onMenuClick }) => {
                 </button>
                 <button
                     onClick={handleLogout}
-                    className="flex items-center space-x-1.5 px-3 py-2 text-rose-600 hover:bg-rose-50 rounded-xl transition-all duration-300 font-bold text-xs shadow-sm hover:shadow-rose-100/50"
+                    aria-label="Sign Out"
+                    className="flex items-center space-x-1.5 px-2 sm:px-3 py-2 text-rose-600 hover:bg-rose-50 rounded-xl transition-all duration-300 font-bold text-xs shadow-sm hover:shadow-rose-100/50"
                 >
                     <HiOutlineLogout className="h-4 w-4" />
                     <span className="hidden lg:block">Sign Out</span>

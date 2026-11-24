@@ -1,0 +1,256 @@
+- generic [ref=e2]:
+  - generic [ref=e5]:
+    - complementary [ref=e6]:
+      - generic [ref=e7]:
+        - generic [ref=e9]:
+          - img "Meatyns" [ref=e11]
+          - generic [ref=e12]:
+            - heading "Meatyns" [level=1] [ref=e13]
+            - generic [ref=e14]: Seller Panel
+        - navigation [ref=e15]:
+          - paragraph [ref=e16]: Core Management
+          - link "Dashboard" [ref=e17] [cursor=pointer]:
+            - /url: /seller
+          - link "Products" [ref=e22] [cursor=pointer]:
+            - /url: /seller/products
+          - link "Bulk Upload" [ref=e27] [cursor=pointer]:
+            - /url: /seller/products/bulk
+          - link "Stock" [ref=e32] [cursor=pointer]:
+            - /url: /seller/inventory
+          - link "Daily Carcass Log" [ref=e37] [cursor=pointer]:
+            - /url: /seller/daily-stock
+          - link "Orders" [ref=e43] [cursor=pointer]:
+            - /url: /seller/orders
+          - link "Returns" [ref=e48] [cursor=pointer]:
+            - /url: /seller/returns
+          - link "Track Orders" [ref=e53] [cursor=pointer]:
+            - /url: /seller/tracking
+          - link "Sales Reports" [ref=e59] [cursor=pointer]:
+            - /url: /seller/analytics
+          - link "Money Request" [ref=e64] [cursor=pointer]:
+            - /url: /seller/withdrawals
+          - link "Payment History" [ref=e69] [cursor=pointer]:
+            - /url: /seller/transactions
+          - link "Earnings" [ref=e74] [cursor=pointer]:
+            - /url: /seller/earnings
+          - link "Profile" [ref=e79] [cursor=pointer]:
+            - /url: /seller/profile
+          - link "Help & Support" [ref=e84] [cursor=pointer]:
+            - /url: /seller/support
+          - link "Privacy Policy" [ref=e89] [cursor=pointer]:
+            - /url: /seller/privacy
+        - generic [ref=e96] [cursor=pointer]:
+          - img "Meatyns" [ref=e99]
+          - generic [ref=e101]:
+            - paragraph [ref=e102]: Seller Console
+            - paragraph [ref=e103]: Seller
+    - generic [ref=e104]:
+      - banner [ref=e105]:
+        - textbox "Search products by name or SKU..." [ref=e110]
+        - generic [ref=e111]:
+          - button "Store Open" [ref=e113]
+          - button [ref=e121]
+          - button "M Meatyns seller" [ref=e126]:
+            - generic [ref=e127]: M
+            - generic [ref=e128]:
+              - paragraph [ref=e129]: Meatyns
+              - paragraph [ref=e130]: seller
+          - button "Sign Out" [ref=e131]
+      - main [ref=e135]:
+        - generic [ref=e137]:
+          - generic [ref=e138]:
+            - heading "Daily Carcass Log" [level=1] [ref=e139]
+            - paragraph [ref=e140]: Record carcasses received, offline sales and wastage. Sales made through the app are added automatically.
+          - generic [ref=e141]:
+            - generic [ref=e142]:
+              - generic [ref=e143]:
+                - text: Product
+                - combobox "Product" [ref=e144]:
+                  - option "Broiler Eggs – Pack of 6"
+                  - option "Gavran Eggs – Pack of 6" [selected]
+                  - option "Goat Curry Cut"
+                  - option "Meatyns Chicken Breast - Boneless"
+                  - option "Meatyns Chicken Leg - Boneless"
+                  - option "Meatyns Chicken Lollipop"
+                  - option "Meatyns Chicken Wings"
+                  - option "Meatyns Regular (Liver & Fat Add)"
+                  - option "Meatyns Special Mutton ( Liver & Fat less )"
+                  - option "Meatyns Whole Chicken - Skinless"
+                  - option "Mutton Chops( Ribcage & T-Bone Steak )"
+                  - option "Mutton Liver"
+                  - option "Mutton Paya ( Whole ) Pack Of 4"
+                  - option "Mutton Paya with small pieces"
+                  - option "Premium Goat Curry Cut (Long Shoulder, Boneless & Goat Shank)"
+              - generic [ref=e145]:
+                - text: Date
+                - textbox "Date" [ref=e146]: 2026-11-24
+            - paragraph [ref=e147]: "Stock carries forward: each day starts with the previous day's closing stock. Only fill the starting stock on the first day, or to correct the count after a physical check. Leave it empty to continue from the previous day."
+            - group [ref=e148]:
+              - generic [ref=e149]:
+                - group "Starting stock (optional)" [ref=e150]:
+                  - generic [ref=e152]:
+                    - text: Animals (pcs)
+                    - spinbutton "Animals (pcs)" [ref=e153]
+                  - generic [ref=e154]:
+                    - text: Weight (kg)
+                    - spinbutton "Weight (kg)" [ref=e155]
+                - group "Received today" [ref=e156]:
+                  - generic [ref=e158]:
+                    - text: Animals (pcs)
+                    - spinbutton "Animals (pcs)" [ref=e159]
+                  - generic [ref=e160]:
+                    - text: Weight (kg)
+                    - spinbutton "Weight (kg)" [ref=e161]
+                - group "Sold offline / at counter" [ref=e162]:
+                  - generic [ref=e164]:
+                    - text: Animals (pcs)
+                    - spinbutton "Animals (pcs)" [ref=e165]
+                  - generic [ref=e166]:
+                    - text: Weight (kg)
+                    - spinbutton "Weight (kg)" [ref=e167]
+                - group "Wastage" [ref=e168]:
+                  - generic [ref=e170]:
+                    - text: Animals (pcs)
+                    - spinbutton "Animals (pcs)" [ref=e171]
+                  - generic [ref=e172]:
+                    - text: Weight (kg)
+                    - spinbutton "Weight (kg)" [ref=e173]
+              - generic [ref=e174]:
+                - text: Note (optional)
+                - textbox "Note (optional)" [ref=e175]
+            - button "Save entry" [ref=e176]
+          - generic [ref=e177]:
+            - generic [ref=e178]:
+              - text: From
+              - textbox "From" [ref=e179]: 2026-11-18
+            - generic [ref=e180]:
+              - text: To
+              - textbox "To" [ref=e181]: 2026-11-24
+          - generic [ref=e182]:
+            - generic [ref=e183]:
+              - generic [ref=e184]:
+                - button "Animals (pcs)" [ref=e185]
+                - button "Weight (kg)" [ref=e186]
+              - button "Export CSV" [ref=e187]
+            - generic [ref=e188]:
+              - generic [ref=e189]:
+                - paragraph [ref=e190]: Opening stock
+                - paragraph [ref=e191]: 0pcs
+              - generic [ref=e192]:
+                - paragraph [ref=e193]: Received
+                - paragraph [ref=e194]: 0pcs
+              - generic [ref=e195]:
+                - paragraph [ref=e196]: Sold
+                - paragraph [ref=e197]: 2pcs
+              - generic [ref=e198]:
+                - paragraph [ref=e199]: Wastage
+                - paragraph [ref=e200]: 0pcs
+              - generic [ref=e201]:
+                - paragraph [ref=e202]: Closing stock
+                - paragraph [ref=e203]: 0pcs
+            - generic [ref=e204]:
+              - paragraph [ref=e205]: Closing stock = opening + received − sold − wastage, and it becomes the next day's opening stock. Stock is counted from the day an entry is first saved for a product.
+              - paragraph [ref=e206]: 2 pcs of the sold figure came from products with no stock entry, so it is not deducted from stock.
+            - generic [ref=e207]:
+              - heading "Stock on hand at end of 2026-11-24" [level=3] [ref=e208]
+              - table [ref=e210]:
+                - rowgroup [ref=e211]:
+                  - row [ref=e212]:
+                    - columnheader "Product" [ref=e213]
+                    - columnheader "In stock" [ref=e214]
+                - rowgroup [ref=e215]:
+                  - row [ref=e216]:
+                    - cell "No stock recorded yet. Save a starting stock or a received entry to begin." [ref=e217]
+            - generic [ref=e218]:
+              - heading "Day by day" [level=3] [ref=e219]
+              - table [ref=e221]:
+                - rowgroup [ref=e222]:
+                  - row [ref=e223]:
+                    - columnheader "Date" [ref=e224]
+                    - columnheader "Opening" [ref=e225]
+                    - columnheader "Received" [ref=e226]
+                    - columnheader "Sold (app)" [ref=e227]
+                    - columnheader "Sold (offline)" [ref=e228]
+                    - columnheader "Wastage" [ref=e229]
+                    - columnheader "Closing" [ref=e230]
+                - rowgroup [ref=e231]:
+                  - row [ref=e232]:
+                    - cell "2026-11-24" [ref=e233]
+                    - cell "0" [ref=e234]
+                    - cell "0" [ref=e235]
+                    - cell "0" [ref=e236]
+                    - cell "0" [ref=e237]
+                    - cell "0" [ref=e238]
+                    - cell "0" [ref=e239]
+                  - row [ref=e240]:
+                    - cell "2026-11-23" [ref=e241]
+                    - cell "0" [ref=e242]
+                    - cell "0" [ref=e243]
+                    - cell "2" [ref=e244]
+                    - cell "0" [ref=e245]
+                    - cell "0" [ref=e246]
+                    - cell "0" [ref=e247]
+                  - row [ref=e248]:
+                    - cell "2026-11-22" [ref=e249]
+                    - cell "0" [ref=e250]
+                    - cell "0" [ref=e251]
+                    - cell "0" [ref=e252]
+                    - cell "0" [ref=e253]
+                    - cell "0" [ref=e254]
+                    - cell "0" [ref=e255]
+                  - row [ref=e256]:
+                    - cell "2026-11-21" [ref=e257]
+                    - cell "0" [ref=e258]
+                    - cell "0" [ref=e259]
+                    - cell "0" [ref=e260]
+                    - cell "0" [ref=e261]
+                    - cell "0" [ref=e262]
+                    - cell "0" [ref=e263]
+                  - row [ref=e264]:
+                    - cell "2026-11-20" [ref=e265]
+                    - cell "0" [ref=e266]
+                    - cell "0" [ref=e267]
+                    - cell "0" [ref=e268]
+                    - cell "0" [ref=e269]
+                    - cell "0" [ref=e270]
+                    - cell "0" [ref=e271]
+                  - row [ref=e272]:
+                    - cell "2026-11-19" [ref=e273]
+                    - cell "0" [ref=e274]
+                    - cell "0" [ref=e275]
+                    - cell "0" [ref=e276]
+                    - cell "0" [ref=e277]
+                    - cell "0" [ref=e278]
+                    - cell "0" [ref=e279]
+                  - row [ref=e280]:
+                    - cell "2026-11-18" [ref=e281]
+                    - cell "0" [ref=e282]
+                    - cell "0" [ref=e283]
+                    - cell "0" [ref=e284]
+                    - cell "0" [ref=e285]
+                    - cell "0" [ref=e286]
+                    - cell "0" [ref=e287]
+            - generic [ref=e288]:
+              - heading "Details by product" [level=3] [ref=e289]
+              - table [ref=e291]:
+                - rowgroup [ref=e292]:
+                  - row [ref=e293]:
+                    - columnheader "Date" [ref=e294]
+                    - columnheader "Product" [ref=e295]
+                    - columnheader "Opening" [ref=e296]
+                    - columnheader "Received" [ref=e297]
+                    - columnheader "Sold (app)" [ref=e298]
+                    - columnheader "Sold (offline)" [ref=e299]
+                    - columnheader "Wastage" [ref=e300]
+                    - columnheader "Closing" [ref=e301]
+                - rowgroup [ref=e302]:
+                  - row [ref=e303]:
+                    - cell "2026-11-23" [ref=e304]
+                    - cell "Gavran Eggs – Pack of 6" [ref=e305]
+                    - cell "—" [ref=e306]
+                    - cell "0" [ref=e307]
+                    - cell "2" [ref=e308]
+                    - cell "0" [ref=e309]
+                    - cell "0" [ref=e310]
+                    - cell "—" [ref=e311]
+  - region "Notifications alt+T"

@@ -1,0 +1,388 @@
+- generic [ref=f9e2]:
+  - generic [ref=f9e5]:
+    - complementary [ref=f9e6]:
+      - generic [ref=f9e7]:
+        - generic [ref=f9e9]:
+          - img "Meatyns" [ref=f9e11]
+          - generic [ref=f9e12]:
+            - heading "Meatyns" [level=1] [ref=f9e13]
+            - generic [ref=f9e14]: Admin Center
+        - navigation [ref=f9e15]:
+          - paragraph [ref=f9e16]: Core Management
+          - link "Dashboard" [ref=f9e17] [cursor=pointer]:
+            - /url: /admin
+          - button "Categories" [ref=f9e26]
+          - link "Products" [ref=f9e36] [cursor=pointer]:
+            - /url: /admin/products
+          - link "Daily Carcass Report" [ref=f9e42] [cursor=pointer]:
+            - /url: /admin/daily-carcass
+          - button "Marketing Tools" [ref=f9e50]
+          - button "Retention & Growth" [ref=f9e61]
+          - button "Content Management" [ref=f9e71]
+          - button "Marketing & Meta Ads" [ref=f9e84]
+          - button "Customer Support" [ref=f9e95]
+          - button "Sellers" [ref=f9e106]
+          - button "Delivery Management" [ref=f9e118]
+          - link "Wallet" [ref=f9e130] [cursor=pointer]:
+            - /url: /admin/wallet
+          - link "Money Requests" [ref=f9e136] [cursor=pointer]:
+            - /url: /admin/withdrawals
+          - link "Seller Payments" [ref=f9e142] [cursor=pointer]:
+            - /url: /admin/seller-transactions
+          - link "Collect Cash" [ref=f9e148] [cursor=pointer]:
+            - /url: /admin/cash-collection
+          - link "Customers" [ref=f9e154] [cursor=pointer]:
+            - /url: /admin/customers
+          - link "FAQs" [ref=f9e162] [cursor=pointer]:
+            - /url: /admin/faqs
+          - button "Orders" [ref=f9e169]
+          - link "Fees & Charges" [ref=f9e179] [cursor=pointer]:
+            - /url: /admin/billing
+          - link "Settings" [ref=f9e185] [cursor=pointer]:
+            - /url: /admin/settings
+          - link "Platform Staff" [ref=f9e191] [cursor=pointer]:
+            - /url: /admin/users
+          - link "My Profile" [ref=f9e197] [cursor=pointer]:
+            - /url: /admin/profile
+          - link "System Settings" [ref=f9e203] [cursor=pointer]:
+            - /url: /admin/env
+        - generic [ref=f9e210] [cursor=pointer]:
+          - img "Meatyns" [ref=f9e213]
+          - generic [ref=f9e215]:
+            - paragraph [ref=f9e216]: Admin Console
+            - paragraph [ref=f9e217]: Super Admin
+    - generic [ref=f9e218]:
+      - banner [ref=f9e219]:
+        - textbox "Search anything..." [ref=f9e224]
+        - generic [ref=f9e225]:
+          - button [ref=f9e227]
+          - button "P Palak admin" [ref=f9e231]:
+            - generic [ref=f9e232]: P
+            - generic [ref=f9e233]:
+              - paragraph [ref=f9e234]: Palak
+              - paragraph [ref=f9e235]: admin
+          - button "Sign Out" [ref=f9e236]
+      - main [ref=f9e240]:
+        - generic [ref=f9e242]:
+          - generic [ref=f9e243]:
+            - generic [ref=f9e244]:
+              - heading "Daily Carcass Report" [level=1] [ref=f9e245]
+              - paragraph [ref=f9e246]: Carcasses received, sold and remaining each day, for the whole platform or one seller.
+            - button "Close entry form" [ref=f9e247]
+          - generic [ref=f9e248]:
+            - heading "Enter or correct figures on behalf of a seller" [level=2] [ref=f9e249]
+            - generic [ref=f9e250]:
+              - text: Seller / store
+              - combobox "Seller / store" [ref=f9e251]:
+                - option "Choose a seller..."
+                - option "Meatyns (palakk2103@gmail.com)" [selected]
+                - option "Meatyns (as0077330@gmail.com)"
+                - option "Meatyns (palakpatel0342@gmail.com)"
+                - option "Meatyns Kolhapur - Hockey Stadium (kolhapur1@meatyns.com)"
+                - option "Meatyns Kolhapur - Line Bazar (kolhapur2@meatyns.com)"
+                - option "Meatyns Kolhapur - New Vashi Naka (kolhapur3@meatyns.com)"
+                - option "Meatyns Kolhapur - Phulewadi (kolhapur4@meatyns.com)"
+                - option "Meatyns Kolhapur - Rajarampuri (kolhapur5@meatyns.com)"
+                - option "Meatyns Pune (pune@meatyns.com)"
+                - option "jagrati shop (jagrati01@gmail.com)"
+                - option "palak shop (dodjagrati@gmail.com)"
+            - generic [ref=f9e252]:
+              - generic [ref=f9e253]:
+                - text: Product
+                - combobox "Product" [ref=f9e254]:
+                  - option "Broiler Eggs – Pack of 6"
+                  - option "Gavran Eggs – Pack of 6"
+                  - option "Goat Curry Cut"
+                  - option "Meatyns Chicken Breast - Boneless"
+                  - option "Meatyns Chicken Leg - Boneless"
+                  - option "Meatyns Chicken Lollipop"
+                  - option "Meatyns Chicken Wings" [selected]
+                  - option "Meatyns Regular (Liver & Fat Add)"
+                  - option "Meatyns Special Mutton ( Liver & Fat less )"
+                  - option "Meatyns Whole Chicken - Skinless"
+                  - option "Mutton Chops( Ribcage & T-Bone Steak )"
+                  - option "Mutton Liver"
+                  - option "Mutton Paya ( Whole ) Pack Of 4"
+                  - option "Mutton Paya with small pieces"
+                  - option "Premium Goat Curry Cut (Long Shoulder, Boneless & Goat Shank)"
+              - generic [ref=f9e255]:
+                - text: Date
+                - textbox "Date" [ref=f9e256]: 2026-11-24
+            - paragraph [ref=f9e257]: "Stock carries forward: each day starts with the previous day's closing stock. Only fill the starting stock on the first day, or to correct the count after a physical check. Leave it empty to continue from the previous day."
+            - group [ref=f9e258]:
+              - generic [ref=f9e259]:
+                - group "Starting stock (optional)" [ref=f9e260]:
+                  - generic [ref=f9e262]:
+                    - text: Animals (pcs)
+                    - spinbutton "Animals (pcs)" [ref=f9e263]: "5"
+                  - generic [ref=f9e264]:
+                    - text: Weight (kg)
+                    - spinbutton "Weight (kg)" [ref=f9e265]: "10"
+                - group "Received today" [ref=f9e266]:
+                  - generic [ref=f9e268]:
+                    - text: Animals (pcs)
+                    - spinbutton "Animals (pcs)" [ref=f9e269]
+                  - generic [ref=f9e270]:
+                    - text: Weight (kg)
+                    - spinbutton "Weight (kg)" [ref=f9e271]
+                - group "Sold offline / at counter" [ref=f9e272]:
+                  - generic [ref=f9e274]:
+                    - text: Animals (pcs)
+                    - spinbutton "Animals (pcs)" [ref=f9e275]
+                  - generic [ref=f9e276]:
+                    - text: Weight (kg)
+                    - spinbutton "Weight (kg)" [ref=f9e277]
+                - group "Wastage" [ref=f9e278]:
+                  - generic [ref=f9e280]:
+                    - text: Animals (pcs)
+                    - spinbutton "Animals (pcs)" [ref=f9e281]
+                  - generic [ref=f9e282]:
+                    - text: Weight (kg)
+                    - spinbutton "Weight (kg)" [ref=f9e283]
+              - generic [ref=f9e284]:
+                - text: Average weight of this product per animal (kg, optional)
+                - 'spinbutton "Average weight of this product per animal (kg, optional) Used only to estimate how many animals the kg sold through the app correspond to. Example: 0.4 for chicken legs." [ref=f9e285]': "0.4"
+                - generic [ref=f9e286]: "Used only to estimate how many animals the kg sold through the app correspond to. Example: 0.4 for chicken legs."
+              - generic [ref=f9e287]:
+                - text: Note (optional)
+                - textbox "Note (optional)" [ref=f9e288]
+            - button "Save entry" [ref=f9e289]
+          - generic [ref=f9e290]:
+            - generic [ref=f9e291]:
+              - text: From
+              - textbox "From" [ref=f9e292]: 2026-11-18
+            - generic [ref=f9e293]:
+              - text: To
+              - textbox "To" [ref=f9e294]: 2026-11-24
+            - generic [ref=f9e295]:
+              - text: Seller / store
+              - combobox "Seller / store" [ref=f9e296]:
+                - option "All sellers (platform total)" [selected]
+                - option "Meatyns (palakk2103@gmail.com)"
+                - option "Meatyns (as0077330@gmail.com)"
+                - option "Meatyns (palakpatel0342@gmail.com)"
+                - option "Meatyns Kolhapur - Hockey Stadium (kolhapur1@meatyns.com)"
+                - option "Meatyns Kolhapur - Line Bazar (kolhapur2@meatyns.com)"
+                - option "Meatyns Kolhapur - New Vashi Naka (kolhapur3@meatyns.com)"
+                - option "Meatyns Kolhapur - Phulewadi (kolhapur4@meatyns.com)"
+                - option "Meatyns Kolhapur - Rajarampuri (kolhapur5@meatyns.com)"
+                - option "Meatyns Pune (pune@meatyns.com)"
+                - option "jagrati shop (jagrati01@gmail.com)"
+                - option "palak shop (dodjagrati@gmail.com)"
+            - button "Today" [ref=f9e297]
+          - generic [ref=f9e298]:
+            - generic [ref=f9e299]:
+              - generic [ref=f9e300]:
+                - button "Animals (pcs)" [ref=f9e301]
+                - button "Weight (kg)" [ref=f9e302]
+              - button "Export CSV" [ref=f9e303]
+            - generic [ref=f9e304]:
+              - generic [ref=f9e305]:
+                - paragraph [ref=f9e306]: Opening stock
+                - paragraph [ref=f9e307]: 0pcs
+              - generic [ref=f9e308]:
+                - paragraph [ref=f9e309]: Received
+                - paragraph [ref=f9e310]: 0pcs
+              - generic [ref=f9e311]:
+                - paragraph [ref=f9e312]: Sold
+                - paragraph [ref=f9e313]: 6pcs
+                - generic [ref=f9e508]: + ≈1.25 animals (from kg)
+              - generic [ref=f9e314]:
+                - paragraph [ref=f9e315]: Wastage
+                - paragraph [ref=f9e316]: 0pcs
+              - generic [ref=f9e317]:
+                - paragraph [ref=f9e318]: Closing stock
+                - paragraph [ref=f9e319]: 3pcs
+            - generic [ref=f9e320]:
+              - paragraph [ref=f9e321]: Closing stock = opening + received − sold − wastage, and it becomes the next day's opening stock. Stock is counted from the day an entry is first saved for a product.
+              - paragraph [ref=f9e509]: Includes 5 pcs added by starting-stock entries or corrections.
+              - paragraph [ref=f9e510]: "\"≈ animals\" is an estimate: kg sold through the app divided by the product's average weight per animal. It is not deducted from the animal count in stock."
+              - paragraph [ref=f9e322]: 4 pcs of the sold figure came from products with no stock entry, so it is not deducted from stock.
+            - generic [ref=f9e323]:
+              - heading "Stock on hand at end of 2026-11-24" [level=3] [ref=f9e324]
+              - table [ref=f9e326]:
+                - rowgroup [ref=f9e327]:
+                  - row [ref=f9e543]:
+                    - columnheader "Seller" [ref=f9e544]
+                    - columnheader "Product" [ref=f9e330]
+                    - columnheader "In stock (carcass)" [ref=f9e331]
+                    - columnheader "Product stock now" [ref=f9e332]
+                - rowgroup [ref=f9e333]:
+                  - row [ref=f9e545]:
+                    - cell "Meatyns" [ref=f9e546]
+                    - cell "Gavran Eggs – Pack of 6" [ref=f9e336]
+                    - cell "no entry" [ref=f9e337]
+                    - cell "98" [ref=f9e338]
+                  - row [ref=f9e547]:
+                    - cell "Meatyns" [ref=f9e548]
+                    - cell "Meatyns Chicken Wings" [ref=f9e341]
+                    - cell "3" [ref=f9e512]
+                    - cell "794" [ref=f9e343]
+                  - row [ref=f9e549]:
+                    - cell "Meatyns Kolhapur - Hockey Stadium" [ref=f9e550]
+                    - cell "Gavran Eggs – Pack of 6" [ref=f9e346]
+                    - cell "no entry" [ref=f9e347]
+                    - cell "99" [ref=f9e348]
+                  - row [ref=f9e551]:
+                    - cell "Meatyns Kolhapur - Hockey Stadium" [ref=f9e552]
+                    - cell "Meatyns Special Mutton ( Liver & Fat less )" [ref=f9e351]
+                    - cell "no entry" [ref=f9e352]
+                    - cell "799" [ref=f9e353]
+              - paragraph [ref=f9e354]: "\"Product stock now\" is the stock number of the product itself (Products page). It goes down with every app order and comes back if an order is cancelled. It is the live figure, not the figure at the end of the selected dates."
+            - generic [ref=f9e355]:
+              - heading "Day by day" [level=3] [ref=f9e356]
+              - table [ref=f9e358]:
+                - rowgroup [ref=f9e359]:
+                  - row [ref=f9e360]:
+                    - columnheader "Date" [ref=f9e361]
+                    - columnheader "Opening" [ref=f9e362]
+                    - columnheader "Received" [ref=f9e363]
+                    - columnheader "Sold (app)" [ref=f9e364]
+                    - columnheader "Sold (offline)" [ref=f9e365]
+                    - columnheader "Wastage" [ref=f9e366]
+                    - columnheader "Closing" [ref=f9e367]
+                - rowgroup [ref=f9e368]:
+                  - row [ref=f9e513]:
+                    - cell "2026-11-24" [ref=f9e370]
+                    - cell "5" [ref=f9e514]
+                    - cell "0" [ref=f9e372]
+                    - cell "2 + ≈1.25 animals (from kg)" [ref=f9e515]:
+                      - text: "2"
+                      - generic [ref=f9e516]: + ≈1.25 animals (from kg)
+                    - cell "0" [ref=f9e374]
+                    - cell "0" [ref=f9e375]
+                    - cell "3" [ref=f9e517]
+                  - row [ref=f9e377]:
+                    - cell "2026-11-23" [ref=f9e378]
+                    - cell "0" [ref=f9e379]
+                    - cell "0" [ref=f9e380]
+                    - cell "4" [ref=f9e381]
+                    - cell "0" [ref=f9e382]
+                    - cell "0" [ref=f9e383]
+                    - cell "0" [ref=f9e384]
+                  - row [ref=f9e385]:
+                    - cell "2026-11-22" [ref=f9e386]
+                    - cell "0" [ref=f9e387]
+                    - cell "0" [ref=f9e388]
+                    - cell "0" [ref=f9e389]
+                    - cell "0" [ref=f9e390]
+                    - cell "0" [ref=f9e391]
+                    - cell "0" [ref=f9e392]
+                  - row [ref=f9e393]:
+                    - cell "2026-11-21" [ref=f9e394]
+                    - cell "0" [ref=f9e395]
+                    - cell "0" [ref=f9e396]
+                    - cell "0" [ref=f9e397]
+                    - cell "0" [ref=f9e398]
+                    - cell "0" [ref=f9e399]
+                    - cell "0" [ref=f9e400]
+                  - row [ref=f9e401]:
+                    - cell "2026-11-20" [ref=f9e402]
+                    - cell "0" [ref=f9e403]
+                    - cell "0" [ref=f9e404]
+                    - cell "0" [ref=f9e405]
+                    - cell "0" [ref=f9e406]
+                    - cell "0" [ref=f9e407]
+                    - cell "0" [ref=f9e408]
+                  - row [ref=f9e409]:
+                    - cell "2026-11-19" [ref=f9e410]
+                    - cell "0" [ref=f9e411]
+                    - cell "0" [ref=f9e412]
+                    - cell "0" [ref=f9e413]
+                    - cell "0" [ref=f9e414]
+                    - cell "0" [ref=f9e415]
+                    - cell "0" [ref=f9e416]
+                  - row [ref=f9e417]:
+                    - cell "2026-11-18" [ref=f9e418]
+                    - cell "0" [ref=f9e419]
+                    - cell "0" [ref=f9e420]
+                    - cell "0" [ref=f9e421]
+                    - cell "0" [ref=f9e422]
+                    - cell "0" [ref=f9e423]
+                    - cell "0" [ref=f9e424]
+            - generic [ref=f9e553]:
+              - heading "By seller / store" [level=3] [ref=f9e554]
+              - table [ref=f9e556]:
+                - rowgroup [ref=f9e557]:
+                  - row [ref=f9e558]:
+                    - columnheader "Seller" [ref=f9e559]
+                    - columnheader "Opening" [ref=f9e560]
+                    - columnheader "Received" [ref=f9e561]
+                    - columnheader "Sold" [ref=f9e562]
+                    - columnheader "Wastage" [ref=f9e563]
+                    - columnheader "Closing" [ref=f9e564]
+                - rowgroup [ref=f9e565]:
+                  - row [ref=f9e566]:
+                    - cell "Meatyns" [ref=f9e567]
+                    - cell "0" [ref=f9e568]
+                    - cell "0" [ref=f9e569]
+                    - cell "4 + ≈1.25 animals (from kg)" [ref=f9e570]:
+                      - text: "4"
+                      - generic [ref=f9e571]: + ≈1.25 animals (from kg)
+                    - cell "0" [ref=f9e572]
+                    - cell "3" [ref=f9e573]
+                  - row [ref=f9e574]:
+                    - cell "Meatyns Kolhapur - Hockey Stadium" [ref=f9e575]
+                    - cell "0" [ref=f9e576]
+                    - cell "0" [ref=f9e577]
+                    - cell "2" [ref=f9e578]
+                    - cell "0" [ref=f9e579]
+                    - cell "0" [ref=f9e580]
+            - generic [ref=f9e452]:
+              - heading "Details by product" [level=3] [ref=f9e453]
+              - table [ref=f9e455]:
+                - rowgroup [ref=f9e456]:
+                  - row [ref=f9e581]:
+                    - columnheader "Date" [ref=f9e458]
+                    - columnheader "Seller" [ref=f9e582]
+                    - columnheader "Product" [ref=f9e460]
+                    - columnheader "Opening" [ref=f9e461]
+                    - columnheader "Received" [ref=f9e462]
+                    - columnheader "Sold (app)" [ref=f9e463]
+                    - columnheader "Sold (offline)" [ref=f9e464]
+                    - columnheader "Wastage" [ref=f9e465]
+                    - columnheader "Closing" [ref=f9e466]
+                - rowgroup [ref=f9e467]:
+                  - row [ref=f9e583]:
+                    - cell "2026-11-24" [ref=f9e469]
+                    - cell "Meatyns" [ref=f9e584]
+                    - cell "Meatyns Chicken Wings" [ref=f9e471]
+                    - cell "5" [ref=f9e523]
+                    - cell "0" [ref=f9e473]
+                    - cell "2 + ≈1.25 animals (from kg)" [ref=f9e524]:
+                      - text: "2"
+                      - generic [ref=f9e525]: + ≈1.25 animals (from kg)
+                    - cell "0" [ref=f9e475]
+                    - cell "0" [ref=f9e476]
+                    - cell "3" [ref=f9e526]
+                  - row [ref=f9e585]:
+                    - cell "2026-11-23" [ref=f9e489]
+                    - cell "Meatyns Kolhapur - Hockey Stadium" [ref=f9e586]
+                    - cell "Gavran Eggs – Pack of 6" [ref=f9e491]
+                    - cell "—" [ref=f9e492]
+                    - cell "0" [ref=f9e493]
+                    - cell "1" [ref=f9e494]
+                    - cell "0" [ref=f9e495]
+                    - cell "0" [ref=f9e496]
+                    - cell "—" [ref=f9e497]
+                  - row [ref=f9e587]:
+                    - cell "2026-11-23" [ref=f9e479]
+                    - cell "Meatyns" [ref=f9e588]
+                    - cell "Gavran Eggs – Pack of 6" [ref=f9e481]
+                    - cell "—" [ref=f9e482]
+                    - cell "0" [ref=f9e483]
+                    - cell "2" [ref=f9e484]
+                    - cell "0" [ref=f9e485]
+                    - cell "0" [ref=f9e486]
+                    - cell "—" [ref=f9e487]
+                  - row [ref=f9e589]:
+                    - cell "2026-11-23" [ref=f9e499]
+                    - cell "Meatyns Kolhapur - Hockey Stadium" [ref=f9e590]
+                    - cell "Meatyns Special Mutton ( Liver & Fat less )" [ref=f9e501]
+                    - cell "—" [ref=f9e502]
+                    - cell "0" [ref=f9e503]
+                    - cell "1" [ref=f9e504]
+                    - cell "0" [ref=f9e505]
+                    - cell "0" [ref=f9e506]
+                    - cell "—" [ref=f9e507]
+  - region "Notifications alt+T"

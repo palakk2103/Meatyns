@@ -1,0 +1,536 @@
+[   43268ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9d05lnuk:1
+[   43269ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1319:18 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[   46201ms] [ERROR] Polling Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:2255:41)
+    at async Object.fetchOrders [as current] (http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:151:21) @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:172
+[   46202ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/orders/seller-orders:1
+[   53285ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9d7vsa0k:1
+[   53285ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1319:18 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[   61203ms] [ERROR] Notif Fetch Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:2255:41)
+    at async http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/Topbar.jsx?t=1795435981113:75:37 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/Topbar.jsx?t=1795435981113:81
+[   61204ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/notifications:1
+[   61204ms] [ERROR] Polling Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:2255:41)
+    at async Object.fetchOrders [as current] (http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:151:21) @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:172
+[   61204ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/orders/seller-orders:1
+[   63302ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9dfm3306:1
+[   63302ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1319:18 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[   73318ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9dncbr96:1
+[   73318ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1319:18 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[   76202ms] [ERROR] Polling Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:2255:41)
+    at async Object.fetchOrders [as current] (http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:151:21) @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:172
+[   76203ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/orders/seller-orders:1
+[   83326ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9dv2b0uo:1
+[   83327ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1319:18 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[   91203ms] [ERROR] Polling Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:2255:41)
+    at async Object.fetchOrders [as current] (http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:151:21) @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:172
+[   91204ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/orders/seller-orders:1
+[   93337ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9e2sfva2:1
+[   93337ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1319:18 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  103358ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9eailqqb:1
+[  103358ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1319:18 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  106207ms] [ERROR] Polling Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:2255:41)
+    at async Object.fetchOrders [as current] (http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:151:21) @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:172
+[  106208ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/orders/seller-orders:1
+[  113369ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9ei8tc49:1
+[  113369ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1319:18 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  121206ms] [ERROR] Notif Fetch Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:2255:41)
+    at async http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/Topbar.jsx?t=1795435981113:75:37 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/Topbar.jsx?t=1795435981113:81
+[  121207ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/notifications:1
+[  121207ms] [ERROR] Polling Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:2255:41)
+    at async Object.fetchOrders [as current] (http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:151:21) @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:172
+[  121208ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/orders/seller-orders:1
+[  123388ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9epz24lx:1
+[  123388ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1319:18 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  133408ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9expfobf:1
+[  133408ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1319:18 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  136203ms] [ERROR] Polling Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:2255:41)
+    at async Object.fetchOrders [as current] (http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:151:21) @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:172
+[  136204ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/orders/seller-orders:1
+[  143421ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9f5fjx4j:1
+[  143422ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1319:18 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  151202ms] [ERROR] Polling Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:2255:41)
+    at async Object.fetchOrders [as current] (http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:151:21) @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:172
+[  151203ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/orders/seller-orders:1
+[  153438ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9fd5vs6w:1
+[  153438ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1319:18 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  163457ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9fkw64x9:1
+[  163458ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1319:18 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  166202ms] [ERROR] Polling Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:2255:41)
+    at async Object.fetchOrders [as current] (http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:151:21) @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:172
+[  166202ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/orders/seller-orders:1
+[  173470ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9fsmay17:1
+[  173471ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1319:18 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  181201ms] [ERROR] Notif Fetch Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:2255:41)
+    at async http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/Topbar.jsx?t=1795435981113:75:37 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/Topbar.jsx?t=1795435981113:81
+[  181201ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/notifications:1
+[  181203ms] [ERROR] Polling Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:2255:41)
+    at async Object.fetchOrders [as current] (http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:151:21) @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:172
+[  181203ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/orders/seller-orders:1
+[  183487ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9g0cjcxp:1
+[  183488ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1319:18 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  193504ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9g82uutk:1
+[  193504ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1319:18 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  196206ms] [ERROR] Polling Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:2255:41)
+    at async Object.fetchOrders [as current] (http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:151:21) @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:172
+[  196207ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/orders/seller-orders:1
+[  203522ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9gft2qce:1
+[  203523ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1319:18 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  211208ms] [ERROR] Polling Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:2255:41)
+    at async Object.fetchOrders [as current] (http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:151:21) @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:172
+[  211208ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/orders/seller-orders:1
+[  213538ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9gnjaimw:1
+[  213539ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1319:18 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  223555ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9gv9kj73:1
+[  223556ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1319:18 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  226205ms] [ERROR] Polling Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:2255:41)
+    at async Object.fetchOrders [as current] (http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:151:21) @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:172
+[  226205ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/orders/seller-orders:1
+[  233572ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9h2zrwjw:1
+[  233573ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1319:18 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  241208ms] [ERROR] Notif Fetch Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:2255:41)
+    at async http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/Topbar.jsx?t=1795435981113:75:37 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/Topbar.jsx?t=1795435981113:81
+[  241209ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/notifications:1
+[  241209ms] [ERROR] Polling Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:2255:41)
+    at async Object.fetchOrders [as current] (http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:151:21) @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:172
+[  241210ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/orders/seller-orders:1
+[  243589ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9haq1bk8:1
+[  243589ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1319:18 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  253607ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9higbzg4:1
+[  253608ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1319:18 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  256209ms] [ERROR] Polling Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:2255:41)
+    at async Object.fetchOrders [as current] (http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:151:21) @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:172
+[  256209ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/orders/seller-orders:1
+[  263623ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9hq6kc7j:1
+[  263623ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1319:18 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  271204ms] [ERROR] Polling Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:2255:41)
+    at async Object.fetchOrders [as current] (http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:151:21) @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:172
+[  271204ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/orders/seller-orders:1
+[  273639ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9hxwr6i0:1
+[  273640ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1319:18 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  283660ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9i5n60de:1
+[  283661ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1319:18 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  286205ms] [ERROR] Polling Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:2255:41)
+    at async Object.fetchOrders [as current] (http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:151:21) @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:172
+[  286205ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/orders/seller-orders:1
+[  293684ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9idd9koc:1
+[  293685ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1319:18 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  301204ms] [ERROR] Notif Fetch Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:2255:41)
+    at async http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/Topbar.jsx?t=1795435981113:75:37 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/Topbar.jsx?t=1795435981113:81
+[  301204ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/notifications:1
+[  301206ms] [ERROR] Polling Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:2255:41)
+    at async Object.fetchOrders [as current] (http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:151:21) @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:172
+[  301207ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/orders/seller-orders:1
+[  303694ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9il3q9j1:1
+[  303695ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1319:18 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  313713ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9istys9k:1
+[  313713ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1319:18 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  316207ms] [ERROR] Polling Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:2255:41)
+    at async Object.fetchOrders [as current] (http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:151:21) @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:172
+[  316208ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/orders/seller-orders:1
+[  323731ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9j0k1bzu:1
+[  323732ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1319:18 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  331213ms] [ERROR] Polling Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:2255:41)
+    at async Object.fetchOrders [as current] (http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:151:21) @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:172
+[  331213ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/orders/seller-orders:1
+[  333746ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9j8acf8k:1
+[  333747ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1319:18 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  343758ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9jg0h7tp:1
+[  343759ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1319:18 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  346206ms] [ERROR] Polling Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:2255:41)
+    at async Object.fetchOrders [as current] (http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:151:21) @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:172
+[  346207ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/orders/seller-orders:1
+[  353775ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9jnqr80r:1
+[  353776ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1319:18 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  361210ms] [ERROR] Notif Fetch Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:2255:41)
+    at async http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/Topbar.jsx?t=1795435981113:75:37 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/Topbar.jsx?t=1795435981113:81
+[  361211ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/notifications:1
+[  361211ms] [ERROR] Polling Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:2255:41)
+    at async Object.fetchOrders [as current] (http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:151:21) @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:172
+[  361212ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/orders/seller-orders:1
+[  363793ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9jvh3w3g:1
+[  363794ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1319:18 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  373809ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9k37aesf:1
+[  373810ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1319:18 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  376207ms] [ERROR] Polling Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:2255:41)
+    at async Object.fetchOrders [as current] (http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:151:21) @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:172
+[  376208ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/orders/seller-orders:1
+[  383824ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9kaxg06c:1
+[  383825ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1319:18 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  391203ms] [ERROR] Polling Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:2255:41)
+    at async Object.fetchOrders [as current] (http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:151:21) @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:172
+[  391204ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/orders/seller-orders:1
+[  393845ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9kinutss:1
+[  393845ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1319:18 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  403860ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9kqdzma5:1
+[  403860ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1319:18 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  406211ms] [ERROR] Polling Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:2255:41)
+    at async Object.fetchOrders [as current] (http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:151:21) @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:172
+[  406212ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/orders/seller-orders:1
+[  413873ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9ky4492z:1
+[  413873ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1319:18 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  421212ms] [ERROR] Notif Fetch Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:2255:41)
+    at async http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/Topbar.jsx?t=1795435981113:75:37 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/Topbar.jsx?t=1795435981113:81
+[  421213ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/notifications:1
+[  421215ms] [ERROR] Polling Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:2255:41)
+    at async Object.fetchOrders [as current] (http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:151:21) @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:172
+[  421216ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/orders/seller-orders:1
+[  423889ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9l5ugn3a:1
+[  423889ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1319:18 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  433907ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9ldkpbog:1
+[  433907ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1319:18 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  436205ms] [ERROR] Polling Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:2255:41)
+    at async Object.fetchOrders [as current] (http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:151:21) @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:172
+[  436206ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/orders/seller-orders:1
+[  443927ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9llazx0q:1
+[  443928ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1319:18 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  451206ms] [ERROR] Polling Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:2255:41)
+    at async Object.fetchOrders [as current] (http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:151:21) @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:172
+[  451207ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/orders/seller-orders:1
+[  453942ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9lt17xxh:1
+[  453942ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1319:18 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  463950ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9m0r8vde:1
+[  463950ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1319:18 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  466209ms] [ERROR] Polling Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:2255:41)
+    at async Object.fetchOrders [as current] (http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:151:21) @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:172
+[  466210ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/orders/seller-orders:1
+[  473965ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9m8hd7ua:1
+[  473965ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1319:18 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  481212ms] [ERROR] Notif Fetch Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:2255:41)
+    at async http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/Topbar.jsx?t=1795435981113:75:37 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/Topbar.jsx?t=1795435981113:81
+[  481212ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/notifications:1
+[  481215ms] [ERROR] Polling Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:2255:41)
+    at async Object.fetchOrders [as current] (http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:151:21) @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:172
+[  481215ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/orders/seller-orders:1
+[  483980ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9mg7jobk:1
+[  483980ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1319:18 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  493995ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9mnxszmt:1
+[  493995ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1319:18 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  496200ms] [ERROR] Polling Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:2255:41)
+    at async Object.fetchOrders [as current] (http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:151:21) @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:172
+[  496201ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/orders/seller-orders:1
+[  504013ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9mvnz3kt:1
+[  504013ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1319:18 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
+[  511212ms] [ERROR] Polling Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=28a99c92:2255:41)
+    at async Object.fetchOrders [as current] (http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:151:21) @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/shared/layout/DashboardLayout.jsx?t=1795435981113:172
+[  511212ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/orders/seller-orders:1
+[  514028ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=9n3e6lqj:1
+[  514029ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=38e161f2:1319:18 @ http://localhost:5173/@fs/C:/Users/HP/Desktop/Meatyns/frontend/src/core/services/orderSocket.js:64
