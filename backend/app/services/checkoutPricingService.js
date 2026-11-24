@@ -51,7 +51,7 @@ export function groupHydratedItemsBySeller(hydratedItems = []) {
 
 async function computeDistanceKmForSeller({ sellerId, addressLocation, session = null, isSelectedSeller = false }) {
   const query = Seller.findById(sellerId)
-    .select("location serviceRadius shopName city address locality pincode isOnline isManualOverride storeHours isActive applicationStatus")
+    .select("location serviceRadius shopName city address locality pincode isOnline isManualOverride adminClosed storeHours isActive applicationStatus")
     .lean();
   if (session) query.session(session);
   const seller = await query;
@@ -63,7 +63,9 @@ async function computeDistanceKmForSeller({ sellerId, addressLocation, session =
 
   if (!getSellerCurrentOpenStatus(seller)) {
     const err = new Error(
-      `${seller.shopName || "Store"} is currently closed and not accepting new orders.`,
+      seller.adminClosed
+        ? `${seller.shopName || "This store"} is temporarily closed. Please remove its items from your cart or try again later.`
+        : `${seller.shopName || "Store"} is currently closed and not accepting new orders.`,
     );
     err.statusCode = 400;
     throw err;

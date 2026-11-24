@@ -1,0 +1,104 @@
+[     298ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[     566ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[    1091ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[    1208ms] [LOG] [orderSocket] Socket connected, ID: MqM4bt6E5eRjsIvMAAAN @ http://localhost:5173/src/core/services/orderSocket.js:49
+[   12932ms] [LOG] [orderSocket] Socket disconnected, reason: transport close @ http://localhost:5173/src/core/services/orderSocket.js:60
+[   12935ms] [LOG] [vite] server connection lost. Polling for restart... @ http://localhost:5173/@vite/client:865
+[   15323ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=nr5ur7bv:1
+[   15324ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[   16114ms] [ERROR] Polling Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41)
+    at async Object.fetchOrders [as current] (http://localhost:5173/src/shared/layout/DashboardLayout.jsx:151:21) @ http://localhost:5173/src/shared/layout/DashboardLayout.jsx:172
+[   16115ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/orders/seller-orders:1
+[   20039ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=nr9hsyqz:1
+[   20039ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[   28699ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=nrg6cw6n:1
+[   28700ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[   31121ms] [ERROR] Polling Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41)
+    at async Object.fetchOrders [as current] (http://localhost:5173/src/shared/layout/DashboardLayout.jsx:151:21) @ http://localhost:5173/src/shared/layout/DashboardLayout.jsx:172
+[   31122ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/orders/seller-orders:1
+[   38715ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=nrnwjb4o:1
+[   38716ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[   46109ms] [ERROR] Polling Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41)
+    at async Object.fetchOrders [as current] (http://localhost:5173/src/shared/layout/DashboardLayout.jsx:151:21) @ http://localhost:5173/src/shared/layout/DashboardLayout.jsx:172
+[   46110ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/orders/seller-orders:1
+[   48738ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=nrvmzh91:1
+[   48739ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[   58753ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=ns3d5m2c:1
+[   58753ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[   61121ms] [ERROR] Notif Fetch Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41)
+    at async http://localhost:5173/src/shared/layout/Topbar.jsx:75:37 @ http://localhost:5173/src/shared/layout/Topbar.jsx:81
+[   61121ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/notifications:1
+[   61126ms] [ERROR] Polling Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41)
+    at async Object.fetchOrders [as current] (http://localhost:5173/src/shared/layout/DashboardLayout.jsx:151:21) @ http://localhost:5173/src/shared/layout/DashboardLayout.jsx:172
+[   61127ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/orders/seller-orders:1
+[   68774ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=nsb3kuve:1
+[   68774ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[   76121ms] [ERROR] Polling Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41)
+    at async Object.fetchOrders [as current] (http://localhost:5173/src/shared/layout/DashboardLayout.jsx:151:21) @ http://localhost:5173/src/shared/layout/DashboardLayout.jsx:172
+[   76121ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/orders/seller-orders:1
+[   78790ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=nsitrz86:1
+[   78790ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[   88805ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=nsqjxbot:1
+[   88806ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[   98854ms] [LOG] [orderSocket] Socket connected, ID: E3EZCQmur6zTRzAkAAAB @ http://localhost:5173/src/core/services/orderSocket.js:49
+[  220539ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[  220835ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[  221415ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[  221543ms] [LOG] [orderSocket] Socket connected, ID: MNVlnGLTHyBxv7JBAAAD @ http://localhost:5173/src/core/services/orderSocket.js:49

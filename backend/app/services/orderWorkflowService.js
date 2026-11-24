@@ -20,6 +20,7 @@ import {
   RETURN_PICKUP_RADIUS_MULTIPLIER,
 } from "../constants/orderWorkflow.js";
 import { compensateOrderCancellation } from "./orderCompensation.js";
+import { getCustomerCancelWindow } from "./workflow/customerCancelWindow.js";
 import { getRedisClient } from "../config/redis.js";
 import {
   scheduleSellerTimeout,
@@ -769,10 +770,35 @@ export async function customerCancelV2(customerId, orderId, reason) {
     ws === WORKFLOW_STATUS.CREATED &&
     String(order.paymentMode || "").toUpperCase() === "ONLINE" &&
     !["CAPTURED", "PAID", "SUCCESS"].includes(String(order.paymentStatus || "").toUpperCase());
-  if (ws !== WORKFLOW_STATUS.SELLER_PENDING && !unpaidOnlineOrder) {
-    const err = new Error("Order cannot be cancelled after confirmation");
+  // Customer may cancel until the rider picks the order up, but only inside the
+  // cancel window (default 5 min) — whether or not the seller already accepted.
+  const withinWindowStatuses = [
+    WORKFLOW_STATUS.SELLER_PENDING,
+    WORKFLOW_STATUS.SELLER_ACCEPTED,
+    WORKFLOW_STATUS.DELIVERY_SEARCH,
+    WORKFLOW_STATUS.DELIVERY_ASSIGNED,
+  ];
+  const windowCancellable = withinWindowStatuses.includes(ws);
+  if (!windowCancellable && !unpaidOnlineOrder) {
+    const err = new Error(
+      ws === WORKFLOW_STATUS.PICKUP_READY || ws === WORKFLOW_STATUS.OUT_FOR_DELIVERY
+        ? "Order cannot be cancelled after the delivery partner has picked it up"
+        : "Order cannot be cancelled after confirmation",
+    );
     err.statusCode = 400;
     throw err;
+  }
+
+  if (windowCancellable) {
+    const win = getCustomerCancelWindow(order);
+    if (!win.open) {
+      const mins = Math.round(win.windowMs / 60000);
+      const err = new Error(
+        `Cancellation window (${mins} min) is over. This order can no longer be cancelled.`,
+      );
+      err.statusCode = 400;
+      throw err;
+    }
   }
 
   const updated = await Order.findOneAndUpdate(
@@ -799,6 +825,23 @@ export async function customerCancelV2(customerId, orderId, reason) {
   }
 
   await removeSellerTimeoutJob(orderId);
+
+  // Seller already accepted: stop the rider search / free the assigned rider.
+  if (
+    ws === WORKFLOW_STATUS.DELIVERY_SEARCH ||
+    ws === WORKFLOW_STATUS.DELIVERY_ASSIGNED
+  ) {
+    const attempt = updated.deliverySearchMeta?.attempt || 1;
+    for (let a = 1; a <= Math.max(attempt, 1); a += 1) {
+      await removeDeliveryTimeoutJob(orderId, a).catch(() => {});
+    }
+    await DeliveryAssignment.updateMany(
+      { orderId, status: { $in: ["broadcasting", "assigned"] } },
+      { $set: { status: "cancelled" } },
+    ).catch(() => {});
+    await retractDeliveryBroadcastForOrder(orderId, null).catch(() => {});
+  }
+
   await compensateOrderCancellation(updated, orderId);
   emitOrderStatusUpdate(orderId, { workflowStatus: WORKFLOW_STATUS.CANCELLED }, updated.customer);
   emitNotificationEvent(NOTIFICATION_EVENTS.ORDER_CANCELLED, {
@@ -806,8 +849,10 @@ export async function customerCancelV2(customerId, orderId, reason) {
     customerId: updated.customer,
     userId: updated.customer,
     sellerId: updated.seller,
+    deliveryId: updated.deliveryBoy || undefined,
     customerMessage: "Your order has been cancelled successfully.",
     sellerMessage: `Order #${updated.orderId} was cancelled by customer.`,
+    deliveryMessage: `Order #${updated.orderId} was cancelled by the customer. Please do not proceed with pickup.`,
   });
   return updated;
 }

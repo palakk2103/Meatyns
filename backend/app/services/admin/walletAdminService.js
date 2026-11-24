@@ -1,6 +1,8 @@
+import mongoose from "mongoose";
 import Transaction from "../../models/transaction.js";
 import Notification from "../../models/notification.js";
-import { getAdminFinanceSummary } from "../finance/walletService.js";
+import { LEDGER_TRANSACTION_TYPE, OWNER_TYPE } from "../../constants/finance.js";
+import { creditWallet, getAdminFinanceSummary } from "../finance/walletService.js";
 import { getLedgerEntries } from "../finance/ledgerService.js";
 
 export async function getAdminWalletOverview({ page, limit }) {
@@ -146,12 +148,59 @@ export async function updateWithdrawalStatusById({ id, status, reason }) {
     return null;
   }
 
-  transaction.status = status;
-  if (reason) {
-    transaction.notes = reason;
+  // Seller withdrawals created after the wallet-based flow already had the
+  // amount debited from the Wallet at request time. Those must only move
+  // forward once, and a Failed outcome has to give the money back.
+  const walletBacked =
+    transaction.userModel === "Seller" &&
+    transaction.type === "Withdrawal" &&
+    transaction.meta?.walletDebited === true;
+
+  if (!walletBacked) {
+    transaction.status = status;
+    if (reason) {
+      transaction.reason = reason;
+    }
+    await transaction.save();
+    return transaction;
   }
 
-  await transaction.save();
+  const previousStatus = transaction.status;
+  if (previousStatus === "Settled" || previousStatus === "Failed") {
+    throw new Error("Withdrawal already finalized");
+  }
+
+  const session = await mongoose.startSession();
+  try {
+    await session.withTransaction(async () => {
+      transaction.status = status;
+      if (reason) {
+        transaction.reason = reason;
+      }
+
+      if (status === "Failed" && !transaction.meta?.walletRefunded) {
+        const refundAmount = Math.abs(transaction.amount || 0);
+        if (refundAmount > 0) {
+          await creditWallet({
+            ownerType: OWNER_TYPE.SELLER,
+            ownerId: transaction.user?._id || transaction.user,
+            amount: refundAmount,
+            session,
+            ledgerType: LEDGER_TRANSACTION_TYPE.ADJUSTMENT,
+            ledgerReference: transaction.reference,
+            ledgerDescription: "Withdrawal rejected - amount returned to wallet",
+            metadata: { flow: "seller_withdrawal_rejected" },
+          });
+        }
+        transaction.meta = { ...(transaction.meta || {}), walletRefunded: true };
+      }
+
+      await transaction.save({ session });
+    });
+  } finally {
+    await session.endSession();
+  }
+
   return transaction;
 }
 

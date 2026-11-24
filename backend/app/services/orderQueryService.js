@@ -8,6 +8,7 @@ import {
   orderMatchQueryFlexible,
 } from "../utils/orderLookup.js";
 import { resolveWorkflowStatus } from "./orderWorkflowService.js";
+import { getCustomerCancelWindow } from "./workflow/customerCancelWindow.js";
 import mongoose from "mongoose";
 import { escapeRegex } from "../utils/regex.js";
 import logger from "./logger.js";
@@ -627,6 +628,20 @@ export async function getOrderWithAccess(orderId, userId, role) {
       "Access denied. You are not authorized to view this order.",
       403,
     );
+  }
+
+  if (
+    !order.isGroupSummary &&
+    ["SELLER_PENDING", "SELLER_ACCEPTED", "DELIVERY_SEARCH", "DELIVERY_ASSIGNED"].includes(
+      order.workflowStatus,
+    )
+  ) {
+    const win = getCustomerCancelWindow(order);
+    order.cancelWindow = {
+      endsAt: win.endsAt ? new Date(win.endsAt).toISOString() : null,
+      serverNow: new Date(win.serverNow).toISOString(),
+      open: win.open,
+    };
   }
 
   return {

@@ -44,7 +44,10 @@ export const getSellerEarnings = async (req, res) => {
         // Fetch wallet for live pending balance (money on hold due to return window)
         const wallet = await Wallet.findOne({ ownerType: 'SELLER', ownerId: sellerId });
         const onHoldBalance = wallet ? wallet.pendingBalance : 0;
-        const liveAvailableBalance = wallet ? wallet.availableBalance : settledBalance;
+        // Withdrawals are validated against the Wallet, so a seller with no
+        // wallet yet has nothing withdrawable (the legacy settledBalance is
+        // gross of commission and ignores the return-window hold).
+        const liveAvailableBalance = wallet ? wallet.availableBalance : 0;
 
         // Keep "Total Revenue" aligned with Dashboard definition:
         // sum of non-cancelled seller orders from Order collection.
@@ -121,6 +124,7 @@ export const getSellerEarnings = async (req, res) => {
                 date: t.createdAt.toISOString().split('T')[0],
                 time: t.createdAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
                 customer: t.type === 'Withdrawal' ? 'Bank Transfer' : 'Customer',
+                reason: t.reason || undefined,
                 ref: t.order ? `#${t.order.orderId}` : t.reference || t._id
             }))
         });

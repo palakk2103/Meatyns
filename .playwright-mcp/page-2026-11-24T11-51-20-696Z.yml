@@ -1,0 +1,200 @@
+- generic [ref=f1e2]:
+  - main [ref=f1e4]:
+    - generic [ref=f1e8]:
+      - generic [ref=f1e11]:
+        - button [ref=f1e12]
+        - generic [ref=f1e15]:
+          - heading "Checkout" [level=1] [ref=f1e16]
+          - paragraph [ref=f1e19]: 1 Item in cart
+        - button [ref=f1e20]
+      - generic [ref=f1e28]:
+        - generic [ref=f1e35]:
+          - 'heading "Normal: within 1 hour" [level=3] [ref=f1e36]'
+          - paragraph [ref=f1e37]: Shipment of 1 items
+        - generic [ref=f1e38]:
+          - generic [ref=f1e39]:
+            - generic [ref=f1e40]: Ordering for someone else?
+            - button "Add details" [ref=f1e41]
+          - generic [ref=f1e42]:
+            - heading "Delivery Address" [level=3] [ref=f1e43]
+            - paragraph [ref=f1e44]: Select or edit your saved address
+          - generic [ref=f1e51] [cursor=pointer]:
+            - generic [ref=f1e52]:
+              - heading "Palak Patel" [level=4] [ref=f1e53]
+              - generic [ref=f1e54]:
+                - button "Edit" [ref=f1e55]
+                - button "Change" [ref=f1e56]
+            - paragraph [ref=f1e57]: "+918770620342"
+            - paragraph [ref=f1e58]: Indore, Madhya Pradesh, 452001, Indore, Madhya Pradesh, 452001
+          - button "Use current live location" [ref=f1e59]
+          - generic [ref=f1e64]:
+            - paragraph [ref=f1e65]: Delivery address confirmed
+            - paragraph [ref=f1e66]: We'll deliver to the address you've entered above.
+        - generic [ref=f1e67]:
+          - heading "Delivery Option" [level=2] [ref=f1e69]
+          - generic [ref=f1e71]:
+            - generic [ref=f1e72] [cursor=pointer]:
+              - generic [ref=f1e73]:
+                - generic [ref=f1e78]:
+                  - heading "Express" [level=3] [ref=f1e79]
+                  - paragraph [ref=f1e80]: Deliver ASAP
+                - generic [ref=f1e81]: ₹60
+              - generic [ref=f1e83]:
+                - generic [ref=f1e84]: ⚡ 15–30 mins
+                - generic [ref=f1e85]: Fastest
+            - generic [ref=f1e86] [cursor=pointer]:
+              - generic [ref=f1e87]:
+                - generic [ref=f1e95]:
+                  - heading "Normal" [level=3] [ref=f1e96]
+                  - paragraph [ref=f1e97]: Standard priority
+                - generic [ref=f1e98]: ₹30
+              - generic [ref=f1e103]:
+                - generic [ref=f1e104]: Within 1 hour
+                - generic [ref=f1e108]: Standard
+            - generic [ref=f1e109] [cursor=pointer]:
+              - generic [ref=f1e110]:
+                - generic [ref=f1e115]:
+                  - heading "Schedule" [level=3] [ref=f1e116]
+                  - paragraph [ref=f1e117]: Pick date & time
+                - generic [ref=f1e118]: ₹30
+              - generic [ref=f1e120]:
+                - generic [ref=f1e121]: 📅 Future Slot
+                - generic [ref=f1e122]: Up to 7 days
+        - generic [ref=f1e128]:
+          - text: Order will be fulfilled by Meatyns
+          - generic [ref=f1e129]: Corporate House, 208, 169, RNT Marg, near CENTRAL, Near Central Mall, Opposite Ravindra Natya, South Tukoganj, Indore, Madhya Pradesh 452001, India, Near Central Mall, Opposite Ravindra Natya, Indore, 452001
+        - generic [ref=f1e131]:
+          - img "Meatyns Special Mutton ( Liver & Fat less )" [ref=f1e133]
+          - generic [ref=f1e134]:
+            - heading "Meatyns Special Mutton ( Liver & Fat less )" [level=4] [ref=f1e135]
+            - paragraph [ref=f1e136]: "Variant: 1 kg"
+            - button "Move to wishlist" [ref=f1e137]
+          - generic [ref=f1e138]:
+            - generic [ref=f1e139]:
+              - button [ref=f1e140]
+              - generic [ref=f1e142]: "1"
+              - button [ref=f1e143]
+            - paragraph [ref=f1e146]: ₹930
+        - generic [ref=f1e147]:
+          - heading "You might also like" [level=3] [ref=f1e148]
+          - generic [ref=f1e149]:
+            - generic [ref=f1e151] [cursor=pointer]:
+              - generic [ref=f1e152]:
+                - img "Mutton Paya with small pieces" [ref=f1e153]
+                - button [ref=f1e154]
+              - generic [ref=f1e157]:
+                - heading "Mutton Paya with small pieces" [level=4] [ref=f1e159]
+                - generic [ref=f1e160]:
+                  - generic [ref=f1e161]: ₹950
+                  - button "Add to Cart" [ref=f1e164]
+            - generic [ref=f1e171] [cursor=pointer]:
+              - generic [ref=f1e172]:
+                - img "Mutton Paya ( Whole ) Pack Of 4" [ref=f1e173]
+                - button [ref=f1e174]
+              - generic [ref=f1e177]:
+                - heading "Mutton Paya ( Whole ) Pack Of 4" [level=4] [ref=f1e179]
+                - generic [ref=f1e180]:
+                  - generic [ref=f1e181]: ₹900
+                  - button "Add to Cart" [ref=f1e184]
+            - generic [ref=f1e191] [cursor=pointer]:
+              - generic [ref=f1e192]:
+                - img "Mutton Chops( Ribcage & T-Bone Steak )" [ref=f1e193]
+                - button [ref=f1e194]
+              - generic [ref=f1e197]:
+                - heading "Mutton Chops( Ribcage & T-Bone Steak )" [level=4] [ref=f1e199]
+                - generic [ref=f1e200]:
+                  - generic [ref=f1e201]: ₹880
+                  - button "Add to Cart" [ref=f1e204]
+            - generic [ref=f1e211] [cursor=pointer]:
+              - generic [ref=f1e212]:
+                - img "Meatyns Regular (Liver & Fat Add)" [ref=f1e213]
+                - button [ref=f1e214]
+              - generic [ref=f1e217]:
+                - heading "Meatyns Regular (Liver & Fat Add)" [level=4] [ref=f1e219]
+                - generic [ref=f1e220]:
+                  - generic [ref=f1e221]: ₹850
+                  - button "Add to Cart" [ref=f1e224]
+            - generic [ref=f1e231] [cursor=pointer]:
+              - generic [ref=f1e232]:
+                - img "Premium Goat Curry Cut (Long Shoulder, Boneless & Goat Shank)" [ref=f1e233]
+                - button [ref=f1e234]
+              - generic [ref=f1e237]:
+                - heading "Premium Goat Curry Cut (Long Shoulder, Boneless & Goat Shank)" [level=4] [ref=f1e239]
+                - generic [ref=f1e240]:
+                  - generic [ref=f1e241]: ₹790
+                  - button "Add to Cart" [ref=f1e244]
+            - generic [ref=f1e251] [cursor=pointer]:
+              - generic [ref=f1e252]:
+                - img "Mutton Liver" [ref=f1e253]
+                - button [ref=f1e254]
+              - generic [ref=f1e257]:
+                - heading "Mutton Liver" [level=4] [ref=f1e259]
+                - generic [ref=f1e260]:
+                  - generic [ref=f1e261]: ₹790
+                  - button "Add to Cart" [ref=f1e264]
+            - generic [ref=f1e271] [cursor=pointer]:
+              - generic [ref=f1e272]:
+                - img "Goat Curry Cut" [ref=f1e273]
+                - button [ref=f1e274]
+              - generic [ref=f1e277]:
+                - heading "Goat Curry Cut" [level=4] [ref=f1e279]
+                - generic [ref=f1e280]:
+                  - generic [ref=f1e281]: ₹860
+                  - button "Add to Cart" [ref=f1e284]
+        - generic [ref=f1e290]:
+          - generic [ref=f1e291]:
+            - heading "Available Coupons" [level=3] [ref=f1e296]
+            - button "See All" [ref=f1e297]
+          - paragraph [ref=f1e298]: No coupons available right now.
+        - generic [ref=f1e299]:
+          - heading "Tip your delivery partner" [level=3] [ref=f1e303]
+          - paragraph [ref=f1e304]: 100% of the tip goes to them
+          - generic [ref=f1e305]:
+            - button "No Tip" [ref=f1e306]
+            - button "Rs.10" [ref=f1e307]
+            - button "Rs.20" [ref=f1e308]
+            - button "Rs.30" [ref=f1e309]
+        - generic [ref=f1e310]:
+          - heading "Order Summary" [level=3] [ref=f1e316]
+          - generic [ref=f1e317]:
+            - generic [ref=f1e318]:
+              - generic [ref=f1e319]: Item Total
+              - generic [ref=f1e320]: ₹930
+            - generic [ref=f1e321]:
+              - generic [ref=f1e322]: Delivery Fee
+              - generic [ref=f1e323]: ₹30
+            - generic [ref=f1e324]: "Distance: 0.03 km (billed 0.03 km)"
+            - generic [ref=f1e326]:
+              - generic [ref=f1e327]: Handling Fee
+              - generic [ref=f1e328]: ₹0
+            - generic [ref=f1e329]:
+              - generic [ref=f1e330]: Tax
+              - generic [ref=f1e331]: ₹0
+            - generic [ref=f1e333]:
+              - generic [ref=f1e334]:
+                - generic [ref=f1e335]: Total Payable
+                - generic [ref=f1e336]: Safe & Secure Payment
+              - generic [ref=f1e337]: ₹960
+        - generic [ref=f1e339]:
+          - generic [ref=f1e345]:
+            - heading "Use Wallet Balance" [level=3] [ref=f1e346]
+            - paragraph [ref=f1e347]: "Available: ₹200"
+          - button [ref=f1e348]
+        - generic [ref=f1e350]:
+          - heading "Payment Method" [level=3] [ref=f1e351]
+          - generic [ref=f1e352]:
+            - button [ref=f1e353]:
+              - generic [ref=f1e357]:
+                - paragraph [ref=f1e358]: Pay Online (Razorpay)
+                - paragraph [ref=f1e359]: Cards, UPI, NetBanking
+            - button [active] [ref=f1e361]:
+              - generic [ref=f1e366]:
+                - paragraph [ref=f1e367]: Cash on Delivery
+                - paragraph [ref=f1e368]: Pay after delivery
+      - generic [ref=f1e373]:
+        - generic:
+          - generic:
+            - text: Slide to Pay
+            - generic: "|"
+            - generic: ₹960
+  - region "Notifications alt+T"

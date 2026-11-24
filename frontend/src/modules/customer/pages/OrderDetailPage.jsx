@@ -170,6 +170,82 @@ const OrderDetailPage = () => {
   const [handoffOtp, setHandoffOtp] = useState(null);
   const [reordering, setReordering] = useState(false);
   const [clockTick, setClockTick] = useState(Date.now());
+  const [cancelDeadlineMs, setCancelDeadlineMs] = useState(null);
+  const [cancelNowMs, setCancelNowMs] = useState(Date.now());
+  const [cancelling, setCancelling] = useState(false);
+
+  // Customer cancel window: server sends endsAt/serverNow; convert to a local
+  // deadline so a wrong device clock doesn't matter.
+  // Only recomputed when the server sends a new window (not on status pushes),
+  // so a socket status update never resets the countdown.
+  useEffect(() => {
+    const cw = order?.cancelWindow;
+    if (!cw?.endsAt || !cw?.serverNow) {
+      setCancelDeadlineMs(null);
+      return;
+    }
+    const remaining = new Date(cw.endsAt).getTime() - new Date(cw.serverNow).getTime();
+    setCancelDeadlineMs(Date.now() + remaining);
+  }, [order?.cancelWindow]);
+
+  const cancellableNow = [
+    "SELLER_PENDING",
+    "SELLER_ACCEPTED",
+    "DELIVERY_SEARCH",
+    "DELIVERY_ASSIGNED",
+  ].includes(String(order?.workflowStatus || "").toUpperCase());
+
+  useEffect(() => {
+    if (!cancelDeadlineMs) return undefined;
+    setCancelNowMs(Date.now());
+    const id = setInterval(() => setCancelNowMs(Date.now()), 1000);
+    return () => clearInterval(id);
+  }, [cancelDeadlineMs]);
+
+  const cancelRemainingSec = cancelDeadlineMs && cancellableNow
+    ?Math.max(0, Math.ceil((cancelDeadlineMs - cancelNowMs) / 1000))
+    : 0;
+
+  const handleCancelOrder = async () => {
+    if (cancelling || !order) return;
+    if (!window.confirm("Are you sure you want to cancel this order?")) return;
+    setCancelling(true);
+    try {
+      await customerApi.cancelOrder(order.orderId || orderId, {
+        reason: "Cancelled by customer",
+      });
+      toast.success("Order cancelled");
+      setOrder((prev) =>
+        prev
+          ? { ...prev, workflowStatus: "CANCELLED", status: "cancelled", cancelWindow: null }
+          : prev,
+      );
+    } catch (err) {
+      toast.error(err?.response?.data?.message || "Unable to cancel order");
+    } finally {
+      setCancelling(false);
+    }
+  };
+
+  const cancelBanner =
+    cancelRemainingSec > 0 ? (
+      <div className="bg-rose-50 border border-rose-200 rounded-2xl px-4 py-3 flex items-center justify-between gap-3">
+        <div className="min-w-0">
+          <p className="text-xs font-bold text-rose-800">Changed your mind?</p>
+          <p className="text-[11px] text-rose-700/80 font-medium">
+            You can cancel for{" "}
+            {String(Math.floor(cancelRemainingSec / 60)).padStart(2, "0")}:
+            {String(cancelRemainingSec % 60).padStart(2, "0")} more
+          </p>
+        </div>
+        <button
+          onClick={handleCancelOrder}
+          disabled={cancelling}
+          className="px-4 py-2 rounded-xl text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 disabled:opacity-70 shrink-0">
+          {cancelling ? "Cancelling..." : "Cancel Order"}
+        </button>
+      </div>
+    ) : null;
   const parsedReturnWindowMinutes = parseInt(
     import.meta.env.VITE_RETURN_WINDOW_MINUTES || "2",
     10,
@@ -935,6 +1011,7 @@ const OrderDetailPage = () => {
 
         <div className="max-w-2xl mx-auto px-4 py-4 space-y-4">
           <EnableOrderNotificationsPrompt />
+          {cancelBanner}
           {/* Payment Required Card - Only for Online Pending Orders */}
           {isAwaitingOnlinePayment && (
             <motion.div
@@ -1423,6 +1500,7 @@ const OrderDetailPage = () => {
             {/* Left Column: Order Header & Vertical Timeline Tracker */}
             <div className="col-span-7 xl:col-span-8 space-y-4">
               <EnableOrderNotificationsPrompt />
+              {cancelBanner}
               {/* Order Info & Status Badge Row */}
               <div className="flex items-center justify-between">
                 <div>

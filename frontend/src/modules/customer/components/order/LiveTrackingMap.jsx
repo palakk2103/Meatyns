@@ -253,8 +253,8 @@ const LiveTrackingMap = memo(({
           Waiting for seller to accept
         </h3>
         <p className="text-sm text-gray-500 text-center max-w-sm font-medium">
-          The store has up to 60 seconds to confirm. If they don&apos;t, your
-          order will be cancelled automatically.
+          The store will confirm your order shortly. If they don&apos;t in
+          time, your order will be cancelled automatically.
         </p>
       </div>
     );

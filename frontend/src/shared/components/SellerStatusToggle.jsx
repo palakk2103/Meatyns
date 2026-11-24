@@ -8,6 +8,8 @@ const SellerStatusToggle = ({ className = "" }) => {
   const [isOnline, setIsOnline] = useState(true);
   const [isStoreOpen, setIsStoreOpen] = useState(true);
   const [isManualOverride, setIsManualOverride] = useState(false);
+  const [adminClosed, setAdminClosed] = useState(false);
+  const [adminClosedReason, setAdminClosedReason] = useState("");
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(true);
 
@@ -21,6 +23,8 @@ const SellerStatusToggle = ({ className = "" }) => {
           setIsOnline(Boolean(seller.isOnline ?? true));
           setIsStoreOpen(Boolean(seller.isStoreOpen ?? true));
           setIsManualOverride(Boolean(seller.isManualOverride ?? false));
+          setAdminClosed(Boolean(seller.adminClosed));
+          setAdminClosedReason(seller.adminClosedReason || "");
         }
       } catch (err) {
         console.error("Error fetching seller store status:", err);
@@ -34,6 +38,12 @@ const SellerStatusToggle = ({ className = "" }) => {
 
   const handleToggle = async () => {
     if (loading) return;
+    if (adminClosed) {
+      toast.error(
+        `Store closed by admin${adminClosedReason ? `: ${adminClosedReason}` : ""}. Contact admin to reopen.`,
+      );
+      return;
+    }
     const nextStatus = !isOnline;
     setLoading(true);
     try {
@@ -69,14 +79,20 @@ const SellerStatusToggle = ({ className = "" }) => {
     <div className={cn("flex items-center gap-2", className)}>
       <button
         onClick={handleToggle}
-        disabled={loading}
-        title={isStoreOpen ? "Click to set Store Offline" : "Click to set Store Online"}
+        disabled={loading || adminClosed}
+        title={
+          adminClosed
+            ? `Closed by admin${adminClosedReason ? `: ${adminClosedReason}` : ""}`
+            : isStoreOpen
+              ? "Click to set Store Offline"
+              : "Click to set Store Online"
+        }
         className={cn(
           "relative flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1.5 rounded-full font-bold text-xs transition-all duration-300 border shadow-sm select-none active:scale-95",
           isStoreOpen
             ? "bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100"
             : "bg-rose-50 text-rose-700 border-rose-200 hover:bg-rose-100",
-          loading && "opacity-70 cursor-not-allowed"
+          (loading || adminClosed) && "opacity-70 cursor-not-allowed"
         )}
       >
         <span className="relative flex h-2.5 w-2.5">
@@ -95,7 +111,7 @@ const SellerStatusToggle = ({ className = "" }) => {
         </span>
 
         <span className="font-extrabold uppercase tracking-wide sm:tracking-wider text-[10px] sm:text-[11px] whitespace-nowrap">
-          {isStoreOpen ? "Store Open" : "Shop Closed"}
+          {adminClosed ? "Closed by Admin" : isStoreOpen ? "Store Open" : "Shop Closed"}
         </span>
 
         {/* Toggle Pill Switch visual */}
@@ -114,7 +130,7 @@ const SellerStatusToggle = ({ className = "" }) => {
         </div>
       </button>
 
-      {isManualOverride && (
+      {isManualOverride && !adminClosed && (
         <span className="hidden xl:inline-flex items-center gap-1 text-[10px] font-semibold text-slate-400 bg-slate-100 px-2 py-0.5 rounded-md" title="Manual Toggle is overriding schedule">
           <Power className="w-3 h-3 text-amber-500" /> Manual Override
         </span>

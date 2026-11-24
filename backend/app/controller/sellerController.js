@@ -7,6 +7,9 @@ import { handleResponse, calculateDistance } from "../utils/helper.js";
 import mongoose from "mongoose";
 import { invalidateSellerName } from "../services/entityNameCache.js";
 import { getSellerCurrentOpenStatus } from "../services/storeStatusService.js";
+import { debitWallet, getOrCreateWallet } from "../services/finance/walletService.js";
+import { LEDGER_TRANSACTION_TYPE, OWNER_TYPE } from "../constants/finance.js";
+import { roundCurrency } from "../utils/money.js";
 
 /* ===============================
    GET NEARBY SELLERS
@@ -74,51 +77,61 @@ export const getNearbySellers = async (req, res) => {
 export const requestWithdrawal = async (req, res) => {
   try {
     const sellerId = req.user.id;
-    const { amount } = req.body;
+    const amount = roundCurrency(Number(req.body?.amount));
 
-    if (!amount || amount <= 0) {
+    if (!Number.isFinite(amount) || amount <= 0) {
       return handleResponse(res, 400, "Please enter a valid amount");
     }
 
-    // 1. Calculate current available balance
-    const transactions = await Transaction.find({
-      user: sellerId,
-      userModel: "Seller",
-    })
-      .select("status amount type")
-      .lean();
+    // The canonical Wallet is the source of truth: only `availableBalance`
+    // (post-commission, post return-window hold) can be withdrawn. The amount
+    // is debited atomically at request time so the same money can't be
+    // requested twice; a rejected request credits it back (see
+    // walletAdminService.updateWithdrawalStatusById).
+    const reference = `WDR-${Date.now()}`;
+    const session = await mongoose.startSession();
+    let withdrawal;
+    try {
+      await session.withTransaction(async () => {
+        await debitWallet({
+          ownerType: OWNER_TYPE.SELLER,
+          ownerId: sellerId,
+          amount,
+          session,
+          ledgerType: LEDGER_TRANSACTION_TYPE.WITHDRAWAL,
+          ledgerReference: reference,
+          ledgerDescription: "Seller withdrawal requested",
+          metadata: { flow: "seller_withdrawal_request" },
+        });
 
-    const settledBalance = transactions
-      .filter((t) => t.status === "Settled")
-      .reduce((acc, t) => acc + (t.amount || 0), 0);
-
-    const pendingPayouts = transactions
-      .filter(
-        (t) =>
-          t.type === "Withdrawal" &&
-          (t.status === "Pending" || t.status === "Processing"),
-      )
-      .reduce((acc, t) => acc + Math.abs(t.amount || 0), 0);
-
-    const availableBalance = settledBalance - pendingPayouts;
-
-    if (amount > availableBalance) {
-      return handleResponse(
-        res,
-        400,
-        `Insufficient balance. Available: ₹${availableBalance}`,
-      );
+        [withdrawal] = await Transaction.create(
+          [
+            {
+              user: sellerId,
+              userModel: "Seller",
+              type: "Withdrawal",
+              amount: -amount,
+              status: "Pending",
+              reference,
+              meta: { walletDebited: true },
+            },
+          ],
+          { session },
+        );
+      });
+    } catch (error) {
+      if (/^Insufficient/i.test(error.message || "")) {
+        const wallet = await getOrCreateWallet(OWNER_TYPE.SELLER, sellerId);
+        return handleResponse(
+          res,
+          400,
+          `Insufficient balance. Available: ₹${roundCurrency(wallet.availableBalance || 0)}`,
+        );
+      }
+      throw error;
+    } finally {
+      await session.endSession();
     }
-
-    // 2. Create Withdrawal Transaction
-    const withdrawal = await Transaction.create({
-      user: sellerId,
-      userModel: "Seller",
-      type: "Withdrawal",
-      amount: -Math.abs(amount),
-      status: "Pending",
-      reference: `WDR-${Date.now()}`,
-    });
 
     return handleResponse(
       res,
@@ -225,6 +238,14 @@ export const toggleStoreStatus = async (req, res) => {
     const seller = await Seller.findById(req.user.id);
     if (!seller) {
       return handleResponse(res, 404, "Seller not found");
+    }
+
+    if (seller.adminClosed) {
+      return handleResponse(
+        res,
+        403,
+        "Your store has been closed by admin. Please contact admin to reopen.",
+      );
     }
 
     const { isOnline } = req.body;

@@ -61,7 +61,7 @@ export async function getSellerLocationsData({
   const baseQuery = filters.length ? { $and: filters } : {};
   const sellers = await Seller.find(baseQuery)
     .select(
-      "_id name shopName email phone category address location serviceRadius isActive isVerified isOnline isManualOverride storeHours applicationStatus reviewedAt createdAt rejectionReason",
+      "_id name shopName email phone category address location serviceRadius isActive isVerified isOnline isManualOverride adminClosed adminClosedReason adminClosedAt storeHours applicationStatus reviewedAt createdAt rejectionReason",
     )
     .lean();
 
@@ -441,6 +441,10 @@ export async function getActiveSellersData({
       fulfillmentRate,
       productCount,
       activeProductCount,
+      isStoreOpen: getSellerCurrentOpenStatus(seller),
+      adminClosed: seller.adminClosed === true,
+      adminClosedReason: seller.adminClosedReason || "",
+      adminClosedAt: seller.adminClosedAt || null,
       serviceRadius: normalizeServiceRadiusKm(seller.serviceRadius),
       location: getSellerDisplayLocation(seller),
       city: seller.address || "Location not set",

@@ -92,9 +92,9 @@ const Withdrawals = () => {
 
     const handleSubmitRequest = async (e) => {
         e.preventDefault();
-        const settled = Number(data?.balances?.settledBalance ?? 0);
-        const pending = Math.abs(Number(data?.balances?.pendingPayouts ?? 0));
-        const available = Math.max(0, settled - pending);
+        // Wallet available balance is already net of pending withdrawals
+        // (they're debited when requested).
+        const available = Math.max(0, Number(data?.balances?.availableBalance ?? 0));
 
         if (!amount || parseFloat(amount) <= 0 || parseFloat(amount) > available) {
             toast.error(`Please enter a valid amount within your available balance (₹${available}).`);

@@ -167,6 +167,16 @@ function eventDefinition(eventType) {
                 ? `Order #${payload.orderId} has been cancelled.`
                 : "An order has been cancelled."),
           },
+          {
+            role: NOTIFICATION_ROLES.DELIVERY,
+            recipientIds: (payload) => normalizeIdList(payload.deliveryId),
+            title: () => "Order Cancelled",
+            body: (payload) =>
+              payload.deliveryMessage ||
+              (payload.orderId
+                ? `Order #${payload.orderId} has been cancelled.`
+                : "An order has been cancelled."),
+          },
         ],
       };
     case NOTIFICATION_EVENTS.REFUND_INITIATED:
@@ -384,12 +394,41 @@ function eventDefinition(eventType) {
           payload.message ||
           "You left fresh meat cuts in your cart! Complete your order before items run out of stock.",
       };
+    case NOTIFICATION_EVENTS.STORE_CLOSED_BY_ADMIN:
+      return {
+        role: NOTIFICATION_ROLES.SELLER,
+        recipientIds: (payload) => normalizeIdList(payload.sellerId || payload.sellerIds),
+        title: () => "Store closed by admin",
+        body: (payload) =>
+          `Your store has been closed by admin${
+            payload.reason ? `: ${truncateText(payload.reason, 100)}` : ""
+          }. You will not receive new orders until it is reopened.`,
+      };
+    case NOTIFICATION_EVENTS.STORE_REOPENED_BY_ADMIN:
+      return {
+        role: NOTIFICATION_ROLES.SELLER,
+        recipientIds: (payload) => normalizeIdList(payload.sellerId || payload.sellerIds),
+        title: () => "Store reopened",
+        body: () => "Admin has reopened your store. You can now receive orders again.",
+      };
     default:
       return null;
   }
 }
 
 function eventData(eventType, payload = {}, role) {
+  if (
+    eventType === NOTIFICATION_EVENTS.STORE_CLOSED_BY_ADMIN ||
+    eventType === NOTIFICATION_EVENTS.STORE_REOPENED_BY_ADMIN
+  ) {
+    return {
+      eventType,
+      link: `${getFrontendBaseUrl()}/seller/profile`,
+      reason: String(payload.reason || "").trim() || undefined,
+      ...(payload.data || {}),
+    };
+  }
+
   if (eventType === NOTIFICATION_EVENTS.LOW_STOCK_ALERT) {
     const productId = String(payload.productId || "").trim() || undefined;
     return {

@@ -1,0 +1,20 @@
+- generic [ref=f11e2]:
+  - generic [ref=f11e3]:
+    - main [ref=f11e4]
+    - generic [ref=f11e8]:
+      - img "Meatyns Chef Mascot" [ref=f11e10]
+      - img "Meatyns" [ref=f11e11]
+      - paragraph [ref=f11e14]: Click it & Get it
+      - paragraph [ref=f11e16]: Fresh · Fast · Reliable
+    - generic [ref=f11e17]:
+      - link "Home" [ref=f11e18] [cursor=pointer]:
+        - /url: /
+      - link "Categories" [ref=f11e25] [cursor=pointer]:
+        - /url: /categories
+      - link "Cart" [ref=f11e34] [cursor=pointer]:
+        - /url: /cart
+      - link "Orders" [ref=f11e42] [cursor=pointer]:
+        - /url: /orders
+      - link "Account" [ref=f11e50] [cursor=pointer]:
+        - /url: /profile
+  - region "Notifications alt+T"

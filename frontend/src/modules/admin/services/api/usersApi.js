@@ -19,6 +19,10 @@ export const adminUsersApi = {
     removeWalletCoins: (data) => axiosInstance.post('/admin/wallet/remove-coins', data),
 
     getSellers: (params) => axiosInstance.get('/admin/sellers', { params }),
+    setSellerStoreClosure: (id, data) =>
+        axiosInstance.patch(`/admin/sellers/${id}/store-closure`, data),
+    setBulkStoreClosure: (data) =>
+        axiosInstance.patch('/admin/sellers/store-closure', data),
     getActiveSellers: (params) =>
         axiosInstance.get('/admin/sellers/active', { params }),
     getSellerLocations: (params) =>

@@ -600,7 +600,7 @@ export const getProducts = async (req, res) => {
       // Fetch full seller docs for open status check
       const sellerDocs = sellerIdSet.size > 0
         ? await Seller.find({ _id: { $in: [...sellerIdSet] } })
-            .select("_id shopName isOnline isManualOverride storeHours isActive applicationStatus")
+            .select("_id shopName isOnline isManualOverride adminClosed storeHours isActive applicationStatus")
             .lean()
         : [];
       
@@ -1411,7 +1411,7 @@ export const getProductById = async (req, res) => {
           .populate("headerId", "name")
           .populate("categoryId", "name")
           .populate("subcategoryId", "name")
-          .populate("sellerId", "shopName isOnline isManualOverride storeHours isActive applicationStatus")
+          .populate("sellerId", "shopName isOnline isManualOverride adminClosed storeHours isActive applicationStatus")
           .lean(),
       getTTL("product"),
     );

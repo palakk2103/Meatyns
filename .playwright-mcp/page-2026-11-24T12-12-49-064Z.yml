@@ -1,0 +1,435 @@
+- generic [ref=f6e2]:
+  - generic [ref=f6e3]:
+    - main [ref=f6e4]:
+      - generic [ref=f6e54]:
+        - generic [ref=f6e55]: Search "mutton"
+        - generic [ref=f6e71]:
+          - generic "Mobile Header Categories" [ref=f6e72]:
+            - generic [ref=f6e74]:
+              - button "All" [ref=f6e75] [cursor=pointer]
+              - button "Mutton Mutton" [ref=f6e82] [cursor=pointer]:
+                - generic [ref=f6e83]:
+                  - img "Mutton"
+                - generic [ref=f6e84]: Mutton
+              - button "Chicken Chicken" [ref=f6e85] [cursor=pointer]:
+                - generic [ref=f6e86]:
+                  - img "Chicken"
+                - generic [ref=f6e87]: Chicken
+              - button "Eggs Eggs" [ref=f6e88] [cursor=pointer]:
+                - generic [ref=f6e89]:
+                  - img "Eggs"
+                - generic [ref=f6e90]: Eggs
+              - button "Fish & Seafood Fish & Seafood" [ref=f6e91] [cursor=pointer]:
+                - generic [ref=f6e92]:
+                  - img "Fish & Seafood"
+                - generic [ref=f6e93]: Fish & Seafood
+              - button "Prawns Prawns" [ref=f6e94] [cursor=pointer]:
+                - generic [ref=f6e95]:
+                  - img "Prawns"
+                - generic [ref=f6e96]: Prawns
+              - button "Cold Cuts Cold Cuts" [ref=f6e97] [cursor=pointer]:
+                - generic [ref=f6e98]:
+                  - img "Cold Cuts"
+                - generic [ref=f6e99]: Cold Cuts
+              - button "Ready-to-Cook Ready-to-Cook" [ref=f6e100] [cursor=pointer]:
+                - generic [ref=f6e101]:
+                  - img "Ready-to-Cook"
+                - generic [ref=f6e102]: Ready-to-Cook
+              - button "Ready-to-Eat / Spreads Ready-to-Eat / Spreads" [ref=f6e103] [cursor=pointer]:
+                - generic [ref=f6e104]:
+                  - img "Ready-to-Eat / Spreads"
+                - generic [ref=f6e105]: Ready-to-Eat / Spreads
+              - button "Scroll more categories" [ref=f6e106] [cursor=pointer]
+          - generic [ref=f6e109]:
+            - generic [ref=f6e110]:
+              - generic [ref=f6e115]: From
+              - generic "Meatyns, Near Central Mall, Opposite Ravindra Natya, Indore" [ref=f6e116]: Meatyns
+            - generic [ref=f6e117]:
+              - generic [ref=f6e121]: 50 m
+              - generic [ref=f6e122]: from your address
+            - generic [ref=f6e123]:
+              - generic [ref=f6e127]: Delivery in
+              - generic [ref=f6e128]: 15–30 mins
+          - generic [ref=f6e132] [cursor=pointer]:
+            - img "Promotion Banner"
+          - generic [ref=f6e135]:
+            - generic [ref=f6e136]: 100% Fresh & Hygienic Meat
+            - generic [ref=f6e137]: ✦
+            - generic [ref=f6e138]: Farm to Fork — Same Day Delivery
+            - generic [ref=f6e139]: ✦
+            - generic [ref=f6e140]: Premium Cuts, Chilled & Sourced Daily
+            - generic [ref=f6e141]: ✦
+            - generic [ref=f6e142]: Quality Assured • Safe • Antibiotic-Free
+            - generic [ref=f6e143]: ✦
+            - generic [ref=f6e144]: 100% Fresh & Hygienic Meat
+            - generic [ref=f6e145]: ✦
+            - generic [ref=f6e146]: Farm to Fork — Same Day Delivery
+            - generic [ref=f6e147]: ✦
+            - generic [ref=f6e148]: Premium Cuts, Chilled & Sourced Daily
+            - generic [ref=f6e149]: ✦
+            - generic [ref=f6e150]: Quality Assured • Safe • Antibiotic-Free
+            - generic [ref=f6e151]: ✦
+          - generic [ref=f6e154]:
+            - generic [ref=f6e155] [cursor=pointer]:
+              - generic [ref=f6e156]:
+                - img "Mutton"
+              - generic [ref=f6e157]: Mutton
+            - generic [ref=f6e158] [cursor=pointer]:
+              - generic [ref=f6e159]:
+                - img "Chicken"
+              - generic [ref=f6e160]: Chicken
+            - generic [ref=f6e161] [cursor=pointer]:
+              - generic [ref=f6e162]:
+                - img "Eggs"
+              - generic [ref=f6e163]: Eggs
+            - generic [ref=f6e164] [cursor=pointer]:
+              - generic [ref=f6e165]:
+                - img "Fish & Seafood"
+              - generic [ref=f6e166]: Fish & Seafood
+            - generic [ref=f6e167] [cursor=pointer]:
+              - generic [ref=f6e168]:
+                - img "Prawns"
+              - generic [ref=f6e169]: Prawns
+            - generic [ref=f6e170] [cursor=pointer]:
+              - generic [ref=f6e171]:
+                - img "Cold Cuts"
+              - generic [ref=f6e172]: Cold Cuts
+            - generic [ref=f6e173] [cursor=pointer]:
+              - generic [ref=f6e174]:
+                - img "Ready-to-Cook"
+              - generic [ref=f6e175]: Ready-to-Cook
+            - generic [ref=f6e176] [cursor=pointer]:
+              - generic [ref=f6e177]:
+                - img "Ready-to-Eat / Spreads"
+              - generic [ref=f6e178]: Ready-to-Eat / Spreads
+          - generic [ref=f6e179]:
+            - generic [ref=f6e180]:
+              - generic [ref=f6e181]:
+                - heading "Hot Deals" [level=2] [ref=f6e185]
+                - button "View All →" [ref=f6e187] [cursor=pointer]:
+                  - generic [ref=f6e188]: View All
+                  - generic [ref=f6e189]: →
+              - generic [ref=f6e190]:
+                - generic [ref=f6e191] [cursor=pointer]:
+                  - generic [ref=f6e192]:
+                    - img "Meatyns Special Mutton ( Liver & Fat less )" [ref=f6e193]
+                    - generic [ref=f6e194]: Hot Deal
+                    - button [ref=f6e195]
+                  - generic [ref=f6e198]:
+                    - generic [ref=f6e199]:
+                      - heading "Meatyns Special Mutton ( Liver & Fat less )" [level=3] [ref=f6e200]
+                      - paragraph [ref=f6e201]: 1 kg
+                    - generic [ref=f6e202]:
+                      - generic [ref=f6e203]: ₹1094
+                      - generic [ref=f6e204]: ₹930
+                      - generic [ref=f6e205]: 15% OFF
+                    - generic [ref=f6e207]:
+                      - button [ref=f6e208]
+                      - generic [ref=f6e210]: "1"
+                      - button [ref=f6e211]
+                - generic [ref=f6e213] [cursor=pointer]:
+                  - generic [ref=f6e214]:
+                    - img "Goat Curry Cut" [ref=f6e215]
+                    - generic [ref=f6e216]: Hot Deal
+                    - button [ref=f6e217]
+                  - generic [ref=f6e220]:
+                    - generic [ref=f6e221]:
+                      - heading "Goat Curry Cut" [level=3] [ref=f6e222]
+                      - paragraph [ref=f6e223]: 1 kg
+                    - generic [ref=f6e224]:
+                      - generic [ref=f6e225]: ₹1012
+                      - generic [ref=f6e226]: ₹860
+                      - generic [ref=f6e227]: 15% OFF
+                    - button "Add to Cart" [ref=f6e229]
+                - generic [ref=f6e235] [cursor=pointer]:
+                  - generic [ref=f6e236]:
+                    - img "Mutton Liver" [ref=f6e237]
+                    - generic [ref=f6e238]: Hot Deal
+                    - button [ref=f6e239]
+                  - generic [ref=f6e242]:
+                    - generic [ref=f6e243]:
+                      - heading "Mutton Liver" [level=3] [ref=f6e244]
+                      - paragraph [ref=f6e245]: 1 kg
+                    - generic [ref=f6e246]:
+                      - generic [ref=f6e247]: ₹929
+                      - generic [ref=f6e248]: ₹790
+                      - generic [ref=f6e249]: 15% OFF
+                    - button "Add to Cart" [ref=f6e251]
+                - generic [ref=f6e257] [cursor=pointer]:
+                  - generic [ref=f6e258]:
+                    - img "Premium Goat Curry Cut (Long Shoulder, Boneless & Goat Shank)" [ref=f6e259]
+                    - generic [ref=f6e260]: Hot Deal
+                    - button [ref=f6e261]
+                  - generic [ref=f6e264]:
+                    - generic [ref=f6e265]:
+                      - heading "Premium Goat Curry Cut (Long Shoulder, Boneless & Goat Shank)" [level=3] [ref=f6e266]
+                      - paragraph [ref=f6e267]: 1 kg
+                    - generic [ref=f6e268]:
+                      - generic [ref=f6e269]: ₹929
+                      - generic [ref=f6e270]: ₹790
+                      - generic [ref=f6e271]: 15% OFF
+                    - button "Add to Cart" [ref=f6e273]
+            - generic [ref=f6e279]:
+              - generic [ref=f6e280]:
+                - generic [ref=f6e286]:
+                  - heading "Our Journey & Moments" [level=2] [ref=f6e287]
+                  - paragraph [ref=f6e288]: Celebrating our milestones, achievements and memorable moments.
+                - button "View All" [ref=f6e291] [cursor=pointer]
+              - generic [ref=f6e297]:
+                - link "Meatyns Store Grand Opening Meatyns Store Grand Opening" [ref=f6e298] [cursor=pointer]:
+                  - /url: /gallery/meatyns-store-grand-opening
+                  - img "Meatyns Store Grand Opening" [ref=f6e300]
+                  - generic [ref=f6e306]: Meatyns Store Grand Opening
+                - link "Inside the Meatyns Store Inside the Meatyns Store" [ref=f6e309] [cursor=pointer]:
+                  - /url: /gallery/inside-the-meatyns-store
+                  - img "Inside the Meatyns Store" [ref=f6e311]
+                  - generic [ref=f6e317]: Inside the Meatyns Store
+                - link "Opening Day Celebrations Opening Day Celebrations" [ref=f6e320] [cursor=pointer]:
+                  - /url: /gallery/opening-day-celebrations
+                  - img "Opening Day Celebrations" [ref=f6e322]
+                  - generic [ref=f6e328]: Opening Day Celebrations
+                - link "Fresh Cuts on Display Fresh Cuts on Display" [ref=f6e331] [cursor=pointer]:
+                  - /url: /gallery/fresh-cuts-on-display
+                  - img "Fresh Cuts on Display" [ref=f6e333]
+                  - generic [ref=f6e339]: Fresh Cuts on Display
+                - link "Our Order & Pick-up Counter Our Order & Pick-up Counter" [ref=f6e342] [cursor=pointer]:
+                  - /url: /gallery/our-order-pickup-counter
+                  - img "Our Order & Pick-up Counter" [ref=f6e344]
+                  - generic [ref=f6e350]: Our Order & Pick-up Counter
+                - link "Behind the Counter Behind the Counter" [ref=f6e353] [cursor=pointer]:
+                  - /url: /gallery/behind-the-counter
+                  - img "Behind the Counter" [ref=f6e355]
+                  - generic [ref=f6e361]: Behind the Counter
+              - generic [ref=f6e364]:
+                - button "Go to page 1" [ref=f6e365] [cursor=pointer]
+                - button "Go to page 2" [ref=f6e366] [cursor=pointer]
+                - button "Go to page 3" [ref=f6e367] [cursor=pointer]
+            - generic [ref=f6e368]:
+              - generic [ref=f6e369]:
+                - generic [ref=f6e370]:
+                  - generic [ref=f6e371]: ★
+                  - heading "Top Picks for You" [level=2] [ref=f6e373]
+                - button "View All →" [ref=f6e374] [cursor=pointer]:
+                  - generic [ref=f6e375]: View All
+                  - generic [ref=f6e376]: →
+              - generic [ref=f6e377]:
+                - generic [ref=f6e378] [cursor=pointer]:
+                  - generic [ref=f6e379]:
+                    - img "Meatyns Chicken Lollipop" [ref=f6e380]
+                    - button [ref=f6e381]
+                  - generic [ref=f6e384]:
+                    - generic [ref=f6e385]:
+                      - heading "Meatyns Chicken Lollipop" [level=3] [ref=f6e386]
+                      - paragraph [ref=f6e387]: 1 kg
+                    - generic [ref=f6e388]:
+                      - generic [ref=f6e389]: ₹341
+                      - generic [ref=f6e390]: ₹290
+                      - generic [ref=f6e391]: 15% OFF
+                    - button "Add to Cart" [ref=f6e393]
+                - generic [ref=f6e399] [cursor=pointer]:
+                  - generic [ref=f6e400]:
+                    - img "Meatyns Chicken Wings" [ref=f6e401]
+                    - button [ref=f6e402]
+                  - generic [ref=f6e405]:
+                    - generic [ref=f6e406]:
+                      - heading "Meatyns Chicken Wings" [level=3] [ref=f6e407]
+                      - paragraph [ref=f6e408]: 1 kg
+                    - generic [ref=f6e409]:
+                      - generic [ref=f6e410]: ₹329
+                      - generic [ref=f6e411]: ₹280
+                      - generic [ref=f6e412]: 15% OFF
+                    - button "Add to Cart" [ref=f6e414]
+                - generic [ref=f6e420] [cursor=pointer]:
+                  - generic [ref=f6e421]:
+                    - img "Meatyns Chicken Leg - Boneless" [ref=f6e422]
+                    - button [ref=f6e423]
+                  - generic [ref=f6e426]:
+                    - generic [ref=f6e427]:
+                      - heading "Meatyns Chicken Leg - Boneless" [level=3] [ref=f6e428]
+                      - paragraph [ref=f6e429]: 1 kg
+                    - generic [ref=f6e430]:
+                      - generic [ref=f6e431]: ₹412
+                      - generic [ref=f6e432]: ₹350
+                      - generic [ref=f6e433]: 15% OFF
+                    - button "Add to Cart" [ref=f6e435]
+                - generic [ref=f6e441] [cursor=pointer]:
+                  - generic [ref=f6e442]:
+                    - img "Meatyns Whole Chicken - Skinless" [ref=f6e443]
+                    - button [ref=f6e444]
+                  - generic [ref=f6e447]:
+                    - generic [ref=f6e448]:
+                      - heading "Meatyns Whole Chicken - Skinless" [level=3] [ref=f6e449]
+                      - paragraph [ref=f6e450]: 1 kg
+                    - generic [ref=f6e451]:
+                      - generic [ref=f6e452]: ₹541
+                      - generic [ref=f6e453]: ₹460
+                      - generic [ref=f6e454]: 15% OFF
+                    - button "Add to Cart" [ref=f6e456]
+            - generic [ref=f6e462]:
+              - generic [ref=f6e463]:
+                - generic [ref=f6e464]:
+                  - generic [ref=f6e465]: 🥚
+                  - heading "Fresh Eggs" [level=2] [ref=f6e467]
+                - button "View All →" [ref=f6e468] [cursor=pointer]:
+                  - generic [ref=f6e469]: View All
+                  - generic [ref=f6e470]: →
+              - generic [ref=f6e471]:
+                - generic [ref=f6e472] [cursor=pointer]:
+                  - generic [ref=f6e473]:
+                    - img "Gavran Eggs – Pack of 6" [ref=f6e474]
+                    - button [ref=f6e475]
+                  - generic [ref=f6e478]:
+                    - generic [ref=f6e479]:
+                      - heading "Gavran Eggs" [level=3] [ref=f6e480]
+                      - paragraph [ref=f6e481]: Pack of 6
+                    - generic [ref=f6e482]: ₹90
+                    - button "Add to Cart" [ref=f6e485]
+                - generic [ref=f6e491] [cursor=pointer]:
+                  - generic [ref=f6e492]:
+                    - img "Broiler Eggs – Pack of 6" [ref=f6e493]
+                    - button [ref=f6e494]
+                  - generic [ref=f6e497]:
+                    - generic [ref=f6e498]:
+                      - heading "Broiler Eggs" [level=3] [ref=f6e499]
+                      - paragraph [ref=f6e500]: Pack of 6
+                    - generic [ref=f6e501]: ₹54
+                    - button "Add to Cart" [ref=f6e504]
+            - generic [ref=f6e510]:
+              - generic [ref=f6e511]:
+                - heading "Trending Now" [level=2] [ref=f6e517]
+                - button "View All →" [ref=f6e518] [cursor=pointer]:
+                  - generic [ref=f6e519]: View All
+                  - generic [ref=f6e520]: →
+              - generic [ref=f6e521]:
+                - generic [ref=f6e522] [cursor=pointer]:
+                  - img "Mutton" [ref=f6e524]
+                  - generic [ref=f6e525]:
+                    - heading "Mutton" [level=3] [ref=f6e526]
+                    - paragraph [ref=f6e527]: Farm Fresh & Safe
+                - generic [ref=f6e528] [cursor=pointer]:
+                  - img "Chicken" [ref=f6e530]
+                  - generic [ref=f6e531]:
+                    - heading "Chicken" [level=3] [ref=f6e532]
+                    - paragraph [ref=f6e533]: Farm Fresh & Safe
+                - generic [ref=f6e534] [cursor=pointer]:
+                  - img "Eggs" [ref=f6e536]
+                  - generic [ref=f6e537]:
+                    - heading "Eggs" [level=3] [ref=f6e538]
+                    - paragraph [ref=f6e539]: Farm Fresh & Safe
+                - generic [ref=f6e540] [cursor=pointer]:
+                  - img "Fish & Seafood" [ref=f6e542]
+                  - generic [ref=f6e543]:
+                    - heading "Fish & Seafood" [level=3] [ref=f6e544]
+                    - paragraph [ref=f6e545]: Farm Fresh & Safe
+                - generic [ref=f6e546] [cursor=pointer]:
+                  - img "Prawns" [ref=f6e548]
+                  - generic [ref=f6e549]:
+                    - heading "Prawns" [level=3] [ref=f6e550]
+                    - paragraph [ref=f6e551]: Farm Fresh & Safe
+                - generic [ref=f6e552] [cursor=pointer]:
+                  - img "Cold Cuts" [ref=f6e554]
+                  - generic [ref=f6e555]:
+                    - heading "Cold Cuts" [level=3] [ref=f6e556]
+                    - paragraph [ref=f6e557]: Farm Fresh & Safe
+            - generic [ref=f6e558]:
+              - generic [ref=f6e559]:
+                - generic [ref=f6e560]:
+                  - heading "Explore Top Categories" [level=2] [ref=f6e568]
+                  - button "View All" [ref=f6e569] [cursor=pointer]
+                - paragraph [ref=f6e573]: Find your daily essentials, fresh produce, premium meats and more — all in one place.
+              - generic [ref=f6e574]:
+                - generic [ref=f6e575] [cursor=pointer]:
+                  - generic [ref=f6e576]:
+                    - img "Mutton"
+                  - generic [ref=f6e578]:
+                    - heading "Mutton" [level=3] [ref=f6e579]
+                    - paragraph [ref=f6e580]: Fresh & Safe
+                - generic [ref=f6e584] [cursor=pointer]:
+                  - generic [ref=f6e585]:
+                    - img "Chicken"
+                  - generic [ref=f6e587]:
+                    - heading "Chicken" [level=3] [ref=f6e588]
+                    - paragraph [ref=f6e589]: Fresh & Safe
+                - generic [ref=f6e593] [cursor=pointer]:
+                  - generic [ref=f6e594]:
+                    - img "Eggs"
+                  - generic [ref=f6e596]:
+                    - heading "Eggs" [level=3] [ref=f6e597]
+                    - paragraph [ref=f6e598]: Fresh & Safe
+                - generic [ref=f6e602] [cursor=pointer]:
+                  - generic [ref=f6e603]:
+                    - img "Fish & Seafood"
+                  - generic [ref=f6e605]:
+                    - heading "Fish & Seafood" [level=3] [ref=f6e606]
+                    - paragraph [ref=f6e607]: Fresh & Safe
+                - generic [ref=f6e611] [cursor=pointer]:
+                  - generic [ref=f6e612]:
+                    - img "Prawns"
+                  - generic [ref=f6e614]:
+                    - heading "Prawns" [level=3] [ref=f6e615]
+                    - paragraph [ref=f6e616]: Fresh & Safe
+                - generic [ref=f6e620] [cursor=pointer]:
+                  - generic [ref=f6e621]:
+                    - img "Cold Cuts"
+                  - generic [ref=f6e623]:
+                    - heading "Cold Cuts" [level=3] [ref=f6e624]
+                    - paragraph [ref=f6e625]: Fresh & Safe
+                - generic [ref=f6e629] [cursor=pointer]:
+                  - generic [ref=f6e630]:
+                    - img "Ready-to-Cook"
+                  - generic [ref=f6e632]:
+                    - heading "Ready-to-Cook" [level=3] [ref=f6e633]
+                    - paragraph [ref=f6e634]: Fresh & Safe
+                - generic [ref=f6e638] [cursor=pointer]:
+                  - generic [ref=f6e639]:
+                    - img "Ready-to-Eat / Spreads"
+                  - generic [ref=f6e641]:
+                    - heading "Ready-to-Eat / Spreads" [level=3] [ref=f6e642]
+                    - paragraph [ref=f6e643]: Fresh & Safe
+              - generic [ref=f6e648]:
+                - generic [ref=f6e649]: "- PREMIUM QUALITY"
+                - heading "Freshness in Every Category" [level=3] [ref=f6e654]
+                - paragraph [ref=f6e655]: From farm to your doorstep — fresh, safe and trusted.
+                - button "Shop Now" [ref=f6e656] [cursor=pointer]
+            - generic [ref=f6e662]:
+              - generic [ref=f6e668]:
+                - generic [ref=f6e669]: 100% Fresh
+                - generic [ref=f6e670]: "& Natural"
+              - generic [ref=f6e678]:
+                - generic [ref=f6e679]: Hygienically
+                - generic [ref=f6e680]: Packed
+              - generic [ref=f6e686]:
+                - generic [ref=f6e687]: Fast Delivery
+                - generic [ref=f6e688]: 15–30 mins
+              - generic [ref=f6e693]:
+                - generic [ref=f6e694]: Quality
+                - generic [ref=f6e695]: Assured
+    - link [ref=f6e697] [cursor=pointer]:
+      - /url: /cart
+      - img "Meatyns Special Mutton ( Liver & Fat less )" [ref=f6e699]
+      - generic [ref=f6e700]:
+        - heading "View cart" [level=4] [ref=f6e701]
+        - paragraph [ref=f6e702]: 1 item
+    - generic [ref=f6e7]:
+      - img "Meatyns Chef Mascot" [ref=f6e706]
+      - img "Meatyns" [ref=f6e707]
+      - paragraph [ref=f6e11]: Click it & Get it
+      - paragraph [ref=f6e13]: Fresh · Fast · Reliable
+    - generic [ref=f6e14]:
+      - link "Home" [ref=f6e15] [cursor=pointer]:
+        - /url: /
+      - link "Categories" [ref=f6e23] [cursor=pointer]:
+        - /url: /categories
+      - link "1 Cart" [ref=f6e708] [cursor=pointer]:
+        - /url: /cart
+        - generic [ref=f6e33]:
+          - generic [ref=f6e34]: "1"
+          - generic [ref=f6e39]: Cart
+      - link "Orders" [ref=f6e40] [cursor=pointer]:
+        - /url: /orders
+      - link "Account" [ref=f6e47] [cursor=pointer]:
+        - /url: /profile
+  - region "Notifications alt+T":
+    - list:
+      - listitem [ref=f6e710]:
+        - generic [ref=f6e714]: Meatyns Special Mutton ( Liver & Fat less ) added to cart!

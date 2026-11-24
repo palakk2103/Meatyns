@@ -293,6 +293,34 @@ export async function evaluateCartServiceability({ cartItems = [], lat, lng }) {
   const unavailableItems = selected
     ? await findItemsOutsideSeller(lines, selected.sellerId)
     : await findItemsOutsideSeller(lines, null);
+
+  // Items from an outlet the admin has closed can't be ordered either (checkout
+  // rejects them), so flag them in the cart with their own reason.
+  const flagged = new Set(
+    unavailableItems.map((u) => `${u.productId}::${u.variantSku}`),
+  );
+  const lineSellerIds = Array.from(new Set(lines.map((l) => l.sellerId).filter(Boolean)));
+  if (lineSellerIds.length) {
+    const closedSellers = await Seller.find({
+      _id: { $in: lineSellerIds },
+      adminClosed: true,
+    })
+      .select("_id shopName")
+      .lean();
+    const closedById = new Map(closedSellers.map((s) => [String(s._id), s]));
+    for (const line of lines) {
+      const closed = closedById.get(line.sellerId);
+      if (!closed || flagged.has(`${line.productId}::${line.variantSku}`)) continue;
+      unavailableItems.push({
+        productId: line.productId,
+        variantSku: line.variantSku,
+        name: line.productName || "Item",
+        sellerId: line.sellerId,
+        sellerName: closed.shopName || "This store",
+        reason: "store_closed",
+      });
+    }
+  }
   return {
     selectedSellerId: selected?.sellerId || null,
     serviceable: unavailableItems.length === 0,

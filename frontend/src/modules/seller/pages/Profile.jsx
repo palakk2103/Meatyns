@@ -162,7 +162,7 @@ const SellerProfile = () => {
       setProfile((prev) => ({ ...prev, isOnline: updatedOnline }));
       toast.success(`Store is now ${updatedOnline ? "Online (Accepting Orders)" : "Offline"}`);
     } catch (error) {
-      toast.error("Failed to update store status");
+      toast.error(error.response?.data?.message || "Failed to update store status");
     }
   };
 
@@ -235,8 +235,14 @@ const SellerProfile = () => {
               </span>
               <button
                 onClick={toggleStatus}
-                className={`group flex items-center gap-2 px-3 py-1 text-xs font-semibold uppercase tracking-wide rounded-full transition-all hover:scale-105 active:scale-95 ${
-                  profile?.isOnline
+                disabled={Boolean(profile?.adminClosed)}
+                title={
+                  profile?.adminClosed
+                    ? `Closed by admin${profile.adminClosedReason ? `: ${profile.adminClosedReason}` : ""}`
+                    : undefined
+                }
+                className={`group flex items-center gap-2 px-3 py-1 text-xs font-semibold uppercase tracking-wide rounded-full transition-all hover:scale-105 active:scale-95 disabled:cursor-not-allowed disabled:hover:scale-100 ${
+                  profile?.isOnline && !profile?.adminClosed
                     ? "bg-emerald-100 text-emerald-700"
                     : "bg-rose-100 text-rose-700"
                 }`}>
@@ -245,8 +251,19 @@ const SellerProfile = () => {
                     profile?.isOnline ? "bg-emerald-500" : "bg-rose-500"
                   }`}
                 />
-                {profile?.isOnline ? "Store Online" : "Store Offline"}
+                {profile?.adminClosed
+                  ? "Closed by Admin"
+                  : profile?.isOnline
+                    ? "Store Online"
+                    : "Store Offline"}
               </button>
+              {profile?.adminClosed && (
+                <p className="w-full text-xs font-medium text-rose-600">
+                  Your store has been closed by admin
+                  {profile.adminClosedReason ? ` (${profile.adminClosedReason})` : ""}.
+                  Contact admin to reopen.
+                </p>
+              )}
             </div>
             <h1 className="text-2xl md:text-3xl font-bold text-slate-900 mb-1 break-words">
               {profile?.name}

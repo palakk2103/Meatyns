@@ -114,6 +114,40 @@ const ActiveSellers = () => {
   const [lastSyncAt, setLastSyncAt] = useState(null);
   const [refreshTick, setRefreshTick] = useState(0);
   const [selectedSeller, setSelectedSeller] = useState(null);
+  // { mode: "single" | "all", closed: boolean, seller?: object }
+  const [closureAction, setClosureAction] = useState(null);
+  const [closureReason, setClosureReason] = useState("");
+  const [closureBusy, setClosureBusy] = useState(false);
+
+  const openClosureDialog = (action) => {
+    setClosureReason("");
+    setClosureAction(action);
+  };
+
+  const submitClosure = async () => {
+    if (!closureAction) return;
+    setClosureBusy(true);
+    try {
+      const payload = {
+        closed: closureAction.closed,
+        reason: closureAction.closed ? closureReason.trim() : "",
+      };
+      if (closureAction.mode === "all") {
+        await adminApi.setBulkStoreClosure({ ...payload, all: true });
+      } else {
+        await adminApi.setSellerStoreClosure(closureAction.seller.id, payload);
+      }
+      toast.success(
+        closureAction.closed ? "Outlet(s) closed" : "Outlet(s) reopened",
+      );
+      setClosureAction(null);
+      setRefreshTick((value) => value + 1);
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Failed to update outlet status");
+    } finally {
+      setClosureBusy(false);
+    }
+  };
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -234,7 +268,19 @@ const ActiveSellers = () => {
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 flex-wrap">
+          <button
+            onClick={() => openClosureDialog({ mode: "all", closed: true })}
+            className="px-4 py-2.5 bg-rose-600 text-white rounded-xl text-xs font-bold shadow-xl hover:bg-rose-700 transition-all"
+          >
+            Close all outlets
+          </button>
+          <button
+            onClick={() => openClosureDialog({ mode: "all", closed: false })}
+            className="px-4 py-2.5 bg-brand-600 text-white rounded-xl text-xs font-bold shadow-xl hover:opacity-90 transition-all"
+          >
+            Open all outlets
+          </button>
           <div className="flex items-center gap-2 bg-slate-50 px-4 py-2 rounded-xl ring-1 ring-slate-100">
             <HiOutlineClock className="h-4 w-4 text-slate-500" />
             <span className="text-[10px] font-bold text-slate-600 uppercase tracking-widest">
@@ -453,11 +499,20 @@ const ActiveSellers = () => {
                     <td className="px-6 py-4">
                       <div className="flex flex-col gap-2">
                         <Badge
-                          variant="success"
+                          variant={seller.isStoreOpen ? "success" : "error"}
                           className="w-fit text-[8px] font-black uppercase tracking-widest"
                         >
-                          Active
+                          {seller.adminClosed
+                            ? "Closed by admin"
+                            : seller.isStoreOpen
+                              ? "Open"
+                              : "Closed"}
                         </Badge>
+                        {seller.adminClosed && seller.adminClosedReason && (
+                          <span className="text-[10px] font-semibold text-rose-500 max-w-[180px] truncate">
+                            {seller.adminClosedReason}
+                          </span>
+                        )}
                         <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
                           Last order: {seller.lastOrderLabel || "No orders yet"}
                         </span>
@@ -466,6 +521,23 @@ const ActiveSellers = () => {
 
                     <td className="px-6 py-4 text-right">
                       <div className="flex items-center justify-end gap-2">
+                        <button
+                          onClick={() =>
+                            openClosureDialog({
+                              mode: "single",
+                              closed: !seller.adminClosed,
+                              seller,
+                            })
+                          }
+                          className={cn(
+                            "px-4 py-2.5 rounded-xl text-[10px] font-bold transition-all",
+                            seller.adminClosed
+                              ? "bg-brand-50 text-brand-700 hover:bg-brand-100"
+                              : "bg-rose-50 text-rose-600 hover:bg-rose-100",
+                          )}
+                        >
+                          {seller.adminClosed ? "REOPEN" : "CLOSE"}
+                        </button>
                         <button
                           onClick={() => setSelectedSeller(seller)}
                           className="px-4 py-2.5 bg-slate-900 text-white rounded-xl text-[10px] font-bold hover:bg-slate-800 transition-all shadow-lg flex items-center gap-2"
@@ -510,6 +582,60 @@ const ActiveSellers = () => {
           loading={loading}
         />
       </div>
+
+      {closureAction && (
+        <div className="fixed inset-0 z-[130] flex items-center justify-center p-4">
+          <div
+            className="absolute inset-0 bg-slate-950/60"
+            onClick={() => !closureBusy && setClosureAction(null)}
+          />
+          <div className="relative z-10 w-full max-w-md bg-white rounded-2xl shadow-2xl p-6">
+            <h3 className="text-lg font-black text-slate-900">
+              {closureAction.mode === "all"
+                ? closureAction.closed
+                  ? "Close ALL outlets?"
+                  : "Open ALL outlets?"
+                : closureAction.closed
+                  ? `Close ${closureAction.seller.shopName}?`
+                  : `Reopen ${closureAction.seller.shopName}?`}
+            </h3>
+            <p className="text-sm text-slate-500 mt-2">
+              {closureAction.closed
+                ? "Customers will not be able to place new orders and the seller cannot reopen it. Existing orders are not affected. You must reopen it manually."
+                : "Admin closure will be removed. The outlet follows its normal seller/store-hours status again."}
+            </p>
+            {closureAction.closed && (
+              <input
+                type="text"
+                value={closureReason}
+                onChange={(event) => setClosureReason(event.target.value)}
+                maxLength={200}
+                placeholder="Reason (optional)"
+                className="mt-4 w-full px-4 py-3 bg-slate-50 rounded-xl text-sm outline-none ring-1 ring-slate-200 focus:ring-primary/30"
+              />
+            )}
+            <div className="mt-6 flex justify-end gap-3">
+              <button
+                disabled={closureBusy}
+                onClick={() => setClosureAction(null)}
+                className="px-4 py-2.5 bg-slate-100 text-slate-700 rounded-xl text-xs font-bold"
+              >
+                Cancel
+              </button>
+              <button
+                disabled={closureBusy}
+                onClick={submitClosure}
+                className={cn(
+                  "px-4 py-2.5 text-white rounded-xl text-xs font-bold disabled:opacity-60",
+                  closureAction.closed ? "bg-rose-600" : "bg-brand-600",
+                )}
+              >
+                {closureBusy ? "Saving..." : "Confirm"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <AnimatePresence>
         {selectedSeller && (

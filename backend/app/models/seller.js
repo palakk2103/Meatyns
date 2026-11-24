@@ -133,6 +133,19 @@ const sellerSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    // Admin-forced closure. Overrides seller toggle and store hours; only admin can reopen.
+    adminClosed: {
+      type: Boolean,
+      default: false,
+    },
+    adminClosedReason: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    adminClosedAt: {
+      type: Date,
+    },
     storeHours: {
       enabled: {
         type: Boolean,

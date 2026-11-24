@@ -1,0 +1,43 @@
+[     309ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[     495ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[     632ms] [LOG] [orderSocket] Socket connected, ID: JKV8CrEfoJHHg2yOAAAF @ http://localhost:5173/src/core/services/orderSocket.js:49
+[     738ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[   86371ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:7000/api/maps/geocode?address=Indore,+Madhya+Pradesh,+452001,+Indore,+Madhya+Pradesh,+452001:1
+[  122002ms] [LOG] [OrderDetailPage] Setting up Firebase subscriptions for order ORD-01M86PDS2KJFPD0NTZH5HWFZJ5 @ http://localhost:5173/src/modules/customer/pages/OrderDetailPage.jsx:375
+[  122005ms] [LOG] [tracking] Subscribing to location for order ORD-01M86PDS2KJFPD0NTZH5HWFZJ5 @ http://localhost:5173/src/core/services/trackingClient.js:20
+[  122005ms] [LOG] [tracking] Path 1: /deliveryLocations/ORD-01M86PDS2KJFPD0NTZH5HWFZJ5 @ http://localhost:5173/src/core/services/trackingClient.js:21
+[  122006ms] [LOG] [tracking] Path 2: /orders/ORD-01M86PDS2KJFPD0NTZH5HWFZJ5/rider @ http://localhost:5173/src/core/services/trackingClient.js:22
+[  122011ms] [LOG] [tracking] Subscribing to route for order ORD-01M86PDS2KJFPD0NTZH5HWFZJ5 at path /orders/ORD-01M86PDS2KJFPD0NTZH5HWFZJ5/route @ http://localhost:5173/src/core/services/trackingClient.js:154
+[  122012ms] [LOG] [OrderDetailPage] Cleaning up Firebase subscriptions for order ORD-01M86PDS2KJFPD0NTZH5HWFZJ5 @ http://localhost:5173/src/modules/customer/pages/OrderDetailPage.jsx:389
+[  122013ms] [LOG] [tracking] Unsubscribing from location for order ORD-01M86PDS2KJFPD0NTZH5HWFZJ5 @ http://localhost:5173/src/core/services/trackingClient.js:116
+[  122014ms] [LOG] [tracking] Unsubscribing from route for order ORD-01M86PDS2KJFPD0NTZH5HWFZJ5 @ http://localhost:5173/src/core/services/trackingClient.js:174
+[  122014ms] [LOG] [OrderDetailPage] Setting up Firebase subscriptions for order ORD-01M86PDS2KJFPD0NTZH5HWFZJ5 @ http://localhost:5173/src/modules/customer/pages/OrderDetailPage.jsx:375
+[  122015ms] [LOG] [tracking] Subscribing to location for order ORD-01M86PDS2KJFPD0NTZH5HWFZJ5 @ http://localhost:5173/src/core/services/trackingClient.js:20
+[  122015ms] [LOG] [tracking] Path 1: /deliveryLocations/ORD-01M86PDS2KJFPD0NTZH5HWFZJ5 @ http://localhost:5173/src/core/services/trackingClient.js:21
+[  122015ms] [LOG] [tracking] Path 2: /orders/ORD-01M86PDS2KJFPD0NTZH5HWFZJ5/rider @ http://localhost:5173/src/core/services/trackingClient.js:22
+[  122016ms] [LOG] [tracking] Subscribing to route for order ORD-01M86PDS2KJFPD0NTZH5HWFZJ5 at path /orders/ORD-01M86PDS2KJFPD0NTZH5HWFZJ5/route @ http://localhost:5173/src/core/services/trackingClient.js:154
+[  122188ms] [LOG] [DeliveryOtpDisplay] Setting up Socket.IO listeners for order ORD-01M86PDS2KJFPD0NTZH5HWFZJ5 @ http://localhost:5173/src/modules/customer/components/DeliveryOtpDisplay.jsx:47
+[  122189ms] [LOG] [DeliveryOtpDisplay] Socket connection status: true @ http://localhost:5173/src/modules/customer/components/DeliveryOtpDisplay.jsx:50
+[  122189ms] [LOG] [DeliveryOtpDisplay] Socket ID: JKV8CrEfoJHHg2yOAAAF @ http://localhost:5173/src/modules/customer/components/DeliveryOtpDisplay.jsx:51
+[  122189ms] [LOG] [orderSocket] Registering delivery:otp:generated listener @ http://localhost:5173/src/core/services/orderSocket.js:231
+[  122190ms] [LOG] [orderSocket] Registering delivery:otp:validated listener @ http://localhost:5173/src/core/services/orderSocket.js:252
+[  122191ms] [LOG] [DeliveryOtpDisplay] Setting up Socket.IO listeners for order ORD-01M86PDS2KJFPD0NTZH5HWFZJ5 @ http://localhost:5173/src/modules/customer/components/DeliveryOtpDisplay.jsx:47
+[  122191ms] [LOG] [DeliveryOtpDisplay] Socket connection status: true @ http://localhost:5173/src/modules/customer/components/DeliveryOtpDisplay.jsx:50
+[  122192ms] [LOG] [DeliveryOtpDisplay] Socket ID: JKV8CrEfoJHHg2yOAAAF @ http://localhost:5173/src/modules/customer/components/DeliveryOtpDisplay.jsx:51
+[  122192ms] [LOG] [orderSocket] Registering delivery:otp:generated listener @ http://localhost:5173/src/core/services/orderSocket.js:231
+[  122192ms] [LOG] [orderSocket] Registering delivery:otp:validated listener @ http://localhost:5173/src/core/services/orderSocket.js:252
+[  122192ms] [LOG] [orderSocket] Unregistering delivery:otp:generated listener @ http://localhost:5173/src/core/services/orderSocket.js:240
+[  122193ms] [LOG] [orderSocket] Unregistering delivery:otp:validated listener @ http://localhost:5173/src/core/services/orderSocket.js:261
+[  122193ms] [LOG] [DeliveryOtpDisplay] Setting up Socket.IO listeners for order ORD-01M86PDS2KJFPD0NTZH5HWFZJ5 @ http://localhost:5173/src/modules/customer/components/DeliveryOtpDisplay.jsx:47
+[  122194ms] [LOG] [DeliveryOtpDisplay] Socket connection status: true @ http://localhost:5173/src/modules/customer/components/DeliveryOtpDisplay.jsx:50
+[  122194ms] [LOG] [DeliveryOtpDisplay] Socket ID: JKV8CrEfoJHHg2yOAAAF @ http://localhost:5173/src/modules/customer/components/DeliveryOtpDisplay.jsx:51
+[  122194ms] [LOG] [orderSocket] Registering delivery:otp:generated listener @ http://localhost:5173/src/core/services/orderSocket.js:231
+[  122195ms] [LOG] [orderSocket] Registering delivery:otp:validated listener @ http://localhost:5173/src/core/services/orderSocket.js:252
+[  122195ms] [LOG] [orderSocket] Unregistering delivery:otp:generated listener @ http://localhost:5173/src/core/services/orderSocket.js:240
+[  122196ms] [LOG] [orderSocket] Unregistering delivery:otp:validated listener @ http://localhost:5173/src/core/services/orderSocket.js:261
+[  122196ms] [LOG] [DeliveryOtpDisplay] Setting up Socket.IO listeners for order ORD-01M86PDS2KJFPD0NTZH5HWFZJ5 @ http://localhost:5173/src/modules/customer/components/DeliveryOtpDisplay.jsx:47
+[  122196ms] [LOG] [DeliveryOtpDisplay] Socket connection status: true @ http://localhost:5173/src/modules/customer/components/DeliveryOtpDisplay.jsx:50
+[  122196ms] [LOG] [DeliveryOtpDisplay] Socket ID: JKV8CrEfoJHHg2yOAAAF @ http://localhost:5173/src/modules/customer/components/DeliveryOtpDisplay.jsx:51
+[  122196ms] [LOG] [orderSocket] Registering delivery:otp:generated listener @ http://localhost:5173/src/core/services/orderSocket.js:231
+[  122197ms] [LOG] [orderSocket] Registering delivery:otp:validated listener @ http://localhost:5173/src/core/services/orderSocket.js:252
+[  122691ms] [WARNING] [2026-11-24T11:53:01.021Z]  @firebase/database: FIREBASE WARNING: Firebase error. Please ensure that you have the URL of your Firebase Realtime Database instance configured correctly. (https://meatyns-89730-default-rtdb.firebaseio.com/)  @ http://localhost:5173/node_modules/.vite/deps/chunk-KL6C7PD7.js?v=707a6b01:1325

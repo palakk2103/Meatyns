@@ -1,0 +1,20 @@
+[     300ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[     491ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[   26780ms] [LOG] [vite] server connection lost. Polling for restart... @ http://localhost:5173/@vite/client:865
+[ 1091492ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 1091752ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/meta/pixel-config:1
+[ 1091766ms] [ERROR] Failed to fetch settings AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41) @ http://localhost:5173/src/core/context/SettingsContext.jsx:33
+[ 1091767ms] [ERROR] Failed to fetch settings AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41) @ http://localhost:5173/src/core/context/SettingsContext.jsx:33
+[ 1091768ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/settings:1
+[ 1091769ms] [ERROR] Failed to fetch profile: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41) @ http://localhost:5173/src/core/context/AuthContext.jsx:174
+[ 1091770ms] [ERROR] Failed to fetch profile: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41) @ http://localhost:5173/src/core/context/AuthContext.jsx:174
+[ 1091770ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/seller/profile:1
+[ 1091771ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/meta/pixel-config:1

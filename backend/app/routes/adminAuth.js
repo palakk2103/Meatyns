@@ -37,6 +37,7 @@ import {
     addCustomerNote,
     getSellers,
     getSellerLocations,
+    setSellerStoreClosure,
     getPlatformSettings,
     updatePlatformSettings,
     getUserWalletDetails,
@@ -212,6 +213,8 @@ router.get("/sellers", verifyToken, allowRoles("admin"), getSellers);
 router.get("/sellers/locations", verifyToken, allowRoles("admin"), getSellerLocations);
 router.get("/sellers/active", verifyToken, allowRoles("admin"), getActiveSellers);
 router.get("/sellers/pending", verifyToken, allowRoles("admin"), getPendingSellers);
+router.patch("/sellers/store-closure", verifyToken, allowRoles("admin"), setSellerStoreClosure);
+router.patch("/sellers/:id/store-closure", verifyToken, allowRoles("admin"), setSellerStoreClosure);
 router.patch("/sellers/approve/:id", verifyToken, allowRoles("admin"), approveSellerApplication);
 router.delete("/sellers/reject/:id", verifyToken, allowRoles("admin"), rejectSellerApplication);
 

@@ -156,6 +156,12 @@ const Orders = () => {
                 location: order.address?.location || null,
                 paymentInfo: getPaymentInfo(order),
                 payment: `${getPaymentInfo(order).modeLabel} - ${getPaymentInfo(order).statusLabel}`,
+                // What the seller will actually receive for this order (after
+                // commission), frozen on the order at checkout.
+                sellerEarning:
+                    order.paymentBreakdown?.sellerPayoutTotal != null
+                        ? Number(order.paymentBreakdown.sellerPayoutTotal)
+                        : null,
                 deliveryMethod: order.deliveryMethod || 'NORMAL',
                 scheduledDate: order.scheduledDate || null,
                 scheduledStartTime: order.scheduledStartTime || null,
@@ -1026,6 +1032,19 @@ const Orders = () => {
                                                         <HiOutlineBanknotes className="h-5 w-5 text-brand-400" />
                                                         <span className="text-xs font-bold tracking-tight">{selectedOrder.payment}</span>
                                                     </div>
+                                                    {selectedOrder.sellerEarning != null && (
+                                                        <div className="mt-3 pt-3 border-t border-white/10">
+                                                            <div className="flex justify-between items-center text-xs">
+                                                                <span className="font-bold text-slate-300">You will receive</span>
+                                                                <span className="font-black text-emerald-400">₹{selectedOrder.sellerEarning.toFixed(2)}</span>
+                                                            </div>
+                                                            <p className="text-[10px] font-medium text-slate-400 mt-1.5 leading-snug">
+                                                                {selectedOrder.paymentInfo?.isCod
+                                                                    ? 'Customer pays cash to the delivery partner. Your share is added to your wallet after delivery.'
+                                                                    : 'Payment is held by the platform. Your share is added to your wallet after delivery and the return window.'}
+                                                            </p>
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </div>
                                         </div>

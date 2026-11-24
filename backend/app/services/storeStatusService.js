@@ -26,6 +26,9 @@ export function getSellerCurrentOpenStatus(seller, date = new Date()) {
   if (seller.isActive === false) return false;
   if (seller.applicationStatus && seller.applicationStatus !== "approved") return false;
 
+  // Admin closed the outlet: overrides everything else
+  if (seller.adminClosed === true) return false;
+
   // If manual override is active, respect manual toggle
   if (seller.isManualOverride) {
     return Boolean(seller.isOnline ?? true);

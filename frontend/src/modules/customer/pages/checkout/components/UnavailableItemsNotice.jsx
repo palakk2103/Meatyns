@@ -20,6 +20,11 @@ const UnavailableItemsNotice = React.memo(function UnavailableItemsNotice({
   onRemoveAll,
 }) {
   if (!items.length) return null;
+  const allClosed = items.every((i) => i.reason === "store_closed");
+  const noun = items.length === 1 ? "1 item" : `${items.length} items`;
+  const headline = allClosed
+    ? `${noun} from a temporarily closed store`
+    : `${noun} can't be delivered to this address`;
   return (
     <div
       data-testid="unavailable-items-notice"
@@ -28,9 +33,7 @@ const UnavailableItemsNotice = React.memo(function UnavailableItemsNotice({
         <AlertTriangle size={18} className="text-red-600 mt-0.5 flex-shrink-0" />
         <div>
           <p className="text-sm font-bold text-red-700">
-            {items.length === 1
-              ? "1 item can't be delivered to this address"
-              : `${items.length} items can't be delivered to this address`}
+            {headline}
           </p>
           <p className="text-xs text-red-600">
             Remove {items.length === 1 ? "it" : "them"} to continue with the rest of your cart.
@@ -45,7 +48,11 @@ const UnavailableItemsNotice = React.memo(function UnavailableItemsNotice({
             className="flex items-center justify-between gap-3 bg-white rounded-xl px-3 py-2 border border-red-100">
             <div className="min-w-0">
               <p className="text-sm font-bold text-slate-800 truncate">{cleanProductName(item.name)}</p>
-              <p className="text-[11px] text-slate-500 truncate">Sold by {item.sellerName}</p>
+              <p className="text-[11px] text-slate-500 truncate">
+                {item.reason === "store_closed"
+                  ? `${item.sellerName} is temporarily closed`
+                  : `Sold by ${item.sellerName}`}
+              </p>
             </div>
             <button
               type="button"
