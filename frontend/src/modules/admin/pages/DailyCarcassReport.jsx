@@ -81,7 +81,7 @@ const DailyCarcassReport = () => {
       .then((res) => {
         if (cancelled) return;
         const line = (res.data.result?.lines || []).find((l) => l.product === entryProductId && l.date === entryDate);
-        setForm(lineToEntry(line));
+        setForm(lineToEntry(line, entryProducts.find((p) => p._id === entryProductId)));
       })
       .catch(() => {
         if (!cancelled) toast.error("Couldn't load the saved figures for that day");
@@ -92,6 +92,7 @@ const DailyCarcassReport = () => {
     return () => {
       cancelled = true;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [entrySellerId, entryProductId, entryDate]);
 
   const save = async (e) => {
@@ -100,7 +101,9 @@ const DailyCarcassReport = () => {
     if (!entryProductId) return toast.error("Choose a product first");
     setSaving(true);
     try {
-      await adminApi.saveDailyStock({ sellerId: entrySellerId, productId: entryProductId, date: entryDate, ...entryToPayload(form) });
+      const payload = entryToPayload(form);
+      await adminApi.saveDailyStock({ sellerId: entrySellerId, productId: entryProductId, date: entryDate, ...payload });
+      setEntryProducts((list) => list.map((p) => (p._id === entryProductId ? { ...p, avgKgPerAnimal: payload.avgKgPerAnimal } : p)));
       toast.success("Daily stock saved");
       if (entryDate < from) setFrom(entryDate);
       else if (entryDate > to) setTo(entryDate);

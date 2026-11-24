@@ -194,3 +194,16 @@ describe("daily stock – reconciliation figures", () => {
     expect(first.balancePieces).toBe(5); // tracked from day one: 6 received - 1 sold
   });
 });
+
+describe("daily stock – average weight per animal", () => {
+  const { parseAvgKg } = __test;
+  it("undefined leaves it, blank clears it, positive numbers are kept", () => {
+    expect(parseAvgKg({}).value).toBeUndefined();
+    expect(parseAvgKg({ avgKgPerAnimal: null }).value).toBeNull();
+    expect(parseAvgKg({ avgKgPerAnimal: "" }).value).toBeNull();
+    expect(parseAvgKg({ avgKgPerAnimal: "0.4" }).value).toBe(0.4);
+  });
+  it("rejects zero, negatives and junk", () => {
+    for (const v of [0, -1, "abc"]) expect(parseAvgKg({ avgKgPerAnimal: v }).error).toBeTruthy();
+  });
+});

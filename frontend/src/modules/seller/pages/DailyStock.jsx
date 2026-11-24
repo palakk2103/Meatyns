@@ -47,15 +47,17 @@ const DailyStock = () => {
   // Pre-fill the form with whatever is already saved for this product + date.
   useEffect(() => {
     if (!report || !productId) return;
-    setForm(lineToEntry((report.lines || []).find((l) => l.product === productId && l.date === date)));
-  }, [report, productId, date]);
+    setForm(lineToEntry((report.lines || []).find((l) => l.product === productId && l.date === date), products.find((p) => p._id === productId)));
+  }, [report, productId, date, products]);
 
   const save = async (e) => {
     e.preventDefault();
     if (!productId) return toast.error("Choose a product first");
     setSaving(true);
     try {
-      await sellerApi.saveDailyStock({ productId, date, ...entryToPayload(form) });
+      const payload = entryToPayload(form);
+      await sellerApi.saveDailyStock({ productId, date, ...payload });
+      setProducts((list) => list.map((p) => (p._id === productId ? { ...p, avgKgPerAnimal: payload.avgKgPerAnimal } : p)));
       toast.success("Daily stock saved");
       // Make sure the saved day is inside the visible range, then refresh.
       if (date < from) setFrom(date);

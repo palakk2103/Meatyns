@@ -9,6 +9,7 @@ export const EMPTY_ENTRY = {
   manualSoldPieces: "", manualSoldKg: "",
   wastagePieces: "", wastageKg: "",
   note: "",
+  avgKgPerAnimal: "",
 };
 
 const FIELDS = [
@@ -23,6 +24,8 @@ const inputCls = "w-full rounded-xl border border-slate-200 px-3 py-2 text-sm fo
 /** Turns the string-based form state into the numeric payload the API expects. */
 export const entryToPayload = (form) => {
   const body = { note: form.note };
+  // Blank clears the product's average weight (sent as null).
+  body.avgKgPerAnimal = form.avgKgPerAnimal === "" ? null : Number(form.avgKgPerAnimal);
   FIELDS.forEach(({ pieces, kg }) => {
     body[pieces] = form[pieces] === "" ? 0 : Number(form[pieces]);
     body[kg] = form[kg] === "" ? 0 : Number(form[kg]);
@@ -35,7 +38,12 @@ export const entryToPayload = (form) => {
 };
 
 /** Turns a report line into form state (so editing shows what is already saved). */
-export const lineToEntry = (line) =>
+export const lineToEntry = (line, product) => ({
+  ...lineToEntryBase(line),
+  avgKgPerAnimal: product?.avgKgPerAnimal ?? "",
+});
+
+const lineToEntryBase = (line) =>
   line
     ? {
         startStockPieces: line.startStockPieces ?? "", startStockKg: line.startStockKg ?? "",
@@ -101,6 +109,14 @@ const DailyStockEntryForm = ({
           </fieldset>
         ))}
       </div>
+
+      <label className="text-xs font-bold text-slate-600 block">
+        Average weight of this product per animal (kg, optional)
+        <input type="number" min="0" step="0.01" className={inputCls} value={form.avgKgPerAnimal} onChange={set("avgKgPerAnimal")} data-testid="ds-avgKgPerAnimal" />
+        <span className="block font-medium text-slate-500 mt-1">
+          Used only to estimate how many animals the kg sold through the app correspond to. Example: 0.4 for chicken legs.
+        </span>
+      </label>
 
       <label className="text-xs font-bold text-slate-600 block">
         Note (optional)

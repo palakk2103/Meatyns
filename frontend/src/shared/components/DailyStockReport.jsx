@@ -27,6 +27,11 @@ const DailyStockReport = ({ report, showSeller = false }) => {
   const suffix = unit === "pieces" ? "Pieces" : "Kg";
   const val = (row, key) => row?.[`${key}${suffix}`] ?? 0;
   const negCls = (n) => (n < 0 ? "text-rose-600" : "");
+  // In the animals view, kg sold online can be shown as an estimated animal count
+  // (needs the product's average kg per animal).
+  const est = (row) => (unit === "pieces" ? Number(row?.onlineSoldEstPieces) || 0 : 0);
+  const estTag = (row) =>
+    est(row) > 0 ? <span className="block text-[10px] font-semibold text-slate-500">+ ≈{fmt(est(row))} animals (from kg)</span> : null;
 
   const lines = report?.lines || [];
   const days = report?.days || [];
@@ -39,7 +44,7 @@ const DailyStockReport = ({ report, showSeller = false }) => {
       "Date", "Seller", "Product",
       "Opening (pcs)", "Opening (kg)",
       "Received (pcs)", "Received (kg)",
-      "Sold online (pcs)", "Sold online (kg)",
+      "Sold online (pcs)", "Sold online (kg)", "Sold online (kg) ≈ animals",
       "Sold offline (pcs)", "Sold offline (kg)",
       "Wastage (pcs)", "Wastage (kg)",
       "Closing (pcs)", "Closing (kg)", "Note",
@@ -48,7 +53,7 @@ const DailyStockReport = ({ report, showSeller = false }) => {
       l.date, l.sellerName, l.productName,
       l.openingPieces, l.openingKg,
       l.receivedPieces, l.receivedKg,
-      l.onlineSoldPieces, l.onlineSoldKg,
+      l.onlineSoldPieces, l.onlineSoldKg, l.onlineSoldEstPieces || "",
       l.manualSoldPieces, l.manualSoldKg,
       l.wastagePieces, l.wastageKg,
       l.tracked ? l.balancePieces : "", l.tracked ? l.balanceKg : "", l.note,
@@ -97,6 +102,7 @@ const DailyStockReport = ({ report, showSeller = false }) => {
               {fmt(val(totals, c.key))}
               <span className="text-xs font-bold text-slate-500 ml-1">{unit === "pieces" ? "pcs" : "kg"}</span>
             </p>
+            {c.key === "sold" && estTag(totals)}
           </div>
         ))}
       </div>
@@ -108,6 +114,12 @@ const DailyStockReport = ({ report, showSeller = false }) => {
         {val(totals, "adjust") !== 0 && (
           <p data-testid="note-adjust">
             Includes {fmt(val(totals, "adjust"))} {unit === "pieces" ? "pcs" : "kg"} added by starting-stock entries or corrections.
+          </p>
+        )}
+        {est(totals) > 0 && (
+          <p data-testid="note-est">
+            "≈ animals" is an estimate: kg sold through the app divided by the product's average weight per animal. It is not
+            deducted from the animal count in stock.
           </p>
         )}
         {val(totals, "untrackedSold") !== 0 && (
@@ -126,13 +138,14 @@ const DailyStockReport = ({ report, showSeller = false }) => {
               <tr>
                 {showSeller && <th className={th}>Seller</th>}
                 <th className={th}>Product</th>
-                <th className={thR}>In stock</th>
+                <th className={thR}>In stock (carcass)</th>
+                <th className={thR}>Product stock now</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-50">
               {stock.length === 0 ? (
                 <tr>
-                  <td colSpan={showSeller ? 3 : 2} className="px-4 py-6 text-center text-slate-500 text-xs font-bold uppercase tracking-widest">
+                  <td colSpan={showSeller ? 4 : 3} className="px-4 py-6 text-center text-slate-500 text-xs font-bold uppercase tracking-widest">
                     No stock recorded yet. Save a starting stock or a received entry to begin.
                   </td>
                 </tr>
@@ -141,13 +154,20 @@ const DailyStockReport = ({ report, showSeller = false }) => {
                   <tr key={`${s.seller}-${s.product}`}>
                     {showSeller && <td className="px-4 py-3">{s.sellerName}</td>}
                     <td className="px-4 py-3 font-semibold">{s.productName}</td>
-                    <td className={`px-4 py-3 text-right font-bold ${negCls(val(s, "balance"))}`}>{fmt(val(s, "balance"))}</td>
+                    <td className={`px-4 py-3 text-right font-bold ${negCls(val(s, "balance"))}`}>
+                      {s.carcassTracked ? fmt(val(s, "balance")) : <span className="text-slate-400 font-semibold">no entry</span>}
+                    </td>
+                    <td className="px-4 py-3 text-right">{s.productStock === null || s.productStock === undefined ? "—" : fmt(s.productStock)}</td>
                   </tr>
                 ))
               )}
             </tbody>
           </table>
         </div>
+        <p className="text-xs text-slate-600 font-medium mt-2">
+          "Product stock now" is the stock number of the product itself (Products page). It goes down with every app order and
+          comes back if an order is cancelled. It is the live figure, not the figure at the end of the selected dates.
+        </p>
       </section>
 
       <section>
@@ -171,7 +191,7 @@ const DailyStockReport = ({ report, showSeller = false }) => {
                   <td className="px-4 py-3 font-semibold">{d.date}</td>
                   <td className="px-4 py-3 text-right">{fmt(val(d, "opening"))}</td>
                   <td className="px-4 py-3 text-right">{fmt(val(d, "received"))}</td>
-                  <td className="px-4 py-3 text-right">{fmt(d[`onlineSold${suffix}`])}</td>
+                  <td className="px-4 py-3 text-right">{fmt(d[`onlineSold${suffix}`])}{estTag(d)}</td>
                   <td className="px-4 py-3 text-right">{fmt(d[`manualSold${suffix}`])}</td>
                   <td className="px-4 py-3 text-right">{fmt(val(d, "wastage"))}</td>
                   <td className={`px-4 py-3 text-right font-bold ${negCls(val(d, "balance"))}`}>{fmt(val(d, "balance"))}</td>
@@ -203,7 +223,7 @@ const DailyStockReport = ({ report, showSeller = false }) => {
                     <td className="px-4 py-3 font-semibold">{s.sellerName}</td>
                     <td className="px-4 py-3 text-right">{fmt(val(s, "opening"))}</td>
                     <td className="px-4 py-3 text-right">{fmt(val(s, "received"))}</td>
-                    <td className="px-4 py-3 text-right">{fmt(val(s, "sold"))}</td>
+                    <td className="px-4 py-3 text-right">{fmt(val(s, "sold"))}{estTag(s)}</td>
                     <td className="px-4 py-3 text-right">{fmt(val(s, "wastage"))}</td>
                     <td className={`px-4 py-3 text-right font-bold ${negCls(val(s, "balance"))}`}>{fmt(val(s, "balance"))}</td>
                   </tr>
@@ -246,7 +266,7 @@ const DailyStockReport = ({ report, showSeller = false }) => {
                     <td className="px-4 py-3 font-semibold">{l.productName}</td>
                     <td className="px-4 py-3 text-right">{l.tracked ? fmt(val(l, "opening")) : "—"}</td>
                     <td className="px-4 py-3 text-right">{fmt(val(l, "received"))}</td>
-                    <td className="px-4 py-3 text-right">{fmt(l[`onlineSold${suffix}`])}</td>
+                    <td className="px-4 py-3 text-right">{fmt(l[`onlineSold${suffix}`])}{estTag(l)}</td>
                     <td className="px-4 py-3 text-right">{fmt(l[`manualSold${suffix}`])}</td>
                     <td className="px-4 py-3 text-right">{fmt(val(l, "wastage"))}</td>
                     <td className={`px-4 py-3 text-right font-bold ${negCls(val(l, "balance"))}`}>{l.tracked ? fmt(val(l, "balance")) : "—"}</td>

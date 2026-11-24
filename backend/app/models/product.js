@@ -74,6 +74,13 @@ const productSchema = new mongoose.Schema(
             default: 1,
             min: 0.01,
         },
+        // Optional: average weight (kg) of this product from one animal. Only used by the
+        // daily carcass report to estimate how many animals kg sales correspond to.
+        avgKgPerAnimal: {
+            type: Number,
+            default: null,
+            min: 0,
+        },
         orderIncrement: {
             type: Number,
             default: 1,

@@ -104,6 +104,8 @@ const ACTIVITY_KEYS = [
   "receivedPieces", "receivedKg",
   "soldPieces", "soldKg",
   "onlineSoldPieces", "onlineSoldKg",
+  // Estimated animals behind the kg sold online (kg / product's average kg per animal).
+  "onlineSoldEstPieces",
   "manualSoldPieces", "manualSoldKg",
   "wastagePieces", "wastageKg",
   // Stock added/removed by a starting-stock entry (first day or correction).
@@ -259,14 +261,14 @@ const buildReport = async ({ from, to, sellerId }) => {
     const closingAtTo = stockAtEnd(records, to);
     const holdsStock = closingAtTo.p !== 0 || closingAtTo.k !== 0 || openingAtFrom.p !== 0 || openingAtFrom.k !== 0;
     if (inRange.length === 0 && !holdsStock) continue; // old, finished history
-    perPair.push({ seller, product, records, inRange, openingAtFrom, closingAtTo });
+    perPair.push({ seller, product, records, inRange, openingAtFrom, closingAtTo, hasEntries: entriesByPair.has(pair) });
   }
 
   const sellerIds = new Set(perPair.map((p) => p.seller));
   const productIds = new Set(perPair.map((p) => p.product));
   const [sellers, products] = await Promise.all([
     Seller.find({ _id: { $in: [...sellerIds] } }).select("name shopName").lean(),
-    Product.find({ _id: { $in: [...productIds] } }).select("name unit").lean(),
+    Product.find({ _id: { $in: [...productIds] } }).select("name unit unitValue stock avgKgPerAnimal").lean(),
   ]);
   const sellerName = new Map(sellers.map((s) => [String(s._id), s.shopName || s.name || "Seller"]));
   const productInfo = new Map(products.map((p) => [String(p._id), p]));
@@ -274,6 +276,10 @@ const buildReport = async ({ from, to, sellerId }) => {
     sellerName: sellerName.get(seller) || "Unknown seller",
     productName: productInfo.get(product)?.name || "Deleted product",
     productUnit: productInfo.get(product)?.unit || null,
+    avgKgPerAnimal: productInfo.get(product)?.avgKgPerAnimal || null,
+    // The product's own stock number (Products / Stock page). It already drops with every
+    // order, so it is the "what is left" figure for products without a carcass entry.
+    productStock: productInfo.get(product)?.stock ?? null,
   });
 
   // Lines: one per product per day that had activity in the range.
@@ -287,6 +293,9 @@ const buildReport = async ({ from, to, sellerId }) => {
         tracked: r.tracked,
         ...names(p.seller, p.product),
         ...r.row,
+        onlineSoldEstPieces: names(p.seller, p.product).avgKgPerAnimal
+          ? round(r.row.onlineSoldKg / names(p.seller, p.product).avgKgPerAnimal)
+          : 0,
         startStockPieces: r.entry?.startStockPieces ?? null,
         startStockKg: r.entry?.startStockKg ?? null,
         note: r.entry?.note || "",
@@ -329,8 +338,11 @@ const buildReport = async ({ from, to, sellerId }) => {
 
   // Stock on hand at the end of the range, per product.
   const stock = perPair
-    .filter((p) => p.closingAtTo.p !== 0 || p.closingAtTo.k !== 0)
+    // Products with a carcass entry show their carcass balance; products without one are
+    // listed too so the product's own remaining stock is visible next to what was sold.
+    .filter((p) => p.closingAtTo.p !== 0 || p.closingAtTo.k !== 0 || !p.hasEntries)
     .map((p) => ({
+      carcassTracked: p.hasEntries,
       seller: p.seller,
       product: p.product,
       ...names(p.seller, p.product),
@@ -389,6 +401,21 @@ const parseEntryBody = (body = {}) => {
   return { set };
 };
 
+/** Optional per-product average kg per animal: undefined = leave, null = clear, number > 0 = set. */
+const parseAvgKg = (body = {}) => {
+  const v = body.avgKgPerAnimal;
+  if (v === undefined) return { value: undefined };
+  if (v === null || v === "") return { value: null };
+  const n = Number(v);
+  if (!Number.isFinite(n) || n <= 0 || n > 10_000) return { error: "avgKgPerAnimal must be a number greater than 0" };
+  return { value: round(n) };
+};
+
+const saveAvgKg = async (productId, value) => {
+  if (value === undefined) return;
+  await Product.updateOne({ _id: productId }, { $set: { avgKgPerAnimal: value } });
+};
+
 const upsertEntry = async ({ sellerId, productId, date, set, role, userId }) => {
   return DailyStockEntry.findOneAndUpdate(
     { seller: sellerId, product: productId, date },
@@ -414,9 +441,12 @@ export const saveSellerDailyStock = async (req, res) => {
   try {
     const parsed = parseEntryBody(req.body);
     if (parsed.error) return handleResponse(res, 400, parsed.error);
+    const avg = parseAvgKg(req.body);
+    if (avg.error) return handleResponse(res, 400, avg.error);
 
     const product = await Product.findOne({ _id: req.body.productId, sellerId: req.user.id }).select("_id").lean();
     if (!product) return handleResponse(res, 404, "Product not found or unauthorized");
+    await saveAvgKg(product._id, avg.value);
 
     const entry = await upsertEntry({
       sellerId: req.user.id,
@@ -436,7 +466,7 @@ export const saveSellerDailyStock = async (req, res) => {
 export const getSellerDailyStockProducts = async (req, res) => {
   try {
     const products = await Product.find({ sellerId: req.user.id })
-      .select("name unit sku")
+      .select("name unit sku avgKgPerAnimal")
       .sort({ name: 1 })
       .limit(1000)
       .lean();
@@ -467,9 +497,12 @@ export const saveAdminDailyStock = async (req, res) => {
     if (!mongoose.isValidObjectId(req.body?.sellerId)) return handleResponse(res, 400, "sellerId is required");
     const parsed = parseEntryBody(req.body);
     if (parsed.error) return handleResponse(res, 400, parsed.error);
+    const avg = parseAvgKg(req.body);
+    if (avg.error) return handleResponse(res, 400, avg.error);
 
     const product = await Product.findOne({ _id: req.body.productId, sellerId: req.body.sellerId }).select("_id").lean();
     if (!product) return handleResponse(res, 404, "Product not found for this seller");
+    await saveAvgKg(product._id, avg.value);
 
     const entry = await upsertEntry({
       sellerId: req.body.sellerId,
@@ -490,7 +523,7 @@ export const getAdminDailyStockProducts = async (req, res) => {
   try {
     if (!mongoose.isValidObjectId(req.query.sellerId)) return handleResponse(res, 400, "sellerId is required");
     const products = await Product.find({ sellerId: req.query.sellerId })
-      .select("name unit sku")
+      .select("name unit sku avgKgPerAnimal")
       .sort({ name: 1 })
       .limit(1000)
       .lean();
@@ -516,4 +549,4 @@ export const listAdminDailyStockSellers = async (_req, res) => {
 };
 
 // Exported for unit tests.
-export const __test = { toPiecesAndKg, resolveRange, parseEntryBody, buildRow, walkStock, stockAtEnd, stockAtStart };
+export const __test = { parseAvgKg, toPiecesAndKg, resolveRange, parseEntryBody, buildRow, walkStock, stockAtEnd, stockAtStart };
