@@ -1,0 +1,201 @@
+- generic [ref=f1e2]:
+  - generic [ref=f1e3]:
+    - main [ref=f1e4]:
+      - generic [ref=f1e8]:
+        - generic [ref=f1e9]:
+          - generic [ref=f1e10]:
+            - generic [ref=f1e11]:
+              - heading "1. Delivery Address" [level=2] [ref=f1e12]
+              - button "Change" [ref=f1e13] [cursor=pointer]
+            - generic [ref=f1e19]:
+              - heading "Palak Patel" [level=3] [ref=f1e20]
+              - paragraph [ref=f1e21]: Rahatani, Pimpri-Chinchwad, Maharashtra, 431027, Pimpri-Chinchwad, Maharashtra, 431027
+          - generic [ref=f1e22]:
+            - heading "Delivery Option" [level=2] [ref=f1e24]
+            - generic [ref=f1e26]:
+              - generic [ref=f1e27] [cursor=pointer]:
+                - generic [ref=f1e28]:
+                  - generic [ref=f1e36]:
+                    - heading "Normal" [level=3] [ref=f1e37]
+                    - paragraph [ref=f1e38]: Standard priority
+                  - generic [ref=f1e39]: ₹79
+                - generic [ref=f1e44]:
+                  - generic [ref=f1e45]: Within 1 hour
+                  - generic [ref=f1e49]: Standard
+              - generic [ref=f1e50] [cursor=pointer]:
+                - generic [ref=f1e51]:
+                  - generic [ref=f1e56]:
+                    - heading "Schedule" [level=3] [ref=f1e57]
+                    - paragraph [ref=f1e58]: Pick date & time
+                  - generic [ref=f1e59]: ₹79
+                - generic [ref=f1e61]:
+                  - generic [ref=f1e62]: 📅 Future Slot
+                  - generic [ref=f1e63]: Up to 7 days
+          - generic [ref=f1e64]:
+            - heading "3. Payment Method" [level=2] [ref=f1e65]
+            - generic [ref=f1e66]:
+              - generic [ref=f1e68]:
+                - generic [ref=f1e74]:
+                  - generic [ref=f1e75]: Use Wallet Balance
+                  - generic [ref=f1e76]: "Available: ₹200"
+                - switch "Use wallet balance" [ref=f1e77]
+              - generic [ref=f1e79] [cursor=pointer]:
+                - generic [ref=f1e80]:
+                  - radio "Online Payment UPI (GPay, PhonePe, Paytm), Cards & NetBanking UPI Cards NetBanking" [ref=f1e81]
+                  - generic [ref=f1e82]:
+                    - generic [ref=f1e83]: Online Payment
+                    - text: UPI (GPay, PhonePe, Paytm), Cards & NetBanking
+                - generic [ref=f1e84]:
+                  - generic [ref=f1e85]: UPI
+                  - generic [ref=f1e86]: Cards
+                  - generic [ref=f1e87]: NetBanking
+              - generic [ref=f1e88] [cursor=pointer]:
+                - generic [ref=f1e89]:
+                  - radio "Cash on Delivery Pay via Cash or UPI upon delivery COD" [checked] [ref=f1e90]
+                  - generic [ref=f1e91]:
+                    - generic [ref=f1e92]: Cash on Delivery
+                    - text: Pay via Cash or UPI upon delivery
+                - generic [ref=f1e93]: COD
+          - generic [ref=f1e94]:
+            - button "Place Order" [ref=f1e95] [cursor=pointer]
+            - paragraph [ref=f1e97]: Your payment information is safe and secure
+        - generic [ref=f1e101]:
+          - generic [ref=f1e102]:
+            - generic [ref=f1e103]:
+              - heading "Order Summary" [level=2] [ref=f1e104]
+              - generic [ref=f1e105]: 1 items • ₹1050
+            - generic [ref=f1e111]:
+              - text: Fulfilled by Meatyns Pune
+              - generic [ref=f1e112]: Shop no 7, Regent Plaza Mall, 110, Baner - Pashan Link Rd, Baner, Pune, Maharashtra 411069, Baner, Pune, 411069
+            - generic [ref=f1e114]:
+              - img "Meatyns Special Mutton ( Liver & Fat less )" [ref=f1e115]
+              - generic [ref=f1e116]:
+                - heading "Meatyns Special Mutton ( Liver & Fat less )" [level=4] [ref=f1e117]
+                - paragraph [ref=f1e118]: 1 kg
+              - generic [ref=f1e119]: ₹1050
+            - generic [ref=f1e120]:
+              - generic [ref=f1e121]: 🚚 Standard Delivery
+              - generic [ref=f1e122]: Within 1 hour
+            - separator [ref=f1e123]
+            - generic [ref=f1e124]:
+              - heading "Price Details" [level=3] [ref=f1e125]
+              - generic [ref=f1e126]:
+                - generic [ref=f1e127]: Subtotal
+                - generic [ref=f1e128]: ₹1050
+              - generic [ref=f1e129]:
+                - generic [ref=f1e130]:
+                  - text: Delivery Charges
+                  - paragraph [ref=f1e131]: Distance-based delivery charge (5.2 km)
+                - generic [ref=f1e132]: ₹79
+              - separator [ref=f1e133]
+              - generic [ref=f1e134]:
+                - generic [ref=f1e135]: Total Amount
+                - generic [ref=f1e136]: ₹1129
+            - generic [ref=f1e142]:
+              - paragraph [ref=f1e143]: Freshness Guaranteed
+              - paragraph [ref=f1e144]: or your money back
+          - generic [ref=f1e145]:
+            - img "Quality Meat" [ref=f1e146]
+            - paragraph [ref=f1e149]: Quality Meat for a Healthier You
+    - contentinfo [ref=f1e151]:
+      - generic [ref=f1e152]:
+        - generic [ref=f1e153]:
+          - generic [ref=f1e159]:
+            - heading "100% Fresh & Hygienic" [level=4] [ref=f1e160]
+            - paragraph [ref=f1e161]: Sourced daily from certified farms
+          - generic [ref=f1e177]:
+            - heading "Chilled, Never Frozen" [level=4] [ref=f1e178]
+            - paragraph [ref=f1e179]: Stored strictly at 0–4°C always
+          - generic [ref=f1e184]:
+            - heading "Delivery Within 1 hour" [level=4] [ref=f1e185]
+            - paragraph [ref=f1e186]: Fast temperature-controlled delivery
+        - generic [ref=f1e187]:
+          - generic [ref=f1e188]:
+            - img "Meatyns" [ref=f1e190]
+            - paragraph [ref=f1e191]: Good Food Starts with Meatyns.
+            - paragraph [ref=f1e192]: Your trusted destination for farm-fresh chicken, tender mutton, ocean-fresh fish & coastal seafood. Hygienically packed, temperature-controlled, and delivered fresh to your door.
+            - generic [ref=f1e193]:
+              - link "Facebook" [ref=f1e194] [cursor=pointer]:
+                - /url: "#"
+              - link "Twitter" [ref=f1e197] [cursor=pointer]:
+                - /url: "#"
+              - link "Instagram" [ref=f1e200] [cursor=pointer]:
+                - /url: "#"
+              - link "YouTube" [ref=f1e204] [cursor=pointer]:
+                - /url: "#"
+          - generic [ref=f1e208]:
+            - heading "Quick Links" [level=3] [ref=f1e209]
+            - list [ref=f1e211]:
+              - listitem [ref=f1e212]:
+                - link "Home" [ref=f1e213] [cursor=pointer]:
+                  - /url: /
+              - listitem [ref=f1e214]:
+                - link "About Meatyns" [ref=f1e215] [cursor=pointer]:
+                  - /url: /about
+              - listitem [ref=f1e216]:
+                - link "Franchise Opportunities" [ref=f1e217] [cursor=pointer]:
+                  - /url: /franchise
+              - listitem [ref=f1e218]:
+                - link "What We Deliver" [ref=f1e219] [cursor=pointer]:
+                  - /url: /what-we-deliver
+              - listitem [ref=f1e220]:
+                - link "All Categories" [ref=f1e221] [cursor=pointer]:
+                  - /url: /category/all
+              - listitem [ref=f1e222]:
+                - link "Offers & Deals" [ref=f1e223] [cursor=pointer]:
+                  - /url: /offers
+              - listitem [ref=f1e224]:
+                - link "Customer Support" [ref=f1e225] [cursor=pointer]:
+                  - /url: /support
+              - listitem [ref=f1e226]:
+                - link "Contact Us" [ref=f1e227] [cursor=pointer]:
+                  - /url: /contact
+          - generic [ref=f1e228]:
+            - heading "Categories" [level=3] [ref=f1e229]
+            - list [ref=f1e231]:
+              - listitem [ref=f1e232]:
+                - link "Fresh Chicken" [ref=f1e233] [cursor=pointer]:
+                  - /url: /search?q=chicken
+              - listitem [ref=f1e234]:
+                - link "Tender Mutton" [ref=f1e235] [cursor=pointer]:
+                  - /url: /search?q=mutton
+              - listitem [ref=f1e236]:
+                - link "Chicken Curry Cut" [ref=f1e237] [cursor=pointer]:
+                  - /url: /search?q=chicken
+              - listitem [ref=f1e238]:
+                - link "Goat Curry Cut" [ref=f1e239] [cursor=pointer]:
+                  - /url: /search?q=mutton
+              - listitem [ref=f1e240]:
+                - link "All Meat Cuts" [ref=f1e241] [cursor=pointer]:
+                  - /url: /categories
+          - generic [ref=f1e242]:
+            - heading "Contact Us" [level=3] [ref=f1e243]
+            - list [ref=f1e245]:
+              - listitem [ref=f1e246]:
+                - generic [ref=f1e251]: Unit-A, Shop No. 11, Sharda Vihar Apartment, Isolation Ring Road, Near Dhyan Chand Hockey Stadium, Kolhapur
+              - listitem [ref=f1e252]:
+                - generic [ref=f1e256]:
+                  - link "1800-233-8590" [ref=f1e257] [cursor=pointer]:
+                    - /url: tel:18002338590
+                  - generic [ref=f1e258]: "|"
+                  - link "75585 98590" [ref=f1e259] [cursor=pointer]:
+                    - /url: tel:7558598590
+              - listitem [ref=f1e260]:
+                - link "meatyns01@gmail.com" [ref=f1e265] [cursor=pointer]:
+                  - /url: mailto:meatyns01@gmail.com
+        - generic [ref=f1e266]:
+          - paragraph [ref=f1e267]: © 2026 Meatyns. All rights reserved.
+          - generic [ref=f1e268]:
+            - link "Our Policies" [ref=f1e269] [cursor=pointer]:
+              - /url: /policy
+            - link "Quality Policy" [ref=f1e270] [cursor=pointer]:
+              - /url: /quality-policy
+            - link "Delivery Policy" [ref=f1e271] [cursor=pointer]:
+              - /url: /shipping-policy
+            - link "Refund & Replacement" [ref=f1e272] [cursor=pointer]:
+              - /url: /refund-policy
+            - link "Privacy Policy" [ref=f1e273] [cursor=pointer]:
+              - /url: /privacy
+            - link "Terms of Service" [ref=f1e274] [cursor=pointer]:
+              - /url: /terms
+  - region "Notifications alt+T"

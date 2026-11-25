@@ -125,6 +125,7 @@ export const getSellerEarnings = async (req, res) => {
                 time: t.createdAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
                 customer: t.type === 'Withdrawal' ? 'Bank Transfer' : 'Customer',
                 reason: t.reason || undefined,
+                utr: t.meta?.utr || undefined,
                 ref: t.order ? `#${t.order.orderId}` : t.reference || t._id
             }))
         });

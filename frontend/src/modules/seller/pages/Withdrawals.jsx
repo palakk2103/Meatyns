@@ -1,5 +1,4 @@
-import React, { useState, useMemo } from 'react';
-import Card from '@shared/components/ui/Card';
+import React, { useState, useMemo } from 'react';import Card from '@shared/components/ui/Card';
 import Badge from '@shared/components/ui/Badge';
 import Button from '@shared/components/ui/Button';
 import Modal from '@shared/components/ui/Modal';
@@ -33,6 +32,51 @@ const Withdrawals = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
+
+    const [bank, setBank] = useState(null);
+    const [isBankModalOpen, setIsBankModalOpen] = useState(false);
+    const [isSavingBank, setIsSavingBank] = useState(false);
+    const [bankForm, setBankForm] = useState({ accountHolderName: '', accountNumber: '', ifsc: '', bankName: '' });
+
+    const loadBank = async () => {
+        try {
+            const res = await sellerApi.getBankDetails();
+            setBank(res.data?.result || res.data?.data || null);
+        } catch {
+            setBank(null);
+        }
+    };
+
+    React.useEffect(() => {
+        loadBank();
+    }, []);
+
+    const openBankModal = () => {
+        setBankForm({
+            accountHolderName: bank?.accountHolderName || '',
+            accountNumber: '',
+            ifsc: bank?.ifsc || '',
+            bankName: bank?.bankName || '',
+        });
+        setIsBankModalOpen(true);
+    };
+
+    const handleSaveBank = async (e) => {
+        e.preventDefault();
+        try {
+            setIsSavingBank(true);
+            const res = await sellerApi.updateBankDetails(bankForm);
+            if (res.data?.success) {
+                toast.success('Bank details saved');
+                setIsBankModalOpen(false);
+                loadBank();
+            }
+        } catch (error) {
+            toast.error(error.response?.data?.message || 'Failed to save bank details');
+        } finally {
+            setIsSavingBank(false);
+        }
+    };
 
     const ledger = Array.isArray(data?.ledger) ? data.ledger : [];
     const withdrawalHistory = ledger.filter((t) => (t.type || '').toString() === 'Withdrawal');
@@ -76,6 +120,9 @@ const Withdrawals = () => {
         lines.push(`Time,${item.time ?? ''}`);
         lines.push(`Amount,₹${Math.abs(item.amount ?? 0).toLocaleString()}`);
         lines.push(`Method,${item.customer ?? 'Bank Transfer'}`);
+        if (item.utr) {
+            lines.push(`Bank reference (UTR),${item.utr}`);
+        }
         if (item.reason) {
             lines.push(`Reason,${item.reason}`);
         }
@@ -95,6 +142,13 @@ const Withdrawals = () => {
         // Wallet available balance is already net of pending withdrawals
         // (they're debited when requested).
         const available = Math.max(0, Number(data?.balances?.availableBalance ?? 0));
+
+        if (!bank?.isSet) {
+            toast.error('Please add your bank account details first.');
+            setIsModalOpen(false);
+            openBankModal();
+            return;
+        }
 
         if (!amount || parseFloat(amount) <= 0 || parseFloat(amount) > available) {
             toast.error(`Please enter a valid amount within your available balance (₹${available}).`);
@@ -239,6 +293,7 @@ const Withdrawals = () => {
                                                 {item.status === 'Settled' ? <CheckCircle2 className="h-3 w-3 mr-1" /> : (item.status === 'Pending' || item.status === 'Processing') ? <Clock className="h-3 w-3 mr-1" /> : <XCircle className="h-3 w-3 mr-1" />}
                                                 {item.status}
                                             </Badge>
+                                            {item.utr && <p className="text-[9px] text-emerald-600 font-bold mt-1 uppercase">Bank ref: {item.utr}</p>}
                                             {item.reason && <p className="text-[9px] text-rose-500 font-bold mt-1 uppercase italic">{item.reason}</p>}
                                         </td>
                                         <td className="px-8 py-5 text-right">
@@ -315,10 +370,22 @@ const Withdrawals = () => {
                                     <Building2 className="h-5 w-5 text-brand-400" />
                                 </div>
                                 <div className="flex-1">
-                                    <p className="text-xs font-black text-slate-900 uppercase">HDFC Bank Limited</p>
-                                    <p className="text-[10px] font-bold text-slate-600 uppercase tracking-tighter">Acct Ending in **** 4589</p>
+                                    {bank?.isSet ? (
+                                        <>
+                                            <p className="text-xs font-black text-slate-900 uppercase">{bank.bankName || bank.accountHolderName}</p>
+                                            <p className="text-[10px] font-bold text-slate-600 uppercase tracking-tighter">A/C {bank.accountNumberMasked} · {bank.ifsc}</p>
+                                        </>
+                                    ) : (
+                                        <p className="text-xs font-black text-rose-600">No bank account added yet</p>
+                                    )}
                                 </div>
-                                <ArrowRight className="h-4 w-4 text-slate-300" />
+                                <button
+                                    type="button"
+                                    onClick={() => { setIsModalOpen(false); openBankModal(); }}
+                                    className="text-[10px] font-black text-brand-600 uppercase tracking-widest"
+                                >
+                                    {bank?.isSet ? 'Change' : 'Add'}
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -339,6 +406,48 @@ const Withdrawals = () => {
                             Nevermind, keep funds
                         </button>
                     </div>
+                </form>
+            </Modal>
+
+            {/* Bank Details Modal */}
+            <Modal
+                isOpen={isBankModalOpen}
+                onClose={() => !isSavingBank && setIsBankModalOpen(false)}
+                title="Bank Account Details"
+            >
+                <form onSubmit={handleSaveBank} className="space-y-4 py-4">
+                    <p className="text-xs font-medium text-slate-600">
+                        Withdrawals are paid to this account. Enter the details exactly as on your bank account.
+                    </p>
+                    {[
+                        { key: 'accountHolderName', label: 'Account holder name', placeholder: 'As on bank account' },
+                        { key: 'accountNumber', label: 'Account number', placeholder: bank?.isSet ? `Currently ${bank.accountNumberMasked} — re-enter to change` : '9 to 18 digits', inputMode: 'numeric' },
+                        { key: 'ifsc', label: 'IFSC code', placeholder: 'e.g. HDFC0001234' },
+                        { key: 'bankName', label: 'Bank name (optional)', placeholder: 'e.g. HDFC Bank' },
+                    ].map((field) => (
+                        <div key={field.key}>
+                            <label className="text-xs font-black text-slate-600 uppercase tracking-widest mb-2 block ml-1">{field.label}</label>
+                            <input
+                                value={bankForm[field.key]}
+                                inputMode={field.inputMode}
+                                onChange={(e) => {
+                                    let value = e.target.value;
+                                    if (field.key === 'accountNumber') value = value.replace(/\D/g, '');
+                                    if (field.key === 'ifsc') value = value.toUpperCase().replace(/\s/g, '');
+                                    setBankForm((prev) => ({ ...prev, [field.key]: value }));
+                                }}
+                                placeholder={field.placeholder}
+                                className="w-full px-4 py-3 bg-white ring-1 ring-slate-200 focus:ring-2 focus:ring-brand-500/20 rounded-2xl text-sm font-bold outline-none"
+                            />
+                        </div>
+                    ))}
+                    <button
+                        type="submit"
+                        disabled={isSavingBank}
+                        className="w-full py-4 bg-slate-900 text-white rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl disabled:opacity-50"
+                    >
+                        {isSavingBank ? 'SAVING...' : 'SAVE BANK DETAILS'}
+                    </button>
                 </form>
             </Modal>
         </div>

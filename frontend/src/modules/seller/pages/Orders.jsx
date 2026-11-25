@@ -158,6 +158,7 @@ const Orders = () => {
                 payment: `${getPaymentInfo(order).modeLabel} - ${getPaymentInfo(order).statusLabel}`,
                 // What the seller will actually receive for this order (after
                 // commission), frozen on the order at checkout.
+                gatewayPaymentId: order.payment?.transactionId || '',
                 sellerEarning:
                     order.paymentBreakdown?.sellerPayoutTotal != null
                         ? Number(order.paymentBreakdown.sellerPayoutTotal)
@@ -1032,6 +1033,12 @@ const Orders = () => {
                                                         <HiOutlineBanknotes className="h-5 w-5 text-brand-400" />
                                                         <span className="text-xs font-bold tracking-tight">{selectedOrder.payment}</span>
                                                     </div>
+                                                    {selectedOrder.paymentInfo?.isOnline && selectedOrder.paymentInfo?.isPaid && selectedOrder.gatewayPaymentId && (
+                                                        <div className="mt-2 flex justify-between items-center gap-2 text-xs">
+                                                            <span className="font-bold text-slate-300 shrink-0">Payment ID</span>
+                                                            <span className="font-mono font-bold text-slate-100 truncate">{selectedOrder.gatewayPaymentId}</span>
+                                                        </div>
+                                                    )}
                                                     {selectedOrder.sellerEarning != null && (
                                                         <div className="mt-3 pt-3 border-t border-white/10">
                                                             <div className="flex justify-between items-center text-xs">

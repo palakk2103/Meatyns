@@ -232,6 +232,11 @@ const CheckoutPage = () => {
     ? selectedCoupon.discountAmount || selectedCoupon.discount || 0
     : 0;
 
+  // The server-computed preview is the only trustworthy delivery fee. Until it
+  // arrives, show "Calculating..." instead of a hardcoded guess (it used to
+  // flash a wrong ₹25 before the real slab charge loaded).
+  const isDeliveryFeePending = pricingPreview?.deliveryFeeCharged == null;
+
   const currentSelectedDeliveryFee = Number(
     deliveryOptions?.[deliveryMethod]?.deliveryFee ?? (deliveryMethod === "EXPRESS" ? 40 : 25)
   );
@@ -959,6 +964,8 @@ const CheckoutPage = () => {
           setUnavailableItems(Array.isArray(data.unavailableItems) ? data.unavailableItems : []);
           setPricingPreview(null);
         } else {
+          // Never keep showing the previous address's delivery fee.
+          setPricingPreview(null);
           console.error("Checkout preview failed", error);
         }
       } finally {
@@ -1898,7 +1905,9 @@ const CheckoutPage = () => {
                     <div>
                       <span className="font-medium text-slate-700">Delivery Charges</span>
                       <p className="text-[10px] text-slate-400">
-                        {activeEffectiveDeliveryFee === 0
+                        {isDeliveryFeePending
+                          ? "Calculating delivery charge..."
+                          : activeEffectiveDeliveryFee === 0
                           ? "Free delivery applied"
                           : pricingPreview?.citySlabApplied
                           ? `Distance-based delivery charge${
@@ -1910,7 +1919,9 @@ const CheckoutPage = () => {
                       </p>
                     </div>
                     <span className="font-bold text-slate-900">
-                      {activeEffectiveDeliveryFee === 0 ? (
+                      {isDeliveryFeePending ? (
+                        <span className="text-slate-400 font-semibold">Calculating...</span>
+                      ) : activeEffectiveDeliveryFee === 0 ? (
                         <span className="text-emerald-700 font-bold">FREE</span>
                       ) : (
                         `₹${activeEffectiveDeliveryFee}`
@@ -1956,7 +1967,7 @@ const CheckoutPage = () => {
                   <div className="flex justify-between text-sm font-black text-slate-900">
                     <span>Total Amount</span>
                     <span className="text-base font-[1000] text-slate-900">
-                      {isPreviewLoading ? "Calculating..." : `₹${Math.ceil(finalAmountToPay)}`}
+                      {isPreviewLoading || isDeliveryFeePending ? "Calculating..." : `₹${Math.ceil(finalAmountToPay)}`}
                     </span>
                   </div>
                 </div>

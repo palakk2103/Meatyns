@@ -1,0 +1,5 @@
+[     274ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[     322ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[     379ms] [LOG] [orderSocket] Socket connected, ID: OdKAWIh0M_kLPpJ8AACD @ http://localhost:5173/src/core/services/orderSocket.js:49
+[     448ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[    5166ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1

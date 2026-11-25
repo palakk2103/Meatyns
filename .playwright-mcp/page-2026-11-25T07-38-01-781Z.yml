@@ -1,0 +1,111 @@
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - main [ref=e4]
+    - contentinfo [ref=e8]:
+      - generic [ref=e9]:
+        - generic [ref=e10]:
+          - generic [ref=e16]:
+            - heading "100% Fresh & Hygienic" [level=4] [ref=e17]
+            - paragraph [ref=e18]: Sourced daily from certified farms
+          - generic [ref=e34]:
+            - heading "Chilled, Never Frozen" [level=4] [ref=e35]
+            - paragraph [ref=e36]: Stored strictly at 0–4°C always
+          - generic [ref=e41]:
+            - heading "15–30 Mins Express" [level=4] [ref=e42]
+            - paragraph [ref=e43]: Fast temperature-controlled delivery
+        - generic [ref=e44]:
+          - generic [ref=e45]:
+            - img "Meatyns" [ref=e47]
+            - paragraph [ref=e48]: Good Food Starts with Meatyns.
+            - paragraph [ref=e49]: Your trusted destination for farm-fresh chicken, tender mutton, ocean-fresh fish & coastal seafood. Hygienically packed, temperature-controlled, and delivered fresh to your door.
+            - generic [ref=e50]:
+              - link "Facebook" [ref=e51] [cursor=pointer]:
+                - /url: "#"
+              - link "Twitter" [ref=e54] [cursor=pointer]:
+                - /url: "#"
+              - link "Instagram" [ref=e57] [cursor=pointer]:
+                - /url: "#"
+              - link "YouTube" [ref=e61] [cursor=pointer]:
+                - /url: "#"
+          - generic [ref=e65]:
+            - heading "Quick Links" [level=3] [ref=e66]
+            - list [ref=e68]:
+              - listitem [ref=e69]:
+                - link "Home" [ref=e70] [cursor=pointer]:
+                  - /url: /
+              - listitem [ref=e71]:
+                - link "About Meatyns" [ref=e72] [cursor=pointer]:
+                  - /url: /about
+              - listitem [ref=e73]:
+                - link "Franchise Opportunities" [ref=e74] [cursor=pointer]:
+                  - /url: /franchise
+              - listitem [ref=e75]:
+                - link "What We Deliver" [ref=e76] [cursor=pointer]:
+                  - /url: /what-we-deliver
+              - listitem [ref=e77]:
+                - link "All Categories" [ref=e78] [cursor=pointer]:
+                  - /url: /category/all
+              - listitem [ref=e79]:
+                - link "Offers & Deals" [ref=e80] [cursor=pointer]:
+                  - /url: /offers
+              - listitem [ref=e81]:
+                - link "Customer Support" [ref=e82] [cursor=pointer]:
+                  - /url: /support
+              - listitem [ref=e83]:
+                - link "Contact Us" [ref=e84] [cursor=pointer]:
+                  - /url: /contact
+          - generic [ref=e85]:
+            - heading "Categories" [level=3] [ref=e86]
+            - list [ref=e88]:
+              - listitem [ref=e89]:
+                - link "Fresh Chicken" [ref=e90] [cursor=pointer]:
+                  - /url: /search?q=chicken
+              - listitem [ref=e91]:
+                - link "Tender Mutton" [ref=e92] [cursor=pointer]:
+                  - /url: /search?q=mutton
+              - listitem [ref=e93]:
+                - link "Chicken Curry Cut" [ref=e94] [cursor=pointer]:
+                  - /url: /search?q=chicken
+              - listitem [ref=e95]:
+                - link "Goat Curry Cut" [ref=e96] [cursor=pointer]:
+                  - /url: /search?q=mutton
+              - listitem [ref=e97]:
+                - link "All Meat Cuts" [ref=e98] [cursor=pointer]:
+                  - /url: /categories
+          - generic [ref=e99]:
+            - heading "Contact Us" [level=3] [ref=e100]
+            - list [ref=e102]:
+              - listitem [ref=e103]:
+                - generic [ref=e108]: Unit-A, Shop No. 11, Sharda Vihar Apartment, Isolation Ring Road, Near Dhyan Chand Hockey Stadium, Kolhapur
+              - listitem [ref=e109]:
+                - generic [ref=e113]:
+                  - link "1800-233-8590" [ref=e114] [cursor=pointer]:
+                    - /url: tel:18002338590
+                  - generic [ref=e115]: "|"
+                  - link "75585 98590" [ref=e116] [cursor=pointer]:
+                    - /url: tel:7558598590
+              - listitem [ref=e117]:
+                - link "meatyns01@gmail.com" [ref=e122] [cursor=pointer]:
+                  - /url: mailto:meatyns01@gmail.com
+        - generic [ref=e123]:
+          - paragraph [ref=e124]: © 2026 Meatyns. All rights reserved.
+          - generic [ref=e125]:
+            - link "Our Policies" [ref=e126] [cursor=pointer]:
+              - /url: /policy
+            - link "Quality Policy" [ref=e127] [cursor=pointer]:
+              - /url: /quality-policy
+            - link "Delivery Policy" [ref=e128] [cursor=pointer]:
+              - /url: /shipping-policy
+            - link "Refund & Replacement" [ref=e129] [cursor=pointer]:
+              - /url: /refund-policy
+            - link "Privacy Policy" [ref=e130] [cursor=pointer]:
+              - /url: /privacy
+            - link "Terms of Service" [ref=e131] [cursor=pointer]:
+              - /url: /terms
+  - region "Notifications alt+T":
+    - list
+    - list:
+      - listitem [ref=e132]:
+        - generic [ref=e136]: Couldn't detect your location. Location permission is blocked. Allow location for this site from the address bar (lock icon) and try again. Showing the default area for now.
+      - listitem [ref=e138]:
+        - generic [ref=e142]: Couldn't detect your location. Location permission is blocked. Allow location for this site from the address bar (lock icon) and try again. Showing the default area for now.

@@ -115,6 +115,93 @@ function isRouteCacheCompatible(cached, origin, dest, phase, mode) {
 }
 
 /**
+ * Driving (road) distance in meters between two points, for delivery pricing.
+ * Cached in Redis (coords rounded to ~1 m). Returns null on any failure so the
+ * caller can fall back to the straight-line distance.
+ */
+export async function getRoadDistanceMeters(origin, dest) {
+  if (!hasValidPoint(origin) || !hasValidPoint(dest)) return null;
+
+  const redis = getRedisClient();
+  const key = `roaddist:v1:${roundCoord(origin.lat)},${roundCoord(origin.lng)}:${roundCoord(dest.lat)},${roundCoord(dest.lng)}`;
+  if (redis) {
+    try {
+      const cached = await redis.get(key);
+      const n = Number(cached);
+      if (cached && Number.isFinite(n) && n > 0) return n;
+    } catch {
+      /* ignore */
+    }
+  }
+
+  // Provider chain: Google Routes API (when enabled on the key) -> OSRM
+  // (free, OpenStreetMap roads). A failed provider is skipped for a while.
+  let meters = await googleRoutesDistanceMeters(origin, dest);
+  if (meters == null) meters = await osrmDistanceMeters(origin, dest);
+  if (meters == null) return null;
+
+  if (redis) {
+    try {
+      await redis.set(key, String(meters), "EX", 24 * 60 * 60);
+    } catch {
+      /* ignore */
+    }
+  }
+  return meters;
+}
+
+let googleRoutesDisabledUntil = 0;
+
+async function googleRoutesDistanceMeters(origin, dest) {
+  const apiKey =
+    process.env.GOOGLE_MAPS_API_KEY?.trim() ||
+    process.env.GOOGLE_MAPS_SERVER_KEY?.trim();
+  if (!apiKey || Date.now() < googleRoutesDisabledUntil) return null;
+  try {
+    const resp = await fetch("https://routes.googleapis.com/directions/v2:computeRoutes", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Goog-Api-Key": apiKey,
+        "X-Goog-FieldMask": "routes.distanceMeters",
+      },
+      body: JSON.stringify({
+        origin: { location: { latLng: { latitude: origin.lat, longitude: origin.lng } } },
+        destination: { location: { latLng: { latitude: dest.lat, longitude: dest.lng } } },
+        travelMode: "DRIVE",
+      }),
+      signal: AbortSignal.timeout(4000),
+    });
+    if (!resp.ok) {
+      // API not enabled / key restricted: don't retry on every checkout.
+      googleRoutesDisabledUntil = Date.now() + 10 * 60 * 1000;
+      return null;
+    }
+    const data = await resp.json();
+    const m = data?.routes?.[0]?.distanceMeters;
+    return Number.isFinite(m) && m > 0 ? m : null;
+  } catch {
+    return null;
+  }
+}
+
+async function osrmDistanceMeters(origin, dest) {
+  const base = (process.env.OSRM_BASE_URL || "https://router.project-osrm.org").replace(/\/$/, "");
+  try {
+    const resp = await fetch(
+      `${base}/route/v1/driving/${origin.lng},${origin.lat};${dest.lng},${dest.lat}?overview=false`,
+      { signal: AbortSignal.timeout(4000) },
+    );
+    if (!resp.ok) return null;
+    const data = await resp.json();
+    const m = data?.routes?.[0]?.distance;
+    return data?.code === "Ok" && Number.isFinite(m) && m > 0 ? m : null;
+  } catch {
+    return null;
+  }
+}
+
+/**
  * Returns { polyline, bounds, distanceMeters, degraded } from Directions API with Redis + Firebase cache.
  * Requires GOOGLE_MAPS_API_KEY and Directions API enabled in Google Cloud (billing on).
  * Does not cache failed or empty routes so fixing the key takes effect immediately.

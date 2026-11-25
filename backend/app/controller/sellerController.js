@@ -72,6 +72,79 @@ export const getNearbySellers = async (req, res) => {
 };
 
 /* ===============================
+   BANK DETAILS (Seller payout destination)
+================================ */
+const maskAccountNumber = (value) => {
+  const digits = String(value || "");
+  if (digits.length <= 4) return digits ? "****" : "";
+  return `${"*".repeat(Math.max(digits.length - 4, 4))}${digits.slice(-4)}`;
+};
+
+const toBankDetailsView = (seller) => {
+  const bank = seller?.bankDetails || {};
+  const accountNumber = bank.accountNumber || "";
+  return {
+    isSet: Boolean(accountNumber && bank.ifsc && bank.accountHolderName),
+    accountHolderName: bank.accountHolderName || "",
+    accountNumberMasked: maskAccountNumber(accountNumber),
+    ifsc: bank.ifsc || "",
+    bankName: bank.bankName || "",
+  };
+};
+
+export const getSellerBankDetails = async (req, res) => {
+  try {
+    const seller = await Seller.findById(req.user.id).select(
+      "+bankDetails.accountNumber",
+    );
+    if (!seller) return handleResponse(res, 404, "Seller not found");
+    return handleResponse(res, 200, "Bank details fetched", toBankDetailsView(seller));
+  } catch (error) {
+    return handleResponse(res, 500, error.message);
+  }
+};
+
+export const updateSellerBankDetails = async (req, res) => {
+  try {
+    const accountHolderName = String(req.body?.accountHolderName || "").trim();
+    const accountNumber = String(req.body?.accountNumber || "").replace(/\s+/g, "");
+    const ifsc = String(req.body?.ifsc || "").trim().toUpperCase();
+    const bankName = String(req.body?.bankName || "").trim();
+
+    if (accountHolderName.length < 2 || accountHolderName.length > 100) {
+      return handleResponse(res, 400, "Enter the account holder name as on the bank account");
+    }
+    if (!/^\d{9,18}$/.test(accountNumber)) {
+      return handleResponse(res, 400, "Account number must be 9 to 18 digits");
+    }
+    if (!/^[A-Z]{4}0[A-Z0-9]{6}$/.test(ifsc)) {
+      return handleResponse(res, 400, "Enter a valid IFSC code (e.g. HDFC0001234)");
+    }
+    if (bankName.length > 100) {
+      return handleResponse(res, 400, "Bank name is too long");
+    }
+
+    const seller = await Seller.findById(req.user.id).select(
+      "+bankDetails.accountNumber",
+    );
+    if (!seller) return handleResponse(res, 404, "Seller not found");
+
+    seller.bankDetails = {
+      accountHolderName,
+      accountNumber,
+      ifsc,
+      bankName,
+      updatedAt: new Date(),
+    };
+    await seller.save();
+
+    return handleResponse(res, 200, "Bank details saved", toBankDetailsView(seller));
+  } catch (error) {
+    return handleResponse(res, 500, error.message);
+  }
+};
+
+/* ===============================
    REQUEST WITHDRAWAL (Seller)
 ================================ */
 export const requestWithdrawal = async (req, res) => {
@@ -81,6 +154,19 @@ export const requestWithdrawal = async (req, res) => {
 
     if (!Number.isFinite(amount) || amount <= 0) {
       return handleResponse(res, 400, "Please enter a valid amount");
+    }
+
+    // The admin pays out manually, so we need to know where to send the money.
+    const sellerWithBank = await Seller.findById(sellerId).select(
+      "+bankDetails.accountNumber",
+    );
+    const bankView = toBankDetailsView(sellerWithBank);
+    if (!bankView.isSet) {
+      return handleResponse(
+        res,
+        400,
+        "Please add your bank account details before requesting a withdrawal",
+      );
     }
 
     // The canonical Wallet is the source of truth: only `availableBalance`
@@ -113,7 +199,10 @@ export const requestWithdrawal = async (req, res) => {
               amount: -amount,
               status: "Pending",
               reference,
-              meta: { walletDebited: true },
+              meta: {
+                walletDebited: true,
+                bankLast4: bankView.accountNumberMasked.slice(-4),
+              },
             },
           ],
           { session },

@@ -87,6 +87,10 @@ const DeliveryManagement = () => {
 
     // Custom Slot Overrides
     const [slotOverrides, setSlotOverrides] = useState([]);
+
+    // City-wise distance slabs (Normal + Scheduled delivery), e.g. Pune: 0-2km Rs 49.
+    // Form values are strings so inputs can be edited freely; validated on save.
+    const [cityRules, setCityRules] = useState([]);
     const [previewDate, setPreviewDate] = useState(() => {
         const d = new Date();
         const year = d.getFullYear();
@@ -152,6 +156,17 @@ const DeliveryManagement = () => {
                 if (Array.isArray(dc.slotOverrides)) {
                     setSlotOverrides(dc.slotOverrides);
                 }
+                setCityRules(
+                    (s.cityDeliverySlabs || []).map((rule) => ({
+                        city: rule.city || '',
+                        enabled: rule.enabled !== false,
+                        slabs: (rule.slabs || []).map((slab) => ({
+                            fromKm: String(slab.fromKm),
+                            toKm: String(slab.toKm),
+                            fee: String(slab.fee),
+                        })),
+                    }))
+                );
                 setHasUnsavedChanges(false);
             }
         } catch (error) {
@@ -166,7 +181,56 @@ const DeliveryManagement = () => {
         fetchSettings();
     }, []);
 
+    const buildCityDeliverySlabs = () => {
+        const seen = new Set();
+        const rules = [];
+        for (const rule of cityRules) {
+            const city = rule.city.trim();
+            const slabs = [];
+            for (const slab of rule.slabs) {
+                if (slab.fromKm === '' && slab.toKm === '' && slab.fee === '') continue;
+                const fromKm = Number(slab.fromKm || 0);
+                const toKm = Number(slab.toKm);
+                const fee = Number(slab.fee);
+                if (slab.toKm === '' || slab.fee === '' || !Number.isFinite(toKm) || !Number.isFinite(fee) || toKm <= fromKm || fee < 0) {
+                    throw new Error(`${city || 'City'}: each slab needs From km, a larger To km and a charge.`);
+                }
+                slabs.push({ fromKm, toKm, fee });
+            }
+            if (!city && slabs.length === 0) continue;
+            if (city.length < 2) throw new Error('Please enter a city name for every city slab group.');
+            if (slabs.length === 0) throw new Error(`${city}: add at least one distance slab.`);
+            if (seen.has(city.toLowerCase())) throw new Error(`${city} is added more than once.`);
+            seen.add(city.toLowerCase());
+            rules.push({ city, enabled: rule.enabled, slabs: slabs.sort((a, b) => a.toKm - b.toKm) });
+        }
+        return rules;
+    };
+
+    const updateCityRule = (index, patch) => {
+        markDirty();
+        setCityRules((prev) => prev.map((r, i) => (i === index ? { ...r, ...patch } : r)));
+    };
+
+    const updateCitySlab = (ruleIndex, slabIndex, field, value) => {
+        markDirty();
+        setCityRules((prev) =>
+            prev.map((r, i) =>
+                i === ruleIndex
+                    ? { ...r, slabs: r.slabs.map((sl, j) => (j === slabIndex ? { ...sl, [field]: value } : sl)) }
+                    : r
+            )
+        );
+    };
+
     const handleSave = async () => {
+        let cityDeliverySlabs;
+        try {
+            cityDeliverySlabs = buildCityDeliverySlabs();
+        } catch (validationError) {
+            showToast(validationError.message, 'error');
+            return;
+        }
         // Validation
         if (expressConfig.surcharge < 0) {
             showToast('Express surcharge cannot be negative', 'error');
@@ -197,6 +261,7 @@ const DeliveryManagement = () => {
                 fixedDeliveryFee: Number(fixedDeliveryFee) || 0,
                 freeDeliveryThreshold: Number(freeDeliveryThreshold) || 0,
                 minimumOrderValue: Number(minimumOrderValue) || 0,
+                cityDeliverySlabs,
                 deliveryConfig: {
                     express: {
                         enabled: expressConfig.enabled,
@@ -952,6 +1017,124 @@ const DeliveryManagement = () => {
                                 </span>
                                 <span className="text-slate-400 font-medium text-[11px]">Standard SLA</span>
                             </div>
+                        </div>
+                    </Card>
+
+                    <Card className="lg:col-span-3 p-6 rounded-2xl border border-slate-200/80 bg-white space-y-6 shadow-xs">
+                        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b border-slate-100 pb-4">
+                            <div>
+                                <h3 className="text-sm font-black text-slate-900 uppercase tracking-wider flex items-center gap-2">
+                                    <MapPin className="h-4 w-4 text-blue-600" />
+                                    City-wise Distance Charges
+                                </h3>
+                                <p className="text-xs text-slate-500 mt-0.5 max-w-3xl">
+                                    For Normal &amp; Scheduled delivery (Express is charged as a multiple of this). Distance is from the serving outlet to the customer&apos;s address and is rounded UP to the next km (5.2 km is charged as 6 km). Beyond the last slab the standard fee applies.
+                                </p>
+                            </div>
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    markDirty();
+                                    setCityRules((prev) => [
+                                        ...prev,
+                                        { city: '', enabled: true, slabs: [{ fromKm: '0', toKm: '', fee: '' }] },
+                                    ]);
+                                }}
+                                className="shrink-0 flex items-center gap-1.5 px-4 py-2 bg-black text-white rounded-xl text-xs font-bold hover:bg-slate-800"
+                            >
+                                <Plus className="h-3.5 w-3.5" /> Add City
+                            </button>
+                        </div>
+
+                        {cityRules.length === 0 && (
+                            <p className="text-xs font-bold text-slate-400 italic">
+                                No city-specific charges. All cities use the standard delivery fee.
+                            </p>
+                        )}
+
+                        <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+                            {cityRules.map((rule, ruleIndex) => (
+                                <div key={ruleIndex} data-testid={`city-rule-${ruleIndex}`} className="rounded-2xl border border-slate-200 p-4 space-y-3">
+                                    <div className="flex flex-wrap items-center gap-3">
+                                        <input
+                                            type="text"
+                                            placeholder="City (e.g. Pune)"
+                                            value={rule.city}
+                                            onChange={(e) => updateCityRule(ruleIndex, { city: e.target.value })}
+                                            className="flex-1 min-w-[140px] px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-slate-900 focus:bg-white focus:ring-2 focus:ring-black outline-none"
+                                        />
+                                        <label className="flex items-center gap-2 text-xs font-bold text-slate-600 cursor-pointer">
+                                            <input
+                                                type="checkbox"
+                                                checked={rule.enabled}
+                                                onChange={(e) => updateCityRule(ruleIndex, { enabled: e.target.checked })}
+                                                className="rounded border-slate-300"
+                                            />
+                                            Active
+                                        </label>
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                markDirty();
+                                                setCityRules((prev) => prev.filter((_, i) => i !== ruleIndex));
+                                            }}
+                                            className="p-2 text-red-500 hover:bg-red-50 rounded-lg"
+                                            title="Remove city"
+                                        >
+                                            <Trash2 className="h-4 w-4" />
+                                        </button>
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <div className="grid grid-cols-[1fr_1fr_1fr_auto] gap-2 text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">
+                                            <span>From (km)</span>
+                                            <span>To (km)</span>
+                                            <span>Charge (₹)</span>
+                                            <span className="w-8" />
+                                        </div>
+                                        {rule.slabs.map((slab, slabIndex) => (
+                                            <div key={slabIndex} className="grid grid-cols-[1fr_1fr_1fr_auto] gap-2 items-center">
+                                                {['fromKm', 'toKm', 'fee'].map((field) => (
+                                                    <input
+                                                        key={field}
+                                                        type="number"
+                                                        min="0"
+                                                        step="0.1"
+                                                        aria-label={`${rule.city || 'City'} slab ${slabIndex + 1} ${field}`}
+                                                        value={slab[field]}
+                                                        onChange={(e) => updateCitySlab(ruleIndex, slabIndex, field, e.target.value)}
+                                                        className="w-full min-w-0 px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-slate-900 focus:bg-white focus:ring-2 focus:ring-black outline-none"
+                                                    />
+                                                ))}
+                                                <button
+                                                    type="button"
+                                                    onClick={() =>
+                                                        updateCityRule(ruleIndex, {
+                                                            slabs: rule.slabs.filter((_, j) => j !== slabIndex),
+                                                        })
+                                                    }
+                                                    className="w-8 h-8 flex items-center justify-center text-red-500 hover:bg-red-50 rounded-lg"
+                                                    title="Remove slab"
+                                                >
+                                                    <Trash2 className="h-3.5 w-3.5" />
+                                                </button>
+                                            </div>
+                                        ))}
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                const last = rule.slabs[rule.slabs.length - 1];
+                                                updateCityRule(ruleIndex, {
+                                                    slabs: [...rule.slabs, { fromKm: last?.toKm || '0', toKm: '', fee: '' }],
+                                                });
+                                            }}
+                                            className="flex items-center gap-1 text-xs font-bold text-slate-700 hover:text-black pt-1"
+                                        >
+                                            <Plus className="h-3.5 w-3.5" /> Add Slab
+                                        </button>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
                     </Card>
                 </div>

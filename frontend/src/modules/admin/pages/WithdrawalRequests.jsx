@@ -124,25 +124,81 @@ const WithdrawalRequests = () => {
         });
     }, [activeTab, sellerRequests, deliveryRequests, searchTerm, filterStatus]);
 
+    const [utrInput, setUtrInput] = useState('');
+    const [reasonInput, setReasonInput] = useState('');
+
     const handleAction = (type, request) => {
+        setUtrInput('');
+        setReasonInput('');
         setActionModal({ isOpen: true, type, request });
     };
 
     const confirmAction = async () => {
+        const isApprove = actionModal.type === 'approve';
+        const isSellerRequest = actionModal.request?.userModel === 'Seller';
+        if (isSellerRequest && isApprove && utrInput.trim().length < 4) {
+            toast.error("Enter the bank reference / UTR number of the transfer you made.");
+            return;
+        }
+        if (isSellerRequest && !isApprove && reasonInput.trim().length < 3) {
+            toast.error("Enter a reason so the seller knows why it was rejected.");
+            return;
+        }
         try {
             setLoading(true);
-            const status = actionModal.type === 'approve' ? 'Settled' : 'Failed';
-            const res = await adminApi.updateWithdrawalStatus(actionModal.request._id, { status });
+            const status = isApprove ? 'Settled' : 'Failed';
+            const res = await adminApi.updateWithdrawalStatus(actionModal.request._id, {
+                status,
+                utr: isApprove ? utrInput.trim() : undefined,
+                reason: !isApprove ? reasonInput.trim() : undefined,
+            });
             if (res.data.success) {
                 toast.success(`Request ${status} successfully`);
                 fetchData(sellerPage, deliveryPage);
                 setActionModal({ isOpen: false, type: null, request: null });
             }
         } catch (error) {
-            toast.error("Action failed");
+            toast.error(error?.response?.data?.message || "Action failed");
         } finally {
             setLoading(false);
         }
+    };
+
+    const copyText = (text, label) => {
+        try {
+            navigator.clipboard.writeText(String(text));
+            toast.success(`${label} copied`);
+        } catch {
+            toast.error("Copy failed");
+        }
+    };
+
+    // Seller payout destination, shown so the admin knows where to transfer.
+    const renderBankDetails = (request) => {
+        if (request?.userModel !== 'Seller') return null;
+        const bank = request.user?.bankDetails;
+        const hasBank = bank?.accountNumber && bank?.ifsc;
+        return (
+            <div className="text-left p-4 bg-slate-50 rounded-xl ring-1 ring-slate-100 space-y-2">
+                <p className="ds-label">Transfer to (seller bank account)</p>
+                {hasBank ? (
+                    <>
+                        <p className="text-sm font-bold text-slate-900">{bank.accountHolderName || '—'}</p>
+                        <div className="flex items-center justify-between gap-2">
+                            <span className="text-sm font-mono font-bold text-slate-700">A/C {bank.accountNumber}</span>
+                            <button type="button" onClick={() => copyText(bank.accountNumber, 'Account number')} className="text-[10px] font-black uppercase text-brand-600">Copy</button>
+                        </div>
+                        <div className="flex items-center justify-between gap-2">
+                            <span className="text-sm font-mono font-bold text-slate-700">IFSC {bank.ifsc}</span>
+                            <button type="button" onClick={() => copyText(bank.ifsc, 'IFSC')} className="text-[10px] font-black uppercase text-brand-600">Copy</button>
+                        </div>
+                        {bank.bankName && <p className="text-xs font-semibold text-slate-500">{bank.bankName}</p>}
+                    </>
+                ) : (
+                    <p className="text-xs font-bold text-rose-600">Seller has not added bank details. Contact the seller before paying.</p>
+                )}
+            </div>
+        );
     };
 
     return (
@@ -398,6 +454,19 @@ const WithdrawalRequests = () => {
                                 <h4 className="text-2xl font-black text-slate-900">₹{Math.abs(selectedRequest.amount).toLocaleString()}</h4>
                                 <p className="text-[10px] font-semibold text-slate-400 mt-1">Reference: {selectedRequest.reference}</p>
                             </Card>
+                            {renderBankDetails(selectedRequest)}
+                            {selectedRequest.meta?.utr && (
+                                <Card className="p-5 border-none bg-slate-50 ring-1 ring-slate-100 rounded-xl">
+                                    <p className="ds-label mb-1">Bank reference (UTR)</p>
+                                    <p className="text-sm font-mono font-bold text-slate-900">{selectedRequest.meta.utr}</p>
+                                </Card>
+                            )}
+                            {selectedRequest.reason && (
+                                <Card className="p-5 border-none bg-rose-50 ring-1 ring-rose-100 rounded-xl">
+                                    <p className="ds-label mb-1">Rejection reason</p>
+                                    <p className="text-sm font-semibold text-rose-700">{selectedRequest.reason}</p>
+                                </Card>
+                            )}
                         </div>
 
                         <div className="flex gap-3 pt-2">
@@ -450,6 +519,34 @@ const WithdrawalRequests = () => {
                                 You are about to {actionModal.type === 'approve' ? 'approve' : 'reject'} the withdrawal request for <b className="text-slate-900">₹{Math.abs(actionModal.request.amount).toLocaleString()}</b>.
                             </p>
                         </div>
+                        {actionModal.type === 'approve' && renderBankDetails(actionModal.request)}
+                        {actionModal.type === 'approve' ? (
+                            <div className="text-left">
+                                <label className="ds-label mb-1 block">
+                                    Bank reference / UTR {actionModal.request.userModel === 'Seller' ? '(required)' : '(optional)'}
+                                </label>
+                                <input
+                                    value={utrInput}
+                                    onChange={(e) => setUtrInput(e.target.value)}
+                                    placeholder="Enter after you have made the transfer"
+                                    className="w-full px-4 py-3 bg-white ring-1 ring-slate-200 rounded-xl text-sm font-semibold outline-none focus:ring-2 focus:ring-brand-500/20"
+                                />
+                                <p className="text-[10px] font-semibold text-slate-400 mt-1">Approve only after the money has been sent. The seller is notified.</p>
+                            </div>
+                        ) : (
+                            <div className="text-left">
+                                <label className="ds-label mb-1 block">
+                                    Reason {actionModal.request.userModel === 'Seller' ? '(required)' : '(optional)'}
+                                </label>
+                                <input
+                                    value={reasonInput}
+                                    onChange={(e) => setReasonInput(e.target.value)}
+                                    placeholder="Why is this being rejected?"
+                                    className="w-full px-4 py-3 bg-white ring-1 ring-slate-200 rounded-xl text-sm font-semibold outline-none focus:ring-2 focus:ring-rose-500/20"
+                                />
+                                <p className="text-[10px] font-semibold text-slate-400 mt-1">The amount is returned to the seller's wallet.</p>
+                            </div>
+                        )}
                         <div className="space-y-3">
                             <button
                                 onClick={confirmAction}

@@ -87,8 +87,8 @@ export const getDeliveryWithdrawals = async (req, res) => {
 export const updateWithdrawalStatus = async (req, res) => {
   try {
     const { id } = req.params;
-    const { status, reason } = req.body;
-    const transaction = await updateWithdrawalStatusById({ id, status, reason });
+    const { status, reason, utr } = req.body;
+    const transaction = await updateWithdrawalStatusById({ id, status, reason, utr });
 
     if (!transaction) {
       return handleResponse(res, 404, "Transaction not found");
@@ -97,7 +97,7 @@ export const updateWithdrawalStatus = async (req, res) => {
     return handleResponse(res, 200, `Withdrawal ${status} successfully`);
   } catch (error) {
     const statusCode =
-      error.message === "Invalid status"
+      error.message === "Invalid status" || error.statusCode === 400
         ? 400
         : error.message === "Withdrawal already finalized"
           ? 409

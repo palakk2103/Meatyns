@@ -1,0 +1,1084 @@
+[     329ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[     395ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[     444ms] [LOG] [orderSocket] Socket connected, ID: k3jL_MWf_zY0YQhwAACH @ http://localhost:5173/src/core/services/orderSocket.js:49
+[     505ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[    5585ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[   21750ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[   21789ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[   21829ms] [LOG] [orderSocket] Socket connected, ID: vW90PsViRbJ3vPYVAACJ @ http://localhost:5173/src/core/services/orderSocket.js:49
+[   21902ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[   24451ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[   27465ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[   27518ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[   27554ms] [LOG] [orderSocket] Socket connected, ID: 3wis9VfGoOfllTWMAACL @ http://localhost:5173/src/core/services/orderSocket.js:49
+[   27685ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[   30167ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 1618240ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 1618475ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 1618555ms] [LOG] [orderSocket] Socket connected, ID: DXHfEPd2Jvg-QNtIAACP @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 1619667ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 1622734ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 1637112ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 1637439ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 1637593ms] [LOG] [orderSocket] Socket connected, ID: I2Gw7EHaX3ZpRsrFAACR @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 1638046ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 1638295ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 1638402ms] [LOG] [orderSocket] Socket connected, ID: i281NDMeOB3uoa3CAACT @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 1638649ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 1643676ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 1643969ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 1644478ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 1644841ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 1644965ms] [LOG] [orderSocket] Socket connected, ID: 1eG3ehVx_Jg5TqavAACX @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 1646246ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 1646823ms] [ERROR] Failed to load resource: the server responded with a status of 400 (Bad Request) @ http://localhost:7000/api/orders/checkout/preview:1
+[ 1646827ms] [ERROR] Checkout preview failed AxiosError: Request failed with status code 400
+    at settle (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1281:12)
+    at XMLHttpRequest.onloadend (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1638:7)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41)
+    at async fetchPreview (http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx:770:23) @ http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx:783
+[ 1650183ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 1650444ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 1651000ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 1651250ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 1651362ms] [LOG] [orderSocket] Socket connected, ID: nI0_UAtm4oOwBDH2AACb @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 1651505ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 1653589ms] [ERROR] Failed to load resource: the server responded with a status of 400 (Bad Request) @ http://localhost:7000/api/orders/checkout/preview:1
+[ 1653591ms] [ERROR] Checkout preview failed AxiosError: Request failed with status code 400
+    at settle (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1281:12)
+    at XMLHttpRequest.onloadend (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1638:7)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41)
+    at async fetchPreview (http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx:770:23) @ http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx:783
+[ 1656554ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 1656827ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 1657303ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 1657560ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 1657668ms] [LOG] [orderSocket] Socket connected, ID: tqlc8wz179qjwisYAACf @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 1657808ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 1659583ms] [ERROR] Failed to load resource: the server responded with a status of 400 (Bad Request) @ http://localhost:7000/api/orders/checkout/preview:1
+[ 1659585ms] [ERROR] Checkout preview failed AxiosError: Request failed with status code 400
+    at settle (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1281:12)
+    at XMLHttpRequest.onloadend (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1638:7)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41)
+    at async fetchPreview (http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx:770:23) @ http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx:783
+[ 1673309ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 1673486ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 1673562ms] [LOG] [orderSocket] Socket connected, ID: jpTqrvUkvrvfmb-4AACh @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 1673637ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 1677813ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 1684658ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 1684818ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 1684900ms] [LOG] [orderSocket] Socket connected, ID: nQzxVlYh11HKZb3CAACj @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 1684956ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 1689113ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 2040066ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2040257ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2040332ms] [LOG] [orderSocket] Socket connected, ID: 0051J3h656sxsGlRAACl @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2040406ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 2044687ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 2049418ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2049587ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2049689ms] [LOG] [orderSocket] Socket connected, ID: LsL5dHkIOZ9GtikAAACn @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2049732ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 2053888ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 2065957ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2066255ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2066783ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2067030ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2067153ms] [LOG] [orderSocket] Socket connected, ID: CDM6nFjiXvH1p3ZEAACr @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2067362ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 2069029ms] [ERROR] Failed to load resource: the server responded with a status of 409 (Conflict) @ http://localhost:7000/api/orders/checkout/preview:1
+[ 2072398ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2072667ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2073249ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2073526ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2073645ms] [LOG] [orderSocket] Socket connected, ID: ZyUqhc3Yz4V9An1WAACv @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2073834ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 2075666ms] [ERROR] Failed to load resource: the server responded with a status of 409 (Conflict) @ http://localhost:7000/api/orders/checkout/preview:1
+[ 2078356ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2078715ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2079270ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2079505ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2079609ms] [LOG] [orderSocket] Socket connected, ID: JfDxzEaMOk_lsFxjAACz @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2079787ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 2084330ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2084595ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2085129ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2085382ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2085488ms] [LOG] [orderSocket] Socket connected, ID: 5nN4jkdyzFRXLEhzAAC3 @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2085653ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 2087624ms] [ERROR] Failed to load resource: the server responded with a status of 409 (Conflict) @ http://localhost:7000/api/orders/checkout/preview:1
+[ 2090182ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2090446ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2090942ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2091226ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2091335ms] [LOG] [orderSocket] Socket connected, ID: rHOIlvs3PkApDdmgAAC7 @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2091509ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 2095968ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2096239ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2096806ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2097065ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2097176ms] [LOG] [orderSocket] Socket connected, ID: Khm2LgGIHSMs0Y51AAC_ @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2097320ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 2101889ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2102169ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2102294ms] [LOG] [orderSocket] Socket connected, ID: nYSgmDDJENXip7oWAADB @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2102694ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2102903ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2103010ms] [LOG] [orderSocket] Socket connected, ID: lKt6L1DDE0wRitCZAADD @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2103161ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 2107716ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2107990ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2108526ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2108794ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2108903ms] [LOG] [orderSocket] Socket connected, ID: PEKk1n688KyP40WhAADH @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2110533ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 2113605ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2113883ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2114418ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2114683ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2114796ms] [LOG] [orderSocket] Socket connected, ID: 5hzQb1lk3ezkcq8dAADL @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2114970ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 2119445ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2119714ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2120209ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2120450ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2120559ms] [LOG] [orderSocket] Socket connected, ID: r5uJO3_kxJ_QK26HAADP @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2120721ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 2125253ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2125519ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2126061ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2126325ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2126439ms] [LOG] [orderSocket] Socket connected, ID: cIK7J-_IuZc4MwKVAADT @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2126646ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 2131141ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2131399ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2131915ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2132181ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2132295ms] [LOG] [orderSocket] Socket connected, ID: TtFnekDs7KLImBzQAADX @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2132417ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 2136961ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2137245ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2137758ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2138008ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2138115ms] [LOG] [orderSocket] Socket connected, ID: 3fTvtE_RcfjEzjNAAADb @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2138232ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 2152855ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2153137ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2153650ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2153932ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2154044ms] [LOG] [orderSocket] Socket connected, ID: qXXrWOycE1dNJEyCAADf @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2155309ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 2159833ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2160100ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2160236ms] [LOG] [orderSocket] Socket connected, ID: 5m8To0pOsOGT_PtrAADh @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2160645ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2160941ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2161057ms] [LOG] [orderSocket] Socket connected, ID: fCpLFnOcPko2Z9M5AADj @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2161296ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 2166856ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2167125ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2167653ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2167928ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2168038ms] [LOG] [orderSocket] Socket connected, ID: 1eYMltQYjqAvodM4AADn @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2168198ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 2173853ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2174112ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2174617ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2174893ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2175046ms] [LOG] [orderSocket] Socket connected, ID: YtOi8Zb2vj32nhBGAADr @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2175247ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 2180789ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2181046ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2181685ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2181968ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2182083ms] [LOG] [orderSocket] Socket connected, ID: NRhLgdj4m-cl5ENhAADv @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2182317ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 2187883ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2188155ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2188689ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2188966ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2189073ms] [LOG] [orderSocket] Socket connected, ID: rjIwKdqtZk0miVegAADz @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2190387ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 2194854ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2195110ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2195627ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2195912ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2196030ms] [LOG] [orderSocket] Socket connected, ID: exq6FxJpijNkbYxjAAD3 @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2196175ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 2201839ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2202109ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2202595ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2202873ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2202980ms] [LOG] [orderSocket] Socket connected, ID: uFzI317Ej6OxDbs-AAD7 @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2203186ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 2208797ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2209053ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2209609ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2209886ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2210016ms] [LOG] [orderSocket] Socket connected, ID: TcmngHZRNYwZaoNQAAD_ @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2210165ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 2215798ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2216069ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2216620ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2216920ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2217034ms] [LOG] [orderSocket] Socket connected, ID: lfru6lxW3UYDjxH_AAED @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2217201ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 2222810ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2223069ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2223619ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2223901ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2224019ms] [LOG] [orderSocket] Socket connected, ID: Xky7bAa7iuQWmTmpAAEH @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2224185ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 2225757ms] [ERROR] Failed to load resource: the server responded with a status of 400 (Bad Request) @ http://localhost:7000/api/orders/checkout/preview:1
+[ 2225759ms] [ERROR] Checkout preview failed AxiosError: Request failed with status code 400
+    at settle (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1281:12)
+    at XMLHttpRequest.onloadend (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1638:7)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41)
+    at async fetchPreview (http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx:770:23) @ http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx:783
+[ 2592211ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2592572ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2592903ms] [LOG] [orderSocket] Socket connected, ID: WZIGUcq6_pTYjmnUAAEN @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2593036ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 2598630ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 2598632ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 2610704ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2610962ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2611310ms] [LOG] [orderSocket] Socket connected, ID: CSLyBjCml33sN0t5AAEP @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2612785ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 2617049ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 2617049ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 2621370ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 2627081ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/cart:1
+[ 2630734ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2631049ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2631283ms] [LOG] [orderSocket] Socket connected, ID: zGFmxGrpJ3yS2FBOAAER @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2632874ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 2637092ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 2637175ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 2641492ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 2646215ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/cart:1
+[ 2649886ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2650212ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2650519ms] [LOG] [orderSocket] Socket connected, ID: 6wc4SNc7XdtKOnW4AAET @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2651483ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 2656255ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 2656324ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 2660609ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 2666456ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/cart:1
+[ 2671064ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2671318ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2671598ms] [LOG] [orderSocket] Socket connected, ID: xa7phnM21naKmvpzAAEX @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2671732ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 2677243ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 2677243ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 2681575ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 2689862ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2690176ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2690420ms] [LOG] [orderSocket] Socket connected, ID: 0SqtWGOPYLQkISP1AAEZ @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2690624ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 2694368ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 2696220ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 2699809ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 2705512ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/cart:1
+[ 2709111ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2709435ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2709680ms] [LOG] [orderSocket] Socket connected, ID: MdB6ZOYqqxwuOf2rAAEb @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2711276ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 2715493ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 2715622ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 2719885ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 2724579ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/cart:1
+[ 2728231ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2728569ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2728849ms] [LOG] [orderSocket] Socket connected, ID: hlb3J-t3-mWEoxtnAAEd @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2730087ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 2734606ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 2734667ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 2738936ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 2744777ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/cart:1
+[ 2749338ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2749589ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2749850ms] [LOG] [orderSocket] Socket connected, ID: UzcGhyVAqt4WFyJGAAEf @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2750975ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 2755691ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 2755753ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 2760012ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 2763819ms] [LOG] [vite] server connection lost. Polling for restart... @ http://localhost:5173/@vite/client:865
+[ 2765809ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/cart:1
+[ 2765867ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx:1
+[ 2765934ms] [ERROR] Route Error: TypeError: Failed to fetch dynamically imported module: http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx @ http://localhost:5173/src/shared/components/RootErrorBoundary.jsx:13
+[ 2765944ms] [ERROR] Route Error: TypeError: Failed to fetch dynamically imported module: http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx @ http://localhost:5173/src/shared/components/RootErrorBoundary.jsx:13
+[ 2765952ms] [ERROR] Route Error: TypeError: Failed to fetch dynamically imported module: http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx @ http://localhost:5173/src/shared/components/RootErrorBoundary.jsx:13
+[ 2765953ms] [ERROR] Route Error: TypeError: Failed to fetch dynamically imported module: http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx @ http://localhost:5173/src/shared/components/RootErrorBoundary.jsx:13
+[ 2766217ms] [ERROR] %o
+
+%s
+
+%s
+ TypeError: Failed to fetch dynamically imported module: http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx The above error occurred in one of your React components. React will try to recreate this component tree from scratch using the error boundary you provided, RenderErrorBoundary. @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:7001
+[ 2766219ms] [ERROR] React Router caught the following error during render TypeError: Failed to fetch dynamically imported module: http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=707a6b01:6219
+[ 2771006ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2771183ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2771341ms] [LOG] [orderSocket] Socket connected, ID: x7fyTldGilVvEd_OAAEh @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2771820ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 2775374ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 2777254ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 2782888ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 2790147ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2790449ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2790743ms] [LOG] [orderSocket] Socket connected, ID: WEKDCFolhrqkKr9YAAEj @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2791995ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 2796479ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 2796560ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 2800872ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 2806645ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/cart:1
+[ 2810265ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2810567ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2810820ms] [LOG] [orderSocket] Socket connected, ID: vSgOuMVSKPwsktohAAEl @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2812080ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 2816649ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 2816652ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 2820954ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 2826653ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/cart:1
+[ 2832101ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/checkout:1
+[ 2840505ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2840826ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2841128ms] [LOG] [orderSocket] Socket connected, ID: aekW_STd9PbbAx2lAAEn @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2842373ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 2846844ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 2846925ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 2851226ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 2852383ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2852652ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2852789ms] [LOG] [orderSocket] Socket connected, ID: GDl61ePhsQ8DwfNpAAEp @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2853210ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 2855798ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 2860736ms] [LOG] [orderSocket] Socket disconnected, reason: io client disconnect @ http://localhost:5173/src/core/services/orderSocket.js:60
+[ 2860779ms] [LOG] [orderSocket] Socket connected, ID: DbcCIUtC7b5unpIOAAEr @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2862509ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2862803ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2863115ms] [LOG] [orderSocket] Socket connected, ID: e-N94-CiybletSjAAAEt @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2863329ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 2868891ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 2868894ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 2873181ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 2874352ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2874620ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2874778ms] [LOG] [orderSocket] Socket connected, ID: Z748Qr1UBbmhrP3zAAEv @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2875215ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 2877763ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 2882143ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2882392ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2882625ms] [LOG] [orderSocket] Socket connected, ID: PrBt9LRHOpOfD9ZHAAEx @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2882766ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 2886517ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 2888426ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 2892042ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 2893131ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2893415ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2893625ms] [LOG] [orderSocket] Socket connected, ID: a1alUGvdcAMnR0ArAAEz @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2893961ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 2896637ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 2988479ms] [LOG] [vite] server connection lost. Polling for restart... @ http://localhost:5173/@vite/client:865
+[ 2993941ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 2994220ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 2994354ms] [LOG] [orderSocket] Socket connected, ID: mMR89dx1EEkLI2slAAE3 @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 2994449ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 2996771ms] [ERROR] Failed to load resource: the server responded with a status of 409 (Conflict) @ http://localhost:7000/api/orders/checkout/preview:1
+[ 3066490ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 3066797ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 3066932ms] [LOG] [orderSocket] Socket connected, ID: dkEaH7GL8IbkJHdzAAE5 @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 3066935ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 3070998ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 3071913ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 3078372ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 3079053ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 3079292ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 3079399ms] [LOG] [orderSocket] Socket connected, ID: qNe7lGHX_Ky3MgUdAAE7 @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 3079802ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 3082375ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 3098422ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 3098732ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 3099023ms] [LOG] [orderSocket] Socket connected, ID: FaxqncJnJyB79yqZAAE_ @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 3099261ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 3143579ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 3143890ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 3144187ms] [LOG] [orderSocket] Socket connected, ID: FyHLSTinYz5ZxF7AAAFB @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 3144432ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 3149985ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 3149988ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 3154247ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 3155454ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 3155722ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 3155888ms] [LOG] [orderSocket] Socket connected, ID: drUl9OanaCUZPCsxAAFD @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 3156108ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 3158835ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 3168029ms] [LOG] [orderSocket] Socket disconnected, reason: transport close @ http://localhost:5173/src/core/services/orderSocket.js:60
+[ 3169373ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=rdpue341:1
+[ 3169375ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[ 3172069ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=rdrxgi4c:1
+[ 3172070ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[ 3175191ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 3175501ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 3175563ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=rdul3zru:1
+[ 3175565ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/meta/pixel-config:1
+[ 3175638ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/products/serviceability?lat=16.631095618900467&lng=74.228211:1
+[ 3175639ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[ 3175643ms] [ERROR] Failed to fetch cart from backend AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41) @ http://localhost:5173/src/modules/customer/context/CartContext.jsx:146
+[ 3175644ms] [ERROR] Failed to fetch cart from backend AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41) @ http://localhost:5173/src/modules/customer/context/CartContext.jsx:146
+[ 3175644ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/cart:1
+[ 3175645ms] [ERROR] Failed to fetch wishlist from backend AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41) @ http://localhost:5173/src/modules/customer/context/WishlistContext.jsx:46
+[ 3175646ms] [ERROR] Failed to fetch wishlist from backend AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41) @ http://localhost:5173/src/modules/customer/context/WishlistContext.jsx:46
+[ 3175647ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/wishlist?idsOnly=true:1
+[ 3175648ms] [ERROR] Failed to fetch profile: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41) @ http://localhost:5173/src/core/context/AuthContext.jsx:174
+[ 3175649ms] [ERROR] Failed to fetch profile: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41) @ http://localhost:5173/src/core/context/AuthContext.jsx:174
+[ 3175649ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/customer/profile:1
+[ 3175650ms] [ERROR] Failed to fetch settings AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41) @ http://localhost:5173/src/core/context/SettingsContext.jsx:33
+[ 3175650ms] [ERROR] Failed to fetch settings AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41) @ http://localhost:5173/src/core/context/SettingsContext.jsx:33
+[ 3175651ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/settings:1
+[ 3175720ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/meta/pixel-config:1
+[ 3175984ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/products/serviceability?lat=16.605044594825728&lng=74.228211:1
+[ 3176481ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/products/serviceability?lat=16.605044594825728&lng=74.228211:1
+[ 3176483ms] [ERROR] Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41) @ http://localhost:5173/src/modules/customer/pages/Home.jsx:342
+[ 3176484ms] [ERROR] Error: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41) @ http://localhost:5173/src/modules/customer/pages/Home.jsx:342
+[ 3176484ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/categories:1
+[ 3176485ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/gallery/home:1
+[ 3176485ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/products?limit=50&lat=16.605044594825728&lng=74.228211:1
+[ 3176486ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/experience?pageType=home:1
+[ 3176486ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/offer-sections?lat=16.605044594825728&lng=74.228211:1
+[ 3176487ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/experience/hero?pageType=home:1
+[ 3178560ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=rdwxtcnv:1
+[ 3178560ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[ 3181173ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 3181440ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 3181506ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=rdz623u5:1
+[ 3181507ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/meta/pixel-config:1
+[ 3181558ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/products/serviceability?lat=16.605044594825728&lng=74.228211:1
+[ 3181559ms] [ERROR] Failed to fetch cart from backend AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41) @ http://localhost:5173/src/modules/customer/context/CartContext.jsx:146
+[ 3181559ms] [ERROR] Failed to fetch cart from backend AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41) @ http://localhost:5173/src/modules/customer/context/CartContext.jsx:146
+[ 3181559ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/cart:1
+[ 3181560ms] [ERROR] Failed to fetch wishlist from backend AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41) @ http://localhost:5173/src/modules/customer/context/WishlistContext.jsx:46
+[ 3181560ms] [ERROR] Failed to fetch wishlist from backend AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41) @ http://localhost:5173/src/modules/customer/context/WishlistContext.jsx:46
+[ 3181561ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/wishlist?idsOnly=true:1
+[ 3181562ms] [ERROR] Failed to fetch profile: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41) @ http://localhost:5173/src/core/context/AuthContext.jsx:174
+[ 3181562ms] [ERROR] Failed to fetch profile: AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41) @ http://localhost:5173/src/core/context/AuthContext.jsx:174
+[ 3181563ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/customer/profile:1
+[ 3181563ms] [ERROR] Failed to fetch settings AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41) @ http://localhost:5173/src/core/context/SettingsContext.jsx:33
+[ 3181564ms] [ERROR] Failed to fetch settings AxiosError: Network Error
+    at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1669:19)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41) @ http://localhost:5173/src/core/context/SettingsContext.jsx:33
+[ 3181564ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/settings:1
+[ 3181565ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/meta/pixel-config:1
+[ 3181572ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[ 3182909ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=re0amens:1
+[ 3182909ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[ 3186012ms] [LOG] [orderSocket] Socket connected, ID: unIsZe3w9mff8FmcAAAB @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 3220649ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 3220936ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 3221138ms] [LOG] [orderSocket] Socket connected, ID: ciQ28QEf7W2eOA_4AAAJ @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 3221262ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 3267313ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 3267672ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 3267969ms] [LOG] [orderSocket] Socket connected, ID: x3MJVo8j40xs2AxuAAAL @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 3268099ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 3273724ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 3273727ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 3278040ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 3279152ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 3279401ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 3279541ms] [LOG] [orderSocket] Socket connected, ID: 1DDFQXGVoy9snKfiAAAN @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 3279856ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 3282523ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 3299433ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 3299757ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 3300068ms] [LOG] [orderSocket] Socket connected, ID: AyrS2YIzTW7AncmjAAAP @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 3301141ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 3305816ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 3305940ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 3310158ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 3311312ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 3311586ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 3311714ms] [LOG] [orderSocket] Socket connected, ID: icWrEbGfA7NAGxTfAAAR @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 3312150ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 3314738ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 3331599ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 3331911ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 3332202ms] [LOG] [orderSocket] Socket connected, ID: MDhsJwUwEKci4B-EAAAT @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 3332348ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 3336117ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 3337950ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 3341476ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 3342572ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 3342827ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 3342963ms] [LOG] [orderSocket] Socket connected, ID: 692zn95xMrKyHi9IAAAX @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 3343358ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 3345980ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 3362876ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 3363162ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 3363479ms] [LOG] [orderSocket] Socket connected, ID: _dY8Wnj1qPfkvb_FAAAb @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 3363660ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 3369244ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 3369268ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 3373575ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 3374787ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 3375087ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 3375359ms] [LOG] [orderSocket] Socket connected, ID: 77Au9Lg9l3qdVRErAAAd @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 3375770ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 3378185ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 3395156ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 3395481ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 3395802ms] [LOG] [orderSocket] Socket connected, ID: inaZPaPqtPLgKM55AAAf @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 3395968ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 3399636ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 3401505ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 3405058ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 3406265ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 3406564ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 3406780ms] [LOG] [orderSocket] Socket connected, ID: 8xdxdbe4dMznWMLOAAAj @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 3407260ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 3409707ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 3426705ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 3427060ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 3427545ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 3427639ms] [LOG] [orderSocket] Socket connected, ID: riJERrpBw8yFXTaDAAAl @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 3433247ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 3434110ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 3438487ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 3439666ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 3440015ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 3440274ms] [LOG] [orderSocket] Socket connected, ID: 2cTfPvT_DmxNwNYXAAAn @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 3440741ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 3443157ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 3460143ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 3460494ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 3460794ms] [LOG] [orderSocket] Socket connected, ID: xBLUyNmYaRqJNyJ9AAAr @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 3460969ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 3466601ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 3466607ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 3470851ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 3472070ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 3472376ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 3472727ms] [LOG] [orderSocket] Socket connected, ID: --Gzrs1y1w2rPRPMAAAx @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 3472915ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 3475358ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 3492348ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 3492572ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 3492817ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 3492861ms] [LOG] [orderSocket] Socket connected, ID: FNOOFITemYjyQPgYAAA1 @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 3497822ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 3498609ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 3501987ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 3503288ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 3503630ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 3503881ms] [LOG] [orderSocket] Socket connected, ID: q0BBWYNqf15C_EAlAAA5 @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 3504338ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 3506779ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 3508752ms] [ERROR] Failed to load resource: the server responded with a status of 409 (Conflict) @ http://localhost:7000/api/orders/checkout/preview:1
+[ 3523716ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 3524039ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 3524391ms] [LOG] [orderSocket] Socket connected, ID: XirYXXdqgxuYc0BxAAA9 @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 3524571ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 3530218ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 3530218ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 3534428ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 3535620ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 3535898ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 3536115ms] [LOG] [orderSocket] Socket connected, ID: YOGT043B1OwN_kT_AABB @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 3536511ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 3539038ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 3555982ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 3556331ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 3556661ms] [LOG] [orderSocket] Socket connected, ID: UYJTJ-7C50Z9c9PQAABD @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 3556846ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 3562521ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 3562521ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 3566791ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 3567833ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 3568113ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 3568369ms] [LOG] [orderSocket] Socket connected, ID: Hv6H9BMeKchr-fgAAABF @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 3568773ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 3571263ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 3596649ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 3597006ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 3597347ms] [LOG] [orderSocket] Socket connected, ID: HVML3BiDD3oFWq1YAABH @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 3598605ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 3603036ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 3603168ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 3607442ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 3608577ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 3608845ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 3609096ms] [LOG] [orderSocket] Socket connected, ID: nexoc929AjiVIU0TAABJ @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 3609417ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 3613000ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 3619431ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 3619737ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 3620022ms] [LOG] [orderSocket] Socket connected, ID: wnu-i62gSY1te1tBAABL @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 3620183ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 3625842ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 3625844ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 3630192ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 3631308ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 3631575ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 3631784ms] [LOG] [orderSocket] Socket connected, ID: YW-ieCnQX9k75ImaAABN @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 3632181ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 3634698ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 3636361ms] [ERROR] Failed to load resource: the server responded with a status of 409 (Conflict) @ http://localhost:7000/api/orders/checkout/preview:1
+[ 3641134ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 3641439ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 3641726ms] [LOG] [orderSocket] Socket connected, ID: B9GWarEjBcrqwXYtAABP @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 3641898ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 3645656ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 3647478ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 3651052ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 3651689ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 3651921ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 3652101ms] [LOG] [orderSocket] Socket connected, ID: oxbJwfDP0uUjiYhTAABR @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 3652481ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 3655035ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 3669470ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 3669803ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 3670159ms] [LOG] [orderSocket] Socket connected, ID: QrCAmRnEAS6W7t4JAABT @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 3671652ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 3675873ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 3676017ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 3680259ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 3681211ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 3681327ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 3681432ms] [LOG] [orderSocket] Socket connected, ID: arJ-XVnlb0mGGyk9AABV @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 3681565ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 3685477ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 3691759ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 3692001ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 3692239ms] [LOG] [orderSocket] Socket connected, ID: uMh2e5HvPdKhKEWoAABX @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 3693702ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 3696219ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 3698010ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 3701593ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 3702649ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 3702909ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 3703055ms] [LOG] [orderSocket] Socket connected, ID: DkAeBhtuszJMP490AABZ @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 3703493ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 3706014ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 3712347ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 3712651ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 3712902ms] [LOG] [orderSocket] Socket connected, ID: -3aPGmAS78Hp7hJvAABb @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 3714367ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 3716828ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 3718690ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 3722199ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 3723262ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 3723514ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 3723697ms] [LOG] [orderSocket] Socket connected, ID: F9N0pux84XpsVCo8AABd @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 3724111ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 3726627ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 3732996ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 3733299ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 3733577ms] [LOG] [orderSocket] Socket connected, ID: UIvUVlfjgsqUOUm_AABf @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 3734992ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 3737468ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 3739309ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 3742912ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 3743942ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 3744218ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 3744367ms] [LOG] [orderSocket] Socket connected, ID: ccX100yTkePzaHsdAABh @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 3744802ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 3747341ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 3753706ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 3753987ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 3754264ms] [LOG] [orderSocket] Socket connected, ID: hEWVY9P9wInv6oQhAABj @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 3755582ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 3758165ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 3760026ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 3763559ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 3764582ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 3764835ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 3764978ms] [LOG] [orderSocket] Socket connected, ID: zPtYpMlD1LNQ0wWmAABl @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 3765253ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 3767951ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 3774320ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 3774623ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 3774899ms] [LOG] [orderSocket] Socket connected, ID: HTzN2Ec7g_I_BKOKAABn @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 3776267ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 3778790ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 3780626ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 3784224ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 3785249ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 3785504ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 3785712ms] [LOG] [orderSocket] Socket connected, ID: mAG_rxepAGYzcd8XAABp @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 3785923ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 3788652ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 4531505ms] [ERROR] Route Error: ReferenceError: isDeliveryFeePending is not defined
+    at CheckoutPage (http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx?t=1795590447461:2326:98)
+    at Object.react_stack_bottom_frame (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:18509:20)
+    at renderWithHooks (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:5654:24)
+    at updateFunctionComponent (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:7475:21)
+    at beginWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:8525:20)
+    at runWithFiberInDEV (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:997:72)
+    at performUnitOfWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12561:98)
+    at workLoopSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12424:43)
+    at renderRootSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12408:13)
+    at performWorkOnRoot (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:11766:189) @ http://localhost:5173/src/shared/components/RootErrorBoundary.jsx:13
+[ 4531507ms] [ERROR] Route Error: ReferenceError: isDeliveryFeePending is not defined
+    at CheckoutPage (http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx?t=1795590447461:2326:98)
+    at Object.react_stack_bottom_frame (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:18509:20)
+    at renderWithHooks (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:5654:24)
+    at updateFunctionComponent (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:7475:21)
+    at beginWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:8525:20)
+    at runWithFiberInDEV (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:997:72)
+    at performUnitOfWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12561:98)
+    at workLoopSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12424:43)
+    at renderRootSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12408:13)
+    at performWorkOnRoot (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:11766:189) @ http://localhost:5173/src/shared/components/RootErrorBoundary.jsx:13
+[ 4531523ms] [ERROR] Route Error: ReferenceError: isDeliveryFeePending is not defined
+    at CheckoutPage (http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx?t=1795590447461:2326:98)
+    at Object.react_stack_bottom_frame (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:18509:20)
+    at renderWithHooks (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:5654:24)
+    at updateFunctionComponent (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:7475:21)
+    at beginWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:8525:20)
+    at runWithFiberInDEV (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:997:72)
+    at performUnitOfWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12561:98)
+    at workLoopSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12424:43)
+    at renderRootSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12408:13)
+    at performWorkOnRoot (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:11827:37) @ http://localhost:5173/src/shared/components/RootErrorBoundary.jsx:13
+[ 4531524ms] [ERROR] Route Error: ReferenceError: isDeliveryFeePending is not defined
+    at CheckoutPage (http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx?t=1795590447461:2326:98)
+    at Object.react_stack_bottom_frame (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:18509:20)
+    at renderWithHooks (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:5654:24)
+    at updateFunctionComponent (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:7475:21)
+    at beginWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:8525:20)
+    at runWithFiberInDEV (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:997:72)
+    at performUnitOfWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12561:98)
+    at workLoopSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12424:43)
+    at renderRootSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12408:13)
+    at performWorkOnRoot (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:11827:37) @ http://localhost:5173/src/shared/components/RootErrorBoundary.jsx:13
+[ 4531533ms] [ERROR] %o
+
+%s
+
+%s
+ ReferenceError: isDeliveryFeePending is not defined
+    at CheckoutPage (http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx?t=1795590447461:2326:98)
+    at Object.react_stack_bottom_frame (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:18509:20)
+    at renderWithHooks (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:5654:24)
+    at updateFunctionComponent (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:7475:21)
+    at beginWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:8525:20)
+    at runWithFiberInDEV (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:997:72)
+    at performUnitOfWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12561:98)
+    at workLoopSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12424:43)
+    at renderRootSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12408:13)
+    at performWorkOnRoot (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:11827:37) The above error occurred in the <CheckoutPage> component. React will try to recreate this component tree from scratch using the error boundary you provided, RenderErrorBoundary. @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:7001
+[ 4531534ms] [ERROR] React Router caught the following error during render ReferenceError: isDeliveryFeePending is not defined
+    at CheckoutPage (http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx?t=1795590447461:2326:98)
+    at Object.react_stack_bottom_frame (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:18509:20)
+    at renderWithHooks (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:5654:24)
+    at updateFunctionComponent (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:7475:21)
+    at beginWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:8525:20)
+    at runWithFiberInDEV (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:997:72)
+    at performUnitOfWork (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12561:98)
+    at workLoopSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12424:43)
+    at renderRootSync (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:12408:13)
+    at performWorkOnRoot (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:11827:37) @ http://localhost:5173/node_modules/.vite/deps/react-router-dom.js?v=707a6b01:6219
+[ 4541933ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 4542295ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 4542613ms] [LOG] [orderSocket] Socket connected, ID: j00wP9uQengXqoljAABt @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 4544370ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 4548456ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 4548456ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 4552710ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 4563553ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/checkout:1
+[ 4565755ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 4566075ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 4566355ms] [LOG] [orderSocket] Socket connected, ID: Ed59rxu20hLRFQeSAABv @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 4567401ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 4572079ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 4572152ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 4576491ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 4586461ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/checkout:1
+[ 4588752ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 4589067ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 4589346ms] [LOG] [orderSocket] Socket connected, ID: vUbrY2Box8PHAnBuAABx @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 4590424ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 4595191ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 4595195ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 4600338ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 4610757ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/checkout:1
+[ 4612522ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 4612823ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 4613066ms] [LOG] [orderSocket] Socket connected, ID: eYZPP3DnK1oTeqqKAABz @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 4614401ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 4617026ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 4618863ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 4622529ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 4633817ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/checkout:1
+[ 4635792ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 4636127ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 4636402ms] [LOG] [orderSocket] Socket connected, ID: RTJGeto9Do8nZ9bBAAB1 @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 4636589ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 4642232ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 4642250ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 4646572ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 4657788ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/checkout:1
+[ 4660187ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 4660515ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 4660917ms] [LOG] [orderSocket] Socket connected, ID: iOb5VOddhbHmx98tAAB3 @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 4661097ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 4666680ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 4666683ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 4670931ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 4681179ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/checkout:1
+[ 4683716ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 4684054ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 4684385ms] [LOG] [orderSocket] Socket connected, ID: fBQO99-W5BzHmfZ5AAB5 @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 4684530ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 4690099ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 4690198ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 4694570ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 4705735ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/checkout:1
+[ 4708193ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 4708516ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 4708891ms] [LOG] [orderSocket] Socket connected, ID: wGY4oB1p99M-gNyeAAB7 @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 4709056ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 4714699ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 4714702ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 4718977ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 4729050ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/checkout:1
+[ 4731429ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 4731764ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 4732184ms] [LOG] [orderSocket] Socket connected, ID: e-zl9_9hDX7lfn2nAAB9 @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 4732310ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 4737849ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 4737851ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 4742161ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 4753252ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/checkout:1
+[ 4755545ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 4755846ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 4756127ms] [LOG] [orderSocket] Socket connected, ID: DOnf9UJarjVxefX5AAB_ @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 4756259ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 4760052ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 4761864ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 4765422ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 4776355ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/checkout:1
+[ 4778689ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 4779019ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 4779270ms] [LOG] [orderSocket] Socket connected, ID: f7Q1vA7PiM8FnWwnAACB @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 4780281ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 4785035ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 4785113ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 4789400ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 4800497ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/checkout:1
+[ 4802756ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 4803062ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 4803331ms] [LOG] [orderSocket] Socket connected, ID: lTr21q3PVPmyLxmgAACD @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 4803507ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 4809083ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 4809153ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 4813448ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 4824449ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/checkout:1
+[ 4834378ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 4834693ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 4834981ms] [LOG] [orderSocket] Socket connected, ID: V-kJOPbJOIYODn_gAACF @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 4836211ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 4840811ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 4840813ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 4845112ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 4856388ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/checkout:1
+[ 4858562ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 4858832ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 4859106ms] [LOG] [orderSocket] Socket connected, ID: A7R9RRi3DBRaf5irAACH @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 4859955ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 4862998ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 4864834ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 4868384ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 4877444ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/checkout:1
+[ 4879735ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 4880061ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 4880351ms] [LOG] [orderSocket] Socket connected, ID: Iuk3iDnXY-hOyS5AAACJ @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 4880538ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 4886071ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 4886146ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 4890428ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 4901858ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/checkout:1
+[ 5170175ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 5170513ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 5170753ms] [LOG] [orderSocket] Socket connected, ID: FLwvuiIjJsR-lEZmAACL @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 5170934ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 5174732ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 5176524ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 5180096ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 5185802ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/cart:1
+[ 5190875ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/checkout:1
+[ 5229466ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/checkout:1
+[ 5241925ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/addresses:1
+[ 5254946ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/addresses:1
+[ 5282489ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:7000/api/maps/geocode?address=Sambhajinagar,+Near+Shivaji+University,+Kolhapur,+Maharashtra,+416004:1
+[ 5285731ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/addresses:1
+[ 5300587ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/addresses:1
+[ 5301235ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:7000/api/maps/geocode?address=Rankala+Lake,+Kolhapur,+Maharashtra,+416012:1
+[ 5304511ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/addresses:1
+[ 5321811ms] [LOG] [orderSocket] Socket disconnected, reason: transport close @ http://localhost:5173/src/core/services/orderSocket.js:60
+[ 5323400ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=snvwsnma:1
+[ 5323402ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[ 5326403ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/addresses:1
+[ 5328826ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=so03hxgc:1
+[ 5328826ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[ 5331013ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/maps/geocode?address=Rankala%20Lake%2C%20Kolhapur:1
+[ 5331019ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/maps/geocode?address=Rankala%20Lake%2C%20Kolhapur%2C%20Maharashtra%2C%20416012:1
+[ 5331024ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/maps/geocode?address=Shivaji%20University%2C%20Kolhapur:1
+[ 5331030ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/maps/geocode?address=Baner%2C%20Pune%2C%20Maharashtra:1
+[ 5331035ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/api/maps/geocode?address=Hockey%20Stadium%2C%20Kolhapur:1
+[ 5334037ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/addresses:1
+[ 5336549ms] [LOG] [orderSocket] Socket connected, ID: 4nrZRVgza0MaRRwnAAAD @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 5339672ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/addresses:1
+[ 5349557ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:7000/api/maps/geocode?address=Rankala%20Lake%2C%20Kolhapur%2C%20Maharashtra%2C%20416012:1
+[ 5354326ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/addresses:1
+[ 5362500ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 5362828ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 5363194ms] [LOG] [orderSocket] Socket connected, ID: AAzpdDO_aqr7lpBKAAAL @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 5363377ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 5368968ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 5368969ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 5373269ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[ 5380129ms] [ERROR] Failed to load resource: the server responded with a status of 409 (Conflict) @ http://localhost:7000/api/orders/checkout/preview:1
+[ 5383290ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/checkout:1
+[ 5387520ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/checkout:1
+[ 5397747ms] [ERROR] Failed to load resource: the server responded with a status of 409 (Conflict) @ http://localhost:7000/api/orders/checkout/preview:1
+[ 5401763ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/checkout:1
+[ 5419434ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:7000/api/maps/geocode?address=Sambhajinagar,+Near+Shivaji+University:1
+[ 5422637ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/checkout:1
+[ 5444867ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 5445222ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 5445567ms] [LOG] [orderSocket] Socket connected, ID: zL85HbU6Hj4SDhEwAAAR @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 5446284ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 5449584ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 5546247ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[ 5546627ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[ 5546838ms] [LOG] [orderSocket] Socket connected, ID: n3kqeaOpH4HOWSLuAAAZ @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 5547175ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[ 5573440ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[ 5591560ms] [LOG] [orderSocket] Socket disconnected, reason: transport close @ http://localhost:5173/src/core/services/orderSocket.js:60
+[ 5594330ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=stoymf9l:1
+[ 5594332ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[ 5598316ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=sts1ao3b:1
+[ 5598316ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[ 5604490ms] [LOG] [orderSocket] Socket connected, ID: EjjLkyXbIvh14QKAAAAB @ http://localhost:5173/src/core/services/orderSocket.js:49
+[ 5696190ms] [LOG] [orderSocket] Socket disconnected, reason: transport close @ http://localhost:5173/src/core/services/orderSocket.js:60
+[ 5697341ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=svwg19gw:1
+[ 5697342ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[ 5703356ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=sw131iez:1
+[ 5703357ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[ 5712747ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=sw8bxd1b:1
+[ 5712748ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[ 5722767ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=swg28gtd:1
+[ 5722768ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[ 5732791ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:7000/socket.io/?EIO=4&transport=polling&t=swnsoh2w:1
+[ 5732791ms] [ERROR] [orderSocket] Socket connection error: TransportError: xhr poll error
+    at XHR.onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:960:33)
+    at _Request.<anonymous> (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1243:12)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at _Request._onError (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1341:10)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1319:18 @ http://localhost:5173/src/core/services/orderSocket.js:64

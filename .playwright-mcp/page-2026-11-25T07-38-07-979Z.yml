@@ -1,0 +1,271 @@
+- generic:
+  - generic:
+    - generic [aria-hidden]:
+      - main:
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - generic:
+                      - heading [level=2]: 1. Delivery Address
+                      - button: Change
+                    - generic:
+                      - generic:
+                        - heading [level=3]: Palak Patel
+                        - paragraph: Nandgaon, Maharashtra, 416207, Nandgaon, Maharashtra, 416207
+                  - generic:
+                    - generic:
+                      - heading [level=2]:
+                        - generic: Delivery Option
+                    - generic:
+                      - generic:
+                        - generic:
+                          - generic:
+                            - generic:
+                              - heading [level=3]: Express
+                              - paragraph: Deliver ASAP
+                          - generic: ₹140
+                        - generic:
+                          - generic: ⚡ 2113–2123 mins
+                          - generic: Fastest
+                        - paragraph: Address is outside store service radius (700.92km vs max 10km).
+                      - generic:
+                        - generic:
+                          - generic:
+                            - generic:
+                              - heading [level=3]: Normal
+                              - paragraph: Standard priority
+                          - generic: ₹70
+                        - generic:
+                          - generic: Within 1 hour
+                          - generic: Standard
+                        - paragraph: Address is outside store service radius (700.92km vs max 10km).
+                      - generic:
+                        - generic:
+                          - generic:
+                            - generic:
+                              - heading [level=3]: Schedule
+                              - paragraph: Pick date & time
+                          - generic: ₹70
+                        - generic:
+                          - generic: 📅 Future Slot
+                          - generic: Up to 7 days
+                        - paragraph: Address is outside store service radius (700.92km vs max 10km).
+                  - generic:
+                    - heading [level=2]: 3. Payment Method
+                    - generic:
+                      - generic:
+                        - generic:
+                          - generic:
+                            - generic:
+                              - generic: Use Wallet Balance
+                              - generic: "Available: ₹200"
+                          - switch
+                      - generic:
+                        - generic:
+                          - radio
+                          - generic:
+                            - generic: Online Payment
+                            - text: UPI (GPay, PhonePe, Paytm), Cards & NetBanking
+                        - generic:
+                          - generic: UPI
+                          - generic: Cards
+                          - generic: NetBanking
+                      - generic:
+                        - generic:
+                          - radio [checked]
+                          - generic:
+                            - generic: Cash on Delivery
+                            - text: Pay via Cash or UPI upon delivery
+                        - generic: COD
+                  - generic:
+                    - button [disabled]:
+                      - generic: Delivery Unavailable at Address
+                    - paragraph: Your payment information is safe and secure
+                - generic:
+                  - generic:
+                    - generic:
+                      - heading [level=2]: Order Summary
+                      - generic: 1 items • ₹930
+                    - generic:
+                      - generic:
+                        - generic:
+                          - paragraph: 1 item can't be delivered to this address
+                          - paragraph: Remove it to continue with the rest of your cart.
+                      - list:
+                        - listitem:
+                          - generic:
+                            - paragraph: Meatyns Special Mutton ( Liver & Fat less )
+                            - paragraph: Sold by Meatyns
+                          - button: Remove
+                    - generic:
+                      - generic:
+                        - generic:
+                          - heading [level=4]: Meatyns Special Mutton ( Liver & Fat less )
+                          - paragraph: 1 kg
+                        - generic: ₹930
+                    - generic:
+                      - generic: 🚚 Standard Delivery
+                      - generic: Within 1 hour
+                    - separator
+                    - generic:
+                      - heading [level=3]: Price Details
+                      - generic:
+                        - generic: Subtotal
+                        - generic: ₹930
+                      - generic:
+                        - generic:
+                          - text: Delivery Charges
+                          - paragraph: Calculating delivery charge...
+                        - generic: Calculating...
+                      - separator
+                      - generic:
+                        - generic: Total Amount
+                        - generic: Calculating...
+                    - generic:
+                      - generic:
+                        - paragraph: Freshness Guaranteed
+                        - paragraph: or your money back
+                  - generic:
+                    - generic:
+                      - paragraph: Quality Meat for a Healthier You
+      - generic:
+        - contentinfo:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - heading [level=4]: 100% Fresh & Hygienic
+                  - paragraph: Sourced daily from certified farms
+              - generic:
+                - generic:
+                  - heading [level=4]: Chilled, Never Frozen
+                  - paragraph: Stored strictly at 0–4°C always
+              - generic:
+                - generic:
+                  - heading [level=4]: 34–44 Mins Express
+                  - paragraph: Fast temperature-controlled delivery
+            - generic:
+              - generic:
+                - paragraph: Good Food Starts with Meatyns.
+                - paragraph: Your trusted destination for farm-fresh chicken, tender mutton, ocean-fresh fish & coastal seafood. Hygienically packed, temperature-controlled, and delivered fresh to your door.
+                - generic:
+                  - link:
+                    - /url: "#"
+                  - link:
+                    - /url: "#"
+                  - link:
+                    - /url: "#"
+                  - link:
+                    - /url: "#"
+              - generic:
+                - heading [level=3]: Quick Links
+                - list:
+                  - listitem:
+                    - link:
+                      - /url: /
+                      - text: Home
+                  - listitem:
+                    - link:
+                      - /url: /about
+                      - text: About Meatyns
+                  - listitem:
+                    - link:
+                      - /url: /franchise
+                      - text: Franchise Opportunities
+                  - listitem:
+                    - link:
+                      - /url: /what-we-deliver
+                      - text: What We Deliver
+                  - listitem:
+                    - link:
+                      - /url: /category/all
+                      - text: All Categories
+                  - listitem:
+                    - link:
+                      - /url: /offers
+                      - text: Offers & Deals
+                  - listitem:
+                    - link:
+                      - /url: /support
+                      - text: Customer Support
+                  - listitem:
+                    - link:
+                      - /url: /contact
+                      - text: Contact Us
+              - generic:
+                - heading [level=3]: Categories
+                - list:
+                  - listitem:
+                    - link:
+                      - /url: /search?q=chicken
+                      - text: Fresh Chicken
+                  - listitem:
+                    - link:
+                      - /url: /search?q=mutton
+                      - text: Tender Mutton
+                  - listitem:
+                    - link:
+                      - /url: /search?q=chicken
+                      - text: Chicken Curry Cut
+                  - listitem:
+                    - link:
+                      - /url: /search?q=mutton
+                      - text: Goat Curry Cut
+                  - listitem:
+                    - link:
+                      - /url: /categories
+                      - text: All Meat Cuts
+              - generic:
+                - heading [level=3]: Contact Us
+                - list:
+                  - listitem:
+                    - generic: Unit-A, Shop No. 11, Sharda Vihar Apartment, Isolation Ring Road, Near Dhyan Chand Hockey Stadium, Kolhapur
+                  - listitem:
+                    - generic:
+                      - link:
+                        - /url: tel:18002338590
+                        - text: 1800-233-8590
+                      - generic: "|"
+                      - link:
+                        - /url: tel:7558598590
+                        - text: 75585 98590
+                  - listitem:
+                    - link:
+                      - /url: mailto:meatyns01@gmail.com
+                      - text: meatyns01@gmail.com
+            - generic:
+              - paragraph: © 2026 Meatyns. All rights reserved.
+              - generic:
+                - link:
+                  - /url: /policy
+                  - text: Our Policies
+                - link:
+                  - /url: /quality-policy
+                  - text: Quality Policy
+                - link:
+                  - /url: /shipping-policy
+                  - text: Delivery Policy
+                - link:
+                  - /url: /refund-policy
+                  - text: Refund & Replacement
+                - link:
+                  - /url: /privacy
+                  - text: Privacy Policy
+                - link:
+                  - /url: /terms
+                  - text: Terms of Service
+    - region "Notifications alt+T"
+  - dialog "Select Delivery Address" [ref=e314]:
+    - generic [ref=e315]:
+      - heading "Select Delivery Address" [level=2] [ref=e316]
+      - paragraph [ref=e317]: Choose where you want your order delivered.
+    - 'button "Work Palak Patel sv homes Phone: +918770620342" [active] [ref=e319]':
+      - generic [ref=e320]: Work
+      - paragraph [ref=e326]: Palak Patel
+      - paragraph [ref=e327]: sv homes
+      - paragraph [ref=e328]: "Phone: +918770620342"
+    - button "Add New Address" [ref=e330]
+    - button "Close" [ref=e331]

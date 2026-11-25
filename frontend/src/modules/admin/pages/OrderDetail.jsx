@@ -28,7 +28,8 @@ import {
     Info,
     MapPin,
     RotateCcw,
-    Loader2
+    Loader2,
+    Store
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { getOrderBill, getOrderBillExtraRows } from '@/shared/utils/orderBill';

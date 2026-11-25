@@ -62,9 +62,8 @@ describe("City delivery slabs (Normal + Scheduled)", () => {
     expect(res.expressSurcharge).toBe(expected / 2);
   });
 
-  it("express beyond the last slab is double the standard fee", () => {
-    // standard: 20 + ceil(6.2 - 0.5)=6km * 10 = 80 -> express 160
-    expect(fee(6.2, "EXPRESS").deliveryFeeCharged).toBe(160);
+  it("express beyond the last slab is double the last slab fee", () => {
+    expect(fee(6.2, "EXPRESS").deliveryFeeCharged).toBe(140);
   });
 
   it("other cities keep the standard fee", () => {
@@ -73,11 +72,10 @@ describe("City delivery slabs (Normal + Scheduled)", () => {
     expect(res.citySlabApplied).toBe(false);
   });
 
-  it("beyond the last slab falls back to the standard fee", () => {
-    // 20 + ceil(6.2 - 0.5)=6km * 10 = 80
+  it("beyond the last slab keeps charging the last slab fee", () => {
     const res = fee(6.2, "NORMAL");
-    expect(res.deliveryFeeCharged).toBe(80);
-    expect(res.citySlabApplied).toBe(false);
+    expect(res.deliveryFeeCharged).toBe(70);
+    expect(res.citySlabApplied).toBe(true);
   });
 
   it("disabled city rule is ignored", () => {
@@ -87,6 +85,33 @@ describe("City delivery slabs (Normal + Scheduled)", () => {
     });
     const res = calculateCustomerDeliveryFee(1, off, { deliveryMethod: "NORMAL", sellerCity: "Kolhapur" });
     expect(res.deliveryFeeCharged).not.toBe(99);
+  });
+
+  describe("Pune slabs round partial km UP to the next km", () => {
+    const pune = normalizeFinanceSettings({
+      deliveryPricingMode: "distance_based",
+      cityDeliverySlabs: [
+        {
+          city: "Pune",
+          slabs: [
+            { fromKm: 0, toKm: 2, fee: 49 },
+            { fromKm: 2, toKm: 3, fee: 55 },
+            { fromKm: 3, toKm: 4, fee: 59 },
+            { fromKm: 4, toKm: 5, fee: 69 },
+            { fromKm: 5, toKm: 6, fee: 79 },
+            { fromKm: 6, toKm: 7, fee: 89 },
+            { fromKm: 7, toKm: 8, fee: 99 },
+          ],
+        },
+      ],
+    });
+    it.each([
+      [0.3, 49], [2, 49], [2.1, 55], [3, 55], [3.01, 59], [4, 59],
+      [4.2, 69], [5, 69], [5.2, 79], [6, 79], [6.4, 89], [7, 89], [7.5, 99], [8, 99],
+    ])("%s km costs ₹%s", (km, expected) => {
+      const res = calculateCustomerDeliveryFee(km, pune, { deliveryMethod: "NORMAL", sellerCity: "Pune" });
+      expect(res.deliveryFeeCharged).toBe(expected);
+    });
   });
 
   describe("free-delivery threshold", () => {

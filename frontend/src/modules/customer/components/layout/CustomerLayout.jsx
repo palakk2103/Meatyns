@@ -6,6 +6,7 @@ import MiniCart from '../shared/MiniCart';
 import ProductDetailSheet from '../shared/ProductDetailSheet';
 import MobileFooterMessage from './MobileFooterMessage';
 import LocationGate from '../shared/LocationGate';
+import EnquiryBot from '../chatbot/EnquiryBot';
 import { useProductDetail } from '../../context/ProductDetailContext';
 import { cn } from '@/lib/utils';
 import { useLocation } from 'react-router-dom';
@@ -127,6 +128,7 @@ const CustomerLayout = ({ children, showHeader: showHeaderProp, fullHeight = fal
 
             {showCart && <MiniCart />}
             <ProductDetailSheet />
+            {!isProductDetailOpen && !['/checkout', '/cart', '/chat', '/profile/edit'].includes(path) && <EnquiryBot />}
 
             <div className="hidden md:block">
                 <Footer />

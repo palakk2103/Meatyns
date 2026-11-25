@@ -81,6 +81,18 @@ const sellerSchema = new mongoose.Schema(
       other: { type: String, trim: true },
     },
 
+    // Payout destination for withdrawals. The account number is `select:false`
+    // so it never leaks through populate()/find() on the seller document
+    // (e.g. customer-facing seller lookups); read it explicitly with
+    // `+bankDetails.accountNumber` where it is genuinely needed.
+    bankDetails: {
+      accountHolderName: { type: String, trim: true },
+      accountNumber: { type: String, trim: true, select: false },
+      ifsc: { type: String, trim: true, uppercase: true },
+      bankName: { type: String, trim: true },
+      updatedAt: { type: Date },
+    },
+
     role: {
       type: String,
       default: "seller",

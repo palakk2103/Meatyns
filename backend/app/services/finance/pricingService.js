@@ -297,10 +297,14 @@ export function normalizeDistanceSlabs(slabs) {
 }
 
 export function findDistanceSlab(slabs, distanceKm) {
-  const distance = Math.max(Number(distanceKm) || 0, 0);
+  // Round UP to the next whole km before matching (5.4 km is billed as 6 km),
+  // so a partial km never falls below the slab it actually crosses into.
+  const distance = Math.ceil(Math.max(Number(distanceKm) || 0, 0) - 1e-9);
   // Sorted by toKm: the first slab whose upper bound covers the distance wins
   // (also tolerates small gaps between admin-entered slabs).
-  return slabs.find((slab) => distance <= slab.toKm) || null;
+  // Beyond the last admin slab, keep charging the last slab's fee instead of
+  // dropping to the (cheaper) generic fee. Admin can add more slabs for far areas.
+  return slabs.find((slab) => distance <= slab.toKm) || slabs[slabs.length - 1] || null;
 }
 
 function normalizeCityName(value) {

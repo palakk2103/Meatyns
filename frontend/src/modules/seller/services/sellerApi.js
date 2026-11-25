@@ -49,6 +49,8 @@ export const sellerApi = {
 
     // Money Requests
     requestWithdrawal: (data) => axiosInstance.post('/seller/request-withdrawal', data),
+    getBankDetails: () => axiosInstance.get('/seller/bank-details'),
+    updateBankDetails: (data) => axiosInstance.put('/seller/bank-details', data),
 
     // Returns
     getReturns: (params) => axiosInstance.get('/orders/seller-returns', { params }),

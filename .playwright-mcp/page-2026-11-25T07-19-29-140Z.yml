@@ -1,0 +1,265 @@
+- generic:
+  - generic:
+    - generic [aria-hidden]:
+      - main:
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - link:
+                    - /url: /
+                  - generic:
+                    - link:
+                      - /url: /search
+                      - generic: Search for meat, fish, seafood, etc...
+                  - generic:
+                    - button:
+                      - generic:
+                        - generic: Deliver to
+                        - generic: Shenda Park, Kolhapur, Maharashtra, 416013
+                    - generic:
+                      - generic:
+                        - generic: Delivery in
+                        - generic: 16–30 mins
+                    - link:
+                      - /url: /profile
+                    - link:
+                      - /url: /cart
+                      - generic: "1"
+            - generic:
+              - generic:
+                - complementary:
+                  - generic:
+                    - link:
+                      - /url: /
+                      - generic: Home
+                    - link:
+                      - /url: /category/chicken
+                      - generic: Fresh Chicken
+                    - link:
+                      - /url: /category/mutton
+                      - generic: Tender Mutton
+                    - link:
+                      - /url: /categories
+                      - generic: All Categories
+                  - separator
+                  - generic:
+                    - link:
+                      - /url: /orders
+                      - generic: My Orders
+                    - link:
+                      - /url: /wishlist
+                      - generic: Wishlist
+                    - link:
+                      - /url: /support
+                      - generic: Help & Support
+                - generic:
+                  - generic:
+                    - heading [level=1]: Delivery Address
+                    - paragraph: Manage your delivery addresses
+                  - generic:
+                    - generic:
+                      - generic: Default
+                      - generic: Palak Patel
+                      - generic: sv homes, indore, Madhya Pradesh, 452001
+                      - generic:
+                        - button: Edit
+                        - button: Remove
+                    - button:
+                      - generic: Add New Address
+                    - button:
+                      - generic: Continue to Cart →
+                - generic:
+                  - generic:
+                    - heading [level=3]: Delivery Information
+                    - generic:
+                      - generic:
+                        - generic:
+                          - paragraph: Fast Delivery
+                          - paragraph: 15-30 mins
+                      - generic:
+                        - generic:
+                          - paragraph: Fresh & Hygienic
+                          - paragraph: 100% quality check
+                      - generic:
+                        - generic:
+                          - paragraph: Secure Packaging
+                          - paragraph: Leak-proof & safe
+                  - generic:
+                    - generic:
+                      - paragraph: Fresh Choices for a Healthy You
+      - button
+      - generic:
+        - contentinfo:
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - heading [level=4]: 100% Fresh & Hygienic
+                  - paragraph: Sourced daily from certified farms
+              - generic:
+                - generic:
+                  - heading [level=4]: Chilled, Never Frozen
+                  - paragraph: Stored strictly at 0–4°C always
+              - generic:
+                - generic:
+                  - heading [level=4]: 16–30 Mins Express
+                  - paragraph: Fast temperature-controlled delivery
+            - generic:
+              - generic:
+                - paragraph: Good Food Starts with Meatyns.
+                - paragraph: Your trusted destination for farm-fresh chicken, tender mutton, ocean-fresh fish & coastal seafood. Hygienically packed, temperature-controlled, and delivered fresh to your door.
+                - generic:
+                  - link:
+                    - /url: "#"
+                  - link:
+                    - /url: "#"
+                  - link:
+                    - /url: "#"
+                  - link:
+                    - /url: "#"
+              - generic:
+                - heading [level=3]: Quick Links
+                - list:
+                  - listitem:
+                    - link:
+                      - /url: /
+                      - text: Home
+                  - listitem:
+                    - link:
+                      - /url: /about
+                      - text: About Meatyns
+                  - listitem:
+                    - link:
+                      - /url: /franchise
+                      - text: Franchise Opportunities
+                  - listitem:
+                    - link:
+                      - /url: /what-we-deliver
+                      - text: What We Deliver
+                  - listitem:
+                    - link:
+                      - /url: /category/all
+                      - text: All Categories
+                  - listitem:
+                    - link:
+                      - /url: /offers
+                      - text: Offers & Deals
+                  - listitem:
+                    - link:
+                      - /url: /support
+                      - text: Customer Support
+                  - listitem:
+                    - link:
+                      - /url: /contact
+                      - text: Contact Us
+              - generic:
+                - heading [level=3]: Categories
+                - list:
+                  - listitem:
+                    - link:
+                      - /url: /search?q=chicken
+                      - text: Fresh Chicken
+                  - listitem:
+                    - link:
+                      - /url: /search?q=mutton
+                      - text: Tender Mutton
+                  - listitem:
+                    - link:
+                      - /url: /search?q=chicken
+                      - text: Chicken Curry Cut
+                  - listitem:
+                    - link:
+                      - /url: /search?q=mutton
+                      - text: Goat Curry Cut
+                  - listitem:
+                    - link:
+                      - /url: /categories
+                      - text: All Meat Cuts
+              - generic:
+                - heading [level=3]: Contact Us
+                - list:
+                  - listitem:
+                    - generic: Unit-A, Shop No. 11, Sharda Vihar Apartment, Isolation Ring Road, Near Dhyan Chand Hockey Stadium, Kolhapur
+                  - listitem:
+                    - generic:
+                      - link:
+                        - /url: tel:18002338590
+                        - text: 1800-233-8590
+                      - generic: "|"
+                      - link:
+                        - /url: tel:7558598590
+                        - text: 75585 98590
+                  - listitem:
+                    - link:
+                      - /url: mailto:meatyns01@gmail.com
+                      - text: meatyns01@gmail.com
+            - generic:
+              - paragraph: © 2026 Meatyns. All rights reserved.
+              - generic:
+                - link:
+                  - /url: /policy
+                  - text: Our Policies
+                - link:
+                  - /url: /quality-policy
+                  - text: Quality Policy
+                - link:
+                  - /url: /shipping-policy
+                  - text: Delivery Policy
+                - link:
+                  - /url: /refund-policy
+                  - text: Refund & Replacement
+                - link:
+                  - /url: /privacy
+                  - text: Privacy Policy
+                - link:
+                  - /url: /terms
+                  - text: Terms of Service
+    - region "Notifications alt+T"
+  - dialog "Add New Address" [ref=f185e277]:
+    - generic [ref=f185e278]:
+      - heading "Add New Address" [level=2] [ref=f185e279]
+      - paragraph [ref=f185e280]: Enter your delivery details below.
+    - generic [ref=f185e281]:
+      - generic [ref=f185e282]:
+        - generic [ref=f185e283]: Address Type
+        - generic [ref=f185e284]:
+          - button "Home" [active] [ref=f185e285]
+          - button "Work" [ref=f185e286]
+          - button "Other" [ref=f185e287]
+      - generic [ref=f185e288]:
+        - generic [ref=f185e289]: Full Name
+        - textbox "Full Name" [ref=f185e290]:
+          - /placeholder: John Doe
+          - text: Palak Patel
+      - generic [ref=f185e291]:
+        - generic [ref=f185e292]: Phone Number
+        - textbox "Phone Number" [ref=f185e293]:
+          - /placeholder: +91 98765 43210
+          - text: "+918770620342"
+      - generic [ref=f185e294]:
+        - generic [ref=f185e295]: Address
+        - textbox "Address" [ref=f185e296]:
+          - /placeholder: Flat No, Building, Street
+      - generic [ref=f185e297]:
+        - generic [ref=f185e298]: Nearest Landmark (optional)
+        - textbox "Nearest Landmark (optional)" [ref=f185e299]:
+          - /placeholder: Near City Mall, Opp. Temple
+      - generic [ref=f185e300]:
+        - generic [ref=f185e301]:
+          - generic [ref=f185e302]: City
+          - textbox "City" [ref=f185e303]:
+            - /placeholder: New Delhi
+        - generic [ref=f185e304]:
+          - generic [ref=f185e305]: State
+          - textbox "State" [ref=f185e306]:
+            - /placeholder: Delhi
+      - generic [ref=f185e307]:
+        - generic [ref=f185e308]: Pincode
+        - textbox "Pincode" [ref=f185e309]:
+          - /placeholder: "110075"
+    - generic [ref=f185e310]:
+      - button "Cancel" [ref=f185e311]
+      - button "Save Address" [ref=f185e312]
+    - button "Close" [ref=f185e313]

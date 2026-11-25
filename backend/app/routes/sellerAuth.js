@@ -7,7 +7,7 @@ import {
     sendSellerLoginOtp,
     verifySellerLoginOtp,
 } from "../controller/sellerAuthController.js";
-import { getSellerProfile, updateSellerProfile, deleteSellerAccount, requestWithdrawal, getNearbySellers, toggleStoreStatus, updateStoreHours } from "../controller/sellerController.js";
+import { getSellerProfile, updateSellerProfile, deleteSellerAccount, requestWithdrawal, getSellerBankDetails, updateSellerBankDetails, getNearbySellers, toggleStoreStatus, updateStoreHours } from "../controller/sellerController.js";
 import { getSellerStats, getSellerEarnings } from "../controller/sellerStatsController.js";
 import { getSellerWalletSummaryController } from "../controller/adminFinanceController.js";
 import { bulkCreateProducts } from "../controller/productController.js";
@@ -109,5 +109,7 @@ router.get("/stats", verifyToken, allowRoles("seller"), getSellerStats);
 router.get("/earnings", verifyToken, allowRoles("seller"), getSellerEarnings);
 router.get("/wallet/summary", verifyToken, allowRoles("seller"), getSellerWalletSummaryController);
 router.post("/request-withdrawal", verifyToken, allowRoles("seller"), requestWithdrawal);
+router.get("/bank-details", verifyToken, allowRoles("seller"), getSellerBankDetails);
+router.put("/bank-details", verifyToken, allowRoles("seller"), updateSellerBankDetails);
 
 export default router;

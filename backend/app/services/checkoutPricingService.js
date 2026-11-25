@@ -4,6 +4,7 @@ import Seller from "../models/seller.js";
 import Category from "../models/category.js";
 import { distanceMeters } from "../utils/geoUtils.js";
 import { getSellerCurrentOpenStatus } from "./storeStatusService.js";
+import { getRoadDistanceMeters } from "./mapsRouteService.js";
 import {
   HANDLING_FEE_STRATEGY,
   isWalletRedemptionReducesPayableEnabled,
@@ -94,16 +95,28 @@ async function computeDistanceKmForSeller({ sellerId, addressLocation, session =
     Number(sellerLat),
     Number(sellerLng),
   );
-  const distanceKm = Number((distanceInMeters / 1000).toFixed(3));
+  // Straight-line distance is kept for the service-radius check below.
+  const aerialKm = Number((distanceInMeters / 1000).toFixed(3));
+
+  // Delivery fee is priced on the ROAD distance (Google Directions). If the
+  // lookup fails we fall back to the straight-line distance. Road distance is
+  // never allowed to be shorter than the straight line.
+  const roadMeters = await getRoadDistanceMeters(
+    normalizedLocation,
+    { lat: Number(sellerLat), lng: Number(sellerLng) },
+  );
+  const distanceKm = roadMeters
+    ? Math.max(Number((roadMeters / 1000).toFixed(3)), aerialKm)
+    : aerialKm;
 
   // The selected seller is, by construction, the one that serves this customer
   // (nearest covering seller, or nearest overall when none covers them), so the
   // raw radius check must not reject it.
   if (zoneResolution.fallbackToRadius && !isSelectedSeller) {
     const radius = normalizeServiceRadiusKm(seller.serviceRadius);
-    if (distanceKm > radius) {
+    if (aerialKm > radius) {
       const err = new Error(
-        `${seller.shopName || "Store"} does not deliver to your current location (Distance: ${distanceKm}km, Service Radius: ${radius}km)`,
+        `${seller.shopName || "Store"} does not deliver to your current location (Distance: ${aerialKm}km, Service Radius: ${radius}km)`,
       );
       err.statusCode = 400;
       throw err;

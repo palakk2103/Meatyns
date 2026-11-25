@@ -71,7 +71,8 @@ export async function getSellerWithdrawalsData({ page, limit, skip }) {
 
   const [transactions, total] = await Promise.all([
     Transaction.find(query)
-      .populate("user", "name shopName phone")
+      // Admin pays out manually, so they need the full bank details here.
+      .populate("user", "name shopName phone bankDetails.accountHolderName bankDetails.ifsc bankDetails.bankName +bankDetails.accountNumber")
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit)
@@ -91,7 +92,7 @@ export async function getSellerWithdrawalsData({ page, limit, skip }) {
 export async function getSellerTransactionsData({ page, limit, skip }) {
   const query = { userModel: "Seller" };
   const transactions = await Transaction.find(query)
-    .populate("user", "name shopName phone bankDetails")
+    .populate("user", "name shopName phone")
     .populate({
       path: "order",
       select: "orderId pricing",
@@ -138,10 +139,38 @@ export async function getDeliveryWithdrawalsData({ page, limit, skip }) {
   };
 }
 
-export async function updateWithdrawalStatusById({ id, status, reason }) {
+function badRequest(message) {
+  const error = new Error(message);
+  error.statusCode = 400;
+  return error;
+}
+
+async function notifySellerWithdrawalOutcome(transaction, status, { reason, utr }) {
+  if (status !== "Settled" && status !== "Failed") return;
+  try {
+    const amount = Math.abs(transaction.amount || 0);
+    const settled = status === "Settled";
+    await Notification.create({
+      recipient: transaction.user?._id || transaction.user,
+      recipientModel: "Seller",
+      title: settled ? "Withdrawal paid" : "Withdrawal rejected",
+      message: settled
+        ? `Your withdrawal of ₹${amount} has been paid to your bank account. Bank reference: ${utr}.`
+        : `Your withdrawal of ₹${amount} was rejected${reason ? `: ${reason}` : ""}. The amount has been returned to your wallet.`,
+      type: "payment",
+      data: { transactionId: transaction._id, reference: transaction.reference, status },
+    });
+  } catch (error) {
+    console.warn("[Withdrawal] Seller notification failed:", error.message);
+  }
+}
+
+export async function updateWithdrawalStatusById({ id, status, reason, utr }) {
   if (!["Settled", "Failed", "Processing"].includes(status)) {
     throw new Error("Invalid status");
   }
+  const cleanReason = String(reason || "").trim();
+  const cleanUtr = String(utr || "").trim();
 
   const transaction = await Transaction.findById(id).populate("user", "name");
   if (!transaction) {
@@ -158,8 +187,11 @@ export async function updateWithdrawalStatusById({ id, status, reason }) {
 
   if (!walletBacked) {
     transaction.status = status;
-    if (reason) {
-      transaction.reason = reason;
+    if (cleanReason) {
+      transaction.reason = cleanReason;
+    }
+    if (cleanUtr) {
+      transaction.meta = { ...(transaction.meta || {}), utr: cleanUtr };
     }
     await transaction.save();
     return transaction;
@@ -170,12 +202,28 @@ export async function updateWithdrawalStatusById({ id, status, reason }) {
     throw new Error("Withdrawal already finalized");
   }
 
+  // The admin marks the payout done only after transferring the money, so a
+  // bank reference is mandatory; a rejection needs a reason the seller can read.
+  if (status === "Settled" && cleanUtr.length < 4) {
+    throw badRequest("Enter the bank reference / UTR number of the transfer");
+  }
+  if (status === "Failed" && cleanReason.length < 3) {
+    throw badRequest("Enter a reason for rejecting this withdrawal");
+  }
+
   const session = await mongoose.startSession();
   try {
     await session.withTransaction(async () => {
       transaction.status = status;
-      if (reason) {
-        transaction.reason = reason;
+      if (cleanReason) {
+        transaction.reason = cleanReason;
+      }
+      if (status === "Settled") {
+        transaction.meta = {
+          ...(transaction.meta || {}),
+          utr: cleanUtr,
+          paidAt: new Date().toISOString(),
+        };
       }
 
       if (status === "Failed" && !transaction.meta?.walletRefunded) {
@@ -200,6 +248,11 @@ export async function updateWithdrawalStatusById({ id, status, reason }) {
   } finally {
     await session.endSession();
   }
+
+  await notifySellerWithdrawalOutcome(transaction, status, {
+    reason: cleanReason,
+    utr: cleanUtr,
+  });
 
   return transaction;
 }

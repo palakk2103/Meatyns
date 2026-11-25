@@ -1,0 +1,246 @@
+[     434ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[     698ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[     739ms] [WARNING] Geolocation permission has been blocked as the user has ignored the permission prompt several times. This can be reset in Page Info which can be accessed by clicking the tune icon next to the URL. See https://www.chromestatus.com/feature/6443143280984064 for more information. @ http://localhost:5173/:1
+[     854ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://localhost:7000/api/cart:1
+[     857ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://localhost:7000/api/customer/profile:1
+[     859ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://localhost:7000/api/wishlist?idsOnly=true:1
+[     863ms] [WARNING] WebSocket connection to 'ws://localhost:7000/socket.io/?EIO=4&transport=websocket&sid=I8nES_LB0mRPsNk-AAA1' failed: WebSocket is closed before the connection is established. @ http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1500
+[     864ms] [ERROR] [orderSocket] Socket connection error: Error: Unauthorized
+    at Socket2.onpacket (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:3128:21)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:3721:12 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[    1124ms] [LOG] [orderSocket] Socket connected, ID: baw3sRHElKV93mFwAAA4 @ http://localhost:5173/src/core/services/orderSocket.js:49
+[    2412ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[    5815ms] [WARNING] The resource https://res.cloudinary.com/szohobky/image/upload/f_auto,q_auto,c_fill,g_auto,w_824,h_380,dpr_1.0/v1792822278/banners/b2bslhglk4gvizyngipi.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:5173/:1
+[    8073ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[    8173ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[    8240ms] [LOG] [orderSocket] Socket connected, ID: u7kBdnIopGWPzpffAAA6 @ http://localhost:5173/src/core/services/orderSocket.js:49
+[    8383ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[   21278ms] [WARNING] [push] Deferred registration failed: Notification permission not granted @ http://localhost:5173/src/core/context/AuthContext.jsx:150
+[   30894ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[   30963ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[   31087ms] [LOG] [orderSocket] Socket connected, ID: qKwPOw70o7pzKRYAAAA8 @ http://localhost:5173/src/core/services/orderSocket.js:49
+[   31202ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[   31592ms] [ERROR] Failed to load resource: the server responded with a status of 400 (Bad Request) @ http://localhost:7000/api/orders/delivery/slots:1
+[   31593ms] [WARNING] Could not fetch delivery slots: AxiosError: Request failed with status code 400
+    at settle (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1281:12)
+    at XMLHttpRequest.onloadend (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1638:7)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41)
+    at async fetchDeliverySlots (http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx:585:19) @ http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx:625
+[   31595ms] [ERROR] Failed to load resource: the server responded with a status of 400 (Bad Request) @ http://localhost:7000/api/orders/delivery/slots:1
+[   31596ms] [WARNING] Could not fetch delivery slots: AxiosError: Request failed with status code 400
+    at settle (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1281:12)
+    at XMLHttpRequest.onloadend (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1638:7)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41)
+    at async fetchDeliverySlots (http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx:585:19) @ http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx:625
+[   35170ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[   35238ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[   35273ms] [LOG] [orderSocket] Socket connected, ID: K175a1EAWth0grXpAAA- @ http://localhost:5173/src/core/services/orderSocket.js:49
+[   35329ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[   35728ms] [ERROR] Failed to load resource: the server responded with a status of 400 (Bad Request) @ http://localhost:7000/api/orders/delivery/slots:1
+[   35729ms] [WARNING] Could not fetch delivery slots: AxiosError: Request failed with status code 400
+    at settle (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1281:12)
+    at XMLHttpRequest.onloadend (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1638:7)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41)
+    at async fetchDeliverySlots (http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx:585:19) @ http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx:625
+[   35772ms] [ERROR] Failed to load resource: the server responded with a status of 400 (Bad Request) @ http://localhost:7000/api/orders/delivery/slots:1
+[   35772ms] [WARNING] Could not fetch delivery slots: AxiosError: Request failed with status code 400
+    at settle (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1281:12)
+    at XMLHttpRequest.onloadend (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1638:7)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41)
+    at async fetchDeliverySlots (http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx:585:19) @ http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx:625
+[   39490ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[   39543ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[   39585ms] [LOG] [orderSocket] Socket connected, ID: D9kTb-z8oluZ0wuPAABA @ http://localhost:5173/src/core/services/orderSocket.js:49
+[   39679ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[   40057ms] [ERROR] Failed to load resource: the server responded with a status of 400 (Bad Request) @ http://localhost:7000/api/orders/delivery/slots:1
+[   40058ms] [WARNING] Could not fetch delivery slots: AxiosError: Request failed with status code 400
+    at settle (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1281:12)
+    at XMLHttpRequest.onloadend (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1638:7)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41)
+    at async fetchDeliverySlots (http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx:585:19) @ http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx:625
+[   40060ms] [ERROR] Failed to load resource: the server responded with a status of 400 (Bad Request) @ http://localhost:7000/api/orders/delivery/slots:1
+[   40061ms] [WARNING] Could not fetch delivery slots: AxiosError: Request failed with status code 400
+    at settle (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1281:12)
+    at XMLHttpRequest.onloadend (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1638:7)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41)
+    at async fetchDeliverySlots (http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx:585:19) @ http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx:625
+[   43778ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[   43877ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[   43941ms] [LOG] [orderSocket] Socket connected, ID: k6uXt9SQhc4PUxC3AABC @ http://localhost:5173/src/core/services/orderSocket.js:49
+[   44060ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[   44445ms] [ERROR] Failed to load resource: the server responded with a status of 400 (Bad Request) @ http://localhost:7000/api/orders/delivery/slots:1
+[   44446ms] [WARNING] Could not fetch delivery slots: AxiosError: Request failed with status code 400
+    at settle (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1281:12)
+    at XMLHttpRequest.onloadend (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1638:7)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41)
+    at async fetchDeliverySlots (http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx:585:19) @ http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx:625
+[   44447ms] [ERROR] Failed to load resource: the server responded with a status of 400 (Bad Request) @ http://localhost:7000/api/orders/delivery/slots:1
+[   44447ms] [WARNING] Could not fetch delivery slots: AxiosError: Request failed with status code 400
+    at settle (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1281:12)
+    at XMLHttpRequest.onloadend (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1638:7)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41)
+    at async fetchDeliverySlots (http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx:585:19) @ http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx:625
+[   48073ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[   48128ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[   48174ms] [LOG] [orderSocket] Socket connected, ID: i9An6vgRITt6HlvAAABE @ http://localhost:5173/src/core/services/orderSocket.js:49
+[   48340ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[   48623ms] [ERROR] Failed to load resource: the server responded with a status of 400 (Bad Request) @ http://localhost:7000/api/orders/delivery/slots:1
+[   48624ms] [WARNING] Could not fetch delivery slots: AxiosError: Request failed with status code 400
+    at settle (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1281:12)
+    at XMLHttpRequest.onloadend (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1638:7)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41)
+    at async fetchDeliverySlots (http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx:585:19) @ http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx:625
+[   48659ms] [ERROR] Failed to load resource: the server responded with a status of 400 (Bad Request) @ http://localhost:7000/api/orders/delivery/slots:1
+[   48659ms] [WARNING] Could not fetch delivery slots: AxiosError: Request failed with status code 400
+    at settle (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1281:12)
+    at XMLHttpRequest.onloadend (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1638:7)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41)
+    at async fetchDeliverySlots (http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx:585:19) @ http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx:625
+[   52363ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[   52422ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[   52455ms] [LOG] [orderSocket] Socket connected, ID: qZbbEKyBf9WrKTcgAABG @ http://localhost:5173/src/core/services/orderSocket.js:49
+[   52555ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[   53834ms] [ERROR] Failed to load resource: the server responded with a status of 409 (Conflict) @ http://localhost:7000/api/orders/checkout/preview:1
+[   56721ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[   56786ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[   56842ms] [LOG] [orderSocket] Socket connected, ID: 0rDV1KaWkBWcVUrsAABI @ http://localhost:5173/src/core/services/orderSocket.js:49
+[   56933ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[   57319ms] [ERROR] Failed to load resource: the server responded with a status of 400 (Bad Request) @ http://localhost:7000/api/orders/delivery/slots:1
+[   57320ms] [WARNING] Could not fetch delivery slots: AxiosError: Request failed with status code 400
+    at settle (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1281:12)
+    at XMLHttpRequest.onloadend (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1638:7)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41)
+    at async fetchDeliverySlots (http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx:585:19) @ http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx:625
+[   57320ms] [ERROR] Failed to load resource: the server responded with a status of 400 (Bad Request) @ http://localhost:7000/api/orders/delivery/slots:1
+[   57321ms] [WARNING] Could not fetch delivery slots: AxiosError: Request failed with status code 400
+    at settle (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1281:12)
+    at XMLHttpRequest.onloadend (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1638:7)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41)
+    at async fetchDeliverySlots (http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx:585:19) @ http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx:625
+[   61025ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[   61080ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[   61113ms] [LOG] [orderSocket] Socket connected, ID: oq61IEKFSiDdkOorAABK @ http://localhost:5173/src/core/services/orderSocket.js:49
+[   61222ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[   62477ms] [ERROR] Failed to load resource: the server responded with a status of 409 (Conflict) @ http://localhost:7000/api/orders/checkout/preview:1
+[   65345ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[   65412ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[   65456ms] [LOG] [orderSocket] Socket connected, ID: 6T9HzSoYaKqejd_6AABM @ http://localhost:5173/src/core/services/orderSocket.js:49
+[   65535ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[   65895ms] [ERROR] Failed to load resource: the server responded with a status of 400 (Bad Request) @ http://localhost:7000/api/orders/delivery/slots:1
+[   65896ms] [WARNING] Could not fetch delivery slots: AxiosError: Request failed with status code 400
+    at settle (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1281:12)
+    at XMLHttpRequest.onloadend (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1638:7)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41)
+    at async fetchDeliverySlots (http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx:585:19) @ http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx:625
+[   65929ms] [ERROR] Failed to load resource: the server responded with a status of 400 (Bad Request) @ http://localhost:7000/api/orders/delivery/slots:1
+[   65931ms] [WARNING] Could not fetch delivery slots: AxiosError: Request failed with status code 400
+    at settle (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1281:12)
+    at XMLHttpRequest.onloadend (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1638:7)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41)
+    at async fetchDeliverySlots (http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx:585:19) @ http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx:625
+[   69655ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[   69732ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[   69776ms] [LOG] [orderSocket] Socket connected, ID: Gc02UaSP7qBJDKdoAABO @ http://localhost:5173/src/core/services/orderSocket.js:49
+[   69848ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[   70250ms] [ERROR] Failed to load resource: the server responded with a status of 400 (Bad Request) @ http://localhost:7000/api/orders/delivery/slots:1
+[   70251ms] [WARNING] Could not fetch delivery slots: AxiosError: Request failed with status code 400
+    at settle (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1281:12)
+    at XMLHttpRequest.onloadend (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1638:7)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41)
+    at async fetchDeliverySlots (http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx:585:19) @ http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx:625
+[   70253ms] [ERROR] Failed to load resource: the server responded with a status of 400 (Bad Request) @ http://localhost:7000/api/orders/delivery/slots:1
+[   70254ms] [WARNING] Could not fetch delivery slots: AxiosError: Request failed with status code 400
+    at settle (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1281:12)
+    at XMLHttpRequest.onloadend (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1638:7)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41)
+    at async fetchDeliverySlots (http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx:585:19) @ http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx:625
+[   82621ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[   82687ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[   82739ms] [LOG] [orderSocket] Socket connected, ID: E8HefNH1Nn8zLX2DAABQ @ http://localhost:5173/src/core/services/orderSocket.js:49
+[   82906ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[   82967ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[   83080ms] [LOG] [orderSocket] Socket connected, ID: jERVqKajEDw76hqHAABS @ http://localhost:5173/src/core/services/orderSocket.js:49
+[   83144ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[   84401ms] [ERROR] Failed to load resource: the server responded with a status of 409 (Conflict) @ http://localhost:7000/api/orders/checkout/preview:1
+[   87763ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[   87831ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[   88046ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[   88171ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[   88359ms] [LOG] [orderSocket] Socket connected, ID: 4fWv18Uj4oyHH1JHAABW @ http://localhost:5173/src/core/services/orderSocket.js:49
+[   88379ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[   92875ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[   92934ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[   93192ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[   93251ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[   93301ms] [LOG] [orderSocket] Socket connected, ID: WABSAktFh7M_rTNWAABa @ http://localhost:5173/src/core/services/orderSocket.js:49
+[   93347ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[   97984ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[   98098ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[   98346ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[   98474ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[   98541ms] [LOG] [orderSocket] Socket connected, ID: QaS_bbuiCvUS6SbTAABe @ http://localhost:5173/src/core/services/orderSocket.js:49
+[   98628ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[  103139ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[  103239ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[  103341ms] [LOG] [orderSocket] Socket connected, ID: -QD17K4LVQfvvrqPAABg @ http://localhost:5173/src/core/services/orderSocket.js:49
+[  103558ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[  103617ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[  103695ms] [LOG] [orderSocket] Socket connected, ID: IAmMcLpmJAFo7YsDAABi @ http://localhost:5173/src/core/services/orderSocket.js:49
+[  103786ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[  108349ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[  108411ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[  108481ms] [LOG] [orderSocket] Socket connected, ID: 88eNJRczoEwfVQJ2AABk @ http://localhost:5173/src/core/services/orderSocket.js:49
+[  108651ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[  108716ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[  108802ms] [LOG] [orderSocket] Socket connected, ID: J-RBKcigo8rKO0LTAABm @ http://localhost:5173/src/core/services/orderSocket.js:49
+[  108847ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[  113450ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[  113505ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[  113724ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[  113792ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[  113887ms] [LOG] [orderSocket] Socket connected, ID: pU8822qFF8VY7pp3AABq @ http://localhost:5173/src/core/services/orderSocket.js:49
+[  113930ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[  118559ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[  118625ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[  118875ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[  118930ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[  118992ms] [LOG] [orderSocket] Socket connected, ID: QuWBE8-Ni1m_Lw-CAABu @ http://localhost:5173/src/core/services/orderSocket.js:49
+[  119080ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[  123630ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[  123696ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[  123911ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[  123965ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[  124092ms] [LOG] [orderSocket] Socket connected, ID: o7hByDwFZa0M-rd7AABx @ http://localhost:5173/src/core/services/orderSocket.js:49
+[  124284ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[  128763ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[  128849ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[  129102ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[  129184ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[  129276ms] [LOG] [orderSocket] Socket connected, ID: 3YwFopOmaAw_GS5lAAB1 @ http://localhost:5173/src/core/services/orderSocket.js:49
+[  129322ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[  130627ms] [ERROR] Failed to load resource: the server responded with a status of 400 (Bad Request) @ http://localhost:7000/api/orders/checkout/preview:1
+[  130628ms] [ERROR] Checkout preview failed AxiosError: Request failed with status code 400
+    at settle (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1281:12)
+    at XMLHttpRequest.onloadend (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:1638:7)
+    at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=707a6b01:2255:41)
+    at async fetchPreview (http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx:770:23) @ http://localhost:5173/src/modules/customer/pages/CheckoutPage.jsx:783
+[  139434ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[  139493ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[  139714ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[  139782ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[  139877ms] [LOG] [orderSocket] Socket connected, ID: MY3mP5RMHD_rYdN0AAB5 @ http://localhost:5173/src/core/services/orderSocket.js:49
+[  139931ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[  144968ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[  145033ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[  145097ms] [LOG] [orderSocket] Socket connected, ID: 5FZQwhsyy74JcI0MAAB7 @ http://localhost:5173/src/core/services/orderSocket.js:49
+[  145280ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[  145359ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[  145466ms] [LOG] [orderSocket] Socket connected, ID: phsE-Dh5bAl8cvenAAB9 @ http://localhost:5173/src/core/services/orderSocket.js:49
+[  145576ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
+[  150585ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[  150700ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[  150950ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[  151009ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[  151067ms] [LOG] [orderSocket] Socket connected, ID: 5owYyUUs9FzJCvHCAACB @ http://localhost:5173/src/core/services/orderSocket.js:49
+[  151111ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206
