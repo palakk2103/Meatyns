@@ -9,8 +9,8 @@ import { useCart } from "../context/CartContext";
 import { useProductDetail } from "../context/ProductDetailContext";
 import { toast } from "sonner";
 import { applyCloudinaryTransform } from "@/core/utils/imageUtils";
-import { getDefaultVariantDisplay } from "../utils/variantDisplay";
-import { isEggProduct } from "../utils/categoryFilter";
+import { getDefaultVariantDisplay, getOfferCardPricing } from "../utils/variantDisplay";
+import { isEggProduct, getMeatType } from "../utils/categoryFilter";
 import { cleanProductName } from "@/core/utils/productName";
 
 const OffersPage = () => {
@@ -51,10 +51,15 @@ const OffersPage = () => {
         const deals = (Array.isArray(prods) ? prods : [])
           .map((p) => {
             const d = getDefaultVariantDisplay(p);
-            const curr = d.price;
-            const orig = d.mrp;
+            // Mutton products are shown on the home "Hot Deals" row with a
+            // 15% fallback badge, so apply the same pricing here — otherwise
+            // "View All" would miss products that the home row displays.
+            const isHotDealMutton = !isEggProduct(p) && getMeatType(p) === "mutton";
+            const offer = getOfferCardPricing(d, isHotDealMutton ? 15 : 0);
+            const curr = offer.price;
+            const orig = offer.originalPrice;
             if (!(orig > curr && curr > 0)) return null;
-            const pct = Math.round(((orig - curr) / orig) * 100);
+            const pct = offer.pct;
             if (pct <= 0) return null;
             const catName = typeof p.category === "object" ? p.category?.name || "" : "";
             const subName = typeof p.subcategoryId === "object" ? p.subcategoryId?.name || "" : "";
