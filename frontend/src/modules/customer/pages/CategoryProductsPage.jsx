@@ -10,7 +10,6 @@ import { cn } from '@/lib/utils';
 import { applyCloudinaryTransform } from '@/core/utils/imageUtils';
 
 import ProductCard from '../components/shared/ProductCard';
-import ProductDetailSheet from '../components/shared/ProductDetailSheet';
 import { useProductDetail } from '../context/ProductDetailContext';
 import { customerApi } from '../services/customerApi';
 import MiniCart from '../components/shared/MiniCart';
@@ -295,7 +294,8 @@ const CategoryProductsPage = () => {
             let matchesSub = false;
             if (pSubId && pSubId === targetId) matchesSub = true;
             else if (pCatId && pCatId === targetId) matchesSub = true;
-            else {
+            else if (!subCategories.some(s => String(s.id).trim() === pSubId)) {
+                // Name-based fallback only for products not filed under any sidebar tab
                 const activeSub = subCategories.find(s => String(s.id).trim() === targetId);
                 if (activeSub) {
                     const activeName = String(activeSub.name || '').toLowerCase().trim();
@@ -540,7 +540,6 @@ const CategoryProductsPage = () => {
             </div>
 
             <MiniCart />
-            <ProductDetailSheet />
 
             <style dangerouslySetInnerHTML={{
                 __html: `

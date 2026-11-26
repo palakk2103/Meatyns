@@ -58,7 +58,7 @@ const DEFAULT_TOP_PICKS = [
   },
 ];
 
-const TopPicksSection = ({ products = [], title = "Top Picks for You", icon = "★", viewAllPath = "/category/all", curated = false }) => {
+const TopPicksSection = ({ products = [], title = "Top Picks for You", icon = "★", viewAllPath = "/category/chicken", curated = false }) => {
   const navigate = useNavigate();
   const { isInWishlist, toggleWishlist } = useWishlist();
   const { cart, addToCart, updateQuantity, removeFromCart } = useCart();

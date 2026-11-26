@@ -3,37 +3,54 @@
 // so small spelling differences like "T-Bone" vs "T Bone" still match.
 // Products not in this list keep their original relative order and come after.
 export const PRODUCT_DISPLAY_ORDER = [
-  "Meatyns Special Mutton ( Liver & Fat less )",
-  "Meatyns Regular ( Liver & Fat add )",
-  "Goat Curry Cut",
-  "Mutton Liver",
+  // Mutton: Sr.No from the client's price sheet. Extra spellings of the same
+  // item share its slot. Items not yet in the catalogue slot in once added.
+  "Meatyns Special Mutton ( Liver & Fat less )", // 1
+  "Meatyns Regular ( Liver & Fat add )", // 2
+  "Goat Curry Cut", // 3
+  "Mutton Liver", // 4
+  "Mutton Liver Chunks",
+  "Premium Goat Rib Bone Pieces", // 5
+  "Pure Lamb Mince (Kheema)", // 6
+  "Mutton Kidney (Small Pack)", // 7
+  "Mutton Kapura (Medium)", // 8
+  "Sunday Family Pack", // 9
+  "Mutton Chops ( Ribcage & T Bone Steak )", // 10 (Goat Chops)
+  "Goat Chops",
+  "Mutton Heart", // 11
+  "Goat Boneless ( Full Boneless )", // 12
+  "Goat Boneless",
+  "Goat Biryani Cut", // 13
+  "Lamb Fat", // 14
+  "Mutton Power Pack", // 15
+  "Lamb (1 kg) Mixed pcs", // 16
+  "Mutton Spleen (Thilli)", // 17
+  "Mutton Kapura (Large)", // 18
+  "Mutton Ran", // 19
+  "Mutton Soup Bones", // 20
+  "Rakti", // 21
+  "Mutton Paya ( Whole ) pack of 4", // 22
+  "Mutton Paya",
+  "Mutton Paya with small pieces", // 23
+  "Mutton Paya (with cutting small piece)",
+  "Goat Head", // 24
+  "Goat Paya Mundi (Whole)", // 25
+  "Mutton Brain (Bheja)", // 26
+  "Goat Head Meat (cutting of small piece)", // 27
+  "Goat Intestine (Vajadi)", // 28
+  // Not on the sheet: stays after the sheet's mutton items
   "Premium Goat Curry Cut (Long Shoulder, Boneless & Goat Shank)",
-  "Mutton Paya ( Whole ) pack of 4",
-  "Mutton Paya with small pieces",
-  "Goat Head [ Full Head ]",
-  "Goat Paya Mundi (4 Legs + Whole Mundi)",
-  "Goat Head Meat ( Cutting of small pieces )",
-  "Pure Lamb Mince (Boneless Mince)",
-  "Mutton Kidney (Small Pack, Whole Kidney)",
-  "Mutton Brain ( Full Piece )",
-  "Mutton Kapura (Full One Piece - Internal Organs)",
-  "Sunday Family Feast (Goat Curry Cut)",
-  "Mutton Chops ( Ribcage & T Bone Steak )",
-  "Mutton Heart (Full Piece)",
-  "Goat Boneless ( Full Boneless )",
-  "Goat Biryani Cut (Boneless, Small Pieces)",
-  "Lamb Fat (Fully Loaded Fat)",
-  "Mutton Energy Combo (Heart, Liver & Bone)",
-  "Mutton Chest (Only Sinha Single Piece)",
-  "Mutton Spleen (Special Body Part Near Liver)",
-  "Special Chops & Curry Cut",
-  "Mutton Soup Bones (Shank & Bone)",
-  "Premium Goat Cuts (Ribs & Bone Pieces)",
-  "Rakhti (Goat Blood)",
-  "Vajadi ( Goat Intestine )",
-  "Goat Lower Body Cut (Kosha Mangosha)",
-  "Mutton Paya (Small Pieces)",
-  "Lamb (Mixed Pieces)",
+  // Chicken sequence
+  "Chicken Curry Cut",
+  "Chicken Breast Boneless",
+  "Chicken Legpiece",
+  "Chicken Wings",
+  "Chicken Lollipop",
+  "Chicken Drumsticks",
+  "Chicken Liver",
+  "Chicken Gizzard",
+  // Gavran Chicken
+  "Gavran Whole Carcass",
 ];
 
 const normalizeName = (name) =>

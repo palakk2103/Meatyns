@@ -1,3 +1,4 @@
+import { sortByDisplayOrder } from "../utils/productDisplayOrder.js";
 import mongoose from "mongoose";
 import DailyStockEntry from "../models/dailyStockEntry.js";
 import Order from "../models/order.js";
@@ -470,7 +471,7 @@ export const getSellerDailyStockProducts = async (req, res) => {
       .sort({ name: 1 })
       .limit(1000)
       .lean();
-    return handleResponse(res, 200, "Products fetched", products);
+    return handleResponse(res, 200, "Products fetched", sortByDisplayOrder(products));
   } catch (error) {
     return handleResponse(res, 500, error.message);
   }
@@ -527,7 +528,7 @@ export const getAdminDailyStockProducts = async (req, res) => {
       .sort({ name: 1 })
       .limit(1000)
       .lean();
-    return handleResponse(res, 200, "Products fetched", products);
+    return handleResponse(res, 200, "Products fetched", sortByDisplayOrder(products));
   } catch (error) {
     return handleResponse(res, 500, error.message);
   }

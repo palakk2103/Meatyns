@@ -49,7 +49,7 @@ const ProductManagement = () => {
     const [filterStatus, setFilterStatus] = useState('all');
     const [filterApprovalStatus, setFilterApprovalStatus] = useState('all');
     const [filterSeoStatus, setFilterSeoStatus] = useState('all'); // 'all' | 'complete' | 'incomplete'
-    const [sortBy, setSortBy] = useState('newest');
+    const [sortBy, setSortBy] = useState('catalog');
     const [moderationCounts, setModerationCounts] = useState({
         all: 0,
         pending: 0,
@@ -701,6 +701,7 @@ const ProductManagement = () => {
                             onChange={(e) => setSortBy(e.target.value)}
                             className="flex-1 lg:flex-none px-4 py-2.5 bg-white ring-1 ring-slate-200 rounded-xl text-xs font-bold text-slate-700 focus:ring-2 focus:ring-primary/5 outline-none appearance-none cursor-pointer"
                         >
+                            <option value="catalog">Catalog order</option>
                             <option value="newest">Newest first</option>
                             <option value="oldest">Oldest first</option>
                             <option value="name-asc">Name A-Z</option>

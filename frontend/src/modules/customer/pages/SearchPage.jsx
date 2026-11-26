@@ -15,6 +15,7 @@ import { useCart } from '../context/CartContext';
 import { getJSON, setJSON, STORAGE_KEYS } from '@core/utils/storage';
 import Lottie from 'lottie-react';
 import { trackSearch } from '@/core/meta/pixelService';
+import { sortByDisplayOrder } from '../utils/productDisplayOrder';
 
 const SearchPage = () => {
     const navigate = useNavigate();
@@ -124,6 +125,7 @@ const SearchPage = () => {
             try {
                 const params = {
                     limit: 50,
+                    sort: 'catalog',
                 };
                 if (trimmedQuery) {
                     params.search = trimmedQuery;
@@ -151,7 +153,7 @@ const SearchPage = () => {
                         : Array.isArray(rawResult)
                         ? rawResult
                         : [];
-                    const formattedProds = dbProds.map((p) => ({
+                    const formattedProds = sortByDisplayOrder(dbProds).map((p) => ({
                         ...p,
                         id: p._id,
                         image:

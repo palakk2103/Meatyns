@@ -96,36 +96,6 @@ const mergeFullProduct = (prev, full) => {
     };
 };
 
-// Image that first shows the already-cached card thumbnail, then swaps in the sharper version once loaded
-const ProgressiveProductImage = ({ src, alt, className, style }) => {
-    const [hiResLoaded, setHiResLoaded] = useState(false);
-    const lowSrc = applyCloudinaryTransform(src);
-    const hiSrc = applyCloudinaryTransform(src, "f_auto,q_auto:good,w_900,dpr_auto");
-    useEffect(() => setHiResLoaded(false), [hiSrc]);
-    return (
-        <div className="relative w-full h-full">
-            <img
-                src={lowSrc}
-                alt={alt}
-                decoding="async"
-                fetchpriority="high"
-                className={cn(className, "absolute inset-0")}
-                style={style}
-            />
-            {hiSrc !== lowSrc && (
-                <img
-                    src={hiSrc}
-                    alt={alt}
-                    decoding="async"
-                    onLoad={() => setHiResLoaded(true)}
-                    className={cn(className, "absolute inset-0 transition-opacity duration-200", hiResLoaded ? "opacity-100" : "opacity-0")}
-                    style={style}
-                />
-            )}
-        </div>
-    );
-};
-
 // Phones/tablets always get the full-page view. Width alone isn't reliable:
 // "Desktop site" mode, some Android browsers and landscape phones report >=768px,
 // which used to show the old centered popup instead of the full page.
@@ -1001,8 +971,10 @@ const ProductDetailSheet = () => {
                                 >
                                     {allImages.map((img, i) => (
                                         <div key={i} className="flex-shrink-0 w-full h-full snap-center flex items-center justify-center px-0 sm:px-4">
-                                            <ProgressiveProductImage
-                                                src={img}
+                                            <img
+                                                src={applyCloudinaryTransform(img)}
+                                                decoding="async"
+                                                fetchpriority={i === 0 ? "high" : "auto"}
                                                 alt={`${selectedProduct.name} ${i + 1}`}
                                                 className="w-full h-full object-contain mix-blend-multiply drop-shadow-xl"
                                                 style={{ objectPosition: 'center calc(50% - 40px)' }}

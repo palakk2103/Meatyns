@@ -54,7 +54,7 @@ const StockManagement = () => {
             const collected = [];
 
             while (requestedPage <= totalPages && requestedPage <= maxPages) {
-                const params = { page: requestedPage, limit: requestLimit };
+                const params = { page: requestedPage, limit: requestLimit, sort: 'catalog' };
 
                 const res = await sellerApi.getProducts(params);
                 if (!res.data.success) break;

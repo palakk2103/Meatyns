@@ -1,3 +1,4 @@
+import { sortByDisplayOrder } from "../utils/productDisplayOrder.js";
 import mongoose from "mongoose";
 import Product from "../models/product.js";
 import Category from "../models/category.js";
@@ -562,18 +563,26 @@ export const getProducts = async (req, res) => {
     const sortQuery = sortMap[String(sort || "newest").toLowerCase()] || sortMap.newest;
 
     const fetchFn = async () => {
-      const [rawProducts, total] = await Promise.all([
-        Product.find(finalQuery)
+      // "catalog" = the client's product sequence (ranked before paginating).
+      const catalogPage = String(sort || "").toLowerCase() === "catalog"
+        ? await getCatalogOrderPage(finalQuery, skip, limit)
+        : null;
+
+      const [foundProducts, total] = await Promise.all([
+        Product.find(catalogPage ? catalogPage.filter : finalQuery)
           .select(
             "name slug metaTitle metaDescription seoKeywords description sku price salePrice stock brand weight mainImage galleryImages headerId categoryId subcategoryId sellerId status approvalStatus approvalRequestedAt approvalReviewedAt approvalReviewedBy approvalNote lastSubmittedByRole isFeatured variants createdAt cutType boneType skinType freshness unit unitValue orderIncrement minOrderQty maxOrderQty isScheduled scheduleDays availableFromTime availableToTime tieredPricing",
           )
           // No .populate() — names resolved via cache-backed entityNameCache
           .sort(sortQuery)
-          .skip(skip)
+          .skip(catalogPage ? 0 : skip)
           .limit(limit)
           .lean(),
         Product.countDocuments(finalQuery),
       ]);
+      const rawProducts = catalogPage
+        ? catalogPage.reorder(foundProducts)
+        : foundProducts;
 
       // Collect unique category IDs (headerId, categoryId, subcategoryId) and seller IDs
       const categoryIdSet = new Set();
@@ -661,6 +670,24 @@ export const getProducts = async (req, res) => {
   }
 };
 
+// Filter for one page of the client's catalog sequence. The sequence is by product
+// name, so it is ranked here (before paginating) rather than by a Mongo sort.
+const getCatalogOrderPage = async (query, skip, limit) => {
+  const rows = await Product.find(query)
+    .select("name")
+    .sort({ createdAt: -1, _id: -1 })
+    .lean();
+  const ids = sortByDisplayOrder(rows)
+    .slice(skip, skip + limit)
+    .map((row) => row._id);
+  const position = new Map(ids.map((id, index) => [String(id), index]));
+  return {
+    filter: { _id: { $in: ids } },
+    reorder: (docs) =>
+      [...docs].sort((a, b) => position.get(String(a._id)) - position.get(String(b._id))),
+  };
+};
+
 /* ===============================
    GET SELLER PRODUCTS
 ================================ */
@@ -703,6 +730,10 @@ export const getSellerProducts = async (req, res) => {
     };
     const sortQuery = sortMap[String(sort || "newest").toLowerCase()] || sortMap.newest;
 
+    const catalogPage = String(sort || "").toLowerCase() === "catalog"
+      ? await getCatalogOrderPage(query, skip, limit)
+      : null;
+
     const [
       products,
       total,
@@ -714,7 +745,7 @@ export const getSellerProducts = async (req, res) => {
       approvedCount,
       rejectedCount,
     ] = await Promise.all([
-      Product.find(query)
+      Product.find(catalogPage ? catalogPage.filter : query)
         .select(
           "name slug metaTitle metaDescription seoKeywords description sku price salePrice stock lowStockAlert brand weight mainImage galleryImages headerId categoryId subcategoryId sellerId status approvalStatus approvalRequestedAt approvalReviewedAt approvalReviewedBy approvalNote lastSubmittedByRole isFeatured variants createdAt",
         )
@@ -723,7 +754,7 @@ export const getSellerProducts = async (req, res) => {
         .populate("subcategoryId", "name")
         .populate("sellerId", "shopName")
         .sort(sortQuery)
-        .skip(skip)
+        .skip(catalogPage ? 0 : skip)
         .limit(limit)
         .lean(),
       Product.countDocuments(query),
@@ -797,7 +828,7 @@ export const getSellerProducts = async (req, res) => {
     ]);
 
     return handleResponse(res, 200, "Seller products fetched", {
-      items: normalizeProductListModeration(products),
+      items: normalizeProductListModeration(catalogPage ? catalogPage.reorder(products) : products),
       page,
       limit,
       total,
@@ -1552,6 +1583,10 @@ export const getModerationProducts = async (req, res) => {
     };
     const sortQuery = sortMap[String(sort || "newest").toLowerCase()] || sortMap.newest;
 
+    const catalogPage = String(sort).toLowerCase() === "catalog"
+      ? await getCatalogOrderPage(moderatedQuery, skip, limit)
+      : null;
+
     const [
       items,
       total,
@@ -1562,7 +1597,7 @@ export const getModerationProducts = async (req, res) => {
       seoCompleteCount,
       seoIncompleteCount,
     ] = await Promise.all([
-      Product.find(moderatedQuery)
+      Product.find(catalogPage ? catalogPage.filter : moderatedQuery)
         .select(
           "name slug metaTitle metaDescription seoKeywords description sku price salePrice stock lowStockAlert brand weight mainImage galleryImages headerId categoryId subcategoryId sellerId status approvalStatus approvalRequestedAt approvalReviewedAt approvalReviewedBy approvalNote lastSubmittedByRole isFeatured variants createdAt",
         )
@@ -1572,7 +1607,7 @@ export const getModerationProducts = async (req, res) => {
         .populate("sellerId", "shopName name")
         .populate("approvalReviewedBy", "name email")
         .sort(sortQuery)
-        .skip(skip)
+        .skip(catalogPage ? 0 : skip)
         .limit(limit)
         .lean(),
       Product.countDocuments(moderatedQuery),
@@ -1602,7 +1637,7 @@ export const getModerationProducts = async (req, res) => {
     ]);
 
     return handleResponse(res, 200, "Moderation products fetched", {
-      items: normalizeProductListModeration(items),
+      items: normalizeProductListModeration(catalogPage ? catalogPage.reorder(items) : items),
       page,
       limit,
       total,

@@ -1,5 +1,4 @@
-import MascotTagline from "../components/shared/MascotTagline";
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Tag, Sparkles, Clock, ArrowRight, ArrowLeft, Flame, Heart, ShoppingCart, Plus, Minus } from "lucide-react";
 import { motion } from "framer-motion";
@@ -12,6 +11,7 @@ import { applyCloudinaryTransform } from "@/core/utils/imageUtils";
 import { getDefaultVariantDisplay, getOfferCardPricing } from "../utils/variantDisplay";
 import { isEggProduct, getMeatType } from "../utils/categoryFilter";
 import { cleanProductName } from "@/core/utils/productName";
+import { sortByDisplayOrder } from "../utils/productDisplayOrder";
 
 const OffersPage = () => {
   const navigate = useNavigate();
@@ -29,7 +29,7 @@ const OffersPage = () => {
       try {
         const [offersRes, prodRes] = await Promise.all([
           customerApi.getOffers().catch(() => ({ data: {} })),
-          customerApi.getProducts({ limit: 40 }).catch(() => ({ data: {} })),
+          customerApi.getProducts({ limit: 40, sort: "catalog" }).catch(() => ({ data: {} })),
         ]);
 
         const offersList =
@@ -48,7 +48,7 @@ const OffersPage = () => {
 
         // Only real products with a real discount on the variant the
         // product sheet opens with (no hard-coded / fake deals).
-        const deals = (Array.isArray(prods) ? prods : [])
+        const deals = sortByDisplayOrder(Array.isArray(prods) ? prods : [])
           .map((p) => {
             const d = getDefaultVariantDisplay(p);
             // Mutton products are shown on the home "Hot Deals" row with a
@@ -61,10 +61,6 @@ const OffersPage = () => {
             if (!(orig > curr && curr > 0)) return null;
             const pct = offer.pct;
             if (pct <= 0) return null;
-            const catName = typeof p.category === "object" ? p.category?.name || "" : "";
-            const subName = typeof p.subcategoryId === "object" ? p.subcategoryId?.name || "" : "";
-            const parentCat = typeof p.categoryId === "object" ? p.categoryId?.name || "" : "";
-            const headerName = typeof p.headerId === "object" ? p.headerId?.name || "" : "";
             return {
               raw: p,
               variantSku: d.variantSku,
@@ -77,8 +73,6 @@ const OffersPage = () => {
               pct,
               discount: `${pct}% OFF`,
               image: p.mainImage || p.image || "",
-              isEgg: isEggProduct(p),
-              searchText: `${p.name || ""} ${catName} ${subName} ${parentCat} ${headerName}`.toLowerCase(),
             };
           })
           .filter(Boolean);
@@ -174,26 +168,6 @@ const OffersPage = () => {
     .filter((o) => o.status === "active")
     .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 
-  const [categoryFilter, setCategoryFilter] = useState("all");
-  const maxDiscount = useMemo(
-    () => hotDeals.reduce((m, d) => Math.max(m, Number(d.pct) || 0), 0),
-    [hotDeals]
-  );
-
-  const filteredDeals = useMemo(() => {
-    if (categoryFilter === "all") return hotDeals;
-    const FILTER_REGEX = {
-      chicken: /chicken|poultry|murga/,
-      fish: /fish|seafood|prawn|shrimp|crab|pomfret|rohu|surmai|machli/,
-      mutton: /mutton|goat|lamb|gosht|bakra/,
-    };
-    return hotDeals.filter((p) => {
-      if (categoryFilter === "egg") return p.isEgg;
-      if (p.isEgg) return false;
-      const re = FILTER_REGEX[categoryFilter];
-      return re ? re.test(p.searchText || "") : true;
-    });
-  }, [hotDeals, categoryFilter]);
 
   return (
     <div className="relative z-10 w-full max-w-[1920px] mx-auto px-4 md:px-[50px] pt-4 sm:pt-6 md:pt-8 pb-8 md:py-8">
@@ -228,75 +202,6 @@ const OffersPage = () => {
         </div>
       </motion.div>
 
-      {/* ─── Hero Mascot Offers Banner (matching reference mockup screen 5) ─── */}
-      <div className="relative w-full rounded-2xl md:rounded-3xl overflow-hidden mb-6 sm:mb-8 shadow-sm border border-red-900/10 bg-gradient-to-r from-[#8B0000] via-[#C81017] to-[#7A0000] text-white">
-        <div className="absolute inset-0 opacity-15 pointer-events-none bg-[radial-gradient(circle_at_30%_50%,_rgba(255,255,255,0.4),_transparent_60%)]" />
-
-        <div className="relative z-10 px-5 py-6 sm:px-8 sm:py-8 lg:px-12 flex items-center justify-between min-h-[160px] sm:min-h-[190px]">
-          {/* Left Text & CTA */}
-          <div className="max-w-[62%] sm:max-w-md space-y-2 sm:space-y-3">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FAB82C] text-[#111111] text-[10px] sm:text-xs font-black uppercase tracking-wider shadow-xs">
-              <Sparkles size={13} className="text-[#111111]" /> Weekend Special Deals!
-            </div>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-normal font-anton tracking-wide uppercase leading-tight drop-shadow-md">
-              Fresh Meat <br className="hidden sm:inline" />
-              <span className="text-[#FAB82C]">Best Prices</span>
-            </h2>
-            <p className="text-xs sm:text-sm text-red-100 font-medium">
-              {maxDiscount > 0 ? `Up to ${maxDiscount}% OFF on fresh cuts • ` : "Fresh cuts • "}100% Hygienic
-            </p>
-            <div className="pt-1">
-              <button
-                type="button"
-                onClick={() => {
-                  const target = document.getElementById("hot-deals-grid");
-                  target?.scrollIntoView({ behavior: "smooth" });
-                }}
-                className="inline-flex items-center gap-1.5 px-4 py-1.5 sm:px-5 sm:py-2 rounded-full bg-[#FAB82C] hover:bg-[#F2B022] text-[#111111] text-xs font-black uppercase tracking-wide transition-all active:scale-95 shadow-sm cursor-pointer border-0"
-              >
-                <span>Shop Now</span>
-                <ArrowRight size={14} className="stroke-[3]" />
-              </button>
-            </div>
-          </div>
-
-          {/* Right Mascot Illustration */}
-          <div className="relative flex-1 flex justify-end items-end h-[160px] sm:h-[190px] pointer-events-none">
-            <img
-              src="/mascot/chef_mascot.png"
-              alt="Meatyns Chef Mascot"
-              className="h-[80%] max-h-[190px] w-auto object-contain drop-shadow-[0_8px_20px_rgba(0,0,0,0.35)] mb-5"
-              loading="eager"
-            />
-<MascotTagline size="md" />
-          </div>
-        </div>
-      </div>
-
-      {/* Category filter pills (matching mockup screen 5: All Offers, Chicken, Fish, Mutton, Eggs) */}
-      <div className="flex items-center gap-2 overflow-x-auto no-scrollbar mb-6 pb-1">
-        {[
-          { id: "all", label: "All Offers" },
-          { id: "chicken", label: "Chicken" },
-          { id: "fish", label: "Fish & Seafood" },
-          { id: "mutton", label: "Mutton" },
-          { id: "egg", label: "Eggs" },
-        ].map((cat) => (
-          <button
-            key={cat.id}
-            type="button"
-            onClick={() => setCategoryFilter(cat.id)}
-            className={`px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
-              categoryFilter === cat.id
-                ? "bg-[#C81017] text-white shadow-xs"
-                : "bg-white text-slate-700 border border-slate-200 hover:bg-slate-100"
-            }`}
-          >
-            {cat.label}
-          </button>
-        ))}
-      </div>
-
       {/* ─── Hot Deals Product Cards Section ────────────────────────── */}
       <div id="hot-deals-grid" className="mb-14">
         <div className="flex items-center justify-between mb-4 px-1">
@@ -312,13 +217,13 @@ const OffersPage = () => {
           </div>
 
           <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-[#FFFBEB] text-[#1A1A1A] border border-[#FDE68A]">
-            <Sparkles size={13} className="text-[#B45309]" /> {filteredDeals.length} Deals Active
+            <Sparkles size={13} className="text-[#B45309]" /> {hotDeals.length} Deals Active
           </span>
         </div>
 
         {/* Responsive Grid for Hot Deals Cards */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 min-[1800px]:grid-cols-8 gap-2.5 sm:gap-3.5 md:gap-4">
-          {filteredDeals.map((product) => {
+          {hotDeals.map((product) => {
             const isWishlisted = isInWishlist(product.id || product._id);
             const quantity = getQuantity(product);
 
@@ -428,7 +333,7 @@ const OffersPage = () => {
           })}
         </div>
 
-        {!isLoading && filteredDeals.length === 0 && (
+        {!isLoading && hotDeals.length === 0 && (
           <div className="p-6 sm:p-8 bg-slate-50 rounded-2xl border border-slate-200 text-center text-slate-500 text-sm font-medium">
             No deals available right now. Check back soon!
           </div>

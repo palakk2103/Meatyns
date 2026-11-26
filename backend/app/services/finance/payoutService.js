@@ -18,7 +18,9 @@ const roundCurrency = (num) => Math.round((num + Number.EPSILON) * 100) / 100;
 
 function payoutTypeToOwnerType(payoutType) {
   if (payoutType === PAYOUT_TYPE.SELLER) return OWNER_TYPE.SELLER;
-  if (payoutType === PAYOUT_TYPE.DELIVERY_PARTNER) return OWNER_TYPE.RIDER;
+  // `OWNER_TYPE.RIDER` does not exist (it was `undefined`, so the wallet
+  // lookup failed validation); riders are `DELIVERY_PARTNER` owners.
+  if (payoutType === PAYOUT_TYPE.DELIVERY_PARTNER) return OWNER_TYPE.DELIVERY_PARTNER;
   throw new Error(`Unsupported payout type: ${payoutType}`);
 }
 

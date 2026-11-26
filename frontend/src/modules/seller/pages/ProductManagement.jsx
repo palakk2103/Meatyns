@@ -119,7 +119,7 @@ const ProductManagement = () => {
   const [filterCategory, setFilterCategory] = useState("all");
   const [filterStatus, setFilterStatus] = useState("All");
   const [filterApproval, setFilterApproval] = useState("all"); // all | approved | pending | rejected
-  const [sortBy, setSortBy] = useState("newest");
+  const [sortBy, setSortBy] = useState("catalog");
   const [priceMin, setPriceMin] = useState("");
   const [priceMax, setPriceMax] = useState("");
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -732,6 +732,7 @@ const ProductManagement = () => {
               onChange={(e) => setSortBy(e.target.value)}
               className="w-full md:w-auto flex-1 lg:flex-none px-4 py-2.5 bg-white ring-1 ring-slate-200 rounded-xl text-xs font-bold text-slate-700 focus:ring-2 focus:ring-primary/5 outline-none appearance-none cursor-pointer"
             >
+              <option value="catalog">Catalog order</option>
               <option value="newest">Newest first</option>
               <option value="oldest">Oldest first</option>
               <option value="name-asc">Name A-Z</option>

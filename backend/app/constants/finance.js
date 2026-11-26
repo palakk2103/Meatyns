@@ -71,6 +71,11 @@ export const LEDGER_TRANSACTION_TYPE = {
   // ledger write inside `cancelPendingPayoutForOrder` threw a Mongoose
   // ValidationError and silently aborted the refund flow.
   PAYOUT_CANCELLED: "PAYOUT_CANCELLED",
+  // Emitted by `createPendingPayoutForOrder` when a seller/rider payout is
+  // queued on delivery. This value was missing, so the ledger write got
+  // `type: undefined`, failed validation, and aborted the whole payout (and
+  // with it the delivered-order settlement) for every order.
+  PAYOUT_QUEUED: "PAYOUT_QUEUED",
   // Audit Phase 4 (H-5): emitted by `placeOrderAtomic` when a customer
   // redeems wallet balance at checkout. Previously the wallet debit only
   // wrote a legacy `Transaction({type:"Wallet Payment"})` row and mutated

@@ -1003,7 +1003,7 @@ const CheckoutPage = () => {
 
     const cartIds = new Set(cart.map((i) => i.id || i._id));
     customerApi
-      .getProducts({ categoryId, limit: 10 })
+      .getProducts({ categoryId, limit: 10, sort: "catalog" })
       .then((res) => {
         if (res.data?.success) {
           const items = (res.data.result?.items || [])

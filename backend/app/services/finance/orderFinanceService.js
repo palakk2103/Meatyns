@@ -475,18 +475,18 @@ export async function handleCodOrderFinance(
       session,
     });
 
-    order.paymentBreakdown = {
-      ...(order.paymentBreakdown || {}),
-      codCollectedAmount: roundCurrency(
-        (order.paymentBreakdown?.codCollectedAmount || 0) + codAmountNet,
-      ),
-      codRemittedAmount: roundCurrency(order.paymentBreakdown?.codRemittedAmount || 0),
-      codPendingAmount: roundCurrency(
-        (order.paymentBreakdown?.codCollectedAmount || 0) +
-          codAmountNet -
-          (order.paymentBreakdown?.codRemittedAmount || 0),
-      ),
-    };
+    // Set the COD fields one by one. Replacing the whole `paymentBreakdown`
+    // with a `{...spread}` copy drops the nested `snapshots` path (it becomes
+    // `undefined`), and the save then fails with "Cast to Object failed for
+    // value undefined at path paymentBreakdown.snapshots" — which made every
+    // COD cash collection (and so COD delivery settlement) fail.
+    const prevCollected = order.paymentBreakdown?.codCollectedAmount || 0;
+    const prevRemitted = order.paymentBreakdown?.codRemittedAmount || 0;
+    order.paymentBreakdown.codCollectedAmount = roundCurrency(prevCollected + codAmountNet);
+    order.paymentBreakdown.codRemittedAmount = roundCurrency(prevRemitted);
+    order.paymentBreakdown.codPendingAmount = roundCurrency(
+      prevCollected + codAmountNet - prevRemitted,
+    );
 
     order.paymentStatus = ORDER_PAYMENT_STATUS.CASH_COLLECTED;
     order.payment = {
@@ -719,12 +719,10 @@ export async function reconcileCodCash(
     const nextRemitted = addMoney(codRemitted, requested);
     const nextPending = roundCurrency(codCollected - nextRemitted);
 
-    order.paymentBreakdown = {
-      ...(order.paymentBreakdown || {}),
-      codCollectedAmount: codCollected,
-      codRemittedAmount: nextRemitted,
-      codPendingAmount: nextPending,
-    };
+    // Field-wise (see handleCodOrderFinance): a spread copy loses `snapshots`.
+    order.paymentBreakdown.codCollectedAmount = codCollected;
+    order.paymentBreakdown.codRemittedAmount = nextRemitted;
+    order.paymentBreakdown.codPendingAmount = nextPending;
 
     order.paymentStatus =
       nextPending <= 0
