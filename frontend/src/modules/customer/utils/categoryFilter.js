@@ -17,12 +17,19 @@ const meatText = (item) => {
   return `${item.name || ""} ${catName}`;
 };
 
-// Returns "mutton" | "chicken" | "other" for a category or product
-export const getMeatType = (item) => {
-  const text = meatText(item);
+const matchMeat = (text) => {
   if (MUTTON_REGEX.test(text)) return "mutton";
   if (CHICKEN_REGEX.test(text)) return "chicken";
   return "other";
+};
+
+// Returns "mutton" | "chicken" | "other" for a category or product
+export const getMeatType = (item) => {
+  const own = matchMeat(meatText(item));
+  if (own !== "other") return own;
+  // Names like "Meatyns Regular" or "Sunday Family Pack" don't say the meat,
+  // so fall back to the product's assigned category.
+  return matchMeat(`${item?.categoryId?.name || ""} ${item?.headerId?.name || ""}`);
 };
 
 const EGG_REGEX = /\beggs?\b|\banda\b/i;

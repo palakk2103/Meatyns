@@ -674,7 +674,7 @@ export const getProducts = async (req, res) => {
 // name, so it is ranked here (before paginating) rather than by a Mongo sort.
 const getCatalogOrderPage = async (query, skip, limit) => {
   const rows = await Product.find(query)
-    .select("name")
+    .select("name sellerId")
     .sort({ createdAt: -1, _id: -1 })
     .lean();
   const ids = sortByDisplayOrder(rows)

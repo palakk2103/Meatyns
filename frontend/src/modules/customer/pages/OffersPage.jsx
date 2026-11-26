@@ -29,7 +29,7 @@ const OffersPage = () => {
       try {
         const [offersRes, prodRes] = await Promise.all([
           customerApi.getOffers().catch(() => ({ data: {} })),
-          customerApi.getProducts({ limit: 40, sort: "catalog" }).catch(() => ({ data: {} })),
+          customerApi.getProducts({ limit: 200, sort: "catalog" }).catch(() => ({ data: {} })),
         ]);
 
         const offersList =

@@ -467,7 +467,7 @@ export const saveSellerDailyStock = async (req, res) => {
 export const getSellerDailyStockProducts = async (req, res) => {
   try {
     const products = await Product.find({ sellerId: req.user.id })
-      .select("name unit sku avgKgPerAnimal")
+      .select("name sellerId unit sku avgKgPerAnimal")
       .sort({ name: 1 })
       .limit(1000)
       .lean();
@@ -524,7 +524,7 @@ export const getAdminDailyStockProducts = async (req, res) => {
   try {
     if (!mongoose.isValidObjectId(req.query.sellerId)) return handleResponse(res, 400, "sellerId is required");
     const products = await Product.find({ sellerId: req.query.sellerId })
-      .select("name unit sku avgKgPerAnimal")
+      .select("name sellerId unit sku avgKgPerAnimal")
       .sort({ name: 1 })
       .limit(1000)
       .lean();
