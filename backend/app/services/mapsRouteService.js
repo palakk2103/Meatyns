@@ -115,6 +115,17 @@ function isRouteCacheCompatible(cached, origin, dest, phase, mode) {
 }
 
 /**
+ * The ONE distance used to price a delivery (delivery option cards, bill and
+ * placed order must all agree): road distance from the shop to the customer,
+ * never shorter than the straight line, which is also the fallback.
+ */
+export async function getDeliveryDistanceKm(shop, customer) {
+  const aerialKm = distanceMeters(shop.lat, shop.lng, customer.lat, customer.lng) / 1000;
+  const roadMeters = await getRoadDistanceMeters(shop, customer);
+  return Number(Math.max(roadMeters ? roadMeters / 1000 : 0, aerialKm).toFixed(3));
+}
+
+/**
  * Driving (road) distance in meters between two points, for delivery pricing.
  * Cached in Redis (coords rounded to ~1 m). Returns null on any failure so the
  * caller can fall back to the straight-line distance.

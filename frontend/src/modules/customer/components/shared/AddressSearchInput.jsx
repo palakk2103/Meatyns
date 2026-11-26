@@ -24,9 +24,10 @@ async function googlePredictions(query, bias, tokenRef) {
   if (!tokenRef.current && places.AutocompleteSessionToken) {
     tokenRef.current = new places.AutocompleteSessionToken();
   }
+  // No `types` filter: "geocode" hides named places (societies, residencies,
+  // buildings), which is how most customers search for their address.
   const request = {
     input: query,
-    types: ["geocode"],
     componentRestrictions: { country: "in" },
     sessionToken: tokenRef.current,
   };
@@ -44,6 +45,7 @@ async function googlePredictions(query, bias, tokenRef) {
             main: p.structured_formatting?.main_text || p.description,
             secondary: p.structured_formatting?.secondary_text || "",
             description: p.description,
+            isNamedPlace: Boolean(p.types?.includes("establishment")),
           })),
         );
       } else {
@@ -179,8 +181,13 @@ const AddressSearchInput = ({ value, onChange, bias = null, placeholder }) => {
         (await backendGeocode(s)) ||
         (await osmGeocode(s.description));
       if (!resolved) throw new Error("no location");
-      const text = resolved.text || s.description;
-      onChange({ text, location: { lat: resolved.lat, lng: resolved.lng }, pincode: pincodeFrom(text) });
+      // A named place's formatted address often drops the building name.
+      const text = (!s.isNamedPlace && resolved.text) || s.description;
+      onChange({
+        text,
+        location: { lat: resolved.lat, lng: resolved.lng },
+        pincode: pincodeFrom(resolved.text) || pincodeFrom(text),
+      });
     } catch {
       setError("Couldn't locate this address. Please pick another suggestion.");
       onChange({ text: s.description, location: null });

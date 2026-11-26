@@ -1,0 +1,28 @@
+import dns from "dns"; dns.setServers(["8.8.8.8","1.1.1.1"]);
+import "dotenv/config"; import mongoose from "mongoose"; import fs from "fs"; import crypto from "crypto";
+import { v2 as cloudinary } from "cloudinary";
+import { invalidate, buildKey } from "../app/services/cacheService.js";
+// Kolhapur stores only. Pune and every other seller must stay untouched.
+const KOLHAPUR=["6afab050ec0941919e8d790f","6afab051ec0941919e8d795d","6afab052ec0941919e8d79a6","6afab053ec0941919e8d79eb","6afab054ec0941919e8d7a30"];
+const NAME="Meatyns Regular (Liver & Fat Add)";
+const FILE=process.argv[2];
+cloudinary.config({cloud_name:process.env.CLOUDINARY_CLOUD_NAME,api_key:process.env.CLOUDINARY_API_KEY,api_secret:process.env.CLOUDINARY_API_SECRET});
+await mongoose.connect(process.env.MONGO_URI);
+const col=mongoose.connection.db.collection("products");
+const ids=KOLHAPUR.map(s=>new mongoose.Types.ObjectId(s));
+const docs=await col.find({sellerId:{$in:ids},name:NAME}).toArray();
+if(docs.length!==5||new Set(docs.map(d=>d.mainImage)).size!==1) throw new Error(`unexpected state: ${docs.length} docs`);
+const snap=async()=>new Map((await col.find({}).toArray()).map(d=>[String(d._id),[d.mainImage||"",(d.galleryImages||[]).join()].join("|")]));
+const before=await snap();
+const up=await cloudinary.uploader.upload(FILE,{folder:"products",resource_type:"image"});
+if(!up.secure_url.includes("/szohobky/")) throw new Error("unexpected cloud "+up.secure_url);
+fs.writeFileSync(`scratch/kop_regular_image_backup_${Date.now()}.json`,JSON.stringify(docs.map(d=>({_id:d._id,sellerId:d.sellerId,name:d.name,mainImage:d.mainImage,newImage:up.secure_url})),null,1));
+const r=await col.updateMany({_id:{$in:docs.map(d=>d._id)},sellerId:{$in:ids},mainImage:docs[0].mainImage},{$set:{mainImage:up.secure_url,updatedAt:new Date()}});
+const after=await snap(); const target=new Set(docs.map(d=>String(d._id)));
+const outside=[...after].filter(([id,v])=>!target.has(id)&&before.has(id)&&before.get(id)!==v).length;
+const md5=b=>crypto.createHash("md5").update(b).digest("hex");
+const served=Buffer.from(await (await fetch(up.secure_url)).arrayBuffer());
+console.log("modified:",r.modifiedCount,"| images changed outside targets:",outside,"| served == drive file:",md5(served)===md5(fs.readFileSync(FILE)));
+console.log("new url:",up.secure_url);
+for(const k of [buildKey("catalog","productList","*"),"cache:offersections:public:*","cache:search:*",...docs.map(d=>`cache:catalog:product:${d._id}`)]) await invalidate(k);
+await mongoose.disconnect(); process.exit(0);

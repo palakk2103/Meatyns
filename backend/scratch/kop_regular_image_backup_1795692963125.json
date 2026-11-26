@@ -1,0 +1,37 @@
+[
+ {
+  "_id": "6afab050ec0941919e8d792a",
+  "sellerId": "6afab050ec0941919e8d790f",
+  "name": "Meatyns Regular (Liver & Fat Add)",
+  "mainImage": "https://res.cloudinary.com/szohobky/image/upload/v1795677921/products/f1qqzljhyl72hyaevtzd.png",
+  "newImage": "https://res.cloudinary.com/szohobky/image/upload/v1795692962/products/l3zyh5ntt0jsed3yjmae.png"
+ },
+ {
+  "_id": "6afab051ec0941919e8d7978",
+  "sellerId": "6afab051ec0941919e8d795d",
+  "name": "Meatyns Regular (Liver & Fat Add)",
+  "mainImage": "https://res.cloudinary.com/szohobky/image/upload/v1795677921/products/f1qqzljhyl72hyaevtzd.png",
+  "newImage": "https://res.cloudinary.com/szohobky/image/upload/v1795692962/products/l3zyh5ntt0jsed3yjmae.png"
+ },
+ {
+  "_id": "6afab052ec0941919e8d79bd",
+  "sellerId": "6afab052ec0941919e8d79a6",
+  "name": "Meatyns Regular (Liver & Fat Add)",
+  "mainImage": "https://res.cloudinary.com/szohobky/image/upload/v1795677921/products/f1qqzljhyl72hyaevtzd.png",
+  "newImage": "https://res.cloudinary.com/szohobky/image/upload/v1795692962/products/l3zyh5ntt0jsed3yjmae.png"
+ },
+ {
+  "_id": "6afab053ec0941919e8d7a02",
+  "sellerId": "6afab053ec0941919e8d79eb",
+  "name": "Meatyns Regular (Liver & Fat Add)",
+  "mainImage": "https://res.cloudinary.com/szohobky/image/upload/v1795677921/products/f1qqzljhyl72hyaevtzd.png",
+  "newImage": "https://res.cloudinary.com/szohobky/image/upload/v1795692962/products/l3zyh5ntt0jsed3yjmae.png"
+ },
+ {
+  "_id": "6afab054ec0941919e8d7a47",
+  "sellerId": "6afab054ec0941919e8d7a30",
+  "name": "Meatyns Regular (Liver & Fat Add)",
+  "mainImage": "https://res.cloudinary.com/szohobky/image/upload/v1795677921/products/f1qqzljhyl72hyaevtzd.png",
+  "newImage": "https://res.cloudinary.com/szohobky/image/upload/v1795692962/products/l3zyh5ntt0jsed3yjmae.png"
+ }
+]

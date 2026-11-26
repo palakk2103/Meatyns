@@ -299,7 +299,10 @@ const LocationDrawer = ({ isOpen, onClose }) => {
             return;
           }
           applyResolved({
-            name: place.formatted_address,
+            // A named place's formatted address often drops the building name.
+            name: prediction.types?.includes("establishment")
+              ? prediction.description
+              : place.formatted_address,
             components: place.address_components || [],
             lat: geometry.lat(),
             lng: geometry.lng(),
@@ -414,9 +417,10 @@ const LocationDrawer = ({ isOpen, onClose }) => {
         return;
       }
 
+      // No `types` filter: "geocode" hides named places (societies,
+      // residencies, buildings), which is how most customers search.
       const request = {
         input: query,
-        types: ["geocode"],
         componentRestrictions: { country: "in" },
         sessionToken: getAutocompleteSessionToken(),
       };

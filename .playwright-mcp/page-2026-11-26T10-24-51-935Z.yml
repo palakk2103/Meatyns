@@ -1,0 +1,17 @@
+- generic [ref=f1e2]:
+  - generic [ref=f1e3]:
+    - main [ref=f1e4]:
+      - generic [ref=f1e5]: Loading...
+    - button "Open enquiry chat" [ref=f1e6]
+    - generic [ref=f1e9]:
+      - link "Home" [ref=f1e10] [cursor=pointer]:
+        - /url: /
+      - link "Categories" [ref=f1e17] [cursor=pointer]:
+        - /url: /categories
+      - link "Cart" [ref=f1e26] [cursor=pointer]:
+        - /url: /cart
+      - link "Orders" [ref=f1e34] [cursor=pointer]:
+        - /url: /orders
+      - link "Account" [ref=f1e41] [cursor=pointer]:
+        - /url: /profile
+  - region "Notifications alt+T"

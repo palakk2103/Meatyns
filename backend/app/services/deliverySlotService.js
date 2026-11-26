@@ -12,6 +12,7 @@ import { getOrCreateFinanceSettings } from "./finance/financeSettingsService.js"
 import { calculateCustomerDeliveryFee } from "./finance/pricingService.js";
 import { resolveDeliveryZoneForLocation } from "./deliveryZoneService.js";
 import logger from "./logger.js";
+import { getDeliveryDistanceKm } from "./mapsRouteService.js";
 
 // Cities where Express delivery is not offered at all (only Normal + Scheduled).
 // Admin-editable via deliveryConfig.express.blockedCities; this is only the
@@ -429,6 +430,16 @@ export async function getDeliveryOptionsAndSlots({
       isServiceable = false;
       unserviceableReason = `Address is outside store service radius (${distanceKm}km vs max ${radius}km).`;
     }
+  }
+
+  // `distanceKm` above is straight-line (radius check). Fees must use the same
+  // road distance as the checkout bill, or the cards show a different price.
+  const [shopLng, shopLat] = primarySeller?.location?.coordinates || [];
+  if (loc?.lat && loc?.lng && Number.isFinite(shopLat) && Number.isFinite(shopLng)) {
+    distanceKm = await getDeliveryDistanceKm(
+      { lat: shopLat, lng: shopLng },
+      { lat: Number(loc.lat), lng: Number(loc.lng) },
+    );
   }
 
   // Calculate pricing for each delivery method with matchedZone

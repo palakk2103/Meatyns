@@ -412,6 +412,8 @@ export function calculateCustomerDeliveryFee(distanceKm, deliverySettings, optio
     finalDeliveryFee = addMoney(normalFeeForDistance, expressSurcharge);
   } else if (citySlab) {
     finalDeliveryFee = citySlabFee;
+    // Same rounding findDistanceSlab bills on, so "billed X km" is truthful.
+    distanceKmRounded = Math.ceil(normalizedDistance - 1e-9);
   } else if (deliveryMethod === "SCHEDULED") {
     if (advanceConfig?.deliveryFee != null && Number.isFinite(Number(advanceConfig.deliveryFee))) {
       advanceBookingFee = roundCurrency(Number(advanceConfig.deliveryFee));

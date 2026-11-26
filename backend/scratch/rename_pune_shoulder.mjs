@@ -1,0 +1,16 @@
+import dns from "dns"; dns.setServers(["8.8.8.8","1.1.1.1"]);
+import "dotenv/config"; import mongoose from "mongoose"; import fs from "fs";
+import { invalidate, buildKey } from "../app/services/cacheService.js";
+const ID="6afab055ec0941919e8d7a87", NEW="Premium Goat Shoulder Curry Cut";
+const OLD="Premium Goat Curry Cut (Long Shoulder, Boneless & Goat Shank)";
+await mongoose.connect(process.env.MONGO_URI);
+const col=mongoose.connection.db.collection("products");
+const _id=new mongoose.Types.ObjectId(ID);
+const doc=await col.findOne({_id,name:OLD});
+if(!doc) throw new Error("unexpected state");
+fs.writeFileSync(`scratch/pune_shoulder_name_backup_${Date.now()}.json`,JSON.stringify({_id:ID,name:doc.name},null,1));
+const r=await col.updateOne({_id,name:OLD},{$set:{name:NEW,updatedAt:new Date()}});
+console.log("modified:",r.modifiedCount,"| now:",(await col.findOne({_id})).name);
+for(const k of [buildKey("catalog","productList","*"),"cache:offersections:public:*","cache:search:*",`cache:catalog:product:${ID}`]) await invalidate(k);
+for(const s of await mongoose.connection.db.collection("sellers").find({_id:{$in:["6a61c24736109852f8dac028","6ac72c5422465427ed5bcc59"].map(i=>new mongoose.Types.ObjectId(i))}},{projection:{shopName:1,name:1}}).toArray()) console.log("other active:",String(s._id),s.shopName||s.name);
+await mongoose.disconnect(); process.exit(0);

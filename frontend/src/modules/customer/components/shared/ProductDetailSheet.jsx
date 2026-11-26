@@ -816,7 +816,7 @@ const ProductDetailSheet = () => {
                                             >
                                                 <div className="grid grid-cols-2 gap-3 mt-1">
                                                     {[
-                                                        { label: 'Shelf Life', value: '3 Days', emoji: '📅' },
+                                                        { label: 'Shelf Life', value: '48 Hours', emoji: '📅' },
                                                         { label: 'Country of Origin', value: 'India', emoji: '🇮🇳' },
                                                         { label: 'FSSAI License', value: '1001234567890', emoji: '🛡️' },
                                                         { label: 'Customer Care', value: supportEmail, emoji: '📧' }
@@ -1082,7 +1082,7 @@ const ProductDetailSheet = () => {
                                     >
                                         <div className="grid grid-cols-2 gap-3 mt-1">
                                             {[
-                                                { label: 'Shelf Life', value: '3 Days' },
+                                                { label: 'Shelf Life', value: '48 Hours' },
                                                 { label: 'Country of Origin', value: 'India' },
                                                 { label: 'FSSAI License', value: '1001234567890' },
                                                 { label: 'Customer Care', value: supportEmail }

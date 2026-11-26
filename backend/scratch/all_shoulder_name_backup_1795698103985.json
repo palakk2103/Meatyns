@@ -1,0 +1,44 @@
+[
+ {
+  "_id": "6abba4d1e8545df2f6c15db7",
+  "sellerId": "6a61c24736109852f8dac028",
+  "name": "Premium Goat Curry Cut (Long Shoulder, Boneless & Goat Shank)",
+  "status": "active"
+ },
+ {
+  "_id": "6afab050ec0941919e8d7925",
+  "sellerId": "6afab050ec0941919e8d790f",
+  "name": "Premium Goat Curry Cut (Long Shoulder, Boneless & Goat Shank)",
+  "status": "inactive"
+ },
+ {
+  "_id": "6afab051ec0941919e8d7972",
+  "sellerId": "6afab051ec0941919e8d795d",
+  "name": "Premium Goat Curry Cut (Long Shoulder, Boneless & Goat Shank)",
+  "status": "inactive"
+ },
+ {
+  "_id": "6afab052ec0941919e8d79b8",
+  "sellerId": "6afab052ec0941919e8d79a6",
+  "name": "Premium Goat Curry Cut (Long Shoulder, Boneless & Goat Shank)",
+  "status": "inactive"
+ },
+ {
+  "_id": "6afab053ec0941919e8d79fd",
+  "sellerId": "6afab053ec0941919e8d79eb",
+  "name": "Premium Goat Curry Cut (Long Shoulder, Boneless & Goat Shank)",
+  "status": "inactive"
+ },
+ {
+  "_id": "6afab054ec0941919e8d7a42",
+  "sellerId": "6afab054ec0941919e8d7a30",
+  "name": "Premium Goat Curry Cut (Long Shoulder, Boneless & Goat Shank)",
+  "status": "inactive"
+ },
+ {
+  "_id": "6afd561a5f0f9c57d6ac75b2",
+  "sellerId": "6ac72c5422465427ed5bcc59",
+  "name": "Premium Goat Curry Cut (Long Shoulder, Boneless & Goat Shank)",
+  "status": "active"
+ }
+]

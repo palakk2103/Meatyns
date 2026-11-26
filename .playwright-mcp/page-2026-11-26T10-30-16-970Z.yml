@@ -1,0 +1,22 @@
+- generic [ref=f5e2]:
+  - generic [ref=f5e3]:
+    - main [ref=f5e4]:
+      - generic [ref=f5e5]: Loading...
+    - button "Open enquiry chat" [ref=f5e6]
+    - generic [ref=f5e10]:
+      - img "Meatyns Chef Mascot" [ref=f5e12]
+      - img "Meatyns" [ref=f5e13]
+      - paragraph [ref=f5e16]: Click it & Get it
+      - paragraph [ref=f5e18]: Fresh · Fast · Reliable
+    - generic [ref=f5e19]:
+      - link "Home" [ref=f5e20] [cursor=pointer]:
+        - /url: /
+      - link "Categories" [ref=f5e28] [cursor=pointer]:
+        - /url: /categories
+      - link "Cart" [ref=f5e37] [cursor=pointer]:
+        - /url: /cart
+      - link "Orders" [ref=f5e45] [cursor=pointer]:
+        - /url: /orders
+      - link "Account" [ref=f5e52] [cursor=pointer]:
+        - /url: /profile
+  - region "Notifications alt+T"

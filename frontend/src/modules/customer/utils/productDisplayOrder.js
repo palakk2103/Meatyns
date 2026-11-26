@@ -25,7 +25,8 @@ export const PRODUCT_DISPLAY_ORDER = [
   "Mutton Liver", // 4
   "Mutton Liver Chunks",
   "Premium Goat Rib Bone Pieces", // 5
-  "Pure Lamb Mince (Kheema)", // 6
+  "Pure Mince (Kheema)", // 6
+  "Pure Lamb Mince (Kheema)",
   "Mutton Kidney (Small Pack)", // 7
   "Mutton Kapura (Medium)", // 8
   "Sunday Family Pack", // 9
@@ -54,6 +55,7 @@ export const PRODUCT_DISPLAY_ORDER = [
   "Goat Intestine (Vajadi)", // 28
   // Not on the sheet: stays after the sheet's mutton items
   "Premium Goat Curry Cut (Long Shoulder, Boneless & Goat Shank)",
+  "Premium Goat Shoulder Curry Cut",
   ...CHICKEN_ORDER,
 ];
 
@@ -76,7 +78,8 @@ const PUNE_MUTTON_ORDER = [
   "Mutton Ran", // 8
   "Goat Boneless ( Full Boneless )", // 9
   "Goat Boneless",
-  "Pure Lamb Mince (Kheema)", // 10
+  "Pure Mince (Kheema)", // 10
+  "Pure Lamb Mince (Kheema)",
   "Pure Meat Kheema (Mince)",
   "Premium Goat Rib Bone Pieces", // 11
   "Premium Goat - Ribs Bone Pieces",

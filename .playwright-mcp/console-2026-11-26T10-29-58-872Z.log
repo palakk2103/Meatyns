@@ -1,0 +1,15 @@
+[     885ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[    1481ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[    1684ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://localhost:7000/api/cart:1
+[    1688ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://localhost:7000/api/wishlist?idsOnly=true:1
+[    1690ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://localhost:7000/api/customer/profile:1
+[    1700ms] [WARNING] WebSocket connection to 'ws://localhost:7000/socket.io/?EIO=4&transport=websocket&sid=opb4IJ7lWk2QTSYZAAAE' failed: WebSocket is closed before the connection is established. @ http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:1500
+[    1701ms] [ERROR] [orderSocket] Socket connection error: Error: Unauthorized
+    at Socket2.onpacket (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:3128:21)
+    at Emitter.emit (http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:819:20)
+    at http://localhost:5173/node_modules/.vite/deps/socket__io-client.js?v=707a6b01:3721:12 @ http://localhost:5173/src/core/services/orderSocket.js:64
+[    1958ms] [LOG] [orderSocket] Socket connected, ID: szHpiyFOE6vJKuo9AAAH @ http://localhost:5173/src/core/services/orderSocket.js:49
+[    2476ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=707a6b01:20103
+[    2888ms] [LOG] [orderSocket] Creating new Socket.IO connection to: http://localhost:7000 @ http://localhost:5173/src/core/services/orderSocket.js:36
+[    3104ms] [LOG] [orderSocket] Socket connected, ID: o8V_-EktwRffdLofAAAJ @ http://localhost:5173/src/core/services/orderSocket.js:49
+[    3705ms] [WARNING] [Meta Pixel] - Duplicate Pixel ID: 884920194821034. @ https://connect.facebook.net/en_US/fbevents.js:206

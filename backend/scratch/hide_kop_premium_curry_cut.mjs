@@ -1,0 +1,22 @@
+import dns from "dns"; dns.setServers(["8.8.8.8","1.1.1.1"]);
+import "dotenv/config"; import mongoose from "mongoose"; import fs from "fs";
+import { invalidate, buildKey } from "../app/services/cacheService.js";
+// Hide (not delete) an item that is on neither the Kolhapur sheet nor the Drive folder.
+const KOLHAPUR=["6afab050ec0941919e8d790f","6afab051ec0941919e8d795d","6afab052ec0941919e8d79a6","6afab053ec0941919e8d79eb","6afab054ec0941919e8d7a30"];
+const NAME="Premium Goat Curry Cut (Long Shoulder, Boneless & Goat Shank)";
+await mongoose.connect(process.env.MONGO_URI);
+const col=mongoose.connection.db.collection("products");
+const ids=KOLHAPUR.map(s=>new mongoose.Types.ObjectId(s));
+const docs=await col.find({sellerId:{$in:ids},name:NAME}).toArray();
+if(docs.length!==5) throw new Error(`unexpected state: ${docs.length} docs`);
+const snap=async()=>new Map((await col.find({}).toArray()).map(d=>[String(d._id),d.status]));
+const before=await snap();
+fs.writeFileSync(`scratch/kop_premium_status_backup_${Date.now()}.json`,JSON.stringify(docs.map(d=>({_id:d._id,sellerId:d.sellerId,name:d.name,status:d.status})),null,1));
+const r=await col.updateMany({_id:{$in:docs.map(d=>d._id)},sellerId:{$in:ids}},{$set:{status:"inactive",updatedAt:new Date()}});
+const after=await snap(); const target=new Set(docs.map(d=>String(d._id)));
+const outside=[...after].filter(([id,v])=>!target.has(id)&&before.has(id)&&before.get(id)!==v).length;
+console.log("modified:",r.modifiedCount,"| status changed outside targets:",outside);
+console.log("kolhapur now:",(await col.find({_id:{$in:docs.map(d=>d._id)}}).toArray()).map(d=>d.status).join());
+console.log("pune:",(await col.findOne({sellerId:new mongoose.Types.ObjectId("6afab055ec0941919e8d7a75"),name:NAME}))?.status);
+for(const k of [buildKey("catalog","productList","*"),"cache:offersections:public:*","cache:search:*",...docs.map(d=>`cache:catalog:product:${d._id}`)]) await invalidate(k);
+await mongoose.disconnect(); process.exit(0);

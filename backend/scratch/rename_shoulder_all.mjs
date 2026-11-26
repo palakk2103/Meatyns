@@ -1,0 +1,16 @@
+import dns from "dns"; dns.setServers(["8.8.8.8","1.1.1.1"]);
+import "dotenv/config"; import mongoose from "mongoose"; import fs from "fs";
+import { invalidate, buildKey } from "../app/services/cacheService.js";
+const NEW="Premium Goat Shoulder Curry Cut";
+const OLD="Premium Goat Curry Cut (Long Shoulder, Boneless & Goat Shank)";
+await mongoose.connect(process.env.MONGO_URI);
+const col=mongoose.connection.db.collection("products");
+const docs=await col.find({name:OLD}).toArray();
+if(docs.length!==7) throw new Error(`unexpected state: ${docs.length} docs`);
+fs.writeFileSync(`scratch/all_shoulder_name_backup_${Date.now()}.json`,JSON.stringify(docs.map(d=>({_id:d._id,sellerId:d.sellerId,name:d.name,status:d.status})),null,1));
+const ids=docs.map(d=>d._id);
+const r=await col.updateMany({_id:{$in:ids},name:OLD},{$set:{name:NEW,updatedAt:new Date()}});
+console.log("modified:",r.modifiedCount,"| old left:",await col.countDocuments({name:OLD}),"| new total:",await col.countDocuments({name:NEW}));
+console.log("status unchanged:",(await col.find({_id:{$in:ids}}).toArray()).every(a=>a.status===docs.find(d=>String(d._id)===String(a._id)).status));
+for(const k of [buildKey("catalog","productList","*"),"cache:offersections:public:*","cache:search:*",...ids.map(i=>`cache:catalog:product:${i}`)]) await invalidate(k);
+await mongoose.disconnect(); process.exit(0);

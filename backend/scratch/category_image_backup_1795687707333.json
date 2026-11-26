@@ -1,0 +1,93 @@
+{
+  "categories": [
+    {
+      "_id": "6abb9cede8545df2f6c15a7d",
+      "name": "Meatyns Special Mutton",
+      "image": "https://res.cloudinary.com/szohobky/image/upload/v1790680302/categories/nt6yefylvxffpf6mh5kt.jpg"
+    },
+    {
+      "_id": "6abb9d10e8545df2f6c15a85",
+      "name": "Goat Curry Cut",
+      "image": "https://res.cloudinary.com/szohobky/image/upload/v1790680337/categories/jimz0e9mibomhstq16yh.jpg"
+    },
+    {
+      "_id": "6abb9d44e8545df2f6c15a90",
+      "name": "Mutton Liver",
+      "image": "https://res.cloudinary.com/szohobky/image/upload/v1790680388/categories/nsmgakzojfegba0jalof.jpg"
+    },
+    {
+      "_id": "6abba197e8545df2f6c15aaf",
+      "name": "Meatyns Regular",
+      "image": "https://res.cloudinary.com/szohobky/image/upload/v1790681495/categories/g0umsjp2slm2vcyxiem1.jpg"
+    },
+    {
+      "_id": "6abba278e8545df2f6c15acc",
+      "name": "Mutton Chips",
+      "image": "https://res.cloudinary.com/szohobky/image/upload/v1790681721/categories/un3yh7h8vxv0opj5ywvt.jpg"
+    },
+    {
+      "_id": "6abba2ade8545df2f6c15ada",
+      "name": "Mutton Paya",
+      "image": "https://res.cloudinary.com/szohobky/image/upload/v1790681774/categories/rjopch8w4i4ivoqdrubv.jpg"
+    },
+    {
+      "_id": "6abba2dae8545df2f6c15ae2",
+      "name": "Mutton Paya with small pieces",
+      "image": "https://res.cloudinary.com/szohobky/image/upload/v1790681818/categories/s4vi5nycjity0lvfpiko.jpg"
+    },
+    {
+      "_id": "6abba2fee8545df2f6c15af6",
+      "name": "Mutton",
+      "image": "https://res.cloudinary.com/szohobky/image/upload/v1790681855/categories/oevw1zyjqldvhbfxkyv8.jpg"
+    },
+    {
+      "_id": "6abccea68bb4a6318f3e9b4c",
+      "name": "Chicken",
+      "image": "https://res.cloudinary.com/szohobky/image/upload/v1790758566/categories/c7e8xuip04qiyovkbxqi.jpg"
+    }
+  ],
+  "chickenLiver": [
+    {
+      "_id": "6b07faa36478ac640b3466d3",
+      "name": "Chicken Liver",
+      "mainImage": "",
+      "galleryImages": [],
+      "status": "active"
+    },
+    {
+      "_id": "6b07faa46478ac640b3466d8",
+      "name": "Chicken Liver",
+      "mainImage": "",
+      "galleryImages": [],
+      "status": "active"
+    },
+    {
+      "_id": "6b07faa46478ac640b3466dd",
+      "name": "Chicken Liver",
+      "mainImage": "",
+      "galleryImages": [],
+      "status": "active"
+    },
+    {
+      "_id": "6b07faa46478ac640b3466e2",
+      "name": "Chicken Liver",
+      "mainImage": "",
+      "galleryImages": [],
+      "status": "active"
+    },
+    {
+      "_id": "6b07faa46478ac640b3466e7",
+      "name": "Chicken Liver",
+      "mainImage": "",
+      "galleryImages": [],
+      "status": "active"
+    },
+    {
+      "_id": "6b07faa46478ac640b3466ec",
+      "name": "Chicken Liver",
+      "mainImage": "",
+      "galleryImages": [],
+      "status": "active"
+    }
+  ]
+}
