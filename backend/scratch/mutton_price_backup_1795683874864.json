@@ -1,0 +1,4052 @@
+[
+ {
+  "_id": "6abba3b3e8545df2f6c15be1",
+  "sellerId": "6a61c24736109852f8dac028",
+  "name": "Meatyns Special Mutton ( Liver & Fat less )",
+  "price": 930,
+  "salePrice": 930,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 930,
+    "salePrice": 930,
+    "stock": 797,
+    "sku": "meaty-001",
+    "tieredPricing": [],
+    "_id": "6abba3b3e8545df2f6c15be2"
+   },
+   {
+    "name": "750 g",
+    "price": 695,
+    "salePrice": 695,
+    "stock": 800,
+    "sku": "meaty-001-750g",
+    "tieredPricing": [],
+    "_id": "6afc2f4ff97c71ca018d468d"
+   },
+   {
+    "name": "500 g",
+    "price": 465,
+    "salePrice": 465,
+    "stock": 800,
+    "sku": "meaty-001-500g",
+    "tieredPricing": [],
+    "_id": "6afaa9e459d8b2839cecdf62"
+   },
+   {
+    "name": "250 g",
+    "price": 230,
+    "salePrice": 230,
+    "stock": 800,
+    "sku": "meaty-001-250g",
+    "tieredPricing": [],
+    "_id": "6afc2f4ff97c71ca018d468f"
+   }
+  ]
+ },
+ {
+  "_id": "6abba405e8545df2f6c15c70",
+  "sellerId": "6a61c24736109852f8dac028",
+  "name": "Goat Curry Cut",
+  "price": 860,
+  "salePrice": 860,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 860,
+    "salePrice": 860,
+    "stock": 800,
+    "sku": "goatc-001",
+    "tieredPricing": [],
+    "_id": "6abba405e8545df2f6c15c71"
+   },
+   {
+    "name": "750 g",
+    "price": 645,
+    "salePrice": 645,
+    "stock": 800,
+    "sku": "goatc-001-750g",
+    "_id": "6afc2f4ff97c71ca018d4691",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 430,
+    "salePrice": 430,
+    "stock": 800,
+    "sku": "goatc-001-500g",
+    "tieredPricing": [],
+    "_id": "6afaa9e459d8b2839cecdf6f"
+   },
+   {
+    "name": "250 g",
+    "price": 215,
+    "salePrice": 215,
+    "stock": 800,
+    "sku": "goatc-001-250g",
+    "_id": "6afc2f4ff97c71ca018d4693",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6abba47ae8545df2f6c15d17",
+  "sellerId": "6a61c24736109852f8dac028",
+  "name": "Mutton Liver",
+  "price": 790,
+  "salePrice": 790,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 790,
+    "salePrice": 790,
+    "stock": 800,
+    "sku": "mutto-001",
+    "tieredPricing": [],
+    "_id": "6abba47ae8545df2f6c15d18"
+   },
+   {
+    "name": "750 g",
+    "price": 590,
+    "salePrice": 590,
+    "stock": 800,
+    "sku": "mutto-001-750g",
+    "tieredPricing": [],
+    "_id": "6afc2f4ff97c71ca018d4696"
+   },
+   {
+    "name": "500 g",
+    "price": 395,
+    "salePrice": 395,
+    "stock": 800,
+    "sku": "mutto-001-500g",
+    "tieredPricing": [],
+    "_id": "6afaa9e559d8b2839cecdf75"
+   },
+   {
+    "name": "250 g",
+    "price": 195,
+    "salePrice": 195,
+    "stock": 800,
+    "sku": "mutto-001-250g",
+    "tieredPricing": [],
+    "_id": "6afc2f4ff97c71ca018d4698"
+   }
+  ]
+ },
+ {
+  "_id": "6abba536e8545df2f6c15e4a",
+  "sellerId": "6a61c24736109852f8dac028",
+  "name": "Meatyns Regular (Liver & Fat Add)",
+  "price": 850,
+  "salePrice": 850,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 850,
+    "salePrice": 850,
+    "stock": 800,
+    "sku": "meaty-001-1",
+    "tieredPricing": [],
+    "_id": "6abba536e8545df2f6c15e4b"
+   },
+   {
+    "name": "750 g",
+    "price": 635,
+    "salePrice": 635,
+    "stock": 800,
+    "sku": "meaty-001-1-750g",
+    "tieredPricing": [],
+    "_id": "6afc2f4ff97c71ca018d469f"
+   },
+   {
+    "name": "500 g",
+    "price": 425,
+    "salePrice": 425,
+    "stock": 800,
+    "sku": "meaty-001-1-500g",
+    "tieredPricing": [],
+    "_id": "6afaa9e459d8b2839cecdf69"
+   },
+   {
+    "name": "250 g",
+    "price": 210,
+    "salePrice": 210,
+    "stock": 800,
+    "sku": "meaty-001-1-250g",
+    "tieredPricing": [],
+    "_id": "6afc2f4ff97c71ca018d46a1"
+   }
+  ]
+ },
+ {
+  "_id": "6abba5b9e8545df2f6c15f1e",
+  "sellerId": "6a61c24736109852f8dac028",
+  "name": "Mutton Chops( Ribcage & T-Bone Steak )",
+  "price": 880,
+  "salePrice": 880,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 880,
+    "salePrice": 880,
+    "stock": 800,
+    "sku": "mutto-001-1",
+    "tieredPricing": [],
+    "_id": "6abba5b9e8545df2f6c15f1f"
+   },
+   {
+    "name": "750 g",
+    "price": 660,
+    "salePrice": 660,
+    "stock": 800,
+    "sku": "mutto-001-1-750g",
+    "_id": "6afc2f4ff97c71ca018d46a3",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 440,
+    "salePrice": 440,
+    "stock": 800,
+    "sku": "mutto-001-1-500g",
+    "tieredPricing": [],
+    "_id": "6afaa9e559d8b2839cecdf81"
+   },
+   {
+    "name": "250 g",
+    "price": 220,
+    "salePrice": 220,
+    "stock": 800,
+    "sku": "mutto-001-1-250g",
+    "_id": "6afc2f4ff97c71ca018d46a5",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6abba637e8545df2f6c16003",
+  "sellerId": "6a61c24736109852f8dac028",
+  "name": "Mutton Paya ( Whole ) Pack Of 4",
+  "price": 900,
+  "salePrice": 900,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 900,
+    "salePrice": 900,
+    "stock": 800,
+    "sku": "mutto-001-2",
+    "tieredPricing": [],
+    "_id": "6abba637e8545df2f6c16004"
+   },
+   {
+    "name": "750 g",
+    "price": 675,
+    "salePrice": 675,
+    "stock": 800,
+    "sku": "mutto-001-2-750g",
+    "_id": "6afc2f4ff97c71ca018d46a8",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 450,
+    "salePrice": 450,
+    "stock": 800,
+    "sku": "mutto-001-2-500g",
+    "tieredPricing": [],
+    "_id": "6afaa9e559d8b2839cecdf87"
+   },
+   {
+    "name": "250 g",
+    "price": 225,
+    "salePrice": 225,
+    "stock": 800,
+    "sku": "mutto-001-2-250g",
+    "_id": "6afc2f4ff97c71ca018d46aa",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6abba68ee8545df2f6c16097",
+  "sellerId": "6a61c24736109852f8dac028",
+  "name": "Mutton Paya with small pieces",
+  "price": 950,
+  "salePrice": 950,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 950,
+    "salePrice": 950,
+    "stock": 800,
+    "sku": "mutto-001-3",
+    "tieredPricing": [],
+    "_id": "6abba68ee8545df2f6c16098"
+   },
+   {
+    "name": "750 g",
+    "price": 710,
+    "salePrice": 710,
+    "stock": 800,
+    "sku": "mutto-001-3-750g",
+    "tieredPricing": [],
+    "_id": "6afc2f4ff97c71ca018d46ad"
+   },
+   {
+    "name": "500 g",
+    "price": 475,
+    "salePrice": 475,
+    "stock": 800,
+    "sku": "mutto-001-3-500g",
+    "tieredPricing": [],
+    "_id": "6afaa9e559d8b2839cecdf8d"
+   },
+   {
+    "name": "250 g",
+    "price": 235,
+    "salePrice": 235,
+    "stock": 800,
+    "sku": "mutto-001-3-250g",
+    "tieredPricing": [],
+    "_id": "6afc2f4ff97c71ca018d46af"
+   }
+  ]
+ },
+ {
+  "_id": "6b07def1e56d74d7a9770321",
+  "sellerId": "6a61c24736109852f8dac028",
+  "name": "Goat Boneless ( Full Boneless )",
+  "price": 0,
+  "salePrice": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-001-dac028",
+    "_id": "6b07def1e56d74d7a9770322",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-001-dac028-750g",
+    "_id": "6b07def1e56d74d7a9770323",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-001-dac028-500g",
+    "_id": "6b07def1e56d74d7a9770324",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-001-dac028-250g",
+    "_id": "6b07def1e56d74d7a9770325",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6b07def2e56d74d7a9770359",
+  "sellerId": "6a61c24736109852f8dac028",
+  "name": "Mutton Heart",
+  "price": 0,
+  "salePrice": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-002-dac028",
+    "_id": "6b07def2e56d74d7a977035a",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-002-dac028-750g",
+    "_id": "6b07def2e56d74d7a977035b",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-002-dac028-500g",
+    "_id": "6b07def2e56d74d7a977035c",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-002-dac028-250g",
+    "_id": "6b07def2e56d74d7a977035d",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6b07def3e56d74d7a9770391",
+  "sellerId": "6a61c24736109852f8dac028",
+  "name": "Mutton Kapura (Medium)",
+  "price": 0,
+  "salePrice": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-003-dac028",
+    "_id": "6b07def3e56d74d7a9770392",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-003-dac028-750g",
+    "_id": "6b07def3e56d74d7a9770393",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-003-dac028-500g",
+    "_id": "6b07def3e56d74d7a9770394",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-003-dac028-250g",
+    "_id": "6b07def3e56d74d7a9770395",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6b07def3e56d74d7a97703c9",
+  "sellerId": "6a61c24736109852f8dac028",
+  "name": "Mutton Kidney (Small Pack)",
+  "price": 0,
+  "salePrice": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-004-dac028",
+    "_id": "6b07def3e56d74d7a97703ca",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-004-dac028-750g",
+    "_id": "6b07def3e56d74d7a97703cb",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-004-dac028-500g",
+    "_id": "6b07def3e56d74d7a97703cc",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-004-dac028-250g",
+    "_id": "6b07def3e56d74d7a97703cd",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6b07def4e56d74d7a9770401",
+  "sellerId": "6a61c24736109852f8dac028",
+  "name": "Mutton Ran",
+  "price": 0,
+  "salePrice": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-005-dac028",
+    "_id": "6b07def4e56d74d7a9770402",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-005-dac028-750g",
+    "_id": "6b07def4e56d74d7a9770403",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-005-dac028-500g",
+    "_id": "6b07def4e56d74d7a9770404",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-005-dac028-250g",
+    "_id": "6b07def4e56d74d7a9770405",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6b07def4e56d74d7a9770439",
+  "sellerId": "6a61c24736109852f8dac028",
+  "name": "Premium Goat Rib Bone Pieces",
+  "price": 0,
+  "salePrice": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-006-dac028",
+    "_id": "6b07def4e56d74d7a977043a",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-006-dac028-750g",
+    "_id": "6b07def4e56d74d7a977043b",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-006-dac028-500g",
+    "_id": "6b07def4e56d74d7a977043c",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-006-dac028-250g",
+    "_id": "6b07def4e56d74d7a977043d",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6b07def5e56d74d7a9770471",
+  "sellerId": "6a61c24736109852f8dac028",
+  "name": "Pure Lamb Mince (Kheema)",
+  "price": 0,
+  "salePrice": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-007-dac028",
+    "_id": "6b07def5e56d74d7a9770472",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-007-dac028-750g",
+    "_id": "6b07def5e56d74d7a9770473",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-007-dac028-500g",
+    "_id": "6b07def5e56d74d7a9770474",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-007-dac028-250g",
+    "_id": "6b07def5e56d74d7a9770475",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6b07def6e56d74d7a97704a9",
+  "sellerId": "6a61c24736109852f8dac028",
+  "name": "Sunday Family Pack",
+  "price": 0,
+  "salePrice": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-008-dac028",
+    "_id": "6b07def6e56d74d7a97704aa",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-008-dac028-750g",
+    "_id": "6b07def6e56d74d7a97704ab",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-008-dac028-500g",
+    "_id": "6b07def6e56d74d7a97704ac",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-008-dac028-250g",
+    "_id": "6b07def6e56d74d7a97704ad",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6afab050ec0941919e8d7913",
+  "sellerId": "6afab050ec0941919e8d790f",
+  "name": "Meatyns Special Mutton ( Liver & Fat less )",
+  "price": 930,
+  "salePrice": 930,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 930,
+    "salePrice": 930,
+    "stock": 799,
+    "sku": "meaty-001-k1",
+    "tieredPricing": [],
+    "_id": "6afab050ec0941919e8d7914"
+   },
+   {
+    "name": "750 g",
+    "price": 695,
+    "salePrice": 695,
+    "stock": 800,
+    "sku": "meaty-001-k1-750g",
+    "tieredPricing": [],
+    "_id": "6afc2f50f97c71ca018d46c7"
+   },
+   {
+    "name": "500 g",
+    "price": 465,
+    "salePrice": 465,
+    "stock": 800,
+    "sku": "meaty-001-k1-500g",
+    "tieredPricing": [],
+    "_id": "6afab050ec0941919e8d7915"
+   },
+   {
+    "name": "250 g",
+    "price": 230,
+    "salePrice": 230,
+    "stock": 800,
+    "sku": "meaty-001-k1-250g",
+    "tieredPricing": [],
+    "_id": "6afc2f50f97c71ca018d46c9"
+   }
+  ]
+ },
+ {
+  "_id": "6afab050ec0941919e8d7919",
+  "sellerId": "6afab050ec0941919e8d790f",
+  "name": "Goat Curry Cut",
+  "price": 860,
+  "salePrice": 860,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 860,
+    "salePrice": 860,
+    "stock": 800,
+    "sku": "goatc-001-k1",
+    "tieredPricing": [],
+    "_id": "6afab050ec0941919e8d791a"
+   },
+   {
+    "name": "750 g",
+    "price": 645,
+    "salePrice": 645,
+    "stock": 800,
+    "sku": "goatc-001-k1-750g",
+    "_id": "6afc2f50f97c71ca018d46cc",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 430,
+    "salePrice": 430,
+    "stock": 800,
+    "sku": "goatc-001-k1-500g",
+    "tieredPricing": [],
+    "_id": "6afab050ec0941919e8d791b"
+   },
+   {
+    "name": "250 g",
+    "price": 215,
+    "salePrice": 215,
+    "stock": 800,
+    "sku": "goatc-001-k1-250g",
+    "_id": "6afc2f50f97c71ca018d46ce",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6afab050ec0941919e8d791e",
+  "sellerId": "6afab050ec0941919e8d790f",
+  "name": "Mutton Liver",
+  "price": 790,
+  "salePrice": 790,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 790,
+    "salePrice": 790,
+    "stock": 800,
+    "sku": "mutto-001-k1",
+    "tieredPricing": [],
+    "_id": "6afab050ec0941919e8d791f"
+   },
+   {
+    "name": "750 g",
+    "price": 590,
+    "salePrice": 590,
+    "stock": 800,
+    "sku": "mutto-001-k1-750g",
+    "tieredPricing": [],
+    "_id": "6afc2f50f97c71ca018d46d0"
+   },
+   {
+    "name": "500 g",
+    "price": 395,
+    "salePrice": 395,
+    "stock": 800,
+    "sku": "mutto-001-k1-500g",
+    "tieredPricing": [],
+    "_id": "6afab050ec0941919e8d7920"
+   },
+   {
+    "name": "250 g",
+    "price": 195,
+    "salePrice": 195,
+    "stock": 800,
+    "sku": "mutto-001-k1-250g",
+    "tieredPricing": [],
+    "_id": "6afc2f50f97c71ca018d46d2"
+   }
+  ]
+ },
+ {
+  "_id": "6afab050ec0941919e8d792a",
+  "sellerId": "6afab050ec0941919e8d790f",
+  "name": "Meatyns Regular (Liver & Fat Add)",
+  "price": 850,
+  "salePrice": 850,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 850,
+    "salePrice": 850,
+    "stock": 800,
+    "sku": "meaty-001-1-k1",
+    "tieredPricing": [],
+    "_id": "6afab050ec0941919e8d792b"
+   },
+   {
+    "name": "750 g",
+    "price": 635,
+    "salePrice": 635,
+    "stock": 800,
+    "sku": "meaty-001-1-k1-750g",
+    "tieredPricing": [],
+    "_id": "6afc2f50f97c71ca018d46d9"
+   },
+   {
+    "name": "500 g",
+    "price": 425,
+    "salePrice": 425,
+    "stock": 800,
+    "sku": "meaty-001-1-k1-500g",
+    "tieredPricing": [],
+    "_id": "6afab050ec0941919e8d792c"
+   },
+   {
+    "name": "250 g",
+    "price": 210,
+    "salePrice": 210,
+    "stock": 800,
+    "sku": "meaty-001-1-k1-250g",
+    "tieredPricing": [],
+    "_id": "6afc2f50f97c71ca018d46db"
+   }
+  ]
+ },
+ {
+  "_id": "6afab050ec0941919e8d7931",
+  "sellerId": "6afab050ec0941919e8d790f",
+  "name": "Mutton Chops( Ribcage & T-Bone Steak )",
+  "price": 880,
+  "salePrice": 880,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 880,
+    "salePrice": 880,
+    "stock": 800,
+    "sku": "mutto-001-1-k1",
+    "tieredPricing": [],
+    "_id": "6afab050ec0941919e8d7932"
+   },
+   {
+    "name": "750 g",
+    "price": 660,
+    "salePrice": 660,
+    "stock": 800,
+    "sku": "mutto-001-1-k1-750g",
+    "_id": "6afc2f50f97c71ca018d46dd",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 440,
+    "salePrice": 440,
+    "stock": 800,
+    "sku": "mutto-001-1-k1-500g",
+    "tieredPricing": [],
+    "_id": "6afab050ec0941919e8d7933"
+   },
+   {
+    "name": "250 g",
+    "price": 220,
+    "salePrice": 220,
+    "stock": 800,
+    "sku": "mutto-001-1-k1-250g",
+    "_id": "6afc2f50f97c71ca018d46df",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6afab050ec0941919e8d7936",
+  "sellerId": "6afab050ec0941919e8d790f",
+  "name": "Mutton Paya ( Whole ) Pack Of 4",
+  "price": 900,
+  "salePrice": 900,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 900,
+    "salePrice": 900,
+    "stock": 800,
+    "sku": "mutto-001-2-k1",
+    "tieredPricing": [],
+    "_id": "6afab050ec0941919e8d7937"
+   },
+   {
+    "name": "750 g",
+    "price": 675,
+    "salePrice": 675,
+    "stock": 800,
+    "sku": "mutto-001-2-k1-750g",
+    "_id": "6afc2f50f97c71ca018d46e2",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 450,
+    "salePrice": 450,
+    "stock": 800,
+    "sku": "mutto-001-2-k1-500g",
+    "tieredPricing": [],
+    "_id": "6afab050ec0941919e8d7938"
+   },
+   {
+    "name": "250 g",
+    "price": 225,
+    "salePrice": 225,
+    "stock": 800,
+    "sku": "mutto-001-2-k1-250g",
+    "_id": "6afc2f50f97c71ca018d46e4",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6afab050ec0941919e8d793b",
+  "sellerId": "6afab050ec0941919e8d790f",
+  "name": "Mutton Paya with small pieces",
+  "price": 950,
+  "salePrice": 950,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 950,
+    "salePrice": 950,
+    "stock": 800,
+    "sku": "mutto-001-3-k1",
+    "tieredPricing": [],
+    "_id": "6afab050ec0941919e8d793c"
+   },
+   {
+    "name": "750 g",
+    "price": 710,
+    "salePrice": 710,
+    "stock": 800,
+    "sku": "mutto-001-3-k1-750g",
+    "tieredPricing": [],
+    "_id": "6afc2f50f97c71ca018d46e6"
+   },
+   {
+    "name": "500 g",
+    "price": 475,
+    "salePrice": 475,
+    "stock": 800,
+    "sku": "mutto-001-3-k1-500g",
+    "tieredPricing": [],
+    "_id": "6afab050ec0941919e8d793d"
+   },
+   {
+    "name": "250 g",
+    "price": 235,
+    "salePrice": 235,
+    "stock": 800,
+    "sku": "mutto-001-3-k1-250g",
+    "tieredPricing": [],
+    "_id": "6afc2f50f97c71ca018d46e8"
+   }
+  ]
+ },
+ {
+  "_id": "6b07def1e56d74d7a9770328",
+  "sellerId": "6afab050ec0941919e8d790f",
+  "name": "Goat Boneless ( Full Boneless )",
+  "price": 0,
+  "salePrice": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-001-8d790f",
+    "_id": "6b07def1e56d74d7a9770329",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-001-8d790f-750g",
+    "_id": "6b07def1e56d74d7a977032a",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-001-8d790f-500g",
+    "_id": "6b07def1e56d74d7a977032b",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-001-8d790f-250g",
+    "_id": "6b07def1e56d74d7a977032c",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6b07def2e56d74d7a9770360",
+  "sellerId": "6afab050ec0941919e8d790f",
+  "name": "Mutton Heart",
+  "price": 0,
+  "salePrice": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-002-8d790f",
+    "_id": "6b07def2e56d74d7a9770361",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-002-8d790f-750g",
+    "_id": "6b07def2e56d74d7a9770362",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-002-8d790f-500g",
+    "_id": "6b07def2e56d74d7a9770363",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-002-8d790f-250g",
+    "_id": "6b07def2e56d74d7a9770364",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6b07def3e56d74d7a9770398",
+  "sellerId": "6afab050ec0941919e8d790f",
+  "name": "Mutton Kapura (Medium)",
+  "price": 0,
+  "salePrice": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-003-8d790f",
+    "_id": "6b07def3e56d74d7a9770399",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-003-8d790f-750g",
+    "_id": "6b07def3e56d74d7a977039a",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-003-8d790f-500g",
+    "_id": "6b07def3e56d74d7a977039b",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-003-8d790f-250g",
+    "_id": "6b07def3e56d74d7a977039c",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6b07def4e56d74d7a97703d0",
+  "sellerId": "6afab050ec0941919e8d790f",
+  "name": "Mutton Kidney (Small Pack)",
+  "price": 0,
+  "salePrice": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-004-8d790f",
+    "_id": "6b07def4e56d74d7a97703d1",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-004-8d790f-750g",
+    "_id": "6b07def4e56d74d7a97703d2",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-004-8d790f-500g",
+    "_id": "6b07def4e56d74d7a97703d3",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-004-8d790f-250g",
+    "_id": "6b07def4e56d74d7a97703d4",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6b07def4e56d74d7a9770408",
+  "sellerId": "6afab050ec0941919e8d790f",
+  "name": "Mutton Ran",
+  "price": 0,
+  "salePrice": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-005-8d790f",
+    "_id": "6b07def4e56d74d7a9770409",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-005-8d790f-750g",
+    "_id": "6b07def4e56d74d7a977040a",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-005-8d790f-500g",
+    "_id": "6b07def4e56d74d7a977040b",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-005-8d790f-250g",
+    "_id": "6b07def4e56d74d7a977040c",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6b07def5e56d74d7a9770440",
+  "sellerId": "6afab050ec0941919e8d790f",
+  "name": "Premium Goat Rib Bone Pieces",
+  "price": 0,
+  "salePrice": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-006-8d790f",
+    "_id": "6b07def5e56d74d7a9770441",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-006-8d790f-750g",
+    "_id": "6b07def5e56d74d7a9770442",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-006-8d790f-500g",
+    "_id": "6b07def5e56d74d7a9770443",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-006-8d790f-250g",
+    "_id": "6b07def5e56d74d7a9770444",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6b07def5e56d74d7a9770478",
+  "sellerId": "6afab050ec0941919e8d790f",
+  "name": "Pure Lamb Mince (Kheema)",
+  "price": 0,
+  "salePrice": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-007-8d790f",
+    "_id": "6b07def5e56d74d7a9770479",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-007-8d790f-750g",
+    "_id": "6b07def5e56d74d7a977047a",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-007-8d790f-500g",
+    "_id": "6b07def5e56d74d7a977047b",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-007-8d790f-250g",
+    "_id": "6b07def5e56d74d7a977047c",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6b07def6e56d74d7a97704b0",
+  "sellerId": "6afab050ec0941919e8d790f",
+  "name": "Sunday Family Pack",
+  "price": 0,
+  "salePrice": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-008-8d790f",
+    "_id": "6b07def6e56d74d7a97704b1",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-008-8d790f-750g",
+    "_id": "6b07def6e56d74d7a97704b2",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-008-8d790f-500g",
+    "_id": "6b07def6e56d74d7a97704b3",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-008-8d790f-250g",
+    "_id": "6b07def6e56d74d7a97704b4",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6afab051ec0941919e8d7961",
+  "sellerId": "6afab051ec0941919e8d795d",
+  "name": "Meatyns Special Mutton ( Liver & Fat less )",
+  "price": 930,
+  "salePrice": 930,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 930,
+    "salePrice": 930,
+    "stock": 800,
+    "sku": "meaty-001-k2",
+    "tieredPricing": [],
+    "_id": "6afab051ec0941919e8d7962"
+   },
+   {
+    "name": "750 g",
+    "price": 695,
+    "salePrice": 695,
+    "stock": 800,
+    "sku": "meaty-001-k2-750g",
+    "tieredPricing": [],
+    "_id": "6afc2f50f97c71ca018d4701"
+   },
+   {
+    "name": "500 g",
+    "price": 465,
+    "salePrice": 465,
+    "stock": 800,
+    "sku": "meaty-001-k2-500g",
+    "tieredPricing": [],
+    "_id": "6afab051ec0941919e8d7963"
+   },
+   {
+    "name": "250 g",
+    "price": 230,
+    "salePrice": 230,
+    "stock": 800,
+    "sku": "meaty-001-k2-250g",
+    "tieredPricing": [],
+    "_id": "6afc2f50f97c71ca018d4703"
+   }
+  ]
+ },
+ {
+  "_id": "6afab051ec0941919e8d7967",
+  "sellerId": "6afab051ec0941919e8d795d",
+  "name": "Goat Curry Cut",
+  "price": 860,
+  "salePrice": 860,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 860,
+    "salePrice": 860,
+    "stock": 800,
+    "sku": "goatc-001-k2",
+    "tieredPricing": [],
+    "_id": "6afab051ec0941919e8d7968"
+   },
+   {
+    "name": "750 g",
+    "price": 645,
+    "salePrice": 645,
+    "stock": 800,
+    "sku": "goatc-001-k2-750g",
+    "_id": "6afc2f50f97c71ca018d4705",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 430,
+    "salePrice": 430,
+    "stock": 800,
+    "sku": "goatc-001-k2-500g",
+    "tieredPricing": [],
+    "_id": "6afab051ec0941919e8d7969"
+   },
+   {
+    "name": "250 g",
+    "price": 215,
+    "salePrice": 215,
+    "stock": 800,
+    "sku": "goatc-001-k2-250g",
+    "_id": "6afc2f50f97c71ca018d4707",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6afab051ec0941919e8d796d",
+  "sellerId": "6afab051ec0941919e8d795d",
+  "name": "Mutton Liver",
+  "price": 790,
+  "salePrice": 790,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 790,
+    "salePrice": 790,
+    "stock": 800,
+    "sku": "mutto-001-k2",
+    "tieredPricing": [],
+    "_id": "6afab051ec0941919e8d796e"
+   },
+   {
+    "name": "750 g",
+    "price": 590,
+    "salePrice": 590,
+    "stock": 800,
+    "sku": "mutto-001-k2-750g",
+    "tieredPricing": [],
+    "_id": "6afc2f50f97c71ca018d470a"
+   },
+   {
+    "name": "500 g",
+    "price": 395,
+    "salePrice": 395,
+    "stock": 800,
+    "sku": "mutto-001-k2-500g",
+    "tieredPricing": [],
+    "_id": "6afab051ec0941919e8d796f"
+   },
+   {
+    "name": "250 g",
+    "price": 195,
+    "salePrice": 195,
+    "stock": 800,
+    "sku": "mutto-001-k2-250g",
+    "tieredPricing": [],
+    "_id": "6afc2f50f97c71ca018d470c"
+   }
+  ]
+ },
+ {
+  "_id": "6afab051ec0941919e8d7978",
+  "sellerId": "6afab051ec0941919e8d795d",
+  "name": "Meatyns Regular (Liver & Fat Add)",
+  "price": 850,
+  "salePrice": 850,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 850,
+    "salePrice": 850,
+    "stock": 799,
+    "sku": "meaty-001-1-k2",
+    "tieredPricing": [],
+    "_id": "6afab051ec0941919e8d7979"
+   },
+   {
+    "name": "750 g",
+    "price": 635,
+    "salePrice": 635,
+    "stock": 800,
+    "sku": "meaty-001-1-k2-750g",
+    "tieredPricing": [],
+    "_id": "6afc2f50f97c71ca018d4712"
+   },
+   {
+    "name": "500 g",
+    "price": 425,
+    "salePrice": 425,
+    "stock": 800,
+    "sku": "meaty-001-1-k2-500g",
+    "tieredPricing": [],
+    "_id": "6afab051ec0941919e8d797a"
+   },
+   {
+    "name": "250 g",
+    "price": 210,
+    "salePrice": 210,
+    "stock": 800,
+    "sku": "meaty-001-1-k2-250g",
+    "tieredPricing": [],
+    "_id": "6afc2f50f97c71ca018d4714"
+   }
+  ]
+ },
+ {
+  "_id": "6afab051ec0941919e8d797d",
+  "sellerId": "6afab051ec0941919e8d795d",
+  "name": "Mutton Chops( Ribcage & T-Bone Steak )",
+  "price": 880,
+  "salePrice": 880,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 880,
+    "salePrice": 880,
+    "stock": 800,
+    "sku": "mutto-001-1-k2",
+    "tieredPricing": [],
+    "_id": "6afab051ec0941919e8d797e"
+   },
+   {
+    "name": "750 g",
+    "price": 660,
+    "salePrice": 660,
+    "stock": 800,
+    "sku": "mutto-001-1-k2-750g",
+    "_id": "6afc2f50f97c71ca018d4716",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 440,
+    "salePrice": 440,
+    "stock": 800,
+    "sku": "mutto-001-1-k2-500g",
+    "tieredPricing": [],
+    "_id": "6afab051ec0941919e8d797f"
+   },
+   {
+    "name": "250 g",
+    "price": 220,
+    "salePrice": 220,
+    "stock": 800,
+    "sku": "mutto-001-1-k2-250g",
+    "_id": "6afc2f50f97c71ca018d4718",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6afab051ec0941919e8d7982",
+  "sellerId": "6afab051ec0941919e8d795d",
+  "name": "Mutton Paya ( Whole ) Pack Of 4",
+  "price": 900,
+  "salePrice": 900,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 900,
+    "salePrice": 900,
+    "stock": 800,
+    "sku": "mutto-001-2-k2",
+    "tieredPricing": [],
+    "_id": "6afab051ec0941919e8d7983"
+   },
+   {
+    "name": "750 g",
+    "price": 675,
+    "salePrice": 675,
+    "stock": 800,
+    "sku": "mutto-001-2-k2-750g",
+    "_id": "6afc2f50f97c71ca018d471a",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 450,
+    "salePrice": 450,
+    "stock": 800,
+    "sku": "mutto-001-2-k2-500g",
+    "tieredPricing": [],
+    "_id": "6afab051ec0941919e8d7984"
+   },
+   {
+    "name": "250 g",
+    "price": 225,
+    "salePrice": 225,
+    "stock": 800,
+    "sku": "mutto-001-2-k2-250g",
+    "_id": "6afc2f50f97c71ca018d471c",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6afab051ec0941919e8d7987",
+  "sellerId": "6afab051ec0941919e8d795d",
+  "name": "Mutton Paya with small pieces",
+  "price": 950,
+  "salePrice": 950,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 950,
+    "salePrice": 950,
+    "stock": 800,
+    "sku": "mutto-001-3-k2",
+    "tieredPricing": [],
+    "_id": "6afab051ec0941919e8d7988"
+   },
+   {
+    "name": "750 g",
+    "price": 710,
+    "salePrice": 710,
+    "stock": 800,
+    "sku": "mutto-001-3-k2-750g",
+    "tieredPricing": [],
+    "_id": "6afc2f50f97c71ca018d471e"
+   },
+   {
+    "name": "500 g",
+    "price": 475,
+    "salePrice": 475,
+    "stock": 800,
+    "sku": "mutto-001-3-k2-500g",
+    "tieredPricing": [],
+    "_id": "6afab051ec0941919e8d7989"
+   },
+   {
+    "name": "250 g",
+    "price": 235,
+    "salePrice": 235,
+    "stock": 800,
+    "sku": "mutto-001-3-k2-250g",
+    "tieredPricing": [],
+    "_id": "6afc2f50f97c71ca018d4720"
+   }
+  ]
+ },
+ {
+  "_id": "6b07def1e56d74d7a977032f",
+  "sellerId": "6afab051ec0941919e8d795d",
+  "name": "Goat Boneless ( Full Boneless )",
+  "price": 0,
+  "salePrice": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-001-8d795d",
+    "_id": "6b07def1e56d74d7a9770330",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-001-8d795d-750g",
+    "_id": "6b07def1e56d74d7a9770331",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-001-8d795d-500g",
+    "_id": "6b07def1e56d74d7a9770332",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-001-8d795d-250g",
+    "_id": "6b07def1e56d74d7a9770333",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6b07def2e56d74d7a9770367",
+  "sellerId": "6afab051ec0941919e8d795d",
+  "name": "Mutton Heart",
+  "price": 0,
+  "salePrice": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-002-8d795d",
+    "_id": "6b07def2e56d74d7a9770368",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-002-8d795d-750g",
+    "_id": "6b07def2e56d74d7a9770369",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-002-8d795d-500g",
+    "_id": "6b07def2e56d74d7a977036a",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-002-8d795d-250g",
+    "_id": "6b07def2e56d74d7a977036b",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6b07def3e56d74d7a977039f",
+  "sellerId": "6afab051ec0941919e8d795d",
+  "name": "Mutton Kapura (Medium)",
+  "price": 0,
+  "salePrice": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-003-8d795d",
+    "_id": "6b07def3e56d74d7a97703a0",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-003-8d795d-750g",
+    "_id": "6b07def3e56d74d7a97703a1",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-003-8d795d-500g",
+    "_id": "6b07def3e56d74d7a97703a2",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-003-8d795d-250g",
+    "_id": "6b07def3e56d74d7a97703a3",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6b07def4e56d74d7a97703d7",
+  "sellerId": "6afab051ec0941919e8d795d",
+  "name": "Mutton Kidney (Small Pack)",
+  "price": 0,
+  "salePrice": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-004-8d795d",
+    "_id": "6b07def4e56d74d7a97703d8",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-004-8d795d-750g",
+    "_id": "6b07def4e56d74d7a97703d9",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-004-8d795d-500g",
+    "_id": "6b07def4e56d74d7a97703da",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-004-8d795d-250g",
+    "_id": "6b07def4e56d74d7a97703db",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6b07def4e56d74d7a977040f",
+  "sellerId": "6afab051ec0941919e8d795d",
+  "name": "Mutton Ran",
+  "price": 0,
+  "salePrice": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-005-8d795d",
+    "_id": "6b07def4e56d74d7a9770410",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-005-8d795d-750g",
+    "_id": "6b07def4e56d74d7a9770411",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-005-8d795d-500g",
+    "_id": "6b07def4e56d74d7a9770412",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-005-8d795d-250g",
+    "_id": "6b07def4e56d74d7a9770413",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6b07def5e56d74d7a9770447",
+  "sellerId": "6afab051ec0941919e8d795d",
+  "name": "Premium Goat Rib Bone Pieces",
+  "price": 0,
+  "salePrice": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-006-8d795d",
+    "_id": "6b07def5e56d74d7a9770448",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-006-8d795d-750g",
+    "_id": "6b07def5e56d74d7a9770449",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-006-8d795d-500g",
+    "_id": "6b07def5e56d74d7a977044a",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-006-8d795d-250g",
+    "_id": "6b07def5e56d74d7a977044b",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6b07def5e56d74d7a977047f",
+  "sellerId": "6afab051ec0941919e8d795d",
+  "name": "Pure Lamb Mince (Kheema)",
+  "price": 0,
+  "salePrice": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-007-8d795d",
+    "_id": "6b07def5e56d74d7a9770480",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-007-8d795d-750g",
+    "_id": "6b07def5e56d74d7a9770481",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-007-8d795d-500g",
+    "_id": "6b07def5e56d74d7a9770482",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-007-8d795d-250g",
+    "_id": "6b07def5e56d74d7a9770483",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6b07def6e56d74d7a97704b7",
+  "sellerId": "6afab051ec0941919e8d795d",
+  "name": "Sunday Family Pack",
+  "price": 0,
+  "salePrice": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-008-8d795d",
+    "_id": "6b07def6e56d74d7a97704b8",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-008-8d795d-750g",
+    "_id": "6b07def6e56d74d7a97704b9",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-008-8d795d-500g",
+    "_id": "6b07def6e56d74d7a97704ba",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-008-8d795d-250g",
+    "_id": "6b07def6e56d74d7a97704bb",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6afab052ec0941919e8d79a9",
+  "sellerId": "6afab052ec0941919e8d79a6",
+  "name": "Meatyns Special Mutton ( Liver & Fat less )",
+  "price": 930,
+  "salePrice": 930,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 930,
+    "salePrice": 930,
+    "stock": 800,
+    "sku": "meaty-001-k3",
+    "tieredPricing": [],
+    "_id": "6afab052ec0941919e8d79aa"
+   },
+   {
+    "name": "750 g",
+    "price": 695,
+    "salePrice": 695,
+    "stock": 800,
+    "sku": "meaty-001-k3-750g",
+    "tieredPricing": [],
+    "_id": "6afc2f51f97c71ca018d4736"
+   },
+   {
+    "name": "500 g",
+    "price": 465,
+    "salePrice": 465,
+    "stock": 800,
+    "sku": "meaty-001-k3-500g",
+    "tieredPricing": [],
+    "_id": "6afab052ec0941919e8d79ab"
+   },
+   {
+    "name": "250 g",
+    "price": 230,
+    "salePrice": 230,
+    "stock": 800,
+    "sku": "meaty-001-k3-250g",
+    "tieredPricing": [],
+    "_id": "6afc2f51f97c71ca018d4738"
+   }
+  ]
+ },
+ {
+  "_id": "6afab052ec0941919e8d79ae",
+  "sellerId": "6afab052ec0941919e8d79a6",
+  "name": "Goat Curry Cut",
+  "price": 860,
+  "salePrice": 860,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 860,
+    "salePrice": 860,
+    "stock": 800,
+    "sku": "goatc-001-k3",
+    "tieredPricing": [],
+    "_id": "6afab052ec0941919e8d79af"
+   },
+   {
+    "name": "750 g",
+    "price": 645,
+    "salePrice": 645,
+    "stock": 800,
+    "sku": "goatc-001-k3-750g",
+    "_id": "6afc2f51f97c71ca018d473a",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 430,
+    "salePrice": 430,
+    "stock": 800,
+    "sku": "goatc-001-k3-500g",
+    "tieredPricing": [],
+    "_id": "6afab052ec0941919e8d79b0"
+   },
+   {
+    "name": "250 g",
+    "price": 215,
+    "salePrice": 215,
+    "stock": 800,
+    "sku": "goatc-001-k3-250g",
+    "_id": "6afc2f51f97c71ca018d473c",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6afab052ec0941919e8d79b3",
+  "sellerId": "6afab052ec0941919e8d79a6",
+  "name": "Mutton Liver",
+  "price": 790,
+  "salePrice": 790,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 790,
+    "salePrice": 790,
+    "stock": 800,
+    "sku": "mutto-001-k3",
+    "tieredPricing": [],
+    "_id": "6afab052ec0941919e8d79b4"
+   },
+   {
+    "name": "750 g",
+    "price": 590,
+    "salePrice": 590,
+    "stock": 800,
+    "sku": "mutto-001-k3-750g",
+    "tieredPricing": [],
+    "_id": "6afc2f51f97c71ca018d473e"
+   },
+   {
+    "name": "500 g",
+    "price": 395,
+    "salePrice": 395,
+    "stock": 800,
+    "sku": "mutto-001-k3-500g",
+    "tieredPricing": [],
+    "_id": "6afab052ec0941919e8d79b5"
+   },
+   {
+    "name": "250 g",
+    "price": 195,
+    "salePrice": 195,
+    "stock": 800,
+    "sku": "mutto-001-k3-250g",
+    "tieredPricing": [],
+    "_id": "6afc2f51f97c71ca018d4740"
+   }
+  ]
+ },
+ {
+  "_id": "6afab052ec0941919e8d79bd",
+  "sellerId": "6afab052ec0941919e8d79a6",
+  "name": "Meatyns Regular (Liver & Fat Add)",
+  "price": 850,
+  "salePrice": 850,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 850,
+    "salePrice": 850,
+    "stock": 800,
+    "sku": "meaty-001-1-k3",
+    "tieredPricing": [],
+    "_id": "6afab052ec0941919e8d79be"
+   },
+   {
+    "name": "750 g",
+    "price": 635,
+    "salePrice": 635,
+    "stock": 800,
+    "sku": "meaty-001-1-k3-750g",
+    "tieredPricing": [],
+    "_id": "6afc2f51f97c71ca018d4746"
+   },
+   {
+    "name": "500 g",
+    "price": 425,
+    "salePrice": 425,
+    "stock": 800,
+    "sku": "meaty-001-1-k3-500g",
+    "tieredPricing": [],
+    "_id": "6afab052ec0941919e8d79bf"
+   },
+   {
+    "name": "250 g",
+    "price": 210,
+    "salePrice": 210,
+    "stock": 800,
+    "sku": "meaty-001-1-k3-250g",
+    "tieredPricing": [],
+    "_id": "6afc2f51f97c71ca018d4748"
+   }
+  ]
+ },
+ {
+  "_id": "6afab052ec0941919e8d79c2",
+  "sellerId": "6afab052ec0941919e8d79a6",
+  "name": "Mutton Chops( Ribcage & T-Bone Steak )",
+  "price": 880,
+  "salePrice": 880,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 880,
+    "salePrice": 880,
+    "stock": 800,
+    "sku": "mutto-001-1-k3",
+    "tieredPricing": [],
+    "_id": "6afab052ec0941919e8d79c3"
+   },
+   {
+    "name": "750 g",
+    "price": 660,
+    "salePrice": 660,
+    "stock": 800,
+    "sku": "mutto-001-1-k3-750g",
+    "_id": "6afc2f51f97c71ca018d474a",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 440,
+    "salePrice": 440,
+    "stock": 800,
+    "sku": "mutto-001-1-k3-500g",
+    "tieredPricing": [],
+    "_id": "6afab052ec0941919e8d79c4"
+   },
+   {
+    "name": "250 g",
+    "price": 220,
+    "salePrice": 220,
+    "stock": 800,
+    "sku": "mutto-001-1-k3-250g",
+    "_id": "6afc2f51f97c71ca018d474c",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6afab052ec0941919e8d79c7",
+  "sellerId": "6afab052ec0941919e8d79a6",
+  "name": "Mutton Paya ( Whole ) Pack Of 4",
+  "price": 900,
+  "salePrice": 900,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 900,
+    "salePrice": 900,
+    "stock": 800,
+    "sku": "mutto-001-2-k3",
+    "tieredPricing": [],
+    "_id": "6afab052ec0941919e8d79c8"
+   },
+   {
+    "name": "750 g",
+    "price": 675,
+    "salePrice": 675,
+    "stock": 800,
+    "sku": "mutto-001-2-k3-750g",
+    "_id": "6afc2f51f97c71ca018d474e",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 450,
+    "salePrice": 450,
+    "stock": 800,
+    "sku": "mutto-001-2-k3-500g",
+    "tieredPricing": [],
+    "_id": "6afab052ec0941919e8d79c9"
+   },
+   {
+    "name": "250 g",
+    "price": 225,
+    "salePrice": 225,
+    "stock": 800,
+    "sku": "mutto-001-2-k3-250g",
+    "_id": "6afc2f51f97c71ca018d4750",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6afab052ec0941919e8d79cc",
+  "sellerId": "6afab052ec0941919e8d79a6",
+  "name": "Mutton Paya with small pieces",
+  "price": 950,
+  "salePrice": 950,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 950,
+    "salePrice": 950,
+    "stock": 800,
+    "sku": "mutto-001-3-k3",
+    "tieredPricing": [],
+    "_id": "6afab052ec0941919e8d79cd"
+   },
+   {
+    "name": "750 g",
+    "price": 710,
+    "salePrice": 710,
+    "stock": 800,
+    "sku": "mutto-001-3-k3-750g",
+    "tieredPricing": [],
+    "_id": "6afc2f51f97c71ca018d4752"
+   },
+   {
+    "name": "500 g",
+    "price": 475,
+    "salePrice": 475,
+    "stock": 800,
+    "sku": "mutto-001-3-k3-500g",
+    "tieredPricing": [],
+    "_id": "6afab052ec0941919e8d79ce"
+   },
+   {
+    "name": "250 g",
+    "price": 235,
+    "salePrice": 235,
+    "stock": 800,
+    "sku": "mutto-001-3-k3-250g",
+    "tieredPricing": [],
+    "_id": "6afc2f51f97c71ca018d4754"
+   }
+  ]
+ },
+ {
+  "_id": "6b07def1e56d74d7a9770336",
+  "sellerId": "6afab052ec0941919e8d79a6",
+  "name": "Goat Boneless ( Full Boneless )",
+  "price": 0,
+  "salePrice": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-001-8d79a6",
+    "_id": "6b07def1e56d74d7a9770337",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-001-8d79a6-750g",
+    "_id": "6b07def1e56d74d7a9770338",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-001-8d79a6-500g",
+    "_id": "6b07def1e56d74d7a9770339",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-001-8d79a6-250g",
+    "_id": "6b07def1e56d74d7a977033a",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6b07def2e56d74d7a977036e",
+  "sellerId": "6afab052ec0941919e8d79a6",
+  "name": "Mutton Heart",
+  "price": 0,
+  "salePrice": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-002-8d79a6",
+    "_id": "6b07def2e56d74d7a977036f",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-002-8d79a6-750g",
+    "_id": "6b07def2e56d74d7a9770370",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-002-8d79a6-500g",
+    "_id": "6b07def2e56d74d7a9770371",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-002-8d79a6-250g",
+    "_id": "6b07def2e56d74d7a9770372",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6b07def3e56d74d7a97703a6",
+  "sellerId": "6afab052ec0941919e8d79a6",
+  "name": "Mutton Kapura (Medium)",
+  "price": 0,
+  "salePrice": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-003-8d79a6",
+    "_id": "6b07def3e56d74d7a97703a7",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-003-8d79a6-750g",
+    "_id": "6b07def3e56d74d7a97703a8",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-003-8d79a6-500g",
+    "_id": "6b07def3e56d74d7a97703a9",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-003-8d79a6-250g",
+    "_id": "6b07def3e56d74d7a97703aa",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6b07def4e56d74d7a97703de",
+  "sellerId": "6afab052ec0941919e8d79a6",
+  "name": "Mutton Kidney (Small Pack)",
+  "price": 0,
+  "salePrice": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-004-8d79a6",
+    "_id": "6b07def4e56d74d7a97703df",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-004-8d79a6-750g",
+    "_id": "6b07def4e56d74d7a97703e0",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-004-8d79a6-500g",
+    "_id": "6b07def4e56d74d7a97703e1",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-004-8d79a6-250g",
+    "_id": "6b07def4e56d74d7a97703e2",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6b07def4e56d74d7a9770416",
+  "sellerId": "6afab052ec0941919e8d79a6",
+  "name": "Mutton Ran",
+  "price": 0,
+  "salePrice": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-005-8d79a6",
+    "_id": "6b07def4e56d74d7a9770417",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-005-8d79a6-750g",
+    "_id": "6b07def4e56d74d7a9770418",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-005-8d79a6-500g",
+    "_id": "6b07def4e56d74d7a9770419",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-005-8d79a6-250g",
+    "_id": "6b07def4e56d74d7a977041a",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6b07def5e56d74d7a977044e",
+  "sellerId": "6afab052ec0941919e8d79a6",
+  "name": "Premium Goat Rib Bone Pieces",
+  "price": 0,
+  "salePrice": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-006-8d79a6",
+    "_id": "6b07def5e56d74d7a977044f",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-006-8d79a6-750g",
+    "_id": "6b07def5e56d74d7a9770450",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-006-8d79a6-500g",
+    "_id": "6b07def5e56d74d7a9770451",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-006-8d79a6-250g",
+    "_id": "6b07def5e56d74d7a9770452",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6b07def5e56d74d7a9770486",
+  "sellerId": "6afab052ec0941919e8d79a6",
+  "name": "Pure Lamb Mince (Kheema)",
+  "price": 0,
+  "salePrice": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-007-8d79a6",
+    "_id": "6b07def5e56d74d7a9770487",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-007-8d79a6-750g",
+    "_id": "6b07def5e56d74d7a9770488",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-007-8d79a6-500g",
+    "_id": "6b07def5e56d74d7a9770489",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-007-8d79a6-250g",
+    "_id": "6b07def5e56d74d7a977048a",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6b07def6e56d74d7a97704be",
+  "sellerId": "6afab052ec0941919e8d79a6",
+  "name": "Sunday Family Pack",
+  "price": 0,
+  "salePrice": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-008-8d79a6",
+    "_id": "6b07def6e56d74d7a97704bf",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-008-8d79a6-750g",
+    "_id": "6b07def6e56d74d7a97704c0",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-008-8d79a6-500g",
+    "_id": "6b07def6e56d74d7a97704c1",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-008-8d79a6-250g",
+    "_id": "6b07def6e56d74d7a97704c2",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6afab053ec0941919e8d79ee",
+  "sellerId": "6afab053ec0941919e8d79eb",
+  "name": "Meatyns Special Mutton ( Liver & Fat less )",
+  "price": 930,
+  "salePrice": 930,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 930,
+    "salePrice": 930,
+    "stock": 800,
+    "sku": "meaty-001-k4",
+    "tieredPricing": [],
+    "_id": "6afab053ec0941919e8d79ef"
+   },
+   {
+    "name": "750 g",
+    "price": 695,
+    "salePrice": 695,
+    "stock": 800,
+    "sku": "meaty-001-k4-750g",
+    "tieredPricing": [],
+    "_id": "6afc2f51f97c71ca018d476a"
+   },
+   {
+    "name": "500 g",
+    "price": 465,
+    "salePrice": 465,
+    "stock": 800,
+    "sku": "meaty-001-k4-500g",
+    "tieredPricing": [],
+    "_id": "6afab053ec0941919e8d79f0"
+   },
+   {
+    "name": "250 g",
+    "price": 230,
+    "salePrice": 230,
+    "stock": 800,
+    "sku": "meaty-001-k4-250g",
+    "tieredPricing": [],
+    "_id": "6afc2f51f97c71ca018d476c"
+   }
+  ]
+ },
+ {
+  "_id": "6afab053ec0941919e8d79f3",
+  "sellerId": "6afab053ec0941919e8d79eb",
+  "name": "Goat Curry Cut",
+  "price": 860,
+  "salePrice": 860,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 860,
+    "salePrice": 860,
+    "stock": 800,
+    "sku": "goatc-001-k4",
+    "tieredPricing": [],
+    "_id": "6afab053ec0941919e8d79f4"
+   },
+   {
+    "name": "750 g",
+    "price": 645,
+    "salePrice": 645,
+    "stock": 800,
+    "sku": "goatc-001-k4-750g",
+    "_id": "6afc2f51f97c71ca018d476e",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 430,
+    "salePrice": 430,
+    "stock": 800,
+    "sku": "goatc-001-k4-500g",
+    "tieredPricing": [],
+    "_id": "6afab053ec0941919e8d79f5"
+   },
+   {
+    "name": "250 g",
+    "price": 215,
+    "salePrice": 215,
+    "stock": 800,
+    "sku": "goatc-001-k4-250g",
+    "_id": "6afc2f51f97c71ca018d4770",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6afab053ec0941919e8d79f8",
+  "sellerId": "6afab053ec0941919e8d79eb",
+  "name": "Mutton Liver",
+  "price": 790,
+  "salePrice": 790,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 790,
+    "salePrice": 790,
+    "stock": 800,
+    "sku": "mutto-001-k4",
+    "tieredPricing": [],
+    "_id": "6afab053ec0941919e8d79f9"
+   },
+   {
+    "name": "750 g",
+    "price": 590,
+    "salePrice": 590,
+    "stock": 800,
+    "sku": "mutto-001-k4-750g",
+    "tieredPricing": [],
+    "_id": "6afc2f51f97c71ca018d4772"
+   },
+   {
+    "name": "500 g",
+    "price": 395,
+    "salePrice": 395,
+    "stock": 800,
+    "sku": "mutto-001-k4-500g",
+    "tieredPricing": [],
+    "_id": "6afab053ec0941919e8d79fa"
+   },
+   {
+    "name": "250 g",
+    "price": 195,
+    "salePrice": 195,
+    "stock": 800,
+    "sku": "mutto-001-k4-250g",
+    "tieredPricing": [],
+    "_id": "6afc2f51f97c71ca018d4774"
+   }
+  ]
+ },
+ {
+  "_id": "6afab053ec0941919e8d7a02",
+  "sellerId": "6afab053ec0941919e8d79eb",
+  "name": "Meatyns Regular (Liver & Fat Add)",
+  "price": 850,
+  "salePrice": 850,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 850,
+    "salePrice": 850,
+    "stock": 800,
+    "sku": "meaty-001-1-k4",
+    "tieredPricing": [],
+    "_id": "6afab053ec0941919e8d7a03"
+   },
+   {
+    "name": "750 g",
+    "price": 635,
+    "salePrice": 635,
+    "stock": 800,
+    "sku": "meaty-001-1-k4-750g",
+    "tieredPricing": [],
+    "_id": "6afc2f51f97c71ca018d477a"
+   },
+   {
+    "name": "500 g",
+    "price": 425,
+    "salePrice": 425,
+    "stock": 800,
+    "sku": "meaty-001-1-k4-500g",
+    "tieredPricing": [],
+    "_id": "6afab053ec0941919e8d7a04"
+   },
+   {
+    "name": "250 g",
+    "price": 210,
+    "salePrice": 210,
+    "stock": 800,
+    "sku": "meaty-001-1-k4-250g",
+    "tieredPricing": [],
+    "_id": "6afc2f51f97c71ca018d477c"
+   }
+  ]
+ },
+ {
+  "_id": "6afab053ec0941919e8d7a07",
+  "sellerId": "6afab053ec0941919e8d79eb",
+  "name": "Mutton Chops( Ribcage & T-Bone Steak )",
+  "price": 880,
+  "salePrice": 880,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 880,
+    "salePrice": 880,
+    "stock": 800,
+    "sku": "mutto-001-1-k4",
+    "tieredPricing": [],
+    "_id": "6afab053ec0941919e8d7a08"
+   },
+   {
+    "name": "750 g",
+    "price": 660,
+    "salePrice": 660,
+    "stock": 800,
+    "sku": "mutto-001-1-k4-750g",
+    "_id": "6afc2f51f97c71ca018d477e",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 440,
+    "salePrice": 440,
+    "stock": 800,
+    "sku": "mutto-001-1-k4-500g",
+    "tieredPricing": [],
+    "_id": "6afab053ec0941919e8d7a09"
+   },
+   {
+    "name": "250 g",
+    "price": 220,
+    "salePrice": 220,
+    "stock": 800,
+    "sku": "mutto-001-1-k4-250g",
+    "_id": "6afc2f51f97c71ca018d4780",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6afab053ec0941919e8d7a0c",
+  "sellerId": "6afab053ec0941919e8d79eb",
+  "name": "Mutton Paya ( Whole ) Pack Of 4",
+  "price": 900,
+  "salePrice": 900,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 900,
+    "salePrice": 900,
+    "stock": 800,
+    "sku": "mutto-001-2-k4",
+    "tieredPricing": [],
+    "_id": "6afab053ec0941919e8d7a0d"
+   },
+   {
+    "name": "750 g",
+    "price": 675,
+    "salePrice": 675,
+    "stock": 800,
+    "sku": "mutto-001-2-k4-750g",
+    "_id": "6afc2f51f97c71ca018d4782",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 450,
+    "salePrice": 450,
+    "stock": 800,
+    "sku": "mutto-001-2-k4-500g",
+    "tieredPricing": [],
+    "_id": "6afab053ec0941919e8d7a0e"
+   },
+   {
+    "name": "250 g",
+    "price": 225,
+    "salePrice": 225,
+    "stock": 800,
+    "sku": "mutto-001-2-k4-250g",
+    "_id": "6afc2f51f97c71ca018d4784",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6afab053ec0941919e8d7a11",
+  "sellerId": "6afab053ec0941919e8d79eb",
+  "name": "Mutton Paya with small pieces",
+  "price": 950,
+  "salePrice": 950,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 950,
+    "salePrice": 950,
+    "stock": 800,
+    "sku": "mutto-001-3-k4",
+    "tieredPricing": [],
+    "_id": "6afab053ec0941919e8d7a12"
+   },
+   {
+    "name": "750 g",
+    "price": 710,
+    "salePrice": 710,
+    "stock": 800,
+    "sku": "mutto-001-3-k4-750g",
+    "tieredPricing": [],
+    "_id": "6afc2f51f97c71ca018d4786"
+   },
+   {
+    "name": "500 g",
+    "price": 475,
+    "salePrice": 475,
+    "stock": 800,
+    "sku": "mutto-001-3-k4-500g",
+    "tieredPricing": [],
+    "_id": "6afab053ec0941919e8d7a13"
+   },
+   {
+    "name": "250 g",
+    "price": 235,
+    "salePrice": 235,
+    "stock": 800,
+    "sku": "mutto-001-3-k4-250g",
+    "tieredPricing": [],
+    "_id": "6afc2f52f97c71ca018d4788"
+   }
+  ]
+ },
+ {
+  "_id": "6b07def2e56d74d7a977033d",
+  "sellerId": "6afab053ec0941919e8d79eb",
+  "name": "Goat Boneless ( Full Boneless )",
+  "price": 0,
+  "salePrice": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-001-8d79eb",
+    "_id": "6b07def2e56d74d7a977033e",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-001-8d79eb-750g",
+    "_id": "6b07def2e56d74d7a977033f",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-001-8d79eb-500g",
+    "_id": "6b07def2e56d74d7a9770340",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-001-8d79eb-250g",
+    "_id": "6b07def2e56d74d7a9770341",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6b07def2e56d74d7a9770375",
+  "sellerId": "6afab053ec0941919e8d79eb",
+  "name": "Mutton Heart",
+  "price": 0,
+  "salePrice": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-002-8d79eb",
+    "_id": "6b07def2e56d74d7a9770376",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-002-8d79eb-750g",
+    "_id": "6b07def2e56d74d7a9770377",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-002-8d79eb-500g",
+    "_id": "6b07def2e56d74d7a9770378",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-002-8d79eb-250g",
+    "_id": "6b07def2e56d74d7a9770379",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6b07def3e56d74d7a97703ad",
+  "sellerId": "6afab053ec0941919e8d79eb",
+  "name": "Mutton Kapura (Medium)",
+  "price": 0,
+  "salePrice": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-003-8d79eb",
+    "_id": "6b07def3e56d74d7a97703ae",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-003-8d79eb-750g",
+    "_id": "6b07def3e56d74d7a97703af",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-003-8d79eb-500g",
+    "_id": "6b07def3e56d74d7a97703b0",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-003-8d79eb-250g",
+    "_id": "6b07def3e56d74d7a97703b1",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6b07def4e56d74d7a97703e5",
+  "sellerId": "6afab053ec0941919e8d79eb",
+  "name": "Mutton Kidney (Small Pack)",
+  "price": 0,
+  "salePrice": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-004-8d79eb",
+    "_id": "6b07def4e56d74d7a97703e6",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-004-8d79eb-750g",
+    "_id": "6b07def4e56d74d7a97703e7",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-004-8d79eb-500g",
+    "_id": "6b07def4e56d74d7a97703e8",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-004-8d79eb-250g",
+    "_id": "6b07def4e56d74d7a97703e9",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6b07def4e56d74d7a977041d",
+  "sellerId": "6afab053ec0941919e8d79eb",
+  "name": "Mutton Ran",
+  "price": 0,
+  "salePrice": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-005-8d79eb",
+    "_id": "6b07def4e56d74d7a977041e",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-005-8d79eb-750g",
+    "_id": "6b07def4e56d74d7a977041f",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-005-8d79eb-500g",
+    "_id": "6b07def4e56d74d7a9770420",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-005-8d79eb-250g",
+    "_id": "6b07def4e56d74d7a9770421",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6b07def5e56d74d7a9770455",
+  "sellerId": "6afab053ec0941919e8d79eb",
+  "name": "Premium Goat Rib Bone Pieces",
+  "price": 0,
+  "salePrice": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-006-8d79eb",
+    "_id": "6b07def5e56d74d7a9770456",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-006-8d79eb-750g",
+    "_id": "6b07def5e56d74d7a9770457",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-006-8d79eb-500g",
+    "_id": "6b07def5e56d74d7a9770458",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-006-8d79eb-250g",
+    "_id": "6b07def5e56d74d7a9770459",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6b07def5e56d74d7a977048d",
+  "sellerId": "6afab053ec0941919e8d79eb",
+  "name": "Pure Lamb Mince (Kheema)",
+  "price": 0,
+  "salePrice": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-007-8d79eb",
+    "_id": "6b07def5e56d74d7a977048e",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-007-8d79eb-750g",
+    "_id": "6b07def5e56d74d7a977048f",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-007-8d79eb-500g",
+    "_id": "6b07def5e56d74d7a9770490",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-007-8d79eb-250g",
+    "_id": "6b07def5e56d74d7a9770491",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6b07def6e56d74d7a97704c5",
+  "sellerId": "6afab053ec0941919e8d79eb",
+  "name": "Sunday Family Pack",
+  "price": 0,
+  "salePrice": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-008-8d79eb",
+    "_id": "6b07def6e56d74d7a97704c6",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-008-8d79eb-750g",
+    "_id": "6b07def6e56d74d7a97704c7",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-008-8d79eb-500g",
+    "_id": "6b07def6e56d74d7a97704c8",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-008-8d79eb-250g",
+    "_id": "6b07def6e56d74d7a97704c9",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6afab054ec0941919e8d7a33",
+  "sellerId": "6afab054ec0941919e8d7a30",
+  "name": "Meatyns Special Mutton ( Liver & Fat less )",
+  "price": 930,
+  "salePrice": 930,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 930,
+    "salePrice": 930,
+    "stock": 800,
+    "sku": "meaty-001-k5",
+    "tieredPricing": [],
+    "_id": "6afab054ec0941919e8d7a34"
+   },
+   {
+    "name": "750 g",
+    "price": 695,
+    "salePrice": 695,
+    "stock": 800,
+    "sku": "meaty-001-k5-750g",
+    "tieredPricing": [],
+    "_id": "6afc2f52f97c71ca018d479e"
+   },
+   {
+    "name": "500 g",
+    "price": 465,
+    "salePrice": 465,
+    "stock": 800,
+    "sku": "meaty-001-k5-500g",
+    "tieredPricing": [],
+    "_id": "6afab054ec0941919e8d7a35"
+   },
+   {
+    "name": "250 g",
+    "price": 230,
+    "salePrice": 230,
+    "stock": 800,
+    "sku": "meaty-001-k5-250g",
+    "tieredPricing": [],
+    "_id": "6afc2f52f97c71ca018d47a0"
+   }
+  ]
+ },
+ {
+  "_id": "6afab054ec0941919e8d7a38",
+  "sellerId": "6afab054ec0941919e8d7a30",
+  "name": "Goat Curry Cut",
+  "price": 860,
+  "salePrice": 860,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 860,
+    "salePrice": 860,
+    "stock": 800,
+    "sku": "goatc-001-k5",
+    "tieredPricing": [],
+    "_id": "6afab054ec0941919e8d7a39"
+   },
+   {
+    "name": "750 g",
+    "price": 645,
+    "salePrice": 645,
+    "stock": 800,
+    "sku": "goatc-001-k5-750g",
+    "_id": "6afc2f52f97c71ca018d47a2",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 430,
+    "salePrice": 430,
+    "stock": 800,
+    "sku": "goatc-001-k5-500g",
+    "tieredPricing": [],
+    "_id": "6afab054ec0941919e8d7a3a"
+   },
+   {
+    "name": "250 g",
+    "price": 215,
+    "salePrice": 215,
+    "stock": 800,
+    "sku": "goatc-001-k5-250g",
+    "_id": "6afc2f52f97c71ca018d47a4",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6afab054ec0941919e8d7a3d",
+  "sellerId": "6afab054ec0941919e8d7a30",
+  "name": "Mutton Liver",
+  "price": 790,
+  "salePrice": 790,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 790,
+    "salePrice": 790,
+    "stock": 800,
+    "sku": "mutto-001-k5",
+    "tieredPricing": [],
+    "_id": "6afab054ec0941919e8d7a3e"
+   },
+   {
+    "name": "750 g",
+    "price": 590,
+    "salePrice": 590,
+    "stock": 800,
+    "sku": "mutto-001-k5-750g",
+    "tieredPricing": [],
+    "_id": "6afc2f52f97c71ca018d47a6"
+   },
+   {
+    "name": "500 g",
+    "price": 395,
+    "salePrice": 395,
+    "stock": 800,
+    "sku": "mutto-001-k5-500g",
+    "tieredPricing": [],
+    "_id": "6afab054ec0941919e8d7a3f"
+   },
+   {
+    "name": "250 g",
+    "price": 195,
+    "salePrice": 195,
+    "stock": 800,
+    "sku": "mutto-001-k5-250g",
+    "tieredPricing": [],
+    "_id": "6afc2f52f97c71ca018d47a8"
+   }
+  ]
+ },
+ {
+  "_id": "6afab054ec0941919e8d7a47",
+  "sellerId": "6afab054ec0941919e8d7a30",
+  "name": "Meatyns Regular (Liver & Fat Add)",
+  "price": 850,
+  "salePrice": 850,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 850,
+    "salePrice": 850,
+    "stock": 800,
+    "sku": "meaty-001-1-k5",
+    "tieredPricing": [],
+    "_id": "6afab054ec0941919e8d7a48"
+   },
+   {
+    "name": "750 g",
+    "price": 635,
+    "salePrice": 635,
+    "stock": 800,
+    "sku": "meaty-001-1-k5-750g",
+    "tieredPricing": [],
+    "_id": "6afc2f52f97c71ca018d47ae"
+   },
+   {
+    "name": "500 g",
+    "price": 425,
+    "salePrice": 425,
+    "stock": 800,
+    "sku": "meaty-001-1-k5-500g",
+    "tieredPricing": [],
+    "_id": "6afab054ec0941919e8d7a49"
+   },
+   {
+    "name": "250 g",
+    "price": 210,
+    "salePrice": 210,
+    "stock": 800,
+    "sku": "meaty-001-1-k5-250g",
+    "tieredPricing": [],
+    "_id": "6afc2f52f97c71ca018d47b0"
+   }
+  ]
+ },
+ {
+  "_id": "6afab054ec0941919e8d7a4c",
+  "sellerId": "6afab054ec0941919e8d7a30",
+  "name": "Mutton Chops( Ribcage & T-Bone Steak )",
+  "price": 880,
+  "salePrice": 880,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 880,
+    "salePrice": 880,
+    "stock": 800,
+    "sku": "mutto-001-1-k5",
+    "tieredPricing": [],
+    "_id": "6afab054ec0941919e8d7a4d"
+   },
+   {
+    "name": "750 g",
+    "price": 660,
+    "salePrice": 660,
+    "stock": 800,
+    "sku": "mutto-001-1-k5-750g",
+    "_id": "6afc2f52f97c71ca018d47b2",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 440,
+    "salePrice": 440,
+    "stock": 800,
+    "sku": "mutto-001-1-k5-500g",
+    "tieredPricing": [],
+    "_id": "6afab054ec0941919e8d7a4e"
+   },
+   {
+    "name": "250 g",
+    "price": 220,
+    "salePrice": 220,
+    "stock": 800,
+    "sku": "mutto-001-1-k5-250g",
+    "_id": "6afc2f52f97c71ca018d47b4",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6afab054ec0941919e8d7a51",
+  "sellerId": "6afab054ec0941919e8d7a30",
+  "name": "Mutton Paya ( Whole ) Pack Of 4",
+  "price": 900,
+  "salePrice": 900,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 900,
+    "salePrice": 900,
+    "stock": 800,
+    "sku": "mutto-001-2-k5",
+    "tieredPricing": [],
+    "_id": "6afab054ec0941919e8d7a52"
+   },
+   {
+    "name": "750 g",
+    "price": 675,
+    "salePrice": 675,
+    "stock": 800,
+    "sku": "mutto-001-2-k5-750g",
+    "_id": "6afc2f52f97c71ca018d47b6",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 450,
+    "salePrice": 450,
+    "stock": 800,
+    "sku": "mutto-001-2-k5-500g",
+    "tieredPricing": [],
+    "_id": "6afab054ec0941919e8d7a53"
+   },
+   {
+    "name": "250 g",
+    "price": 225,
+    "salePrice": 225,
+    "stock": 800,
+    "sku": "mutto-001-2-k5-250g",
+    "_id": "6afc2f52f97c71ca018d47b8",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6afab054ec0941919e8d7a56",
+  "sellerId": "6afab054ec0941919e8d7a30",
+  "name": "Mutton Paya with small pieces",
+  "price": 950,
+  "salePrice": 950,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 950,
+    "salePrice": 950,
+    "stock": 800,
+    "sku": "mutto-001-3-k5",
+    "tieredPricing": [],
+    "_id": "6afab054ec0941919e8d7a57"
+   },
+   {
+    "name": "750 g",
+    "price": 710,
+    "salePrice": 710,
+    "stock": 800,
+    "sku": "mutto-001-3-k5-750g",
+    "tieredPricing": [],
+    "_id": "6afc2f52f97c71ca018d47ba"
+   },
+   {
+    "name": "500 g",
+    "price": 475,
+    "salePrice": 475,
+    "stock": 800,
+    "sku": "mutto-001-3-k5-500g",
+    "tieredPricing": [],
+    "_id": "6afab054ec0941919e8d7a58"
+   },
+   {
+    "name": "250 g",
+    "price": 235,
+    "salePrice": 235,
+    "stock": 800,
+    "sku": "mutto-001-3-k5-250g",
+    "tieredPricing": [],
+    "_id": "6afc2f52f97c71ca018d47bc"
+   }
+  ]
+ },
+ {
+  "_id": "6b07def2e56d74d7a9770344",
+  "sellerId": "6afab054ec0941919e8d7a30",
+  "name": "Goat Boneless ( Full Boneless )",
+  "price": 0,
+  "salePrice": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-001-8d7a30",
+    "_id": "6b07def2e56d74d7a9770345",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-001-8d7a30-750g",
+    "_id": "6b07def2e56d74d7a9770346",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-001-8d7a30-500g",
+    "_id": "6b07def2e56d74d7a9770347",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-001-8d7a30-250g",
+    "_id": "6b07def2e56d74d7a9770348",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6b07def3e56d74d7a977037c",
+  "sellerId": "6afab054ec0941919e8d7a30",
+  "name": "Mutton Heart",
+  "price": 0,
+  "salePrice": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-002-8d7a30",
+    "_id": "6b07def3e56d74d7a977037d",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-002-8d7a30-750g",
+    "_id": "6b07def3e56d74d7a977037e",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-002-8d7a30-500g",
+    "_id": "6b07def3e56d74d7a977037f",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-002-8d7a30-250g",
+    "_id": "6b07def3e56d74d7a9770380",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6b07def3e56d74d7a97703b4",
+  "sellerId": "6afab054ec0941919e8d7a30",
+  "name": "Mutton Kapura (Medium)",
+  "price": 0,
+  "salePrice": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-003-8d7a30",
+    "_id": "6b07def3e56d74d7a97703b5",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-003-8d7a30-750g",
+    "_id": "6b07def3e56d74d7a97703b6",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-003-8d7a30-500g",
+    "_id": "6b07def3e56d74d7a97703b7",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-003-8d7a30-250g",
+    "_id": "6b07def3e56d74d7a97703b8",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6b07def4e56d74d7a97703ec",
+  "sellerId": "6afab054ec0941919e8d7a30",
+  "name": "Mutton Kidney (Small Pack)",
+  "price": 0,
+  "salePrice": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-004-8d7a30",
+    "_id": "6b07def4e56d74d7a97703ed",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-004-8d7a30-750g",
+    "_id": "6b07def4e56d74d7a97703ee",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-004-8d7a30-500g",
+    "_id": "6b07def4e56d74d7a97703ef",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-004-8d7a30-250g",
+    "_id": "6b07def4e56d74d7a97703f0",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6b07def4e56d74d7a9770424",
+  "sellerId": "6afab054ec0941919e8d7a30",
+  "name": "Mutton Ran",
+  "price": 0,
+  "salePrice": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-005-8d7a30",
+    "_id": "6b07def4e56d74d7a9770425",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-005-8d7a30-750g",
+    "_id": "6b07def4e56d74d7a9770426",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-005-8d7a30-500g",
+    "_id": "6b07def4e56d74d7a9770427",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-005-8d7a30-250g",
+    "_id": "6b07def4e56d74d7a9770428",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6b07def5e56d74d7a977045c",
+  "sellerId": "6afab054ec0941919e8d7a30",
+  "name": "Premium Goat Rib Bone Pieces",
+  "price": 0,
+  "salePrice": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-006-8d7a30",
+    "_id": "6b07def5e56d74d7a977045d",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-006-8d7a30-750g",
+    "_id": "6b07def5e56d74d7a977045e",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-006-8d7a30-500g",
+    "_id": "6b07def5e56d74d7a977045f",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-006-8d7a30-250g",
+    "_id": "6b07def5e56d74d7a9770460",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6b07def5e56d74d7a9770494",
+  "sellerId": "6afab054ec0941919e8d7a30",
+  "name": "Pure Lamb Mince (Kheema)",
+  "price": 0,
+  "salePrice": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-007-8d7a30",
+    "_id": "6b07def5e56d74d7a9770495",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-007-8d7a30-750g",
+    "_id": "6b07def5e56d74d7a9770496",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-007-8d7a30-500g",
+    "_id": "6b07def5e56d74d7a9770497",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-007-8d7a30-250g",
+    "_id": "6b07def5e56d74d7a9770498",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6b07def6e56d74d7a97704cc",
+  "sellerId": "6afab054ec0941919e8d7a30",
+  "name": "Sunday Family Pack",
+  "price": 0,
+  "salePrice": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-008-8d7a30",
+    "_id": "6b07def6e56d74d7a97704cd",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-008-8d7a30-750g",
+    "_id": "6b07def6e56d74d7a97704ce",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-008-8d7a30-500g",
+    "_id": "6b07def6e56d74d7a97704cf",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "meaty-mtn-008-8d7a30-250g",
+    "_id": "6b07def6e56d74d7a97704d0",
+    "tieredPricing": []
+   }
+  ]
+ }
+]
