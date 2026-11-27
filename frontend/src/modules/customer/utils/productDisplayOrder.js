@@ -46,7 +46,6 @@ export const PRODUCT_DISPLAY_ORDER = [
   "Mutton Kapura (Large)", // 18
   "Mutton Ran", // 19
   "Mutton Soup Bones", // 20
-  "Rakti", // 21
   "Mutton Paya ( Whole ) pack of 4", // 22
   "Mutton Paya",
   "Mutton Paya with small pieces", // 23
@@ -118,7 +117,6 @@ const PUNE_MUTTON_ORDER = [
   "Goat Head Meat ( Cutting of small pieces )",
   "Goat Intestine (Vajadi)", // 27
   "Vajadi ( Goat Intestine )",
-  "Rakti", // 28
 ];
 
 const normalizeName = (name) =>
