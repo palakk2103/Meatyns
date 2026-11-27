@@ -1,0 +1,232 @@
+[
+ {
+  "_id": "6b09157f5427b5bdd183317c",
+  "name": "Goat Biryani Cut",
+  "status": "inactive",
+  "price": 0,
+  "salePrice": 0,
+  "stock": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "goat-biryani-cut-8d7a75",
+    "_id": "6b09157f5427b5bdd183317d",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "goat-biryani-cut-8d7a75-750g",
+    "_id": "6b09157f5427b5bdd183317e",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "goat-biryani-cut-8d7a75-500g",
+    "_id": "6b09157f5427b5bdd183317f",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "goat-biryani-cut-8d7a75-250g",
+    "_id": "6b09157f5427b5bdd1833180",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6b09157f5427b5bdd1833190",
+  "name": "Lamb Fat (Fully Loaded Fat)",
+  "status": "inactive",
+  "price": 0,
+  "salePrice": 0,
+  "stock": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "lamb-fat-fully-loaded-fat-8d7a75",
+    "_id": "6b09157f5427b5bdd1833191",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "lamb-fat-fully-loaded-fat-8d7a75-750g",
+    "_id": "6b09157f5427b5bdd1833192",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "lamb-fat-fully-loaded-fat-8d7a75-500g",
+    "_id": "6b09157f5427b5bdd1833193",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "lamb-fat-fully-loaded-fat-8d7a75-250g",
+    "_id": "6b09157f5427b5bdd1833194",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6b09157f5427b5bdd183319a",
+  "name": "Mutton Kapura ( Large )",
+  "status": "inactive",
+  "price": 0,
+  "salePrice": 0,
+  "stock": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "mutton-kapura-large-8d7a75",
+    "_id": "6b09157f5427b5bdd183319b",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "mutton-kapura-large-8d7a75-750g",
+    "_id": "6b09157f5427b5bdd183319c",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "mutton-kapura-large-8d7a75-500g",
+    "_id": "6b09157f5427b5bdd183319d",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "mutton-kapura-large-8d7a75-250g",
+    "_id": "6b09157f5427b5bdd183319e",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6b09157f5427b5bdd183319f",
+  "name": "Mutton Power Pack",
+  "status": "inactive",
+  "price": 0,
+  "salePrice": 0,
+  "stock": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "mutton-power-pack-8d7a75",
+    "_id": "6b09157f5427b5bdd18331a0",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "mutton-power-pack-8d7a75-750g",
+    "_id": "6b09157f5427b5bdd18331a1",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "mutton-power-pack-8d7a75-500g",
+    "_id": "6b09157f5427b5bdd18331a2",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "mutton-power-pack-8d7a75-250g",
+    "_id": "6b09157f5427b5bdd18331a3",
+    "tieredPricing": []
+   }
+  ]
+ },
+ {
+  "_id": "6b09157f5427b5bdd18331a4",
+  "name": "Mutton Spleen (Special Body Part Near Liver)",
+  "status": "inactive",
+  "price": 0,
+  "salePrice": 0,
+  "stock": 0,
+  "variants": [
+   {
+    "name": "1 kg",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "mutton-spleen-special-body-part-near-liver-8d7a75",
+    "_id": "6b09157f5427b5bdd18331a5",
+    "tieredPricing": []
+   },
+   {
+    "name": "750 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "mutton-spleen-special-body-part-near-liver-8d7a75-750g",
+    "_id": "6b09157f5427b5bdd18331a6",
+    "tieredPricing": []
+   },
+   {
+    "name": "500 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "mutton-spleen-special-body-part-near-liver-8d7a75-500g",
+    "_id": "6b09157f5427b5bdd18331a7",
+    "tieredPricing": []
+   },
+   {
+    "name": "250 g",
+    "price": 0,
+    "salePrice": 0,
+    "stock": 0,
+    "sku": "mutton-spleen-special-body-part-near-liver-8d7a75-250g",
+    "_id": "6b09157f5427b5bdd18331a8",
+    "tieredPricing": []
+   }
+  ]
+ }
+]
