@@ -71,6 +71,7 @@ import { Label } from "@/components/ui/label";
 
 // Sub-components
 import CheckoutAddressSection from "./checkout/components/CheckoutAddressSection";
+import AddressSearchInput from "../components/shared/AddressSearchInput";
 import CheckoutDeliverySelector from "./checkout/components/CheckoutDeliverySelector";
 import CheckoutCartSummary from "./checkout/components/CheckoutCartSummary";
 import UnavailableItemsNotice from "./checkout/components/UnavailableItemsNotice";
@@ -538,7 +539,16 @@ const CheckoutPage = () => {
       ]
         .filter(Boolean)
         .join(", ");
-      const resp = await customerApi.geocodeAddress(query);
+      // A point picked from the suggestions is more precise than re-geocoding
+      // the text, so only geocode when no new point was picked.
+      const pickedLoc =
+        editAddressForm.location !== currentAddress.location &&
+        isValidLatLng(editAddressForm.location)
+          ? editAddressForm.location
+          : null;
+      const resp = pickedLoc
+        ? { data: { result: { location: pickedLoc, formattedAddress: editAddressForm.address } } }
+        : await customerApi.geocodeAddress(query);
       const loc = resp.data?.result?.location;
       if (
         loc &&
@@ -2072,12 +2082,33 @@ const CheckoutPage = () => {
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="edit-address" className="text-xs font-semibold text-slate-700">Address</Label>
-                <Input
+                <AddressSearchInput
                   id="edit-address"
-                  value={editAddressForm.address}
-                  onChange={(e) => setEditAddressForm((prev) => ({ ...prev, address: e.target.value }))}
-                  className="h-10"
-                  placeholder="House, street, area"
+                  placeholder="Search street, area or building"
+                  inputClassName="h-10 pr-10"
+                  bias={
+                    hasRealLocation
+                      ? { lat: Number(currentLocation.latitude), lng: Number(currentLocation.longitude) }
+                      : null
+                  }
+                  value={{
+                    text: editAddressForm.address || "",
+                    location: editAddressForm.location || null,
+                  }}
+                  onChange={({ text, location, pincode, city, state }) =>
+                    setEditAddressForm((prev) => ({
+                      ...prev,
+                      address: text,
+                      location: location || null,
+                      // The old place ID belongs to the previous address.
+                      placeId: null,
+                      formattedAddress: null,
+                      // A new pick replaces city/pincode; typing leaves them alone.
+                      ...(location
+                        ? { city: [city, state, pincode].filter(Boolean).join(", ") }
+                        : {}),
+                    }))
+                  }
                 />
               </div>
               <div className="grid gap-2">

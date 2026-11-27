@@ -1,0 +1,17 @@
+import dns from "dns"; dns.setServers(["8.8.8.8","1.1.1.1"]);
+import "dotenv/config"; import fs from "fs"; import mongoose from "mongoose";
+import { uploadToCloudinary } from "../app/utils/cloudinary.js";
+import { invalidate, buildKey } from "../app/services/cacheService.js";
+const NAME="Mutton Paya with small pieces";
+const FROM="https://res.cloudinary.com/szohobky/image/upload/v1795677931/products/vxo1qtlfiyxwmqhosolj.png";
+await mongoose.connect(process.env.MONGO_URI);
+const col=mongoose.connection.db.collection("products");
+const docs=await col.find({name:NAME,mainImage:FROM}).toArray();
+if(!docs.length) throw new Error("no matching docs");
+fs.writeFileSync(`scratch/paya_pieces_image_backup_${Date.now()}.json`,JSON.stringify(docs.map(d=>({_id:d._id,sellerId:d.sellerId,mainImage:d.mainImage})),null,1));
+const TO=await uploadToCloudinary(fs.readFileSync(process.argv[2]),"products",{mimeType:"image/png"});
+const r=await col.updateMany({_id:{$in:docs.map(d=>d._id)},mainImage:FROM},{$set:{mainImage:TO,updatedAt:new Date()}});
+console.log("matched:",docs.length,"modified:",r.modifiedCount,"| on new image:",await col.countDocuments({name:NAME,mainImage:TO}),"| total with this name:",await col.countDocuments({name:NAME}));
+console.log(TO);
+for(const k of [buildKey("catalog","productList","*"),"cache:offersections:public:*","cache:search:*",...docs.map(d=>`cache:catalog:product:${d._id}`)]) await invalidate(k);
+await mongoose.disconnect(); process.exit(0);
