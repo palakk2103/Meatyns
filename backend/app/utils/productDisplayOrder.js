@@ -35,9 +35,12 @@ export const PRODUCT_DISPLAY_ORDER = [
   "Goat Boneless",
   "Goat Biryani Cut", // 13
   "Lamb Fat", // 14
+  "Lamb Fat (Fully Loaded Fat)",
   "Mutton Power Pack", // 15
   "Lamb (1 kg) Mixed pcs", // 16
+  "Lamb Mixed Pieces",
   "Mutton Spleen (Thilli)", // 17
+  "Mutton Spleen (Special Body Part Near Liver)",
   "Mutton Kapura (Large)", // 18
   "Mutton Ran", // 19
   "Mutton Soup Bones", // 20
@@ -48,9 +51,12 @@ export const PRODUCT_DISPLAY_ORDER = [
   "Mutton Paya (with cutting small piece)",
   "Goat Head", // 24
   "Goat Paya Mundi (Whole)", // 25
+  "Goat Paya Mundi (4 Legs + Whole Mundi)",
   "Mutton Brain (Bheja)", // 26
   "Goat Head Meat (cutting of small piece)", // 27
+  "Goat Head Meat ( Cutting of small pieces )",
   "Goat Intestine (Vajadi)", // 28
+  "Vajadi ( Goat Intestine )",
   // Not on the sheet: stays after the sheet's mutton items
   "Premium Goat Curry Cut (Long Shoulder, Boneless & Goat Shank)",
   "Premium Goat Shoulder Curry Cut",
@@ -92,10 +98,13 @@ const PUNE_MUTTON_ORDER = [
   "Mutton Kapura (Large)", // 17
   "Mutton Kapura Large",
   "Mutton Spleen (Thilli)", // 18
+  "Mutton Spleen (Special Body Part Near Liver)",
   "Mutton Heart", // 19
   "Lamb Fat", // 20
+  "Lamb Fat (Fully Loaded Fat)",
   "Fat",
   "Goat Paya Mundi (Whole)", // 21
+  "Goat Paya Mundi (4 Legs + Whole Mundi)",
   "Goat Paya Mundi",
   "Goat Head", // 22
   "Mutton Paya ( Whole ) pack of 4", // 23
@@ -104,7 +113,9 @@ const PUNE_MUTTON_ORDER = [
   "Mutton Paya (with cutting small piece)",
   "Mutton Brain (Bheja)", // 25
   "Goat Head Meat (cutting of small piece)", // 26
+  "Goat Head Meat ( Cutting of small pieces )",
   "Goat Intestine (Vajadi)", // 27
+  "Vajadi ( Goat Intestine )",
   "Rakti", // 28
 ];
 
