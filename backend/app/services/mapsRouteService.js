@@ -134,7 +134,7 @@ export async function getRoadDistanceMeters(origin, dest) {
   if (!hasValidPoint(origin) || !hasValidPoint(dest)) return null;
 
   const redis = getRedisClient();
-  const key = `roaddist:v1:${roundCoord(origin.lat)},${roundCoord(origin.lng)}:${roundCoord(dest.lat)},${roundCoord(dest.lng)}`;
+  const key = `roaddist:v2:${roundCoord(origin.lat)},${roundCoord(origin.lng)}:${roundCoord(dest.lat)},${roundCoord(dest.lng)}`;
   if (redis) {
     try {
       const cached = await redis.get(key);
@@ -179,11 +179,13 @@ async function googleRoutesDistanceMeters(origin, dest) {
       body: JSON.stringify({
         origin: { location: { latLng: { latitude: origin.lat, longitude: origin.lng } } },
         destination: { location: { latLng: { latitude: dest.lat, longitude: dest.lng } } },
-        travelMode: "DRIVE",
+        // Riders deliver on two-wheelers; car routes are often longer.
+        travelMode: "TWO_WHEELER",
       }),
       signal: AbortSignal.timeout(4000),
     });
     if (!resp.ok) {
+      console.warn(`[delivery-distance] Google Routes failed (HTTP ${resp.status}); using OSRM car distance`);
       // API not enabled / key restricted: don't retry on every checkout.
       googleRoutesDisabledUntil = Date.now() + 10 * 60 * 1000;
       return null;
