@@ -158,23 +158,24 @@ const GalleryDetailPage = () => {
                   onClick={() => setViewerIndex(i)}
                   data-testid="gallery-detail-image"
                   aria-label={`Open image ${i + 1}${img.caption ? `: ${img.caption}` : ""}`}
-                  className="group relative rounded-2xl overflow-hidden bg-white p-1.5 md:p-2 shadow-[0_4px_14px_-6px_rgba(0,0,0,0.15)] hover:shadow-[0_10px_24px_-8px_rgba(215,20,27,0.35)] transition-shadow cursor-pointer border-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D7141B]"
+                  className="group relative self-start rounded-2xl overflow-hidden bg-white p-1.5 md:p-2 shadow-[0_4px_14px_-6px_rgba(0,0,0,0.15)] hover:shadow-[0_10px_24px_-8px_rgba(215,20,27,0.35)] transition-shadow cursor-pointer border-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D7141B]"
                 >
                   <div className="relative rounded-xl overflow-hidden">
                     <GalleryImage
                       src={img.url}
                       alt={img.altText || img.caption || gallery.title}
                       width={480}
+                      showFull
                       eager={i < 4}
-                      className="aspect-square w-full"
+                      className="aspect-[4/5] w-full"
                       imgClassName="group-hover:scale-105 transition-transform duration-500"
                     />
-                    {img.caption && (
-                      <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent px-2 pt-5 pb-1.5 text-left text-[10.5px] md:text-xs font-medium text-white line-clamp-1">
-                        {img.caption}
-                      </span>
-                    )}
                   </div>
+                  {img.caption && (
+                    <span className="block px-1 pt-1.5 pb-0.5 text-left text-[10.5px] md:text-xs font-semibold text-[#1A1A1A] line-clamp-2">
+                      {img.caption}
+                    </span>
+                  )}
                 </button>
               ))}
             </div>

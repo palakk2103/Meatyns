@@ -196,6 +196,7 @@ const GalleryPreviewSection = () => {
                 src={g.coverImage}
                 alt={g.title}
                 width={800}
+                showFull
                 className="aspect-[4/3.3] w-full"
                 imgClassName="group-hover:scale-105 transition-transform duration-700 ease-out"
               />

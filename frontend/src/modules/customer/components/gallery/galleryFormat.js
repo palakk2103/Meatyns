@@ -2,7 +2,7 @@ import { applyCloudinaryTransform } from "@/core/utils/imageUtils";
 
 /** Sized URL for Cloudinary assets; non-Cloudinary URLs are returned unchanged. */
 export const galleryImageUrl = (url, width = 480) =>
-  applyCloudinaryTransform(url, `f_auto,q_auto:good,c_limit,w_${width},dpr_auto`);
+  applyCloudinaryTransform(url, `f_auto,q_auto:best,c_limit,w_${width},dpr_auto`);
 
 export const formatGalleryDate = (value) => {
   if (!value) return "";

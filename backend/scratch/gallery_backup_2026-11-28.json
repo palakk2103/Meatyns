@@ -1,0 +1,446 @@
+[
+ {
+  "_id": "6afd805d7fa4b667ba307987",
+  "title": "Meatyns Store Grand Opening",
+  "slug": "meatyns-store-grand-opening",
+  "category": "6afd535c1312b134e1e1c2c5",
+  "franchiseName": "",
+  "location": "",
+  "city": "",
+  "state": "",
+  "eventDate": "2026-03-15T00:00:00.000Z",
+  "shortDescription": "Ribbons, balloons and a brand-new Meatyns store opening its doors to the community.",
+  "description": "A look back at the grand opening of our Meatyns store — from the ribbon-decorated entrance and festive balloon arches to the signature goat-cut wall art and the team ready to serve fresh, hygienic meat.",
+  "images": [
+   {
+    "_id": "6afd805d7fa4b667ba30797d",
+    "url": "https://res.cloudinary.com/szohobky/image/upload/v1795239010/gallery/1794998365601-4f81826b-04b4-4f23-ac44-a9bfa06bac76.jpg",
+    "caption": "The Meatyns storefront",
+    "altText": "The Meatyns storefront",
+    "order": 0
+   },
+   {
+    "_id": "6afd805d7fa4b667ba30797e",
+    "url": "https://res.cloudinary.com/szohobky/image/upload/v1795239011/gallery/1794998365606-0f572330-6217-458c-8b75-dfd27843ee18.jpg",
+    "caption": "Ribbon-cutting at the entrance",
+    "altText": "Ribbon-cutting at the entrance",
+    "order": 1
+   },
+   {
+    "_id": "6afd805d7fa4b667ba30797f",
+    "url": "https://res.cloudinary.com/szohobky/image/upload/v1795239012/gallery/1794998365609-c576f4ba-f315-4d47-97b6-79e203c70193.jpg",
+    "caption": "Guests arriving for the opening",
+    "altText": "Guests arriving for the opening",
+    "order": 2
+   },
+   {
+    "_id": "6afd805d7fa4b667ba307980",
+    "url": "https://res.cloudinary.com/szohobky/image/upload/v1795239013/gallery/1794998365611-8550a614-aa6e-4814-8d31-3b7eed26b9c1.jpg",
+    "caption": "Balloon arches at the entrance",
+    "altText": "Balloon arches at the entrance",
+    "order": 3
+   },
+   {
+    "_id": "6afd805d7fa4b667ba307981",
+    "url": "https://res.cloudinary.com/szohobky/image/upload/v1795239015/gallery/1794998365615-108d955d-8e63-4fa2-989d-3a8e96d526d6.jpg",
+    "caption": "Signature goat-cut glass art",
+    "altText": "Signature goat-cut glass art",
+    "order": 4
+   },
+   {
+    "_id": "6afd805d7fa4b667ba307982",
+    "url": "https://res.cloudinary.com/szohobky/image/upload/v1795239016/gallery/1794998365617-8acfad07-48c9-429d-8774-521b5a420dab.jpg",
+    "caption": "Our feature brick wall",
+    "altText": "Our feature brick wall",
+    "order": 5
+   },
+   {
+    "_id": "6afd805d7fa4b667ba307983",
+    "url": "https://res.cloudinary.com/szohobky/image/upload/v1795239017/gallery/1794998365620-851d23b4-a8d6-4839-8c5c-f5a1359e3533.jpg",
+    "caption": "Customer seating area",
+    "altText": "Customer seating area",
+    "order": 6
+   },
+   {
+    "_id": "6afd805d7fa4b667ba307984",
+    "url": "https://res.cloudinary.com/szohobky/image/upload/v1795239019/gallery/1794998365623-8d1b598b-6d99-47a6-a5cf-fc5c45b79fd6.jpg",
+    "caption": "The Goat Farm display",
+    "altText": "The Goat Farm display",
+    "order": 7
+   },
+   {
+    "_id": "6afd805d7fa4b667ba307985",
+    "url": "https://res.cloudinary.com/szohobky/image/upload/v1795239020/gallery/1794998365626-7c4f883e-b5b1-4061-b66a-19ba05ede89d.jpg",
+    "caption": "Our team ready to serve",
+    "altText": "Our team ready to serve",
+    "order": 8
+   },
+   {
+    "_id": "6afd805d7fa4b667ba307986",
+    "url": "https://res.cloudinary.com/szohobky/image/upload/v1795239021/gallery/1794998365629-55de7265-be50-44bb-8e94-bb7ea6b0cb16.jpg",
+    "caption": "Authentic meat awaits!",
+    "altText": "Authentic meat awaits!",
+    "order": 9
+   }
+  ],
+  "coverImage": "https://res.cloudinary.com/szohobky/image/upload/v1795239010/gallery/1794998365601-4f81826b-04b4-4f23-ac44-a9bfa06bac76.jpg",
+  "isFeatured": true,
+  "showOnHomepage": true,
+  "isPublished": true,
+  "displayOrder": 1,
+  "createdBy": null,
+  "updatedBy": null,
+  "createdAt": "2026-11-18T10:39:25.536Z",
+  "updatedAt": "2026-11-18T10:39:25.536Z",
+  "__v": 0
+ },
+ {
+  "_id": "6afd805d7fa4b667ba307994",
+  "title": "Inside the Meatyns Store",
+  "slug": "inside-the-meatyns-store",
+  "category": "6afd535c1312b134e1e1c2ca",
+  "franchiseName": "",
+  "location": "",
+  "city": "",
+  "state": "",
+  "eventDate": "2026-03-15T00:00:00.000Z",
+  "shortDescription": "Fresh-cut displays, clean counters and a welcoming space — a tour of our store.",
+  "description": "Step inside a Meatyns store: chilled display counters stocked with fresh cuts, a dedicated order pick-up counter, and a clean, bright space designed around hygiene and quality.",
+  "images": [
+   {
+    "_id": "6afd805d7fa4b667ba307988",
+    "url": "https://res.cloudinary.com/szohobky/image/upload/v1795239022/gallery/1794998365727-d1d695f5-073c-4b7d-9c92-4de756da45b0.jpg",
+    "caption": "Store interior",
+    "altText": "Store interior",
+    "order": 0
+   },
+   {
+    "_id": "6afd805d7fa4b667ba307989",
+    "url": "https://res.cloudinary.com/szohobky/image/upload/v1795239023/gallery/1794998365730-c857ed45-f5e8-4fb2-8f07-b62674ff5d14.jpg",
+    "caption": "Order counter",
+    "altText": "Order counter",
+    "order": 1
+   },
+   {
+    "_id": "6afd805d7fa4b667ba30798a",
+    "url": "https://res.cloudinary.com/szohobky/image/upload/v1795239025/gallery/1794998365733-5e0bfa1b-dd8c-4e18-8b05-77aeb300f794.jpg",
+    "caption": "Your order is here",
+    "altText": "Your order is here",
+    "order": 2
+   },
+   {
+    "_id": "6afd805d7fa4b667ba30798b",
+    "url": "https://res.cloudinary.com/szohobky/image/upload/v1795239026/gallery/1794998365736-85f5238a-fbef-4219-884f-5d39d5c3cde4.jpg",
+    "caption": "Fresh mutton on display",
+    "altText": "Fresh mutton on display",
+    "order": 3
+   },
+   {
+    "_id": "6afd805d7fa4b667ba30798c",
+    "url": "https://res.cloudinary.com/szohobky/image/upload/v1795239027/gallery/1794998365739-cab95d94-e17d-40bf-8295-b57ea1869203.jpg",
+    "caption": "Fresh chicken, cut daily",
+    "altText": "Fresh chicken, cut daily",
+    "order": 4
+   },
+   {
+    "_id": "6afd805d7fa4b667ba30798d",
+    "url": "https://res.cloudinary.com/szohobky/image/upload/v1795239029/gallery/1794998365742-a80db7b7-bcd4-4707-a28f-14d0001d2abe.jpg",
+    "caption": "Chilled display counter",
+    "altText": "Chilled display counter",
+    "order": 5
+   },
+   {
+    "_id": "6afd805d7fa4b667ba30798e",
+    "url": "https://res.cloudinary.com/szohobky/image/upload/v1795239030/gallery/1794998365745-511d389f-48e0-4ea8-af47-a67f1a47b196.jpg",
+    "caption": "Ready-to-cook selection",
+    "altText": "Ready-to-cook selection",
+    "order": 6
+   },
+   {
+    "_id": "6afd805d7fa4b667ba30798f",
+    "url": "https://res.cloudinary.com/szohobky/image/upload/v1795239032/gallery/1794998365748-bd9c45d8-fe2b-471c-bccf-c1c06d6faaed.jpg",
+    "caption": "Pick-up counter",
+    "altText": "Pick-up counter",
+    "order": 7
+   },
+   {
+    "_id": "6afd805d7fa4b667ba307990",
+    "url": "https://res.cloudinary.com/szohobky/image/upload/v1795239033/gallery/1794998365751-0946c707-41b4-4595-82b5-36a7bf2b0ebe.jpg",
+    "caption": "Meatyns brand wall",
+    "altText": "Meatyns brand wall",
+    "order": 8
+   },
+   {
+    "_id": "6afd805d7fa4b667ba307991",
+    "url": "https://res.cloudinary.com/szohobky/image/upload/v1795239035/gallery/1794998365754-516c1920-2b01-4b32-8440-1f2ac7edc158.jpg",
+    "caption": "Our preparation area",
+    "altText": "Our preparation area",
+    "order": 9
+   },
+   {
+    "_id": "6afd805d7fa4b667ba307992",
+    "url": "https://res.cloudinary.com/szohobky/image/upload/v1795239036/gallery/1794998365758-4a2bb938-fc2f-4331-98d3-0da8497c921f.jpg",
+    "caption": "Find us online",
+    "altText": "Find us online",
+    "order": 10
+   },
+   {
+    "_id": "6afd805d7fa4b667ba307993",
+    "url": "https://res.cloudinary.com/szohobky/image/upload/v1795239037/gallery/1794998365760-09db3e10-b965-4aa7-95d3-037ab3511b31.jpg",
+    "caption": "Vibe to meat you",
+    "altText": "Vibe to meat you",
+    "order": 11
+   }
+  ],
+  "coverImage": "https://res.cloudinary.com/szohobky/image/upload/v1795239022/gallery/1794998365727-d1d695f5-073c-4b7d-9c92-4de756da45b0.jpg",
+  "isFeatured": false,
+  "showOnHomepage": true,
+  "isPublished": true,
+  "displayOrder": 2,
+  "createdBy": null,
+  "updatedBy": null,
+  "createdAt": "2026-11-18T10:39:25.536Z",
+  "updatedAt": "2026-11-18T10:39:25.536Z",
+  "__v": 0
+ },
+ {
+  "_id": "6afd815d4a8e52d13cd20f81",
+  "title": "Opening Day Celebrations",
+  "slug": "opening-day-celebrations",
+  "category": "6afd535c1312b134e1e1c2c8",
+  "franchiseName": "",
+  "location": "",
+  "city": "",
+  "state": "",
+  "eventDate": "2026-03-15T00:00:00.000Z",
+  "shortDescription": "Balloon arches, ribbons and festive colours on opening day.",
+  "description": "The store dressed up in Meatyns orange and white for opening day — balloon arches, a ribbon at the door and a warm welcome for every guest.",
+  "images": [
+   {
+    "_id": "6afd815d4a8e52d13cd20f7c",
+    "url": "https://res.cloudinary.com/szohobky/image/upload/v1795239039/gallery/1794998621146-4f6d9d99-f313-4207-97a8-5e1e2334ae49.jpg",
+    "caption": "Balloon arch at the entrance",
+    "altText": "Balloon arch at the entrance",
+    "order": 0
+   },
+   {
+    "_id": "6afd815d4a8e52d13cd20f7d",
+    "url": "https://res.cloudinary.com/szohobky/image/upload/v1795239040/gallery/1794998621158-1778782c-3c58-4990-bf89-a6fe5ec7ef54.jpg",
+    "caption": "Guests at the store front",
+    "altText": "Guests at the store front",
+    "order": 1
+   },
+   {
+    "_id": "6afd815d4a8e52d13cd20f7e",
+    "url": "https://res.cloudinary.com/szohobky/image/upload/v1795239042/gallery/1794998621165-e0bb30a1-37d9-452c-9e0f-98d4e7ea5e82.jpg",
+    "caption": "Ready for the ribbon cutting",
+    "altText": "Ready for the ribbon cutting",
+    "order": 2
+   },
+   {
+    "_id": "6afd815d4a8e52d13cd20f7f",
+    "url": "https://res.cloudinary.com/szohobky/image/upload/v1795239044/gallery/1794998621170-36f6688d-5ef3-4f2d-914d-8894233e9e1f.jpg",
+    "caption": "A festive entrance",
+    "altText": "A festive entrance",
+    "order": 3
+   },
+   {
+    "_id": "6afd815d4a8e52d13cd20f80",
+    "url": "https://res.cloudinary.com/szohobky/image/upload/v1795239045/gallery/1794998621174-424f5375-83f5-49c5-b01e-28790a06ec18.jpg",
+    "caption": "Goat Farm décor with balloons",
+    "altText": "Goat Farm décor with balloons",
+    "order": 4
+   }
+  ],
+  "coverImage": "https://res.cloudinary.com/szohobky/image/upload/v1795239039/gallery/1794998621146-4f6d9d99-f313-4207-97a8-5e1e2334ae49.jpg",
+  "isFeatured": false,
+  "showOnHomepage": true,
+  "isPublished": true,
+  "displayOrder": 3,
+  "createdBy": null,
+  "updatedBy": null,
+  "createdAt": "2026-11-18T10:43:40.960Z",
+  "updatedAt": "2026-11-18T10:43:40.960Z",
+  "__v": 0
+ },
+ {
+  "_id": "6afd815d4a8e52d13cd20f87",
+  "title": "Fresh Cuts on Display",
+  "slug": "fresh-cuts-on-display",
+  "category": "6afd535c1312b134e1e1c2ca",
+  "franchiseName": "",
+  "location": "",
+  "city": "",
+  "state": "",
+  "eventDate": "2026-03-15T00:00:00.000Z",
+  "shortDescription": "Hygienically handled, freshly cut meat in chilled display counters.",
+  "description": "Every Meatyns store showcases fresh mutton and chicken in chilled glass counters, cut and cleaned daily so you can see exactly what you are buying.",
+  "images": [
+   {
+    "_id": "6afd815d4a8e52d13cd20f82",
+    "url": "https://res.cloudinary.com/szohobky/image/upload/v1795239047/gallery/1794998621355-fffef26d-44d5-4ba3-8405-2fb44b4434be.jpg",
+    "caption": "Fresh mutton cuts",
+    "altText": "Fresh mutton cuts",
+    "order": 0
+   },
+   {
+    "_id": "6afd815d4a8e52d13cd20f83",
+    "url": "https://res.cloudinary.com/szohobky/image/upload/v1795239048/gallery/1794998621361-426312d1-94c2-4667-8d66-79dcd75f37db.jpg",
+    "caption": "Whole chicken, cleaned and ready",
+    "altText": "Whole chicken, cleaned and ready",
+    "order": 1
+   },
+   {
+    "_id": "6afd815d4a8e52d13cd20f84",
+    "url": "https://res.cloudinary.com/szohobky/image/upload/v1795239049/gallery/1794998621366-a4f06af1-707c-4953-bf64-40a2e793d0b8.jpg",
+    "caption": "Chilled display counter",
+    "altText": "Chilled display counter",
+    "order": 2
+   },
+   {
+    "_id": "6afd815d4a8e52d13cd20f85",
+    "url": "https://res.cloudinary.com/szohobky/image/upload/v1795239050/gallery/1794998621371-d482a31c-89fe-48ee-a0d2-ebca7a501479.jpg",
+    "caption": "Ready-to-cook packs",
+    "altText": "Ready-to-cook packs",
+    "order": 3
+   },
+   {
+    "_id": "6afd815d4a8e52d13cd20f86",
+    "url": "https://res.cloudinary.com/szohobky/image/upload/v1795239051/gallery/1794998621374-9a452065-7974-4961-b983-ab22b6205e41.jpg",
+    "caption": "Cold storage, always fresh",
+    "altText": "Cold storage, always fresh",
+    "order": 4
+   }
+  ],
+  "coverImage": "https://res.cloudinary.com/szohobky/image/upload/v1795239047/gallery/1794998621355-fffef26d-44d5-4ba3-8405-2fb44b4434be.jpg",
+  "isFeatured": false,
+  "showOnHomepage": true,
+  "isPublished": true,
+  "displayOrder": 4,
+  "createdBy": null,
+  "updatedBy": null,
+  "createdAt": "2026-11-18T10:43:40.960Z",
+  "updatedAt": "2026-11-18T10:43:40.960Z",
+  "__v": 0
+ },
+ {
+  "_id": "6afd815d4a8e52d13cd20f8e",
+  "title": "Our Order & Pick-up Counter",
+  "slug": "our-order-pickup-counter",
+  "category": "6afd535c1312b134e1e1c2ca",
+  "franchiseName": "",
+  "location": "",
+  "city": "",
+  "state": "",
+  "eventDate": "2026-03-15T00:00:00.000Z",
+  "shortDescription": "Order, pay and pick up — quick and easy at the Meatyns counter.",
+  "description": "Our wooden-finish order counter, where every fresh order is packed and handed over with care.",
+  "images": [
+   {
+    "_id": "6afd815d4a8e52d13cd20f88",
+    "url": "https://res.cloudinary.com/szohobky/image/upload/v1795239052/gallery/1794998621460-e3729abd-3236-4213-b19c-b3871905f4b0.jpg",
+    "caption": "Pick-up counter",
+    "altText": "Pick-up counter",
+    "order": 0
+   },
+   {
+    "_id": "6afd815d4a8e52d13cd20f89",
+    "url": "https://res.cloudinary.com/szohobky/image/upload/v1795239054/gallery/1794998621465-ea856cc5-748a-4f6d-8d7e-1437b5288799.jpg",
+    "caption": "Order counter close-up",
+    "altText": "Order counter close-up",
+    "order": 1
+   },
+   {
+    "_id": "6afd815d4a8e52d13cd20f8a",
+    "url": "https://res.cloudinary.com/szohobky/image/upload/v1795239055/gallery/1794998621469-520e0177-5da2-433d-a236-a036011c0398.jpg",
+    "caption": "Ready for customers",
+    "altText": "Ready for customers",
+    "order": 2
+   },
+   {
+    "_id": "6afd815d4a8e52d13cd20f8b",
+    "url": "https://res.cloudinary.com/szohobky/image/upload/v1795239057/gallery/1794998621472-05c23b9e-1c5c-4eb7-9385-9616f946ff95.jpg",
+    "caption": "Your order is here",
+    "altText": "Your order is here",
+    "order": 3
+   },
+   {
+    "_id": "6afd815d4a8e52d13cd20f8c",
+    "url": "https://res.cloudinary.com/szohobky/image/upload/v1795239058/gallery/1794998621477-a6d9d266-f3d5-4366-b5ce-78417aeae0c7.jpg",
+    "caption": "Counter and display",
+    "altText": "Counter and display",
+    "order": 4
+   },
+   {
+    "_id": "6afd815d4a8e52d13cd20f8d",
+    "url": "https://res.cloudinary.com/szohobky/image/upload/v1795239060/gallery/1794998621481-77adc841-21b0-463b-bd30-1004191c8f01.jpg",
+    "caption": "Your order is here signage",
+    "altText": "Your order is here signage",
+    "order": 5
+   }
+  ],
+  "coverImage": "https://res.cloudinary.com/szohobky/image/upload/v1795239052/gallery/1794998621460-e3729abd-3236-4213-b19c-b3871905f4b0.jpg",
+  "isFeatured": false,
+  "showOnHomepage": true,
+  "isPublished": true,
+  "displayOrder": 5,
+  "createdBy": null,
+  "updatedBy": null,
+  "createdAt": "2026-11-18T10:43:40.960Z",
+  "updatedAt": "2026-11-18T10:43:40.960Z",
+  "__v": 0
+ },
+ {
+  "_id": "6afd815d4a8e52d13cd20f93",
+  "title": "Behind the Counter",
+  "slug": "behind-the-counter",
+  "category": "6afd535c1312b134e1e1c2c9",
+  "franchiseName": "",
+  "location": "",
+  "city": "",
+  "state": "",
+  "eventDate": "2026-03-15T00:00:00.000Z",
+  "shortDescription": "The people and the prep area that bring fresh meat to your table.",
+  "description": "A peek behind the counter at our clean preparation area and the team that cuts, cleans and packs every order.",
+  "images": [
+   {
+    "_id": "6afd815d4a8e52d13cd20f8f",
+    "url": "https://res.cloudinary.com/szohobky/image/upload/v1795239061/gallery/1794998621580-fb7cce8a-77ff-4715-b36a-9e225a8be06d.jpg",
+    "caption": "Our preparation area",
+    "altText": "Our preparation area",
+    "order": 0
+   },
+   {
+    "_id": "6afd815d4a8e52d13cd20f90",
+    "url": "https://res.cloudinary.com/szohobky/image/upload/v1795239062/gallery/1794998621586-0dd72a02-c08d-4137-b037-7530a26c90fc.jpg",
+    "caption": "Store and staff",
+    "altText": "Store and staff",
+    "order": 1
+   },
+   {
+    "_id": "6afd815d4a8e52d13cd20f91",
+    "url": "https://res.cloudinary.com/szohobky/image/upload/v1795239063/gallery/1794998621589-131ca910-4351-49ed-85e6-73473dfe90e1.jpg",
+    "caption": "Bright, clean interiors",
+    "altText": "Bright, clean interiors",
+    "order": 2
+   },
+   {
+    "_id": "6afd815d4a8e52d13cd20f92",
+    "url": "https://res.cloudinary.com/szohobky/image/upload/v1795239064/gallery/1794998621592-5f948acf-a330-4b40-b875-c7bb57c3ce6b.jpg",
+    "caption": "Authentic meat awaits!",
+    "altText": "Authentic meat awaits!",
+    "order": 3
+   }
+  ],
+  "coverImage": "https://res.cloudinary.com/szohobky/image/upload/v1795239061/gallery/1794998621580-fb7cce8a-77ff-4715-b36a-9e225a8be06d.jpg",
+  "isFeatured": false,
+  "showOnHomepage": true,
+  "isPublished": true,
+  "displayOrder": 6,
+  "createdBy": null,
+  "updatedBy": null,
+  "createdAt": "2026-11-18T10:43:40.960Z",
+  "updatedAt": "2026-11-18T10:43:40.960Z",
+  "__v": 0
+ }
+]

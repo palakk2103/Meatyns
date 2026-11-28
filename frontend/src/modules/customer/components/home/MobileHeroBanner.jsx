@@ -49,12 +49,22 @@ const MobileHeroBanner = ({ heroConfig }) => {
   const hasText = Boolean(headline || subheadline);
   const isFullGraphicBanner = currentBanner && currentBanner.imageUrl && !hasText;
 
+  // Natural width/height of each uploaded graphic, so its box can match the
+  // artwork's shape and never crop the text baked into it.
+  const [imageRatios, setImageRatios] = useState({});
+  const graphicRatio = isFullGraphicBanner
+    ? imageRatios[currentBanner.imageUrl] || 2.4
+    : null;
+
   return (
     <div className="w-full px-1.5 sm:px-2.5 pt-0 pb-1.5 select-none">
       <div
         onClick={handleBannerClick}
-        className="relative w-full h-[175px] sm:h-[195px] rounded-2xl overflow-hidden shadow-xs cursor-pointer border border-slate-200/80 flex items-center group"
+        className={`relative w-full ${
+          isFullGraphicBanner ? "" : "h-[175px] sm:h-[195px]"
+        } rounded-2xl overflow-hidden shadow-xs cursor-pointer border border-slate-200/80 flex items-center group`}
         style={{
+          aspectRatio: graphicRatio || undefined,
           background: isFullGraphicBanner
             ? "#F8F8F8"
             : "linear-gradient(95deg, #FAF4EE 0%, #F8EFE5 50%, #F5EAE0 100%)",
@@ -65,8 +75,14 @@ const MobileHeroBanner = ({ heroConfig }) => {
           <img
             src={currentBanner.imageUrl}
             alt="Promotion Banner"
-            className="w-full h-full object-cover select-none pointer-events-none group-hover:scale-[1.02] transition-transform duration-700"
+            className="absolute inset-0 w-full h-full object-contain select-none pointer-events-none"
             loading="eager"
+            onLoad={(e) => {
+              const { naturalWidth, naturalHeight } = e.currentTarget;
+              if (!naturalWidth || !naturalHeight) return;
+              const url = currentBanner.imageUrl;
+              setImageRatios((prev) => ({ ...prev, [url]: naturalWidth / naturalHeight }));
+            }}
             onError={(e) => {
               e.currentTarget.onerror = null;
               e.currentTarget.src = "/banners/hero_platter_clean.jpg";

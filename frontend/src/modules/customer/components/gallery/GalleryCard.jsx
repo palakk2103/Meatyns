@@ -20,6 +20,7 @@ const GalleryCard = ({ gallery }) => {
           src={gallery.coverImage}
           alt={gallery.title}
           width={560}
+          showFull
           className="aspect-[4/3] w-full"
           imgClassName="group-hover:scale-[1.06] transition-transform duration-700 ease-out"
         />
